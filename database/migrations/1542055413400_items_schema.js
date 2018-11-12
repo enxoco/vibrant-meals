@@ -10,7 +10,7 @@ class ItemsSchema extends Schema {
       table.string('sku').nullable()
       table.string('description')
       table.integer('price')
-      table.integer('86Count')
+      table.integer('eightySixCount')
       table.integer('calories')
       table.integer('fats')
       table.integer('carbs')
