@@ -15,10 +15,11 @@ const Factory = use('Factory')
 
 class ItemSeeder {
   async run () {
-    Database
+    await Database
       .table('items')
-      .insert(
+      .insert([
         {
+          id: 1,
           name: 'Angus Burger',
           sku: 'aburger',
           description: 'Home-made Angus beef patty with kale, tomatoes, mushrooms, sweet potato fries and a side of our house made chipotle mayo sauce.',
@@ -29,9 +30,21 @@ class ItemSeeder {
           carbs: 32,
           protein: 49,
           is_keto: 1
-
-        }
-        )
+        },
+        {
+          id: 2,
+          name: 'BBQ Pulled Pork',
+          sku: 'bbq-pulled-pork',
+          description: 'For those southern foodies! Pulled pork, roasted whole brussels sprouts, and mashed sweet potato with a handcrafted BBQ sauce.',
+          price: 9.50,
+          eightySixCount: 12,
+          calories: 430,
+          fats: 17,
+          carbs: 35,
+          protein: 35,
+          is_paleo: 1
+        },
+      ])
     
   }
 }

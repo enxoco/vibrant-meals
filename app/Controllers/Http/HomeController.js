@@ -1,8 +1,13 @@
 'use strict'
+const Database = use('Database')
 
 class HomeController {
   async index ({ view }) {
-    return view.render('welcome')
+    const items = await Database
+    .select('*')
+    .from('items')
+    console.log(items[0])
+    return view.render('welcome', {items})
   }
 }
 

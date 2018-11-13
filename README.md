@@ -15,3 +15,5 @@ git clone https://code.enxo.co/murph/vibrant-meals
 cd vibrant-meals
 npm install
 ```
+
+That will install all of the dependencies
