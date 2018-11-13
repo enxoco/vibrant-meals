@@ -9,6 +9,7 @@ class ItemsSchema extends Schema {
       table.string('name').nullable()
       table.string('sku').nullable()
       table.string('description').nullable()
+      table.string('img_url').nullable()
       table.integer('price').nullable()
       table.integer('eightySixCount').nullable()
       table.integer('calories').nullable()
