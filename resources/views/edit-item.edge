@@ -1,0 +1,179 @@
+@layout('layout.admin')
+@section('content')
+
+<div class="box cta">
+<p class="has-text-centered">
+		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</div>
+
+<section class="item-manager">
+  <div class="container">
+<div class="columns is-vcentered">
+  <div class="column is-4">
+      <form method="POST" action="/item/add/{{ item.id }}" enctype="multipart/form-data">
+        <figure class="image is-4by3">
+            <img id="preview" src="{{ item.img_url }}" alt="Description">
+        </figure>
+        <div class="file">
+            <label class="file-label">
+              <input class="file-input" type="file" name="item-image[]" onchange="readURL(this);">
+              <span class="file-cta">
+                <span class="file-label">
+                 Product Image
+                </span>
+              </span>
+            </label>
+          </div>
+  </div>
+  <div class="column is-8">
+      <div class="field has-addons">
+          <div class="control">
+            <a class="button is-warning margin-left-15">
+              Name
+            </a>
+          </div>
+          <div class="control is-8">
+            <input id="name" name="name" class="input " placeholder="" type="text" value="{{ item.name }}">
+          </div>
+          <div class="control">
+              <a class="button is-success margin-left-15">
+                Price
+              </a>
+            </div>
+            <div class="control is-4">
+              <input id="price" name="price" class="input " placeholder="" type="number" step="any" value="{{ item.price }}">
+            </div>
+      </div>
+
+      <div class="field has-addons">
+          <div class="control">
+            <a class="button is-info margin-left-15">
+              Calories
+            </a>
+          </div>
+          <div class="control">
+            <input id="calories" name="calories" class="input " placeholder="" type="number" value="{{ item.calories }}">
+          </div>
+          <div class="control">
+              <a class="button is-info margin-left-15">
+                Fat
+              </a>
+            </div>
+            <div class="control">
+              <input id="fat" name="fat" class="input " placeholder="" type="number" value="{{ item.fats }}">
+            </div>
+            <div class="control">
+                <a class="button is-info margin-left-15">
+                  Carbs
+                </a>
+              </div>
+              <div class="control">
+                <input id="carbs" name="carbs" class="input " placeholder="" type="number" value="{{ item.carbs }}">
+              </div>
+              <div class="control">
+                  <a class="button is-info margin-left-15">
+                    Protein
+                  </a>
+                </div>
+                <div class="control">
+                  <input id="protein" name="protein" class="input " placeholder="" type="number" value="{{ item.protein }}">
+                </div>
+      </div>
+                <div class="field has-addons">
+                    <div class="control">
+                        <a class="button is-info margin-left-15">
+                          Sodium
+                        </a>
+                      </div>
+                      <div class="control">
+                        <input id="sodium" name="sodium" class="input " placeholder="" type="number" value="{{ item.sodium }}">
+                      </div>
+                      <div class="control">
+                          <a class="button is-info margin-left-15">
+                            Sugar
+                          </a>
+                        </div>
+                        <div class="control">
+                          <input id="sugar" name="sugar" class="input " placeholder="" type="number" value="{{ item.sugar }}">
+                        </div>
+                        <div class="control">
+                            <a class="button is-danger margin-left-15">
+                              Limit
+                            </a>
+                          </div>
+                          <div class="control">
+                            <input id="eightySixCount" name="eightySixCount" class="input " placeholder="none" type="number" value="{{ item.eightySixCount }}">
+                          </div>
+                </div>
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                      <textarea class="textarea" placeholder="Item Description" id="description" name="description">{{ item.description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="field is-horizontal">
+                      <div class="control">
+                          <input class="is-checkradio" id="is_keto" type="checkbox" name="is_keto"
+                          @if(item.is_keto)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_keto">Keto</label>
+
+                          <input class="is-checkradio" id="is_whole30" type="checkbox" name="is_whole30"
+                          @if(item.is_whole30)
+                          checked
+                          @else
+                          @endif
+                          >
+                          <label for="is_whole30">Whole 30</label>
+
+                          <input class="is-checkradio" id="is_lowCarb" type="checkbox" name="is_lowCarb"
+                          @if(item.is_lowCarb)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_lowCarb">Low Carb</label>
+                          <input class="is-checkradio" id="is_paleo" type="checkbox" name="is_paleo"
+                          @if(item.is_paleo)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_paleo">Paleo</label>
+                            </div>
+                    </div>
+                  <div class="field is-grouped">
+                    <div class="control">
+                      <button class="button is-link">Update</button>
+                    </div>
+                    <div class="control">
+                      <button class="button is-text">Cancel</button>
+                    </div>
+                  </div>
+                </form>
+
+      </div>
+  </div>
+</div>
+  </div>
+</section>
+    
+  <script>
+         function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        </script>
+@endsection

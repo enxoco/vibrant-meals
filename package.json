@@ -34,6 +34,7 @@
     "@slack/client": "^4.8.0",
     "async": "^2.6.1",
     "blueimp-md5": "^2.10.0",
+    "bulma-extensions": "^4.0.0",
     "cheerio": "^1.0.0-rc.2",
     "clockwork": "^0.1.4",
     "cloudinary": "^1.11.0",

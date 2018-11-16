@@ -14,8 +14,14 @@
 */
 
 const Route = use('Route')
-
 Route.get('/', 'HomeController.index').as('welcomePage')
+
+Route.get('/item/add/:itemId', 'Auth/AuthController.editItem')
+Route.post('/item/add/:itemId', 'Auth/AuthController.updateItem')
+
+Route.get('/item/add', async({view}) => view.render('add-item'))
+Route.post('/item/add', 'Auth/AuthController.addItem')
+
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')

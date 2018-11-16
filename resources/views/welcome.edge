@@ -33,23 +33,148 @@
 	LACTOSE FREE - GLUTEN FREE - ALL NATURAL
 </h2>
 </div>
-<section class="container">
-<div class="columns features" style="flex-wrap: wrap">
-	@each(item in items)
-	<div class="column is-4">
-			<div class="card is-shady">
-					<div class="card-image has-text-centered">
-							<img src="{{ item.img_url }}" height="350" width="350" />
-					</div>
-					<div class="card-content">
-							<div class="content">
-									<h4>{{ item.name }} - ${{ item.price }} </h4>
-									<p>{{ item.description }}</p>
-									<p><a href="#">Learn more</a></p>
+<div class="box cta">
+		<p class="has-text-centered">
+
+				<div class="field is-grouped is-grouped-multiline">
+						<div class="control">
+							<div class="tags has-addons">
+							  <a class="tag is-danger paleo-filter">Paleo</a>
 							</div>
+						  </div>
+						<div class="control">
+							<div class="tags has-addons">
+							  <a class="tag is-danger keto-filter">Keto</a>
+							</div>
+						  </div>
+						<div class="control">
+							<div class="tags has-addons">
+							  <a class="tag is-danger is_lowCarb" data-filter-tag="is_lowCarb">Low Carb</a>
+							</div>
+						  </div>
+						<div class="control">
+							<div class="tags has-addons">
+							  <a class="tag is-danger is_whole30" data-filter-tag="is_whole30">Whole 30</a>
+							</div>
+						  </div>
+					  </div>
+			</p>
+		</div>
+<section class="container product-wrapper">
+		
+<div class="columns features" style="flex-wrap: wrap">
+
+	@each(item in items)
+	<div class="column is-4 is-full-mobile" data-diet-keto={{item.is_keto}} data-diet-paleo={{item.is_paleo}} data-diet-whole30={{item.is_whole30}}>
+			<div class="hover panel">
+					<div class="front" style="background-image: url({{item.img_url}})">
+							<h1 class="price">${{ item.price }}</h1>
+
+						<h1 class="item-title"> {{ item.name }} </h1>
 					</div>
+					<div class="back">
+						<div class="pad">
+							<h2 class="subtitle has-text-white"> {{ item.description }} </h2>
+							<hr />
+							<nav class="level">
+									<div class="level-item has-text-centered">
+									  <div>
+										<p class="heading">Calories</p>
+										<p class="title"> {{ item.calories }} </p>
+									  </div>
+									</div>
+									<div class="level-item has-text-centered">
+									  <div>
+										<p class="heading">Fats</p>
+										<p class="title"> {{ item.fats }} </p>
+									  </div>
+									</div>
+									<div class="level-item has-text-centered">
+									  <div>
+										<p class="heading">Carbs</p>
+										<p class="title"> {{ item.carbs }} </p>
+									  </div>
+									</div>
+									<div class="level-item has-text-centered">
+									  <div>
+										<p class="heading">Protein</p>
+										<p class="title"> {{ item.protein }} </p>
+									  </div>
+									</div>
+								  </nav>
+							<div class="field is-grouped is-grouped-multiline">
+									@if(item.is_paleo)
+									<div class="control">
+										<div class="tags has-addons">
+										  <a class="tag is-warning ">Paleo</a>
+										</div>
+									  </div>
+									@endif
+									@if(item.is_keto)
+									<div class="control">
+										<div class="tags has-addons">
+										  <a class="tag is-warning">Keto</a>
+										</div>
+									  </div>
+									@endif
+									@if(item.is_lowCarb)
+									<div class="control">
+										<div class="tags has-addons">
+										  <a class="tag is-warning">Low Carb</a>
+										</div>
+									  </div>
+									@endif
+									@if(item.is_whole30)
+									<div class="control">
+										<div class="tags has-addons">
+										  <a class="tag is-warning">Whole 30</a>
+										</div>
+									  </div>
+									@endif
+								  </div>
+						</div>
+					</div>
+				</div>
+	<!--<div class="flip">
+			<div class="back">
+			   <h2>{{ item.name }}</h2>
+			   <p>{{ item.description }}</p>
+			   Calories {{item.calories}} | Fats {{item.fats}} | Carbs {{item.carbs}} | Protein {{item.protein}}
+			   <div class="field is-grouped is-grouped-multiline">
+					   @if(item.is_paleo)
+					   <div class="control">
+						   <div class="tags has-addons">
+							 <a class="tag is-warning">Paleo</a>
+						   </div>
+						 </div>
+					   @endif
+					   @if(item.is_keto)
+					   <div class="control">
+						   <div class="tags has-addons">
+							 <a class="tag is-warning">Keto</a>
+						   </div>
+						 </div>
+					   @endif
+					   @if(item.is_lowCarb)
+					   <div class="control">
+						   <div class="tags has-addons">
+							 <a class="tag is-warning">Low Carb</a>
+						   </div>
+						 </div>
+					   @endif
+					   @if(item.is_whole30)
+					   <div class="control">
+						   <div class="tags has-addons">
+							 <a class="tag is-warning">Whole 30</a>
+						   </div>
+						 </div>
+					   @endif
+					 </div>
 			</div>
+		</div>-->
 	</div>
+
+		
 	@endeach
 </div>
 
