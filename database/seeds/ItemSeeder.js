@@ -21,10 +21,10 @@ class ItemSeeder {
         {
           id: 1,
           name: 'Angus Burger',
-          sku: 'aburger',
+          sku: 'angus-burger',
           img_url: 'https://res.cloudinary.com/themurphs/image/upload/v1542120686/Vibrant%20Meals/angusBurger.jpg',
           description: 'Home-made Angus beef patty with kale, tomatoes, mushrooms, sweet potato fries and a side of our house made chipotle mayo sauce.',
-          price: 10,
+          price: 9.75,
           eightySixCount: 12,
           calories: 610,
           fats: 36,
@@ -46,6 +46,35 @@ class ItemSeeder {
           carbs: 35,
           protein: 35,
           is_paleo: 1
+        },
+        {
+          id: 3,
+          name: 'Spaghetti Squash Meatball',
+          sku: 'spaghetti-squash-meatball',
+          img_url: 'https://static1.squarespace.com/static/572361987c65e48584ee75e7/587ea50ff7e0abac0d8cda55/5a9dfa93c83025ca5dbac982/1520302758007/Spaghetti+Squash+Meatball_mini.JPG?format=2500w',
+          description: 'Roasted spaghetti squash, turkey meatballs, garlic, tomatoes, basil, spices all in our homemade marinara sauce.',
+          price: 9.75,
+          eightySixCount: 12,
+          calories: 310,
+          fats: 13,
+          carbs: 15,
+          protein: 35,
+          is_paleo: 1,
+          is_lowCarb: 1
+        },
+        {
+          id: 4,
+          name: 'Chorizo Hemp Seed Bowl',
+          sku: 'chorizo-hemp-seed-bowl',
+          img_url: 'https://static1.squarespace.com/static/572361987c65e48584ee75e7/587ea50ff7e0abac0d8cda55/5ba26299758d468035a43a5b/1537368851135/Chorizo+Hemp+Seed+Bowl_mini.JPG?format=2500w',
+          description: 'Scrambled egg whites, kale, sweet potato, pork chorizo, red bell peppers, onions and a dash of hemp seed. ',
+          price: 7.50,
+          eightySixCount: 12,
+          calories: 420,
+          fats: 19,
+          carbs: 36,
+          protein: 27,
+          is_whole30: 1
         },
       ])
     
