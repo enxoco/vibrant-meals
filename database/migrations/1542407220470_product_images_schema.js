@@ -4,10 +4,11 @@ const Schema = use('Schema')
 
 class ProductImagesSchema extends Schema {
   up () {
-    this.create('product_images', (table) => {
-      table.increments()
-      table.string('path').nullable
-      table.integer('item_id').nullable
+    this.createIfNotExists('product_images', table => {
+      table.increments('product_image_id')
+      table.string('path').nullable()
+      // table.foreign('item_id').references('items.id')
+
       table.timestamps()
     })
   }

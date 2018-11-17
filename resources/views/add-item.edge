@@ -11,13 +11,13 @@
   <div class="container">
 <div class="columns is-vcentered">
   <div class="column is-4">
-      <form method="POST" action="/item/add" enctype="multipart/form-data">
+      <form method="post" action="/item/add" enctype="multipart/form-data">
         <figure class="image is-4by3">
             <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description">
         </figure>
         <div class="file">
             <label class="file-label">
-              <input class="file-input" type="file" name="item-image[]" onchange="readURL(this);">
+              <input class="file-input" type="file" name="item-image" onchange="readURL(this);">
               <span class="file-cta">
                 <span class="file-label">
                  Product Image
@@ -25,6 +25,36 @@
               </span>
             </label>
           </div>
+          @if(old('errors'))
+          <div class="alert alert-danger" role="alert">
+            <ul class="list-unstyled">
+              @each(error in old('errors'))
+                <li>{{ error.message }}</li>
+              @endeach
+            </ul>
+          </div>
+        @endif
+        
+        @if(old('error'))
+          <div class="alert alert-danger" role="alert">
+            {{ old('error') }}
+          </div>
+        @endif
+        
+        @if(old('status'))
+          <div class="notification is-success" role="alert">
+            <button type="button" class="delete" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ old('status') }}
+          </div>
+        @endif
+        
+        @if(old('warning'))
+          <div class="alert alert-warning" role="alert">
+            {{ old('warning') }}
+          </div>
+        @endif
   </div>
   <div class="column is-8">
       <div class="field has-addons">

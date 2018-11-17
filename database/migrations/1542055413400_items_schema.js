@@ -4,12 +4,14 @@ const Schema = use('Schema')
 
 class ItemsSchema extends Schema {
   up () {
-    this.create('items', (table) => {
-      table.increments()
+    this.createIfNotExists('items', table => {
+      table.increments('id')
       table.string('name').nullable()
       table.string('sku').nullable()
       table.string('description').nullable()
       table.string('img_url').nullable()
+      table.string('alt_img_url').nullable()
+      table.integer('item_id').nullable()
       table.decimal('price').nullable()
       table.integer('eightySixCount').nullable()
       table.integer('calories').nullable().defaultsTo(0)
@@ -24,7 +26,6 @@ class ItemsSchema extends Schema {
       table.boolean('is_breakfast').nullable().defaultsTo(0)
       table.boolean('is_paleo').nullable().defaultsTo(0)
       table.boolean('is_visible').nullable().defaultsTo(1)
-
       table.timestamps()
     })
   }

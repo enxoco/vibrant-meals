@@ -12,9 +12,10 @@ class UploadController {
       size: '2mb'
     })
 
-    let name = `${new Date().getTime()}_${profilePic._clientName}`
+    let name = `item-0_${profilePic.clientName}`
     await profilePic.move(Helpers.tmpPath('/uploads'), {
-      name
+      name,
+      overwrite: true
     })
 
     if (!profilePic.moved()) {

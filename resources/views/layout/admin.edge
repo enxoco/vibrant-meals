@@ -24,4 +24,10 @@
     </body>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="/js/product-card.js"></script>
+    <script>
+    $(document).on('click', '.notification > button.delete', function() {
+        $(this).parent().addClass('is-hidden');
+        return false;
+    });
+    </script>
 </html>

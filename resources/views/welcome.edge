@@ -61,18 +61,38 @@
 			</p>
 		</div>
 <section class="container product-wrapper">
-		
-<div class="columns features" style="flex-wrap: wrap">
 
+<div class="columns features" style="flex-wrap: wrap">
 	@each(item in items)
+	<div class="modal" id="confirmation-{{item.id}}">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">Modal title</p>
+					<button class="delete" aria-label="close"></button>
+				</header>
+				<section class="modal-card-body">
+					<!-- Content ... -->
+					Do you really want to delete the {{ item.name }} ?
+				</section>
+				<footer class="modal-card-foot">
+					<button id="delete-{{ item.id }}" class="button is-success">Delete</button>
+					<button class="button">Cancel</button>
+				</footer>
+			</div>
+		</div>
 	<div class="column is-4 is-full-mobile" data-diet-keto={{item.is_keto}} data-diet-paleo={{item.is_paleo}} data-diet-whole30={{item.is_whole30}}>
-			<div class="hover panel">
+			<a class="button is-info" href="/item/add/{{item.id}}">Edit</a>
+			<a class="delete is-large has-background-color is-danger"></a>
+
+	
+		<div class="hover panel">
 					<div class="front" style="background-image: url({{item.img_url}})">
 							<h1 class="price">${{ item.price }}</h1>
 
 						<h1 class="item-title"> {{ item.name }} </h1>
 					</div>
-					<div class="back">
+					<div class="back" style="background-image: url({{item.alt_img_url}})">
 						<div class="pad">
 							<h2 class="subtitle has-text-white"> {{ item.description }} </h2>
 							<hr />

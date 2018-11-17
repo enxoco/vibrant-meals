@@ -10,37 +10,49 @@ class AuthController {
     return view.render('auth.login')
   }
 
-  async updateItem ({ view, request, response, params }) {
-    const profilePic = request.file('item-image', {
-      types: ['image'],
-      size: '2mb'
-    })
+  async updateItem ({ view, request, response, params, session }) {
 
-    if (profilePic) {// A new image has been uploaded
-      // Deal with new image
-      try {
-        var imgFile = await profilePic.moveAll(('public/images/uploads/'), {overwrite: true})
-        await Database
-        .table('product_images')
-        .insert({
-          path: 'images/uploads/' + profilePic._files[0].clientName,
-          item_id: params.itemId
-        })
-      } catch (error) {
-        await Database
-        .table('product_images')
-        .insert({
-          path: 'images/uploads/' + profilePic._files[0].clientName,
-          item_id: params.itemId
-        })
-        
-      }
+    const obj = request.all()
 
-      // return response.send('new image')
-    } else {// Same old image, just update other records
-      const obj = request.all()
+    const profilePic = request.file('item-image')
+    const altImage = request.file('item-image-alt')
+
+    if (profilePic) {
+      let name = `item-${params.itemId}_${profilePic.clientName}`
+      await profilePic.move(Helpers.publicPath('uploads'), {
+        name: name,
+        overwrite:true
+      })
+      var img_url = `uploads/${name}`
+      await Database
+      .table('items')
+      .where('id', params.itemId)
+      .update({
+        img_url: img_url
+      })
+    }
+
+    if (altImage) {
+      let name = `item-${params.itemId}_${altImage.clientName}`
+      await altImage.move(Helpers.publicPath('uploads'), {
+        name: name,
+        overwrite:true
+      })
+      var alt_img_url = `uploads/${name}`
+      await Database
+      .table('items')
+      .where('id', params.itemId)
+      .update({
+        alt_img_url: alt_img_url
+      })
+    }
+    
       var sugar = null
       var sodium = null
+      var is_keto = null
+      var is_whole30 = null
+      var is_lowCarb = null
+      var is_paleo = null
       if(obj.is_keto) {
         var is_keto = 1
       }
@@ -98,16 +110,11 @@ class AuthController {
           sugar: sugar,
           sodium: sodium
         })
-        return response.send({newId: success, item: obj})
-  
+        session.flash({ status: 'Updated Successfully' })
+        return response.redirect('back')
       } catch (error) {
         return response.send(`Error ${error}`)
       }
-    }
-
-
-
-
   }
 
   async editItem ({ view, request, response, params }) {
@@ -126,20 +133,28 @@ class AuthController {
   }
 
   async addItem ({ view, request, response, params }) {
+    const obj = request.all()
 
-    const profilePic = request.file('item-image', {
-      types: ['image'],
-      size: '2mb'
-    })
+    const profilePic = request.file('item-image')
 
-    var imgFile = await profilePic.move(('public/images/uploads/'), {
-      name: 'custom-name.jpg',
-      overwrite: true
-    })
+    if (profilePic) {
+      try {
+        let name = `item-${params.itemId}_${profilePic.clientName}`
+        await profilePic.move(Helpers.publicPath('uploads'), {
+          name: name,
+          overwrite:true
+        })
+        var img_url = `uploads/${name}`
+      } catch (error) {
+        session.flash({error: `Sorry, something went wrong: ${error}`})
+        return response.redirect('back')
+      }
+
+
+    }
 
     // var imgFile = await profilePic.moveAll('public/images/uploads/')
 
-    const obj = request.all()
     var sugar = null
     var sodium = null
     if(obj.is_keto) {
@@ -187,7 +202,7 @@ class AuthController {
         name: obj.name,
         price: obj.price,
         description: obj.description,
-        img_url: 'images/uploads/' + profilePic._files[0].clientName,
+        img_url: img_url,
         is_keto: is_keto,
         is_lowCarb: is_lowCarb,
         is_paleo: is_paleo,

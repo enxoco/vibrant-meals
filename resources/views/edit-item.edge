@@ -3,30 +3,81 @@
 
 <div class="box cta">
 <p class="has-text-centered">
+  
 		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 </p>
 </div>
-
 <section class="item-manager">
   <div class="container">
-<div class="columns is-vcentered">
-  <div class="column is-4">
+
+  <div class="column is-8 is-offset-2">
       <form method="POST" action="/item/add/{{ item.id }}" enctype="multipart/form-data">
-        <figure class="image is-4by3">
-            <img id="preview" src="{{ item.img_url }}" alt="Description">
-        </figure>
-        <div class="file">
+
+    <!-- Main container -->
+<nav class="level">
+
+    <!-- Left side -->
+      <div class="level-item has-text-left is-pulled-right">
+        <figure class="image is-128x128">
+            <img id="main-image-preview" src="/{{ item.img_url }}" alt="Description">
             <label class="file-label">
-              <input class="file-input" type="file" name="item-image[]" onchange="readURL(this);">
-              <span class="file-cta">
-                <span class="file-label">
-                 Product Image
+                <input class="file-input" type="file" name="item-image" onchange="mainPreview(this);">
+                <span class="file-cta">
+                  <span class="file-label">
+                   Cover Image
+                  </span>
                 </span>
-              </span>
-            </label>
-          </div>
-  </div>
-  <div class="column is-8">
+              </label>
+        </figure>
+
+      </div>  
+      @if(old('errors'))
+      <div class="alert alert-danger" role="alert">
+        <ul class="list-unstyled">
+          @each(error in old('errors'))
+            <li>{{ error.message }}</li>
+          @endeach
+        </ul>
+      </div>
+    @endif
+    
+    @if(old('error'))
+      <div class="alert alert-danger" role="alert">
+        {{ old('error') }}
+      </div>
+    @endif
+    
+    @if(old('status'))
+      <div class="notification is-success" role="alert">
+        <button type="button" class="delete" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ old('status') }}
+      </div>
+    @endif
+    
+    @if(old('warning'))
+      <div class="alert alert-warning" role="alert">
+        {{ old('warning') }}
+      </div>
+    @endif
+    
+    <!-- Right side -->
+      <div class="level-item has-text-left">
+          <figure class="image is-128x128">
+              <img id="alt-image-preview" src="/{{ item.alt_img_url }}" alt="Description">
+              <label class="file-label">
+                  <input class="file-input" type="file" name="item-image-alt" onchange="altPreview(this);">
+                  <span class="file-cta">
+                    <span class="file-label">
+                     Alternate Image
+                    </span>
+                  </span>
+                </label>
+          </figure>
+      </div>
+  </nav>
+
       <div class="field has-addons">
           <div class="control">
             <a class="button is-warning margin-left-15">
@@ -145,17 +196,12 @@
                           >
                           <label for="is_paleo">Paleo</label>
                             </div>
+                            <div class="control">
+                                <button class="button is-link">Update</button>
+                              </div>
                     </div>
-                  <div class="field is-grouped">
-                    <div class="control">
-                      <button class="button is-link">Update</button>
-                    </div>
-                    <div class="control">
-                      <button class="button is-text">Cancel</button>
-                    </div>
-                  </div>
-                </form>
 
+                </form>
       </div>
   </div>
 </div>
@@ -163,17 +209,30 @@
 </section>
     
   <script>
-         function readURL(input) {
+         function mainPreview(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#preview')
+                    $('#main-image-preview')
                         .attr('src', e.target.result);
                 };
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        function altPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#alt-image-preview')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         </script>
 @endsection
