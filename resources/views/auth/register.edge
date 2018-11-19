@@ -1,69 +1,118 @@
-@layout('layout.master')
-
+@layout('layout.admin')
 @section('content')
-	<div class="container">
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<div class="card">
-					<div class="card-header">Register</div>
-					<div class="card-body">
-						@include('layout.alerts')
-						<form method="POST" action="{{ route('register.store') }}">
-							{{ csrfField() }}
-							<div class="form-group row">
-								<label class="col-md-3 col-form-label" for="name">
-									Name
-								</label>
-								<div class="col-md-6">
-									<input type="text" name="name" placeholder="name" id="name"
-										class="form-control {{ elIf('is-invalid', getErrorFor('name'), hasErrorFor('name')) }}"
-										value="{{ old('name', '') }}">
-									<div class="invalid-feedback">{{ getErrorFor('name') }}</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-md-3 col-form-label" for="email">
-									E-Mail Address
-								</label>
-								<div class="col-md-6">
-									<input type="email" name="email" placeholder="email" id="email"
-										class="form-control {{ elIf('is-invalid', getErrorFor('email'), hasErrorFor('email')) }}"
-										value="{{ old('email', '') }}">
-									<div class="invalid-feedback">{{ getErrorFor('email') }}</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-md-3 col-form-label"
-									   for="password">Password</label>
-								<div class="col-md-6">
-									<input type="password" name="password" placeholder="password" id="password"
-										class="form-control {{ elIf('is-invalid', getErrorFor('password'), hasErrorFor('password')) }}">
-									<div class="invalid-feedback">{{ getErrorFor('password') }}</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-md-3 col-form-label" id="password_confirmation">
-									Confirm Password
-								</label>
-								<div class="col-md-6">
-									<input type="password" placeholder="password_confirmation" name="password_confirmation" id="password_confirmation"
-										class="form-control {{ elIf('is-invalid', getErrorFor('password_confirmation'), hasErrorFor('password_confirmation')) }}">
-									<div class="invalid-feedback">{{ getErrorFor('password_confirmation') }}</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="col-md-3"></div>
-								<div class="col-md-6">
-									<button type="submit" class="btn btn-primary btn-block">
-										<i class="fa fa-btn fa-user"></i> Register
-									</button>
-								</div>
-							</div>
-						</form>
+
+<div class="box cta">
+<p class="has-text-centered">
+  
+		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</div>
+<section class="item-manager">
+  <div class="container">
+  <div class="column is-8 is-offset-2 has-background-color-info">
+      @!include('layout.alerts')
+
+      <form method="POST" action="/register">
+
+    <!-- Main container -->
+    
+      <div class="field has-addons">
+          <div class="control">
+            <a class="button is-warning  is-left-rounded">
+              Name
+            </a>
+          </div>
+          <div class="control is-8">
+            <input id="name" name="name" class="input is-right-rounded" placeholder="" type="text" value="{{ item.name }}">
+          </div>
+          <div class="control">
+              <a class="button is-success is-left-rounded has-margin-left-15">
+                Email
+              </a>
+            </div>
+            <div class="control is-4">
+              <input id="email" name="email" class="input is-right-rounded" placeholder="" type="number" step="any" value="{{ item.email }}">
+            </div>
+      </div>
+                <div class="field has-text-centered">
+					Choose a method
+                    <div class="control">
+						<button class="button is-large is-success is-jumbo">Pickup</button>
+						<button class="button is-large is-success is-jumbo">Delivery</button>
+
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
+                  </div>
+                  <div class="field is-horizontal">
+                      <div class="control">
+                          <input class="is-checkradio has-background-color-info" id="is_keto" type="checkbox" name="is_keto"
+                          @if(item.is_keto)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_keto" class="pickup">Keto</label>
+
+                          <input class="is-checkradio" id="is_whole30" type="checkbox" name="is_whole30"
+                          @if(item.is_whole30)
+                          checked
+                          @else
+                          @endif
+                          >
+                          <label for="is_whole30">Whole 30</label>
+
+                          <input class="is-checkradio" id="is_lowCarb" type="checkbox" name="is_lowCarb"
+                          @if(item.is_lowCarb)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_lowCarb">Low Carb</label>
+                          <input class="is-checkradio" id="is_paleo" type="checkbox" name="is_paleo"
+                          @if(item.is_paleo)
+                            checked
+                            @else
+                          @endif
+                          >
+                          <label for="is_paleo">Paleo</label>
+                            </div>
+                            <div class="control">
+                                <button class="button is-link">Update</button>
+                              </div>
+                    </div>
+
+                </form>
+      </div>
+  </div>
+</div>
+  </div>
+</section>
+    
+  <script>
+         function mainPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main-image-preview')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function altPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#alt-image-preview')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        </script>
 @endsection

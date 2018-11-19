@@ -8,7 +8,7 @@ class HomeController {
       const items = await Database
       .select('*')
       .from('items')
-      return view.render('welcome', {items})
+      return view.render('welcome', {items, is_admin: false})
     } catch (error) {
       return Response.send(`error ${error}`)
     }

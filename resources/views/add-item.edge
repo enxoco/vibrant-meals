@@ -12,19 +12,7 @@
 <div class="columns is-vcentered">
   <div class="column is-4">
       <form method="post" action="/item/add" enctype="multipart/form-data">
-        <figure class="image is-4by3">
-            <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description">
-        </figure>
-        <div class="file">
-            <label class="file-label">
-              <input class="file-input" type="file" name="item-image" onchange="readURL(this);">
-              <span class="file-cta">
-                <span class="file-label">
-                 Product Image
-                </span>
-              </span>
-            </label>
-          </div>
+
           @if(old('errors'))
           <div class="alert alert-danger" role="alert">
             <ul class="list-unstyled">
@@ -57,6 +45,19 @@
         @endif
   </div>
   <div class="column is-8">
+      <figure class="image is-4by3">
+          <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description">
+      </figure>
+      <div class="file">
+          <label class="file-label">
+            <input class="file-input" type="file" name="item-image" onchange="readURL(this);">
+            <span class="file-cta">
+              <span class="file-label">
+               Product Image
+              </span>
+            </span>
+          </label>
+        </div>
       <div class="field has-addons">
           <div class="control">
             <a class="button is-warning margin-left-15">
