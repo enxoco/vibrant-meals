@@ -3,34 +3,35 @@
 @section('content')
 
 <div class="hero-body">
-		<div class="container has-text-centered">
-				<h1 class="title">
-					<img class="hero-logo" src="images/hero-logo.png" />
-					Fresh. Nutritious. Delivered.
-				</h1>
-				<h2 class="subtitle">
-					<a class="button is-white is-outlined is-solid" href="https://github.com/dansup/bulma-templates/blob/master/templates/hero.html">
-					  <span class="icon">
-					    <i class="fa fa-github"></i>
-					  </span>
-					  <span title="View our menu">On The Menu</span>
-				</a>
-				</h2>
-		</div>
+	<div class="container has-text-centered">
+		<h1 class="title">
+			<img class="hero-logo" src="images/hero-logo.png" />
+			Fresh. Nutritious. Delivered.
+		</h1>
+		<h2 class="subtitle">
+			<a class="button is-white is-outlined is-solid" href="https://github.com/dansup/bulma-templates/blob/master/templates/hero.html">
+				<span class="icon">
+					<i class="fa fa-github"></i>
+				</span>
+				<span title="View our menu">On The Menu</span>
+			</a>
+		</h2>
+	</div>
 </div>
 </section>
 <div class="box cta">
-<p class="has-text-centered">
-		<span class="tag is-primary">New</span> 
-		This is one of the views that you would see as an admin.  Sort of a live preview.
+	<p class="has-text-centered">
+		<span class="tag is-primary">New</span>
+		This is one of the views that you would see as an admin. Sort of a live preview.
 		<a class="button is-info">Paleo</a>
-</p>
+	</p>
 </div>
 <div class="container column is-10">
-    <div class="section">
-			@each(item in items)
-			<div class="card">
-				<div class="card-header"><p class="card-header-title">
+	<div class="section">
+		@each(item in items)
+		<div class="card">
+			<div class="card-header">
+				<p class="card-header-title">
 					<nav class="level">
 						<div class="level-item has-text-left">
 							<div>
@@ -38,47 +39,45 @@
 								<p class="title">{{ item.name }}</p>
 							</div>
 						</div>
-  <div class="level-item has-text-left">
-    <div>
-      <p class="heading">Calories</p>
-      <p class="title">{{ item.calories }}</p>
-    </div>
-  </div>
-  <div class="level-item has-text-left">
-    <div>
-      <p class="heading">Carbs</p>
-      <p class="title">{{ item.carbs }}</p>
-    </div>
-  </div>
-  <div class="level-item has-text-left">
-    <div>
-      <p class="heading">Fat</p>
-      <p class="title">{{ item.fats }}</p>
-    </div>
-  </div>
-  <div class="level-item has-text-left">
-    <div>
-      <p class="heading">Likes</p>
-      <p class="title">789</p>
-    </div>
-  </div>
-</nav>
+						<div class="level-item has-text-left">
+							<div>
+								<p class="heading">Calories</p>
+								<p class="title">{{ item.calories }}</p>
+							</div>
+						</div>
+						<div class="level-item has-text-left">
+							<div>
+								<p class="heading">Carbs</p>
+								<p class="title">{{ item.carbs }}</p>
+							</div>
+						</div>
+						<div class="level-item has-text-left">
+							<div>
+								<p class="heading">Fat</p>
+								<p class="title">{{ item.fats }}</p>
+							</div>
+						</div>
+						<div class="level-item has-text-left">
+							<div>
+								<p class="heading">Likes</p>
+								<p class="title">789</p>
+							</div>
+						</div>
+					</nav>
+			</div>
+			<div class="card-content">
+				<div class="content">Content</div>
+			</div>
+		</div>
+		<br />
+		@endeach
+	</div>
 </div>
-					<div class="card-content"><div class="content">Content</div></div>
-				</div>
-				<br />	
-			@endeach
-
-      
-      
-      
-    </div>
-  </div>
 <section class="container product-wrapper">
 
-<div class="columns features" style="flex-wrap: wrap">
-	@each(item in items)
-	<div class="modal" id="confirmation-{{item.id}}">
+	<div class="columns features" style="flex-wrap: wrap">
+		@each(item in items)
+		<div class="modal" id="confirmation-{{item.id}}">
 			<div class="modal-background"></div>
 			<div class="modal-card">
 				<header class="modal-card-head">
@@ -95,91 +94,92 @@
 				</footer>
 			</div>
 		</div>
-	<div class="column is-4 is-full-mobile" data-diet-keto={{item.is_keto}} data-diet-paleo={{item.is_paleo}} data-diet-whole30={{item.is_whole30}}>	
-		<div class="hover panel">
-			@if(is_admin == true)
-			<div class="button-panel" style="z-index:9999999; background:white; position:absolute; right:0px; width:35%; border-top-left-radius:10px; border-bottom-left-radius: 10px;">
+		<div class="column is-4 is-full-mobile" data-diet-keto={{item.is_keto}} data-diet-paleo={{item.is_paleo}}
+		 data-diet-whole30={{item.is_whole30}}>
+			<div class="hover panel">
+				@if(is_admin == true)
+				<div class="button-panel" style="z-index:9999999; background:white; position:absolute; right:0px; width:35%; border-top-left-radius:10px; border-bottom-left-radius: 10px;">
 
 					<a class="button is-info is-pulled-right" href="/item/add/{{item.id}}" style="z-index:9999999; margin:10px;">Edit</a>
 					<a class="delete is-large is-pulled-right has-background-danger" style="z-index:9999999; margin:10px;"></a>
 				</div>
-			@endif
+				@endif
 
-					<div class="front" style="background-image: url({{item.img_url}})">
-							<h1 class="price">${{ item.price }} {{ item.name }}</h1>
-							<h1 class="item-title">  </h1>
+				<div class="front" style="background-image: url({{item.img_url}})">
+					<h1 class="price">${{ item.price }} {{ item.name }}</h1>
+					<h1 class="item-title"> </h1>
 
 
-					</div>
-					<div class="back" style="background-image: url({{item.alt_img_url}})">
-						<div class="pad">
-							<h2 class="subtitle has-text-white"> {{ item.description }} </h2>
-							<hr />
-							<nav class="level">
-									<div class="level-item has-text-centered">
-									  <div>
-										<p class="heading">Calories</p>
-										<p class="title"> {{ item.calories }} </p>
-									  </div>
-									</div>
-									<div class="level-item has-text-centered">
-									  <div>
-										<p class="heading">Fats</p>
-										<p class="title"> {{ item.fats }} </p>
-									  </div>
-									</div>
-									<div class="level-item has-text-centered">
-									  <div>
-										<p class="heading">Carbs</p>
-										<p class="title"> {{ item.carbs }} </p>
-									  </div>
-									</div>
-									<div class="level-item has-text-centered">
-									  <div>
-										<p class="heading">Protein</p>
-										<p class="title"> {{ item.protein }} </p>
-									  </div>
-									</div>
-								  </nav>
-							<div class="field is-grouped is-grouped-multiline">
-									@if(item.is_paleo)
-									<div class="control">
-										<div class="tags has-addons">
-										  <a class="tag is-warning ">Paleo</a>
-										</div>
-									  </div>
-									@endif
-									@if(item.is_keto)
-									<div class="control">
-										<div class="tags has-addons">
-										  <a class="tag is-warning">Keto</a>
-										</div>
-									  </div>
-									@endif
-									@if(item.is_lowCarb)
-									<div class="control">
-										<div class="tags has-addons">
-										  <a class="tag is-warning">Low Carb</a>
-										</div>
-									  </div>
-									@endif
-									@if(item.is_whole30)
-									<div class="control">
-										<div class="tags has-addons">
-										  <a class="tag is-warning">Whole 30</a>
-										</div>
-									  </div>
-									@endif
-								  </div>
+				</div>
+				<div class="back" style="background-image: url({{item.alt_img_url}})">
+					<div class="pad">
+						<h2 class="subtitle has-text-white"> {{ item.description }} </h2>
+						<hr />
+						<nav class="level">
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Calories</p>
+									<p class="title"> {{ item.calories }} </p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Fats</p>
+									<p class="title"> {{ item.fats }} </p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Carbs</p>
+									<p class="title"> {{ item.carbs }} </p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p class="heading">Protein</p>
+									<p class="title"> {{ item.protein }} </p>
+								</div>
+							</div>
+						</nav>
+						<div class="field is-grouped is-grouped-multiline">
+							@if(item.is_paleo)
+							<div class="control">
+								<div class="tags has-addons">
+									<a class="tag is-warning ">Paleo</a>
+								</div>
+							</div>
+							@endif
+							@if(item.is_keto)
+							<div class="control">
+								<div class="tags has-addons">
+									<a class="tag is-warning">Keto</a>
+								</div>
+							</div>
+							@endif
+							@if(item.is_lowCarb)
+							<div class="control">
+								<div class="tags has-addons">
+									<a class="tag is-warning">Low Carb</a>
+								</div>
+							</div>
+							@endif
+							@if(item.is_whole30)
+							<div class="control">
+								<div class="tags has-addons">
+									<a class="tag is-warning">Whole 30</a>
+								</div>
+							</div>
+							@endif
 						</div>
 					</div>
 				</div>
+			</div>
 
+		</div>
+
+
+		@endeach
 	</div>
-
-		
-	@endeach
-</div>
 
 </section>
 @endsection

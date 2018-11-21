@@ -3,8 +3,7 @@
 
 <div class="box cta">
 <p class="has-text-centered">
-  
-		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+	<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 </p>
 </div>
 <section class="item-manager">
@@ -12,75 +11,41 @@
   <div class="column is-8 is-offset-2 has-background-color-info">
       @!include('layout.alerts')
 
-      <form method="POST" action="/register">
-
-    <!-- Main container -->
-    
-      <div class="field has-addons">
-          <div class="control">
-            <a class="button is-warning  is-left-rounded">
-              Name
-            </a>
-          </div>
-          <div class="control is-8">
-            <input id="name" name="name" class="input is-right-rounded" placeholder="" type="text" value="{{ item.name }}">
-          </div>
-          <div class="control">
-              <a class="button is-success is-left-rounded has-margin-left-15">
-                Email
-              </a>
-            </div>
-            <div class="control is-4">
-              <input id="email" name="email" class="input is-right-rounded" placeholder="" type="number" step="any" value="{{ item.email }}">
-            </div>
-      </div>
-                <div class="field has-text-centered">
-					Choose a method
+      <form method="POST" action="/register">    
+                <div class="field has-text-left">
+					<h1 class="heading">Choose your method</h1>
                     <div class="control">
 						<button class="button is-large is-success is-jumbo">Pickup</button>
-						<button class="button is-large is-success is-jumbo">Delivery</button>
-
+						<button class="button is-large is-danger is-jumbo">Delivery</button>
+					</div>
+					<h1 class="heading">Preferred pickup day</h1>
+                    <div class="control">
+						<button class="button is-large is-danger is-jumbo">Monday</button>
+						<button class="button is-large is-success is-jumbo">Wednesday</button>
 					</div>
 
                   </div>
-                  <div class="field is-horizontal">
-                      <div class="control">
-                          <input class="is-checkradio has-background-color-info" id="is_keto" type="checkbox" name="is_keto"
-                          @if(item.is_keto)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_keto" class="pickup">Keto</label>
-
-                          <input class="is-checkradio" id="is_whole30" type="checkbox" name="is_whole30"
-                          @if(item.is_whole30)
-                          checked
-                          @else
-                          @endif
-                          >
-                          <label for="is_whole30">Whole 30</label>
-
-                          <input class="is-checkradio" id="is_lowCarb" type="checkbox" name="is_lowCarb"
-                          @if(item.is_lowCarb)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_lowCarb">Low Carb</label>
-                          <input class="is-checkradio" id="is_paleo" type="checkbox" name="is_paleo"
-                          @if(item.is_paleo)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_paleo">Paleo</label>
-                            </div>
-                            <div class="control">
-                                <button class="button is-link">Update</button>
-                              </div>
-                    </div>
-
+				  <div class="field has-addons has-padding-left-75">
+						<div class="control">
+						  <a class="button is-warning  is-left-rounded has-height-50">
+							Name
+						  </a>
+						</div>
+						<div class="control is-6">
+						  <input id="name" name="name" class="input is-right-rounded has-height-50" placeholder="Enter your name" type="text" value="">
+						</div>
+						<div class="control has-padding-left-50">
+							<a class="button is-success is-left-rounded has-margin-left-15 has-height-50">
+							  Email
+							</a>
+						  </div>
+						  <div class="control is-6">
+							<input id="email" name="email" class="input is-right-rounded has-height-50" placeholder="" type="text">
+						  </div>
+					</div>
+                    <div class="control column is-12 is-offset-3">
+							<button class="button is-large is-warning is-jumbo">Continue</button>
+						</div>
                 </form>
       </div>
   </div>
