@@ -1,3 +1,4 @@
+
 .panel {
 	float: left;
 	width: 100%;
@@ -237,4 +238,42 @@ h1.heading {
 
 .has-height-50 {
 	height:50px;
+}
+
+.has-margin-bottom-50 {
+	margin-bottom: 50px !important;
+  }
+  
+  .has-margin-top-50 {
+	margin-top: 50px !important;
+  }
+
+  .card {
+	font-family: 'Montserrat', sans-serif;
+
+  }
+
+  .has-background-white {
+	  background-color: white;
+	  text-transform: uppercase;
+  }
+
+  .has-border-right {
+	  border-right: 1px solid black;
+	  padding-right: 50px;
+  }
+
+.is-checkradio[type=checkbox].is-success.is-block+label {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+	padding-bottom: 20px;
+	width: 500px !important;
+}
+
+.add-to-cart {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    border: 1px solid white;
 }

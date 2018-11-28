@@ -1,3 +1,19 @@
+
+	$("#pickupButton").click(function() {
+		$('#deliveryButton').attr('checked', false)
+	});
+	$("#deliveryButton").click(function() {
+		$('#pickupButton').attr('checked', false)
+	});
+	
+
+	$("#monButton").click(function() {
+		$('#wedButton').attr('checked', false)
+	});
+	$("#wedButton").click(function() {
+		$('#monButton').attr('checked', false)
+	});
+
 $('.hover').hover(function(){
 	$(this).addClass('flip');
 },function(){
@@ -138,4 +154,5 @@ $('.keto-filter').click(function() {
 	  for (let i = 0; i < length; i++)
 		fn(list[i]);
 	}
-  );
+	);
+	

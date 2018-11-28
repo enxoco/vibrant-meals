@@ -9,7 +9,10 @@
 @endif
 
 @if(old('error'))
-<div class="alert alert-danger" role="alert">
+<div class="notification is-danger has-text-centered" role="alert">
+	<button type="button" class="delete" >
+		<span aria-hidden="true">&times;</span>
+</button>
 	{{ old('error') }}
 </div>
 @endif

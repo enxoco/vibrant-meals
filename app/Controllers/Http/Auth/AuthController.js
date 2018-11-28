@@ -255,6 +255,35 @@ class AuthController {
     return view.render('auth.register')
   }
 
+  async postGuestRegistration ({request, response, session}) {
+    const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
+
+    if (userInfo.pickup == 'on') {
+      var fulMethod = 'pickup'
+    } else {
+      var fulMethod = 'delivery'
+    }
+
+    if (userInfo.monday == 'on') {
+      var fulDay = 'monday'
+    } else {
+      var fulDay = 'wednesday'
+    }
+
+    try {
+      const newUser = await Database
+      .table('users')
+      .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay })
+      session.put('adonis_auth', newUser)
+      return response.redirect('/')
+    } catch (error) {
+      if(error.code == 'ER_DUP_ENTRY') {
+        session.flash({error: 'This email address is already in use'})
+        return response.redirect('back')
+      }
+    }
+  }
+
   async postRegister ({request, session, response}) {
     const userInfo = request.only(['name', 'email', 'password', 'password_confirmation'])
     const rules = {

@@ -28,7 +28,7 @@ Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')
 Route.get('/logout', 'Auth/AuthController.logout').as('logout')
 
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
-Route.post('/register', 'Auth/AuthController.postRegister').as('register.store')
+Route.post('/register', 'Auth/AuthController.postGuestRegistration').as('register.store')
 
 Route.get('/password/reset', 'Auth/PasswordController.showResetForm').as('reset.form')
 Route.post('/password/email', 'Auth/PasswordController.sendResetLinkEmail').as('send.reset.email')
