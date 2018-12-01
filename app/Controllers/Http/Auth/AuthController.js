@@ -275,13 +275,20 @@ class AuthController {
       .table('users')
       .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay })
       session.put('adonis_auth', newUser)
-      return response.redirect('/')
-    } catch (error) {
-      if(error.code == 'ER_DUP_ENTRY') {
-        session.flash({error: 'This email address is already in use'})
-        return response.redirect('back')
+      session.flash({status: 'Account Created'})
+      if(fulMethod == 'pickup') {
+        return view.render('auth.register-pickup')
       }
+      
+      return response.redirect('back')
+    } catch (error) {
+
     }
+    if(error.code == 'ER_DUP_ENTRY') {
+      session.flash({error: 'This email address is already in use'})
+      return response.redirect('back')
+    }
+
   }
 
   async postRegister ({request, session, response}) {
@@ -308,8 +315,9 @@ class AuthController {
     response.redirect('/login')
   }
 
-  async logout ({ auth, response }) {
+  async logout ({ auth, response, session }) {
     await auth.logout()
+    session.clear()
     response.redirect('/login')
   }
 

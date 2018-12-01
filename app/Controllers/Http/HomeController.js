@@ -5,11 +5,52 @@ const moment = require('moment')
 
 class HomeController {
   async index ({ response, view, session }) {
-    try {
-      const user = await Database
-      .table('users')
-      .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day')
-      .where('id', session.get('adonis_auth'))
+    console.log(`session: ${JSON.stringify(session.all())}`)
+      if (session.get('adonis_auth')) {
+        const user = await Database
+        .table('users')
+        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day')
+        .where('id', session.get('adonis_auth'))  
+
+        const items = await Database
+        .select('*')
+        .from('items')
+
+        const today = moment().format('dddd hh:mm')
+        const prefDay = user[0].fulfillment_day
+        if (prefDay == 'wednesday') {// User has chosen to receive deliveries on Wednesday..
+          var day = moment().format('dddd')
+          if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
+            const nextAvalDate = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
+          } else {// We have passed the cut off for this week, need to schedule for next week.
+            const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
+          }
+        } else {
+          var day = moment().format('dddd')
+          if (day == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
+            const nextAvalDate = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')
+            const items = await Database
+            .select('*')
+            .from('items')
+            console.log(nextAvalDate)
+    
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
+          
+          }
+
+        }
+
+        
+      } else {
+        const items = await Database
+        .select('*')
+        .from('items')
+  
+        return view.render('welcome', {items, is_admin: false})
+  
+      }
 
       // ToDo
       // Check if a user has completed their initial order.  If they have, that means that they have already
@@ -23,29 +64,6 @@ class HomeController {
       // So if we visit the site on Tuesday Morning, we should not be shown this week as a possible delivery.
 
       // session.put('initial_order_completed', user.initial_order_completed)
-      const items = await Database
-      .select('*')
-      .from('items')
-      // const start = moment().subtract(0, 'weeks').startOf('isoWeek').format('YYYY-MM-DD')
-      const today = moment().format('dddd hh:mm')
-      const prefDay = user[0].fulfillment_day
-      if (prefDay == 'wednesday') {
-        var day = moment().format('dddd')
-        if (day == 'Monday' || day == 'Tuesday') {
-          const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
-          return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
-
-          // return response.send(`Your next delivery will be ${nextAvalDate}`)
-        } else {
-          return response.send('Your next delivery will be this week.')
-        }
-      }
-    
-
-      return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
-    } catch (error) {
-      return Response.send(`error ${error}`)
-    }
 
   }
 }

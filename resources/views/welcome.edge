@@ -1,9 +1,8 @@
 @layout('layout.master')
 
 @section('content')
-
-
 <div class="hero-body">
+
 	<div class="container has-text-centered">
 		<h1 class="title">
 			<img class="hero-logo" src="images/hero-logo.png" />
@@ -22,6 +21,7 @@
 </section>
 <div class="box cta">
 	<p class="has-text-left">
+		@if(user)
 		@if(user[0].fulfillment_method == 'pickup')
 		You have chosen to <span class="tag is-primary">
 			{{ capitalize(user[0].fulfillment_method) }}
@@ -36,8 +36,13 @@
 			</span>
 				<br />
 				Your next delivery day will be <span class="tag is-info"> 
-					{{ nextAvalDate[0] }}
+					{{ nextAvalDate }}
 					</span>
+		@endif
+		@else
+		Looks like we don't have you in the system yet.  Would you like to create an account?
+		<a class="button is-info" href="/register" style="z-index:9999999;	margin-left:10px;">Create an Account</a>
+
 		@endif
 
 	</p>
