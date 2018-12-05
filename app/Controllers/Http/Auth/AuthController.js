@@ -4,7 +4,8 @@ const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
 const User = use('App/Models/User')
 const Helpers = use('Helpers')
-const zipcodes = require('zipcodes');
+const zipcodes = require('zipcodes')
+const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
 
 
 class AuthController {
@@ -12,10 +13,9 @@ class AuthController {
     return view.render('auth.login')
   }
 
-  async showPickupOptions ({ view, request, response, session, params }) {
-    const userZip = await session.get('zip')
-    const radius = params.radius
-    var radArr = zipcodes.radius(params.zip, params.radius);
+  async showPickupOptions (zip) {
+
+    var radArr = zipcodes.radius(zip, 20);
 
     const locations = await Database
       .from('locations')
@@ -25,13 +25,13 @@ class AuthController {
         for (var x = 0; x < radArr.length; x++) {
           var test = parseInt(radArr[x])
           if (test === locations[i].zip) {
-            var dist = zipcodes.distance(params.zip, locations[i].zip); //In Miles
+            var dist = zipcodes.distance(zip, locations[i].zip); //In Miles
 
             stores.push({store: locations[i], dist: dist})
           }
         }
       }
-      return view.render('auth.register-pickup', {stores})      
+      return stores
   }
   
   async showDeliveryOptions ({ view, request, response, session, params }) {
@@ -290,43 +290,46 @@ class AuthController {
     }
   }
 
-  async showRegister ({ view }) {
+  async showRegister ({ request, response, view }) {
     return view.render('auth.register')
   }
 
   async postGuestRegistration ({request, response, session, view}) {
-    const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
 
     try {
+      const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
+
+      const customer = stripe.customers.create({
+        email: userInfo.email,
+      })
+
+     const stripeId = await customer //Get our stripe id
+      
       if (userInfo.wednesday == 'on') {
         var fulDay = 'wednesday'
       } else {
         var fulDay = 'monday'
       }
-      const newUser = await Database
-      .table('users')
-      .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay })
-      session.put('adonis_auth', newUser)
-      session.put('zip', userInfo.zip)
-      session.flash({status: 'Account Created'})
       if (userInfo.pickup == 'on') {
         var fulMethod = 'pickup'
       } else {
         var fulMethod = 'delivery'
       }
-  
+      const newUser = await Database
+      .table('users')
+      .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay, stripe_id: stripeId.id })
 
-      // if(fulMethod == 'pickup') {
-      //   console.log('rendering the pickup template')
-      //   return view.render('auth.register-pickup')// This view is working properly.
-      // }
-      // if(fulMethod == 'delivery') {
-      //   return view.render('auth.register-delivery')
-      // }
-      console.log(`ful method ${fulMethod}`)
-      return view.render(`auth.register-${fulMethod}`)
+      session.put('adonis_auth', newUser)
+      session.put('zip', userInfo.zip)
+
+
+      session.flash({status: 'Account Created'})
+
+      const stores = await this.showPickupOptions(userInfo.zip)
+      console.log(`stores: ${JSON.stringify(stores)}`)
+      return view.render(`auth.register-${fulMethod}`, {stores})
     } catch (error) {
-      return response.send(`error: ${error}`)
+      return response.send(`error from main function: ${error}`)
       if(error.code == 'ER_DUP_ENTRY') {
         session.flash({error: 'This email address is already in use'})
         return response.redirect('back')
@@ -365,35 +368,7 @@ return response.send('hello')
     response.redirect('/login')
   }
 
-  async redirectToProvider ({ request, session, ally, params }) {
-    const { redirect } = request.only(['redirect'])
-    if (redirect) {
-      session.put('oldPath', redirect)
-    }
-    console.log(params.provider)
-    await ally.driver(params.provider).redirect()
-  }
 
-  async handleProviderCallback ({params, ally, auth, session, response }) {
-    const provider = params.provider
-    try {
-      const providerUser = await ally.driver(params.provider).getUser()
-      try {
-        await auth.check()
-        const isLoggedIn = await auth.getUser()
-        await users.updateUserProvider(providerUser, provider, isLoggedIn.id)
-        const redirectPath = await session.get('oldPath', '/account')
-        return response.redirect(redirectPath)
-      } catch (error) {
-        const authUser = await users.findOrCreateUser(providerUser, provider)
-        await auth.loginViaId(authUser.id)
-        return response.redirect('/')
-      }
-    } catch (e) {
-      console.log(e)
-      response.redirect('/auth/' + provider)
-    }
-  }
 }
 
 module.exports = AuthController
