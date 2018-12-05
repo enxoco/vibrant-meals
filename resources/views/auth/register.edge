@@ -1,6 +1,7 @@
 @layout('layout.admin')
 @section('content')
 <form action="/register" method="post">
+  {{ csrfField() }}
   <input type="hidden" id="acctCreated"/>
 
 <div class="container">

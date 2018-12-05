@@ -17,9 +17,26 @@
   @!include('layout.alerts')
 
   <div class="card-content">
+    <form id="pickupForm" method="get">
     <div class="content">
       <div class="columns">
           {{ csrfField() }}
+          These are the locations closest to you
+          @each(store in stores)
+      <input type="radio" name="location" value="{{ store.store.id }}" 
+            @if($loop.last)
+            checked="checked"
+            @endif
+            >
+            {{store.store.name}} <br />
+              Address - {{ store.store.street_addr }}<br />
+              City - {{ store.store.city }}<br />
+              Distance - {{ store.dist }}<br />
+              Zip = {{ store.store.zip }}
+              <br /></input>
+          <br />
+
+          @endeach
       <div class="column has-border-right ">
         <div class="field is-horizontal has-margin-bottom-50 has-margin-top-50">
           <div class="field-label is-normal">
@@ -50,14 +67,12 @@
         <div class="field is-horizontal has-margin-top-50 has-margin-left-50">
             <div class="field">
                 <input class="is-checkradio is-block is-success is-large" id="pickupButton" type="checkbox" name="pickup" checked="checked">
-                <label for="pickupButton">Pickup...</label>
+                <label for="pickupButton">Vibrant Meals Location</label>
                 <input class="is-checkradio is-block is-success is-large" id="deliveryButton" type="checkbox" name="delivery">
-                <label for="deliveryButton">Delivery</label>
+                <label for="deliveryButton">Chattanooga Functional Fitness</label>
+                <input class="is-checkradio is-block is-success is-large" id="deliveryButton" type="checkbox" name="delivery">
+                <label for="deliveryButton">Kyle House Fitness</label>
                 <div style="height: 75px"></div>
-                <input class="is-checkradio is-block is-success is-large" id="monButton" type="checkbox" name="monday">
-                <label for="monButton">Monday</label>
-                <input class="is-checkradio is-block is-success is-large" id="wedButton" type="checkbox" name="wednesday" checked="checked">
-                <label for="wedButton">Wednesday</label>
               </div>
               
         </div><!--/field-->
@@ -67,7 +82,9 @@
   </div><!--/card-content-->
   <footer class="card-footer">
     <div class="column is-12 is-offset-6 is-jumbo">
-    <button type="submit" class="card-footer-item is-success button" value="submit">Continue</button>
+      <!-- guest should proceed to menu/ user will have one more step filling out profile -->
+      <button type="button" id="continueGuest" class="card-footer-item is-success button" value="submit">Continue as Guest</button>
+      <button type="button" id="continueUser" class="card-footer-item is-success button" value="submit">Continue as User</button>
     </div>
   </form>
   </footer>

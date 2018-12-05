@@ -27,6 +27,8 @@ Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')
 Route.get('/logout', 'Auth/AuthController.logout').as('logout')
 
+Route.get('/manage/deliveries/:zip/', 'Auth/AuthController.showDeliveryOptions')
+Route.get('/manage/pickups/:zip/:radius', 'Auth/AuthController.showPickupOptions')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register', 'Auth/AuthController.postGuestRegistration').as('register.store')
 

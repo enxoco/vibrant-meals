@@ -4,10 +4,49 @@ const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
 const User = use('App/Models/User')
 const Helpers = use('Helpers')
+const zipcodes = require('zipcodes');
+
 
 class AuthController {
   async showLogin ({ view }) {
     return view.render('auth.login')
+  }
+
+  async showPickupOptions ({ view, request, response, session, params }) {
+    const userZip = await session.get('zip')
+    const radius = params.radius
+    var radArr = zipcodes.radius(params.zip, params.radius);
+
+    const locations = await Database
+      .from('locations')
+      .select('*')
+    var stores = []
+      for (var i = 0; i < locations.length; i++) {
+        for (var x = 0; x < radArr.length; x++) {
+          var test = parseInt(radArr[x])
+          if (test === locations[i].zip) {
+            var dist = zipcodes.distance(params.zip, locations[i].zip); //In Miles
+
+            stores.push({store: locations[i], dist: dist})
+          }
+        }
+      }
+      return view.render('auth.register-pickup', {stores})      
+  }
+  
+  async showDeliveryOptions ({ view, request, response, session, params }) {
+    const userZip = await session.get('zip')
+    const radius = params.radius
+    const storeZip = 37409
+    var radArr = zipcodes.distance(params.zip, 37409);
+    if (radArr > 25) {
+      var is_deliverable = false
+    } else {
+      var is_deliverable = true
+    }
+
+
+      return view.render('auth.register-delivery', {dist: radArr, is_deliverable: is_deliverable})      
   }
 
   async updateItem ({ view, request, response, params, session }) {
@@ -255,65 +294,70 @@ class AuthController {
     return view.render('auth.register')
   }
 
-  async postGuestRegistration ({request, response, session}) {
+  async postGuestRegistration ({request, response, session, view}) {
     const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
 
-    if (userInfo.pickup == 'on') {
-      var fulMethod = 'pickup'
-    } else {
-      var fulMethod = 'delivery'
-    }
-
-    if (userInfo.monday == 'on') {
-      var fulDay = 'monday'
-    } else {
-      var fulDay = 'wednesday'
-    }
-
     try {
+      if (userInfo.wednesday == 'on') {
+        var fulDay = 'wednesday'
+      } else {
+        var fulDay = 'monday'
+      }
       const newUser = await Database
       .table('users')
       .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay })
       session.put('adonis_auth', newUser)
+      session.put('zip', userInfo.zip)
       session.flash({status: 'Account Created'})
-      if(fulMethod == 'pickup') {
-        return view.render('auth.register-pickup')
+      if (userInfo.pickup == 'on') {
+        var fulMethod = 'pickup'
+      } else {
+        var fulMethod = 'delivery'
       }
-      
-      return response.redirect('back')
+  
+
+      // if(fulMethod == 'pickup') {
+      //   console.log('rendering the pickup template')
+      //   return view.render('auth.register-pickup')// This view is working properly.
+      // }
+      // if(fulMethod == 'delivery') {
+      //   return view.render('auth.register-delivery')
+      // }
+      console.log(`ful method ${fulMethod}`)
+      return view.render(`auth.register-${fulMethod}`)
     } catch (error) {
-
+      return response.send(`error: ${error}`)
+      if(error.code == 'ER_DUP_ENTRY') {
+        session.flash({error: 'This email address is already in use'})
+        return response.redirect('back')
+      }
     }
-    if(error.code == 'ER_DUP_ENTRY') {
-      session.flash({error: 'This email address is already in use'})
-      return response.redirect('back')
-    }
-
+return response.send('hello')
   }
 
-  async postRegister ({request, session, response}) {
-    const userInfo = request.only(['name', 'email', 'password', 'password_confirmation'])
-    const rules = {
-      name: 'required|max:255',
-      email: 'required|email|max:255|unique:users',
-      password: 'required|min:6|max:30',
-      password_confirmation: 'required_if:password|min:6|max:30|same:password'
-    }
+  // async postRegister ({request, session, response}) {
+  //   const userInfo = request.only(['name', 'email', 'password', 'password_confirmation'])
+  //   const rules = {
+  //     name: 'required|max:255',
+  //     email: 'required|email|max:255|unique:users',
+  //     password: 'required|min:6|max:30',
+  //     password_confirmation: 'required_if:password|min:6|max:30|same:password'
+  //   }
 
-    const validation = await validateAll(userInfo, rules)
+  //   const validation = await validateAll(userInfo, rules)
 
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashExcept(['password'])
+  //   if (validation.fails()) {
+  //     session
+  //       .withErrors(validation.messages())
+  //       .flashExcept(['password'])
 
-      return response.redirect('back')
-    }
+  //     return response.redirect('back')
+  //   }
 
-    await users.register(userInfo)
+  //   await users.register(userInfo)
 
-    response.redirect('/login')
-  }
+  //   response.redirect('/login')
+  // }
 
   async logout ({ auth, response, session }) {
     await auth.logout()
