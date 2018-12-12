@@ -64,7 +64,7 @@
               Name
             </a>
           </div>
-          <div class="control is-8">
+          <div class="control is-6">
             <input id="name" name="name" class="input " placeholder="" type="text">
           </div>
           <div class="control">
@@ -72,8 +72,16 @@
                 Price
               </a>
             </div>
-            <div class="control is-4">
+            <div class="control is-3">
               <input id="price" name="price" class="input " placeholder="" type="number" step="any">
+            </div>
+            <div class="control">
+              <a class="button is-warning margin-left-15">
+                Sku
+              </a>
+            </div>
+            <div class="control is-3">
+              <input id="sku" name="sku" class="input " placeholder="" type="text">
             </div>
       </div>
 
@@ -174,6 +182,28 @@
 </section>
     
   <script>
+    // Simple script to parse the item name input and convert it to a sku
+    var itemTitleField = document.getElementById('name')
+    
+    itemTitleField.onkeyup = function() {
+      
+      var title = itemTitleField.value
+      if (title.includes(' ')) {
+        var sku = title.split(' ')
+        var final = []
+        for (var i = 0; i < sku.length; i++) {
+          if (sku[i] == 'and' || sku[i] == 'with') {
+          
+          } else {
+            final.push(sku[i].slice(0,5))
+          }
+        }
+        var final = String(final)
+        var final = final.toLowerCase()
+        var final = final.replace('and', '')
+        document.getElementById('sku').value = final.replace(/,/g, '_')
+      } 
+    }
          function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

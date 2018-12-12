@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="hero-body">
+{{ toJSON({ store }) }}
 
 	<div class="container has-text-centered">
 		<h1 class="title">
@@ -26,7 +27,15 @@
 		You have chosen to <span class="tag is-primary">
 			{{ capitalize(user[0].fulfillment_method) }}
 		</span>
-			your orders from one of our locations.<br />
+			your orders from 
+			@if(store)
+			@each(store in store)
+			{{store.name}}
+			@endeach
+			@else
+			one of our locations.
+			@endif
+			<br />
 			This order can be ready for pickup on: <span class="tag is-info"> 
 				{{ nextAvalDate }}
 				</span>

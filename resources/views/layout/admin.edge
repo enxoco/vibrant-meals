@@ -30,12 +30,17 @@
         $(this).parent().addClass('is-hidden');
         return false;
     });
-    </script>
-    <script>
+    $('#continueGuest').on('click', function() {
+        $('#reg_method').val('guest')
+        $('#fulfillment').attr('action', '/register/guest')
+        $('#fulfillment').submit()
+    })
+    
+    $('#continueUser').on('click', function() {
+        $('#reg_method').val('user')
+        $('#fulfillment').attr('action', '/register/user')
+        $('#fulfillment').submit()
 
-            $('#continueGuest').on('click', function() {
-                alert('guest')
-            })
-        
-        </script>
+    })    
+    </script>
 </html>

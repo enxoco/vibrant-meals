@@ -26,6 +26,7 @@ class ItemsSchema extends Schema {
       table.boolean('is_breakfast').nullable().defaultsTo(0)
       table.boolean('is_paleo').nullable().defaultsTo(0)
       table.boolean('is_visible').nullable().defaultsTo(1)
+      table.string('stripe_id').nullable()
       table.timestamps()
     })
   }

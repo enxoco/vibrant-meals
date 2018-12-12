@@ -9,8 +9,89 @@ const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
 
 
 class AuthController {
+
+  async testOrder ({ request, response, session, view }) {
+    console.log(session.all())
+    const user = await Database
+      .table('users')
+      .select('stripe_id')
+      .where('id', 1)
+      .limit(1)
+      console.log(`stripe id: ${user[0].stripe_id}`)
+
+    const plans = await Database
+      .table('items')
+      .select('stripe_id')
+
+      console.log(`plans: ${plans[0].stripe_id}, ${plans[1].stripe_id}`)
+    var items = []
+    for (var i = 0; i < plans.length; i++) {
+      items.push({plan: plans[i].stripe_id})
+    }
+
+    if (plans.length > 4 && plans.length < 10) {// Apply a coupon for 5 - 10 items
+      stripe.subscriptions.create({
+        customer: user[0].stripe_id,
+        items: items,
+        coupon: 'k8dED2L5'
+      })
+    } else {
+      stripe.subscriptions.create({
+        customer: user[0].stripe_id,
+        items: items,
+      })
+    }
+
+  }
   async showLogin ({ view }) {
     return view.render('auth.login')
+  }
+
+  async stepTwo ({ request, response, view, params, session }) {
+    if (params.reg_method == 'user') {// Do user registration
+      // Also we need to grab the users preffered location and add it to their profile
+      session.put('needs_registration', 1)
+      console.log(`all: ${request.all()}`)
+      var location = request.only(['location'])
+      var locationId = location.location
+
+    
+      if (location) {
+        var id = session.get('adonis_auth')
+        await Database
+          .table('users')
+          .update({
+            pickup_location: locationId
+          })
+          .where('id', id)
+        
+        session.put('locationId', locationId)
+      }
+      
+      return response.redirect('/')
+
+    
+    } else {// Just show menu and continue as guest
+      session.put('needs_registration', 0)
+      console.log(`all: ${request.all()}`)
+
+      var location = request.only(['location'])
+      var locationId = location.location
+
+      if (location) {
+        var id = session.get('adonis_auth')
+        await Database
+          .table('users')
+          .update({
+            pickup_location: locationId
+          })
+          .where('id', id)
+        session.put('locationId', locationId)
+
+      }
+
+      return response.redirect('/')
+    }
   }
 
   async showPickupOptions (zip) {
@@ -171,7 +252,7 @@ class AuthController {
       }
   }
 
-  async addItem ({ view, request, response, params }) {
+  async addItem ({ view, request, response, params, session }) {
     const obj = request.all()
 
     const profilePic = request.file('item-image')
@@ -234,12 +315,55 @@ class AuthController {
       var eightySixCount = obj.eightySixCount
     }
 
+    
     try {
+      const user = await Database
+        .table('users')
+        .select('name', 'stripe_id')
+        .where('id', session.get('adonis-auth'))
+      // Create an item in Stripe
+      // const stripeObj = await stripe.products.create({
+      //   name: obj.name,
+      //   type: 'service',
+      //   attributes: ['size', 'gender']
+      // });
+      
+      // Create a plan in Stripe
+      // Stripe expects an int for the price field so we need to convert to a string
+      // then check to see how many digits we have and add a zero to the end if we
+      // only have two.  For instance, if someone types in 9.5, the below code turns
+      // that into a string of 950 which is then converted to an int and sent to Stripe
+
+      // I think that what we actually need to do is create a product and then create a
+      // sku associated with that product.  Then we can create an order with the skus.
+      var price = String(obj.price).replace(".", "")
+      if(price.length == 2) {
+        price += '0'
+      }
+      const plan = await stripe.plans.create({
+        amount: parseInt(price),
+        interval: "month",
+        product: {
+          name: obj.name
+        },
+        currency: "usd",
+      });
+      console.log(`user ${JSON.stringify(user)}`)
+      // Create a subscription in Stripe
+      stripe.subscriptions.create({
+        customer: user[0].stripe_id,
+        items: [
+          {
+            plan: plan.id,
+          },
+        ]
+      });
       const success = await Database
       .table('items')
       .insert({
         name: obj.name,
         price: obj.price,
+        sku: obj.sku,
         description: obj.description,
         img_url: img_url,
         is_keto: is_keto,
@@ -252,7 +376,8 @@ class AuthController {
         protein: protein,
         eightySixCount: eightySixCount,
         sugar: sugar,
-        sodium: sodium
+        sodium: sodium,
+        stripe_id: plan.id
       })
       return response.send({newId: success, item: obj})
 
@@ -326,7 +451,6 @@ class AuthController {
       session.flash({status: 'Account Created'})
 
       const stores = await this.showPickupOptions(userInfo.zip)
-      console.log(`stores: ${JSON.stringify(stores)}`)
       return view.render(`auth.register-${fulMethod}`, {stores})
     } catch (error) {
       return response.send(`error from main function: ${error}`)

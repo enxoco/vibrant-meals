@@ -2,7 +2,7 @@
 @section('content')
 {{ toJSON({ dist }) }}
 {{ toJSON({ is_deliverable }) }}
-<form action="/register" method="post">
+<form id="fulfillment" method="POST" action="/register/stepTwo">
   <input type="hidden" id="acctCreated"/>
 
 <div class="container">
@@ -71,8 +71,10 @@
   </div><!--/card-content-->
   <footer class="card-footer">
     <div class="column is-6 is-offset-6 is-jumbo">
-      <button type="submit" class="card-footer-item is-success button" value="submit">Continue as User</button>
-      <button type="submit" class="card-footer-item is-success button" value="submit">Continue as Guest</button>
+        <button type="button" id="continueUser" class="card-footer-item is-success button" value="submit">Create an account</button>
+        <button type="button" id="continueGuest" class="card-footer-item is-success button" value="submit">Continue as Guest</button>
+        <input type="hidden" id="reg_method" value="" name="reg_method">
+      
     </div>
   </form>
   </footer>

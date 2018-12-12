@@ -17,11 +17,12 @@
   @!include('layout.alerts')
 
   <div class="card-content">
-    <form id="pickupForm" method="get">
+    <form id="fulfillment" method="POST" action="/register/stepTwo">
     <div class="content">
       <div class="columns">
           {{ csrfField() }}
-          These are the locations closest to you
+          
+          These are the locations closest to you<br />
           @each(store in stores)
       <input type="radio" name="location" value="{{ store.store.id }}" 
             @if($loop.last)
@@ -37,54 +38,16 @@
           <br />
 
           @endeach
-      <div class="column has-border-right ">
-        <div class="field is-horizontal has-margin-bottom-50 has-margin-top-50">
-          <div class="field-label is-normal">
-            <label class="label has-background-white">Email</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-              <input class="input" type="email" name="email" id="email" required>
-              </p>
-            </div>
-          </div><!--/field-body-->
-        </div><!--/field-->
-                <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label has-background-white">Zip Code</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-              <input class="input" type="number" name="zip" id="zip" required>
-              </p>
-            </div>
-          </div><!--/field-body-->
-        </div><!--/field-->
-      </div><!--/column-->
-            <div class="column">
-        <div class="field is-horizontal has-margin-top-50 has-margin-left-50">
-            <div class="field">
-                <input class="is-checkradio is-block is-success is-large" id="pickupButton" type="checkbox" name="pickup" checked="checked">
-                <label for="pickupButton">Vibrant Meals Location</label>
-                <input class="is-checkradio is-block is-success is-large" id="deliveryButton" type="checkbox" name="delivery">
-                <label for="deliveryButton">Chattanooga Functional Fitness</label>
-                <input class="is-checkradio is-block is-success is-large" id="deliveryButton" type="checkbox" name="delivery">
-                <label for="deliveryButton">Kyle House Fitness</label>
-                <div style="height: 75px"></div>
-              </div>
-              
-        </div><!--/field-->
-      </div><!--/column-->
      </div><!--/columns--> 
     </div><!--/content-->
   </div><!--/card-content-->
   <footer class="card-footer">
     <div class="column is-12 is-offset-6 is-jumbo">
       <!-- guest should proceed to menu/ user will have one more step filling out profile -->
+      <button type="button" id="continueUser" class="card-footer-item is-success button" value="submit">Create an account</button>
       <button type="button" id="continueGuest" class="card-footer-item is-success button" value="submit">Continue as Guest</button>
-      <button type="button" id="continueUser" class="card-footer-item is-success button" value="submit">Continue as User</button>
+      <input type="hidden" id="reg_method" value="" name="reg_method">
+    
     </div>
   </form>
   </footer>

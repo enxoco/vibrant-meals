@@ -31,7 +31,8 @@ class ItemSeeder {
           carbs: 32,
           protein: 49,
           is_keto: 1,
-          is_paleo: 1
+          is_paleo: 1,
+          stripe_id: 'plan_E6HsPmOWPdvQTO'
         },
         {
           id: 2,
@@ -45,7 +46,8 @@ class ItemSeeder {
           fats: 17,
           carbs: 35,
           protein: 35,
-          is_paleo: 1
+          is_paleo: 1,
+          stripe_id: 'plan_E6HtqAm4HhoNih'
         },
         {
           id: 3,
@@ -60,7 +62,8 @@ class ItemSeeder {
           carbs: 15,
           protein: 35,
           is_paleo: 1,
-          is_lowCarb: 1
+          is_lowCarb: 1,
+          stripe_id: 'plan_E6HucxC1w27Wl3'
         },
         {
           id: 4,
@@ -74,7 +77,8 @@ class ItemSeeder {
           fats: 19,
           carbs: 36,
           protein: 27,
-          is_whole30: 1
+          is_whole30: 1,
+          stripe_id: 'plan_E6HvbgcPJEWM7y'
         },
       ])
     

@@ -6,38 +6,40 @@ const moment = require('moment')
 class HomeController {
   async index ({ response, view, session }) {
     console.log(`session: ${JSON.stringify(session.all())}`)
+    console.log(`adonis auth: ${session.get('adonis_auth')}`)
       if (session.get('adonis_auth')) {
         const user = await Database
         .table('users')
-        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day')
+        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
         .where('id', session.get('adonis_auth'))  
 
         const items = await Database
         .select('*')
         .from('items')
 
-        const today = moment().format('dddd hh:mm')
+        const store = await Database
+          .select('*')
+          .from('locations')
+          .where('id', session.get('locationId'))
         const prefDay = user[0].fulfillment_day
         if (prefDay == 'wednesday') {// User has chosen to receive deliveries on Wednesday..
           var day = moment().format('dddd')
           if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
             const nextAvalDate = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
-            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate, store})
           } else {// We have passed the cut off for this week, need to schedule for next week.
             const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
-            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate, store})
           }
-        } else {
+        } else {// Need to work on this, currently no view is being rendered when monday is chosen
           var day = moment().format('dddd')
           if (day == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
-            const nextAvalDate = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')
-            const items = await Database
-            .select('*')
-            .from('items')
-            console.log(nextAvalDate)
-    
+            const nextAvalDate = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')    
             return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
           
+          } else {
+            const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD')
+            return view.render('welcome', {items, is_admin: false, user, nextAvalDate})
           }
 
         }
@@ -47,7 +49,6 @@ class HomeController {
         const items = await Database
         .select('*')
         .from('items')
-  
         return view.render('welcome', {items, is_admin: false})
   
       }

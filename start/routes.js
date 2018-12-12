@@ -14,7 +14,10 @@
 */
 
 const Route = use('Route')
+Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/', 'HomeController.index').as('welcomePage')
+Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
+Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
 
 Route.get('/item/add/:itemId', 'Auth/AuthController.editItem')
 Route.post('/item/add/:itemId', 'Auth/AuthController.updateItem')
@@ -29,7 +32,6 @@ Route.get('/logout', 'Auth/AuthController.logout').as('logout')
 
 Route.get('/manage/deliveries/:zip/', 'Auth/AuthController.showDeliveryOptions')
 Route.get('/manage/pickups/:zip/:radius', 'Auth/AuthController.showPickupOptions')
-Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register', 'Auth/AuthController.postGuestRegistration').as('register.store')
 
 Route.get('/password/reset', 'Auth/PasswordController.showResetForm').as('reset.form')
