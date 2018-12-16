@@ -20,6 +20,7 @@ class ItemSeeder {
       .insert([
         {
           id: 1,
+          parent_item: 1,
           name: 'Angus Burger',
           sku: 'angus-burger',
           img_url: 'images/uploads/angusBurger.jpeg',
@@ -36,6 +37,7 @@ class ItemSeeder {
         },
         {
           id: 2,
+          parent_item: 2,
           name: 'BBQ Pulled Pork',
           sku: 'bbq-pulled-pork',
           img_url: 'images/uploads/BBQ+Pulled+Pork.jpeg',
@@ -51,6 +53,7 @@ class ItemSeeder {
         },
         {
           id: 3,
+          parent_item: 3,
           name: 'Spaghetti Squash Meatball',
           sku: 'spaghetti-squash-meatball',
           img_url: 'https://static1.squarespace.com/static/572361987c65e48584ee75e7/587ea50ff7e0abac0d8cda55/5a9dfa93c83025ca5dbac982/1520302758007/Spaghetti+Squash+Meatball_mini.JPG?format=2500w',
@@ -67,6 +70,7 @@ class ItemSeeder {
         },
         {
           id: 4,
+          parent_item: 4,
           name: 'Chorizo Hemp Seed Bowl',
           sku: 'chorizo-hemp-seed-bowl',
           img_url: 'https://static1.squarespace.com/static/572361987c65e48584ee75e7/587ea50ff7e0abac0d8cda55/5ba26299758d468035a43a5b/1537368851135/Chorizo+Hemp+Seed+Bowl_mini.JPG?format=2500w',

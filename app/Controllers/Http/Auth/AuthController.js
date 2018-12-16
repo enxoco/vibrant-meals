@@ -6,9 +6,11 @@ const User = use('App/Models/User')
 const Helpers = use('Helpers')
 const zipcodes = require('zipcodes')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
-
+const ItemCategory = use('App/Models/ItemCategory')
+const Item = user('App/Models/Item')
 
 class AuthController {
+
 
   async testOrder ({ request, response, session, view }) {
     console.log(session.all())

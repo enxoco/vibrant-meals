@@ -21,12 +21,14 @@
         <div class="hero-head">
             @!include('partials.navbar')
         </div>
+        <script src="/js/jquery-2.2.4.min.js"></script>
+
         @!section('content')
 
         @!include('partials.footer')
 
 </body>
-<script src="/js/jquery-2.2.4.min.js"></script>
+{{--  <script src="/js/jquery-2.2.4.min.js"></script>  --}}
 <script src="/js/product-card.js"></script>
 <script>
     $('#continueGuest').on('click', function() {

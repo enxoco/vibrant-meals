@@ -2,12 +2,16 @@
 
 const Schema = use('Schema')
 
+
 class ItemsSchema extends Schema {
   up () {
-    this.createIfNotExists('items', table => {
-      table.increments('id')
+     this.createIfNotExists('items', table => {
+      table.increments('id').unsigned()
+      table.integer('parent_item').nullable()
       table.string('name').nullable()
       table.string('sku').nullable()
+      table.string('item_category').nullable()
+      table.string('item_filter').nullable()
       table.string('description').nullable()
       table.string('img_url').nullable()
       table.string('alt_img_url').nullable()
@@ -29,7 +33,9 @@ class ItemsSchema extends Schema {
       table.string('stripe_id').nullable()
       table.timestamps()
     })
+
   }
+
 
   down () {
     this.drop('items')

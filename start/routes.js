@@ -14,6 +14,10 @@
 */
 
 const Route = use('Route')
+
+// Items by category id
+Route.get('/menu/all', 'ItemController.showMenu')
+Route.get('/items/category/:cat_id', 'ItemController.list')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')

@@ -5,7 +5,9 @@
 <p class="has-text-centered">
   
 		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-</p>
+    <a type="button" class="button is-success" href="item/add/{{ item.id }}/child">Add Variation</a>
+
+  </p>
 </div>
 <section class="item-manager">
   <div class="container">
@@ -30,7 +32,6 @@
         </figure>
 
    
-    
     <!-- Right side -->
           <figure class="image is-128x128 is-pulled-right">
               <img id="alt-image-preview" src="/{{ item.alt_img_url }}" alt="Description">
@@ -50,7 +51,7 @@
               Name
             </a>
           </div>
-          <div class="control is-8">
+          <div class="control is-6">
             <input id="name" name="name" class="input is-right-rounded" placeholder="" type="text" value="{{ item.name }}">
           </div>
           <div class="control">
@@ -58,9 +59,19 @@
                 Price
               </a>
             </div>
-            <div class="control is-4 has-margin-right-15">
+            <div class="control is-3 has-margin-right-15">
               <input id="price" name="price" class="input is-right-rounded" placeholder="" type="number" step="any" value="{{ item.price }}">
             </div>
+            <div class="control">
+                <a class="button is-success is-left-rounded has-margin-left-15">
+                  Sku
+                </a>
+              </div>
+              <div class="control is-3 has-margin-right-15">
+                <input id="sku" name="sku" class="input is-right-rounded" placeholder="{{ item.sku }}" type="number" step="any" value="{{ item.sku }}">
+              </div>
+
+            
       </div>
 
       <div class="field has-addons">
