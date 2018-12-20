@@ -16,10 +16,13 @@
 const Route = use('Route')
 
 // Items by category id
+
+Route.post('/cart/addItem', 'ItemController.addToCart')
+Route.get('/cart/clear', 'ItemController.clearCart')
+Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/menu/all', 'ItemController.showMenu')
 Route.get('/items/category/:cat_id', 'ItemController.list')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
-Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
 

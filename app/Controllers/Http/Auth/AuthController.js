@@ -7,7 +7,7 @@ const Helpers = use('Helpers')
 const zipcodes = require('zipcodes')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
 const ItemCategory = use('App/Models/ItemCategory')
-const Item = user('App/Models/Item')
+const Item = use('App/Models/Item')
 
 class AuthController {
 
