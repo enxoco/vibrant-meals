@@ -19,6 +19,8 @@ const Route = use('Route')
 
 Route.post('/cart/addItem', 'ItemController.addToCart')
 Route.get('/cart/clear', 'ItemController.clearCart')
+Route.get('/cart/sub/:cartPos', 'ItemController.subCart')
+Route.get('/cart/remove/:cartPos', 'ItemController.removeItem')
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/menu/all', 'ItemController.showMenu')
 Route.get('/items/category/:cat_id', 'ItemController.list')

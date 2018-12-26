@@ -2,7 +2,8 @@
 
 <nav class="nav has-background-dark">
     nav bar
-</nav>
+{{ toJSON({ cart }) }}
+  </nav>
 
 <nav class="level">
 </nav>
@@ -29,6 +30,8 @@
                       <input type="hidden" id="name" name="name" value="{{item.name}}" />
                       <input type="hidden" id="price" name="price" value="{{item.price}}" />
                       <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
+                      <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
+                      
 
 
                         <div class="card-image">
@@ -67,6 +70,7 @@
 
         <div class="column" id="cart">
             &nbsp
+            Cart total: $<div id="cartTotal"></div>
             @each(c in cart)
             <div class="card">
                 <div class="card-content">
@@ -78,12 +82,19 @@
                     </div>
                     <div class="media-content">
                       <p class="title is-6">{{ c.name }}</p>
-                      <p class="subtitle is-6">{{ c.price }}</p>
+                    <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}</p>
+                      <p class="subtitle is-6">Quantity {{ c.quantity }}</p>
+                      <a class="button is-warning" href="/cart/sub/{{$loop.index}}">-</a>
+                      <a class="button is-danger" href="/cart/remove/{{$loop.index}}">x</a>
+
+                      
                     </div>
                   </div>
                 </div>
               </div><br />
               @endeach
+
+            
 
             </div>
     </div>              
@@ -91,6 +102,16 @@
 <script src="/js/jquery-2.2.4.min.js"></script>
 
 <script>
-  
+var total = 0
+for (var i = 0; i < 50; i++) {
+  var price = $('#subtotal-' + i).text()
+  price = parseFloat(price.replace('$', ''))
+  if (price) {
+    total += price
+  }
+
+  $('#cartTotal').text(total)
+}
+
 
 </script>
