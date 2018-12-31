@@ -28,11 +28,16 @@ Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
 
-Route.get('/item/add/:itemId', 'Auth/AuthController.editItem')
-Route.post('/item/add/:itemId', 'Auth/AuthController.updateItem')
+Route.get('/admin/items', 'AdminController.showItems')
+Route.get('/admin/categories', 'AdminController.showCategories')
+Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
+Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
 
-Route.get('/item/add', async({view}) => view.render('add-item'))
-Route.post('/item/add', 'Auth/AuthController.addItem')
+Route.get('/item/add/:itemId', 'ItemController.editItem')
+Route.post('/item/add/:itemId', 'ItemController.updateItem')
+
+Route.get('/item/add', 'ItemController.addItemView')
+Route.post('/item/add', 'ItemController.addItem')
 
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')

@@ -140,6 +140,19 @@
                     </div>
                   </div>
                   <div class="field is-horizontal">
+                    <div class="control">
+                      @each(c in categories)
+                      <input class="is-checkradio" id="{{ c.desc }}" type="checkbox" name="{{ c.desc }}"
+                      @if(item.category === c.desc)
+                        checked
+                        @else
+                      @endif
+                      >
+                      <label for="{{ c.desc }}">{{ c.desc }}</label>
+                      @endeach
+                    </div>
+                  </div>
+                  <div class="field is-horizontal">
                       <div class="control">
                           <input class="is-checkradio" id="is_keto" type="checkbox" name="is_keto"
                           @if(item.is_keto)

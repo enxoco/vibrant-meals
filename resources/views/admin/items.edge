@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="/css/bulma.min.css" />
+
+<nav class="nav has-background-dark">
+    nav bar
+  </nav>
+
+<nav class="level">
+</nav>
+
+
+    <div class="columns">
+@!include('layout.admin.side-nav')
+        <div class="column is-one-third" id="cart">
+
+            @each(i in items)
+            <form method="POST" action="/item/add/{{ item.id }}" enctype="multipart/form-data">
+                <div class="card">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <figure class="image is-48x48">
+                        <img src="{{c.img_url}}" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="columns">
+                        <div class="column is-two-fifths">
+                            <input id="name" name="name" class="input is-right-rounded" placeholder="" type="text" value="{{ i.name }}">
+                    </div>
+                    <div class="column is-one-fifth">
+                            <input id="price" name="price" class="input is-right-rounded" placeholder="" type="text" value="{{ i.price }}">
+                    </div>
+                            <a class="button is-warning" href="/cart/sub/{{$loop.index}}">-</a>
+                      <a class="button is-danger" href="/cart/remove/{{$loop.index}}">x</a>
+
+                      
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div><br />
+              </form>
+              @endeach
+            </div>
+    </div>
+<script src="/js/jquery-2.2.4.min.js"></script>
+
+<script>
+var total = 0
+for (var i = 0; i < 50; i++) {
+  var price = $('#subtotal-' + i).text()
+  price = parseFloat(price.replace('$', ''))
+  if (price) {
+    total += price
+  }
+
+  $('#cartTotal').text(total)
+}
+
+
+</script>

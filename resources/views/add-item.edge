@@ -152,6 +152,14 @@
                     </div>
                   </div>
                   <div class="field is-horizontal">
+                    <div class="control">
+                    @each(c in categories)
+                    <input class="is-checkradio" id="is_{{c.desc}}" type="checkbox" name="is_keto">
+                    <label for="is_{{c.desc}}">{{c.desc}}</label>
+                    @endeach
+                    </div>
+                  </div>
+                  <div class="field is-horizontal">
                       <div class="control">
                           <input class="is-checkradio" id="is_keto" type="checkbox" name="is_keto">
                           <label for="is_keto">Keto</label>
