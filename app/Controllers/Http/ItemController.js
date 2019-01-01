@@ -25,6 +25,23 @@ class ItemController {
     async updateItem ({ view, request, response, params, session }) {
 
         const obj = request.all()
+        const allFilters = await Database
+          .table('item_filters')
+          .select('name', 'id')
+
+        // TODO - Filter updates are working per the below code.  Still need to implement working code for category updates.
+        for ( var i = 0; i < allFilters.length; i++) {
+          var filter = allFilters[i].name
+          if (obj[filter] == 'on') {
+            console.log(params.itemId, allFilters[i].id)
+            const db_update = await Database
+            .raw('INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES('+ params.itemId +','+ allFilters[i].id+')')
+          } else if (!obj[filter]) {
+            const db_update = await Database
+            .raw('DELETE FROM items_in_filters WHERE item_id = ' + parseInt(params.itemId) + ' AND filter_id = ' + allFilters[i].id )
+          }
+        }
+
     
         const profilePic = request.file('item-image')
         const altImage = request.file('item-image-alt')
@@ -61,22 +78,7 @@ class ItemController {
         
           var sugar = null
           var sodium = null
-          var is_keto = null
-          var is_whole30 = null
-          var is_lowCarb = null
-          var is_paleo = null
-          if(obj.is_keto) {
-            var is_keto = 1
-          }
-          if(obj.is_whole30) {
-            var is_whole30 = 1
-          }
-          if(obj.is_paleo) {
-            var is_paleo = 1
-          }
-          if(obj.is_lowCarb) {
-            var is_lowCarb = 1
-          }
+
           if(obj.carbs) {
             var carbs = obj.carbs
           }
@@ -110,10 +112,6 @@ class ItemController {
               name: obj.name,
               price: obj.price,
               description: obj.description,
-              is_keto: is_keto,
-              is_lowCarb: is_lowCarb,
-              is_paleo: is_paleo,
-              is_whole30: is_whole30,
               calories: calories,
               fats: fat,
               carbs: carbs,
@@ -131,7 +129,7 @@ class ItemController {
     
       async editItem ({ view, request, response, params }) {
     
-          try {
+          
             const item = await Database
             .select('*')
             .from('items')
@@ -141,20 +139,51 @@ class ItemController {
             const categories = await Database
                 .select('id', 'desc')
                 .table('item_categories')
+            const filters = await Database
+                .select('id', 'name')
+                .table('item_filters')
             
             const items_in_categories = await Database
-                .select('item_categories.desc AS category')
+                .select('item_categories.desc AS name')
                 .table('items_in_categories')
                 .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
-            item[0].category = items_in_categories[0].category
-            
-            // return response.send({item: item[0], categories: categories})
+                .where('items_in_categories.item_id', params.itemId)
+
+                const itemFilters = await Database
+                .select('item_filters.name AS name')
+                .table('items_in_filters')
+                .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
+                .where('items_in_filters.item_id', params.itemId)
+                if(items_in_categories && items_in_categories.length != 0) {
+                    item[0].category = items_in_categories[0].name
+
+                }
+
+                if (itemFilters && itemFilters.length != 0) {
+                    item[0].filters = itemFilters
+                }
+
+                item[0].allFilters = filters
+
+                // Check to make sure that our item has filters applied to it.
+                // Because the filters are optional, we need to account for an item
+                // that does not have any filters.
+                if (item[0].filters && item[0].filters.length != 0) {
+                  for (var i = 0; i < item[0].allFilters.length; i++) {
+                    for ( var x = 0; x < item[0].filters.length; x++) {
+                      if (item[0].allFilters[i].name == item[0].filters[x].name) { // If an item does have filters, add the filters to the item object
+                        console.log('match')
+                        var filter = 'is_' + item[0].filters[x].name.toLowerCase().replace(/ /g, '_')
+                        item[0][filter] = 1
+                      }
+                    }
+                  }
+                }
+
+
+            return view.render('edit-item', {item: item[0], categories: categories, all_filters: filters})
     
-            return view.render('edit-item', {item: item[0], categories: categories})
-    
-          } catch (error) {
-            return response.send(error)
-          }
+
       }
     
       async addItem ({ view, request, response, params, session }) {

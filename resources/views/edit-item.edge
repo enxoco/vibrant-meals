@@ -153,37 +153,20 @@
                     </div>
                   </div>
                   <div class="field is-horizontal">
+
                       <div class="control">
-                          <input class="is-checkradio" id="is_keto" type="checkbox" name="is_keto"
-                          @if(item.is_keto)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_keto">Keto</label>
+                        @debugger
+                        
+                        @each(f in all_filters)
 
-                          <input class="is-checkradio" id="is_whole30" type="checkbox" name="is_whole30"
-                          @if(item.is_whole30)
-                          checked
-                          @else
-                          @endif
-                          >
-                          <label for="is_whole30">Whole 30</label>
 
-                          <input class="is-checkradio" id="is_lowCarb" type="checkbox" name="is_lowCarb"
-                          @if(item.is_lowCarb)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_lowCarb">Low Carb</label>
-                          <input class="is-checkradio" id="is_paleo" type="checkbox" name="is_paleo"
-                          @if(item.is_paleo)
-                            checked
-                            @else
-                          @endif
-                          >
-                          <label for="is_paleo">Paleo</label>
+                        <input class="is-checkradio" id="{{f.id}}" type="checkbox" name="{{f.name }}"
+                        @debugger
+                        {{ compareKeys(item, f.name) }}
+                        >
+                        <label for="{{f.id }}">{{ f.name }}</label>
+                        @endeach
+
                             </div>
                             <div class="control">
                                 <button class="button is-link">Update</button>

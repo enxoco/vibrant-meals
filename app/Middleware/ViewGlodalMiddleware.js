@@ -8,6 +8,22 @@ class ViewGlodalMiddleware {
       return moment().format('YYYY')
     })
 
+    edge.global('join', (str1, str2) => {
+      return `{{ ${str1}${str2.toLowerCase()} }}`
+    })
+
+
+    edge.global('compareKeys', (item, str) => {
+      var key = 'is_' + str.toLowerCase().replace(/ /g, '_')
+      console.log(item[key])
+
+      if (item[key] == 1) {
+        return 'checked'
+
+      }
+      return false
+    })
+
     edge.global('inArray', (arr, needle) => {
       let i = arr.length
       while (i--) {
