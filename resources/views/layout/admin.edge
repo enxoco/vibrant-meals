@@ -18,13 +18,14 @@
     </head>
     <body>
 
-		@!include('partials.navbar')
+        @!include('partials.navbar')
+        <script src="/js/jquery-2.2.4.min.js"></script>
+
 		@!section('content')
         @!include('partials.footer')
 
     </body>
-    <script src="/js/jquery-2.2.4.min.js"></script>
-    <script src="/js/product-card.js"></script>
+    {{--  <script src="/js/product-card.js"></script>  --}}
     <script>
     $(document).on('click', '.notification > button.delete', function() {
         $(this).parent().addClass('is-hidden');

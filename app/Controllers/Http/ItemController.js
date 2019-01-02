@@ -29,16 +29,31 @@ class ItemController {
           .table('item_filters')
           .select('name', 'id')
 
+        const allCategories = await Database
+          .table('item_categories')
+          .select('desc', 'id')
+
+
         // TODO - Filter updates are working per the below code.  Still need to implement working code for category updates.
         for ( var i = 0; i < allFilters.length; i++) {
           var filter = allFilters[i].name
           if (obj[filter] == 'on') {
-            console.log(params.itemId, allFilters[i].id)
             const db_update = await Database
             .raw('INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES('+ params.itemId +','+ allFilters[i].id+')')
           } else if (!obj[filter]) {
             const db_update = await Database
             .raw('DELETE FROM items_in_filters WHERE item_id = ' + parseInt(params.itemId) + ' AND filter_id = ' + allFilters[i].id )
+          }
+        }
+
+        for ( var i = 0; i < allCategories.length; i++) {
+          var filter = allCategories[i].desc
+          if (obj[filter] == 'on') {
+            const db_update = await Database
+            .raw('INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES('+ params.itemId +','+ allCategories[i].id+')')
+          } else if (!obj[filter]) {
+            const db_update = await Database
+            .raw('DELETE FROM items_in_categories WHERE item_id = ' + parseInt(params.itemId) + ' AND category_id = ' + allCategories[i].id )
           }
         }
 
@@ -118,7 +133,8 @@ class ItemController {
               protein: protein,
               eightySixCount: eightySixCount,
               sugar: sugar,
-              sodium: sodium
+              sodium: sodium,
+              sku: obj.sku
             })
             session.flash({ status: 'Updated Successfully' })
             return response.redirect('back')
@@ -172,7 +188,6 @@ class ItemController {
                   for (var i = 0; i < item[0].allFilters.length; i++) {
                     for ( var x = 0; x < item[0].filters.length; x++) {
                       if (item[0].allFilters[i].name == item[0].filters[x].name) { // If an item does have filters, add the filters to the item object
-                        console.log('match')
                         var filter = 'is_' + item[0].filters[x].name.toLowerCase().replace(/ /g, '_')
                         item[0][filter] = 1
                       }
@@ -282,7 +297,6 @@ class ItemController {
             },
             currency: "usd",
           });
-          console.log(`user ${JSON.stringify(user)}`)
           // Create a subscription in Stripe
           stripe.subscriptions.create({
             customer: user[0].stripe_id,

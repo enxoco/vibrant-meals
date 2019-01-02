@@ -68,7 +68,7 @@
                 </a>
               </div>
               <div class="control is-3 has-margin-right-15">
-                <input id="sku" name="sku" class="input is-right-rounded" placeholder="{{ item.sku }}" type="number" step="any" value="{{ item.sku }}">
+                <input id="sku" name="sku" class="input is-right-rounded" placeholder="{{item.sku}}" type="text" step="any" value="{{item.sku}}">
               </div>
 
             
@@ -142,20 +142,20 @@
                   <div class="field is-horizontal">
                     <div class="control">
                       @each(c in categories)
-                      <input class="is-checkradio" id="{{ c.desc }}" type="checkbox" name="{{ c.desc }}"
+                      <input class="is-checkradio categories-check" id="{{ c.desc }}" type="checkbox" name="{{ c.desc }}" 
                       @if(item.category === c.desc)
                         checked
                         @else
                       @endif
-                      >
+                      onClick="clearGroup(this);">
                       <label for="{{ c.desc }}">{{ c.desc }}</label>
                       @endeach
+                      <input id="checked-cat" type="hidden" value=""/>
                     </div>
                   </div>
                   <div class="field is-horizontal">
 
                       <div class="control">
-                        @debugger
                         
                         @each(f in all_filters)
 
@@ -206,5 +206,51 @@
             }
         }
 
+            // Simple script to parse the item name input and convert it to a sku
+    var itemTitleField = document.getElementById('name')
+ 
+    
+    itemTitleField.onkeyup = function() {
+      
+      var title = itemTitleField.value
+      if (title.includes(' ')) {
+        var sku = title.split(' ')
+        var final = []
+        for (var i = 0; i < sku.length; i++) {
+          if (sku[i] == 'and' || sku[i] == 'with') {
+          
+          } else {
+            final.push(sku[i].slice(0,5))
+          }
+        }
+        var final = String(final)
+        var final = final.toLowerCase()
+        var final = final.replace('and', '')
+        document.getElementById('sku').value = $('#checked-cat').val() + final.replace(/,/g, '_')
+      } 
+    }
+    function clearGroup(elem) {
+        var group = $('.categories-check');
+        if (elem.checked == true) {
+          for (var i=0; i<group.length; i++) {
+            if (group[i] != elem) {
+
+              $('#checked-cat').val(elem.id.toLowerCase().slice(0,5) + '-')
+              $('#name').keyup()
+
+            group[i].checked = false;
+            }
+          }
+        }
+        else {
+          $('#checked-cat').val('')
+          $('#name').keyup()
+
+        }
+
+        
+    }
         </script>
+
+        
 @endsection
