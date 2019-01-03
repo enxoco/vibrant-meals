@@ -8,19 +8,76 @@ const users = make('App/Services/UserService')
 const User = use('App/Models/User')
 const Helpers = use('Helpers')
 const Env = use('Env')
-
+const Drive = use('Drive')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
 
 var cartCur = []
 
 class ItemController {
 
+    async hideItem ({ request, params, response, session }) {
+      const id = params.itemId
+
+      const visible = await Database
+        .table('items')
+        .select('is_visible')
+        .where('id', id)
+        .first()
+
+      if (visible.is_visible == 1) {
+        const success = await Database
+        .table('items')
+        .update('is_visible', '0')
+        .where('id', id)
+
+      } else {
+        const success = await Database
+        .table('items')
+        .update('is_visible', 1)
+        .where('id', id)
+
+      }
+
+      return response.redirect('back')
+
+
+    }
+    async deleteItem ({ request, response, view, params, session }) {
+
+      const imgUrl = await Database
+        .table('items')
+        .select('img_url', 'alt_img_url')
+        .where('id', params.itemId)
+        const removeCat = await Database
+        .table('items_in_categories')
+        .where('item_id', params.itemId)
+        .del()
+
+        await Database
+          .table('items_in_filters')
+          .where('item_id', params.itemId)
+          .del()
+      const removeItem = await Database
+        .table('items')
+        .where('id', params.itemId)
+        .del()
+      console.log('item: ' + removeItem)
+
+      console.log('cat: ' + removeCat)
+      await Drive.delete('/uploads/' + imgUrl[0].img_url)
+      await Drive.delete('/uploads/' + imgUrl[0].alt_img_url)
+    }
+
     async addItemView ({ request, response, view }) {
         const categories = await Database
             .from('item_categories')
             .select('id', 'desc')
+
+            const allFilters = await Database
+            .table('item_filters')
+            .select('name', 'id')
             
-        return view.render('add-item', {categories})
+        return view.render('add-item', {categories, all_filters: allFilters})
     }
     async updateItem ({ view, request, response, params, session }) {
 
@@ -33,8 +90,6 @@ class ItemController {
           .table('item_categories')
           .select('desc', 'id')
 
-
-        // TODO - Filter updates are working per the below code.  Still need to implement working code for category updates.
         for ( var i = 0; i < allFilters.length; i++) {
           var filter = allFilters[i].name
           if (obj[filter] == 'on') {
@@ -47,11 +102,11 @@ class ItemController {
         }
 
         for ( var i = 0; i < allCategories.length; i++) {
-          var filter = allCategories[i].desc
-          if (obj[filter] == 'on') {
+          var cat = allCategories[i].desc
+          if (obj[cat] == 'on') {
             const db_update = await Database
             .raw('INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES('+ params.itemId +','+ allCategories[i].id+')')
-          } else if (!obj[filter]) {
+          } else if (!obj[cat]) {
             const db_update = await Database
             .raw('DELETE FROM items_in_categories WHERE item_id = ' + parseInt(params.itemId) + ' AND category_id = ' + allCategories[i].id )
           }
@@ -158,6 +213,7 @@ class ItemController {
             const filters = await Database
                 .select('id', 'name')
                 .table('item_filters')
+
             
             const items_in_categories = await Database
                 .select('item_categories.desc AS name')
@@ -170,6 +226,7 @@ class ItemController {
                 .table('items_in_filters')
                 .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
                 .where('items_in_filters.item_id', params.itemId)
+
                 if(items_in_categories && items_in_categories.length != 0) {
                     item[0].category = items_in_categories[0].name
 
@@ -178,7 +235,6 @@ class ItemController {
                 if (itemFilters && itemFilters.length != 0) {
                     item[0].filters = itemFilters
                 }
-
                 item[0].allFilters = filters
 
                 // Check to make sure that our item has filters applied to it.
@@ -194,8 +250,6 @@ class ItemController {
                     }
                   }
                 }
-
-
             return view.render('edit-item', {item: item[0], categories: categories, all_filters: filters})
     
 
@@ -314,10 +368,6 @@ class ItemController {
             sku: obj.sku,
             description: obj.description,
             img_url: img_url,
-            is_keto: is_keto,
-            is_lowCarb: is_lowCarb,
-            is_paleo: is_paleo,
-            is_whole30: is_whole30,
             calories: calories,
             fats: fat,
             carbs: carbs,
@@ -327,7 +377,39 @@ class ItemController {
             sodium: sodium,
             stripe_id: plan.id
           })
-          return response.send({newId: success, item: obj})
+
+          const allFilters = await Database
+          .table('item_filters')
+          .select('name', 'id')
+
+        const allCategories = await Database
+          .table('item_categories')
+          .select('desc', 'id')
+
+
+        // TODO - Filter updates are working per the below code.  Still need to implement working code for category updates.
+        for ( var i = 0; i < allFilters.length; i++) {
+          var filter = allFilters[i].name
+          if (obj[filter] == 'on') {
+            const db_update = await Database
+            .raw('INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES('+ success +','+ allFilters[i].id+')')
+          } else if (!obj[filter]) {
+            const db_update = await Database
+            .raw('DELETE FROM items_in_filters WHERE item_id = ' + parseInt(success) + ' AND filter_id = ' + allFilters[i].id +')' )
+          }
+        }
+
+        for ( var i = 0; i < allCategories.length; i++) {
+          var filter = allCategories[i].desc
+          if (obj[filter] == 'on') {
+            const db_update = await Database
+            .raw('INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES('+ success +','+ allCategories[i].id+')')
+          } else if (!obj[filter]) {
+            const db_update = await Database
+            .raw('DELETE FROM items_in_categories WHERE item_id = ' + parseInt(success) + ' AND category_id = ' + allCategories[i].id )
+          }
+        }
+        return view.render('edit-item', {item: obj, categories: allCategories, all_filters: allFilters})
     
         } catch (error) {
           return response.send(`Error ${error}`)
@@ -340,14 +422,19 @@ class ItemController {
         var cart = session.get('cartItem') 
         if (cart) { // Check to see if there are items in the cart
             cartCur = cart // If we already have items in the cart, set that the contents of the cartItem session key to the cartCur array
-            
             for (var i = 0; i < cartCur.length; i++) {
                 if (cartCur[i].id == form.id) {
+                  console.log('start')
+
                     var quantity = parseInt(cartCur[i].quantity)
 
                     cartCur[i].quantity = parseInt(cartCur[i].quantity) + 1 // Make sure we convert our quanity to an integer otherwise we will just add numbers onto a string
                     session.put('cartItem', cartCur)
-                    return response.redirect('back')
+                    await Database
+                    .table('items')
+                    .decrement('eightySixCount', 1)
+                    .where('id', cartCur[i].id)
+                    return response.redirect('back', true)
                 }
             }
 
@@ -357,6 +444,7 @@ class ItemController {
             for (var i = 0; i < cartCur.length; i++) {
                 if (cartCur[i].id == form.id) {
                     form.quantity += 1
+
                 }
             }
             cartCur.push(form)// Nothing previously in the cart so simply add our current item to the array
@@ -378,6 +466,11 @@ class ItemController {
 
     async subCart ({ session, response, params }) {
         var cart = session.get('cartItem')
+        await Database
+        .table('items')
+        .increment('eightySixCount', 1)
+        .where('id', cart[params.cartPos].id)
+
         cart[params.cartPos].quantity = parseInt(cart[params.cartPos].quantity) - 1 
         return response.redirect('back')
 
@@ -388,7 +481,7 @@ class ItemController {
         cartCur = []
         for (var i = 0; i < cart.length; i++) {
             if (i != params.cartPos) {
-                cartCur.push(cart[i])
+
             } 
         }
 
@@ -397,14 +490,54 @@ class ItemController {
     }
 
     async showMenu ({ view, session }) {
-        const items = await Database
-            .table('items')
-        const categories = await Database
-            .table('item_categories')
-            .distinct('desc', 'id')
+      const item = await Database
+      .select('*')
+      .from('items')
+      // .where('id', params.itemId)
+      // .limit(1)
+
+      const categories = await Database
+          .select('id', 'desc')
+          .table('item_categories')
+      const filters = await Database
+          .select('id', 'name')
+          .table('item_filters')
+      
+      const items_in_categories = await Database
+          .select('item_categories.desc AS name')
+          .table('items_in_categories')
+          .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
+          // .where('items_in_categories.item_id', params.itemId)
+
+          const itemFilters = await Database
+          .select('item_filters.name AS name')
+          .table('items_in_filters')
+          .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
+          // .where('items_in_filters.item_id', params.itemId)
+          for (var i = 0; i < item.length; i++) {
+            const items_in_categories = await Database
+            .select('item_categories.desc AS name')
+            .table('items_in_categories')
+            .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
+            .where('items_in_categories.item_id', item[i].id)
+
+            const itemFilters = await Database
+            .select('item_filters.name AS name')
+            .table('items_in_filters')
+            .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
+            .where('items_in_filters.item_id', item[i].id)
+
+            item[i].filters = itemFilters
+            item[i].categories = items_in_categories
+          }
+          if(items_in_categories && items_in_categories.length != 0) {
+              item[0].category = items_in_categories[0].name
+
+          }
+
 
         var cart = session.get('cartItem')
-        return view.render('menu.items', {cart, categories: categories, items: items, cart: cart})
+        return view.render('menu.items', {cart, categories: categories, items: item, cart: cart})
     }
     async list ({ params, view, session }) {
 
@@ -425,7 +558,7 @@ class ItemController {
         .table('item_categories')
         .distinct('desc', 'id')
         var cart = session.get('cartItem')
-
+      
 
         return view.render('menu.items', {items, categories: categories, cart})
     }

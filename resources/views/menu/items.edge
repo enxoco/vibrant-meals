@@ -1,104 +1,158 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
+<style>
+    #cart {
+    position: absolute;
+    right: .025vw;
+  }
+  .sticky {
+    position: fixed !important;
+    top: 0px;
+    overflow: auto;
+    height: 100vh;
+  }
+  .cart-mobile {
+    background: #efefef;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    top: 100px;
+  }
 
+
+
+  </style>
 <nav class="nav has-background-dark">
-    nav bar
-{{ toJSON({ cart }) }}
-  </nav>
-
-<nav class="level">
+    nav bar{{cry}}
 </nav>
+
+<nav class="nav" style="padding:20px;">
     @each(category in categories)
-        <a class="button is-info" href="/items/category/{{category.id}}">{{category.desc}}</a>
-    @endeach
-    <a class="button is-danger" href="/cart/clear">Clear Cart</a>
+    <a class="button is-info" href="/items/category/{{category.id}}">{{category.desc}}</a>
+  @endeach
+  <a class="button is-info" href="/menu/all">All</a>
 
-<div class="container">
-    <div class="columns">
-        <div class="column is-four-fifths">&nbsp
-            @if(items)
-            <div class="columns">
-                @each(item in items)
-            @if($loop.index % 3 == 0)
-            </div>
-            <div class="columns">
-              @endif
-            <div class="column is-one-third">
-                    <div class="card">
-                    <form method="post" action="/cart/addItem" name="item_{{item.id}}" id="item_{{item.id}}">
-                      <input type="hidden" id="id" name="id" value="{{item.id}}" />
-                      <input type="hidden" id="sku" name="sku" value="{{item.sku}}" />
-                      <input type="hidden" id="name" name="name" value="{{item.name}}" />
-                      <input type="hidden" id="price" name="price" value="{{item.price}}" />
-                      <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
-                      <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
-                      
+  <a class="button is-danger" href="/cart/clear">Clear Cart</a>
+  <a class="button is-success" href="#" id="showCart" style="z-index:99999999;" onclick="showCartmenu()">View Cart</a>
 
 
-                        <div class="card-image">
-                              <figure class="image">
-                              <img src="{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
-                              </figure>
-                            </div>
-                            <div class="card-content">
-                              <div class="media">
+</nav>
+<div class="columns">
+<div class="column is-four-fifths is-four-fifths-widescreen is-full-mobile is-full-tablet" id="items-column">
+  <div class="columns is-multiline" style="align-items: flex-start; padding-left:10px; padding-right:10px;">
+        @each(item in items)
+        @if(item.is_visible != 1)
+        @else
+            <div class="column is-half-tablet is-half-mobile is-one-third-desktop item-column">
+          <div class="card">
+            <form method="post" action="/cart/addItem" name="item_{{item.id}}" id="item_{{item.id}}">
+              <input type="hidden" id="id" name="id" value="{{item.id}}" />
+              <input type="hidden" id="sku" name="sku" value="{{item.sku}}" />
+              <input type="hidden" id="name" name="name" value="{{item.name}}" />
+              <input type="hidden" id="price" name="price" value="{{item.price}}" />
+              <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
+              <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
+              <input id="scroll" name="scroll" value="" type="hidden"/>
 
-                                <div class="media-content">
-                                  <p class="title is-4">{{ item.name }}</p>
-                                  <p class="subtitle is-6">@johnsmith</p>
-                                </div>
-                              </div>
-                          
-                              <div class="content">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                                <a href="#">#css</a> <a href="#">#responsive</a>
-                                <br>
-                                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                                <button type="submit" class="button is-info add-to-cart" id="{{item.id}}">Add</a>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-            </div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
+                </figure>
+              </div><!--/card-image-->
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ item.name }} - ${{ item.price }}</p>
+                    @each(c in item.categories)
+                    <p class="subtitle is-6">{{c.name}}</p>
+                    @endeach
+                    
+                    <p class="subtitle is-6">
+                        @each(f in item.filters)
+                        <span class="tag is-info">{{f.name}}</span>
+                      @if($loop.last)
+                      @else
+                      @endif
+                        @endeach
+                      </p>
+                    
+                  </div><!--/media-content-->
+                </div><!--/media-->
+                <div class="content">
+                    {{item.description}}
+                    <br>
 
-            @endeach
-
-            </div>
+                    
+                  </div><!--/content-->
+                  <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
+                  <a href="#" class="button is-success" onclick="submitForm({{item.id}})"> Add to Cart </a>
+                  <a id="delete-item" class="button is-danger modal-button open-modal" 
+                  data-target="modal-ter" 
+                  aria-haspopup="true" 
+                  onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>
+              </div><!--/card-content-->
+                </form>
+              </div><!--/card-->
+            </div><!--/column-->
+            
+          <div class="modal" id="modal-{{item.id}}">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">Delete {{item.name}} ?</p>
+                  <a class="delete" aria-label="close" onclick="return launchModal('{{item.id}}', '{{item.name}}')"></a>
+                </header>
+                <section class="modal-card-body">
+                  Are you sure you want to delete this item?  By clicking continue you will remove this item from the database
+                  as well as delete any saved images of this item.  This will also remove this item from all associated filters
+                  and categories.
+                </section>
+                <footer class="modal-card-foot">
+                  <a class="button is-danger" href="/item/delete/{{item.id}}" onclick="launchModal({{item.id}})">Delete Item</a>
+                  <a class="button close-modal" onclick="return launchModal('{{item.id}}', '{{item.name}}')">Cancel</a>
+                </footer>
+              </div>
+            </div><!--/modal-->
             @endif
-            
-        </div>
+        @endeach
 
-        <div class="column" id="cart">
-            &nbsp
-            Cart total: $<div id="cartTotal"></div>
-            @each(c in cart)
-            <div class="card">
-                <div class="card-content">
-                  <div class="media">
-                    <div class="media-left">
-                      <figure class="image is-48x48">
-                        <img src="{{c.img_url}}" alt="Placeholder image">
-                      </figure>
-                    </div>
-                    <div class="media-content">
-                      <p class="title is-6">{{ c.name }}</p>
-                    <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}</p>
-                      <p class="subtitle is-6">Quantity {{ c.quantity }}</p>
-                      <a class="button is-warning" href="/cart/sub/{{$loop.index}}">-</a>
-                      <a class="button is-danger" href="/cart/remove/{{$loop.index}}">x</a>
+  </div><!--/columns-->
+</div><!--/master-column-->
 
-                      
-                    </div>
-                  </div>
+<!--is-hidden-tablet-->
+  <div class="column is-one-fifth-desktop is-half-mobile is-half-tablet is-hidden-tablet" id="cart">
+      &nbsp
+       <div id="cartTotal">$Cart total:</div>
+      @each(c in cart)
+      @unless(c.quantity == 0)
+      <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img src="/{{c.img_url}}" alt="Placeholder image">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-6">{{ c.name }} x {{ c.quantity }}</p>
+              <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}
+                <div class="buttons">
+                <a class="button is-danger is-rounded is-small-mobile"  href="/cart/remove/{{$loop.index}}">x</a>
+                <a class="button is-info" href="/cart/sub/{{$loop.index}}">-</a>
+                <a class="button is-success" onclick="submitForm({{c.id}})">+</a>
                 </div>
-              </div><br />
-              @endeach
-
-            
-
+              </p>
+              </div>
             </div>
-    </div>              
-</div><!--/container-->
+          </div>
+        </div><br>
+      @else
+        
+      @endunless
+
+        @endeach
+</div>
+</div>
+
 <script src="/js/jquery-2.2.4.min.js"></script>
 
 <script>
@@ -110,8 +164,95 @@ for (var i = 0; i < 50; i++) {
     total += price
   }
 
-  $('#cartTotal').text(total)
+  $('#cartTotal').text('Cart Total: $' + total)
 }
 
+
+function submitForm(id) {
+  $('#scroll').val('s')
+  $('#item_' + id).submit()
+
+
+}
+
+window.onscroll = function() {myFunction()};
+
+// Get the navbar
+var navbar = document.getElementById("cart");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+  var target = $(".nav");
+  var x = target.position();
+  console.log("Top: " + x.top + " Left: " + x.left);
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+
+function launchModal(id) {
+  if ($('#modal-'+ id + '').hasClass('is-active')) {
+    $('#modal-'+ id + '').removeClass('is-active')
+    location.reload(true)
+  } else {
+    $('#modal-'+ id + '').addClass('is-active')
+
+  }
+}
+$('.modal-background').click(function() {
+$('.close-modal').trigger('click');
+});
+$('#delete-item').on('click', function(){
+  
+  $('#modal-item').addClass("is-active")
+})
+
+function showCartmenu() {
+  var cart = $('#cart')
+  var items = $('#items-column')
+  var item = $('.item-column')
+
+
+  if (cart.hasClass('is-hidden-mobile') || cart.hasClass('is-hidden-tablet')) {
+    // Show the cart div and make it half screen
+    cart.addClass('cart-mobile')
+    cart.removeClass('is-hidden-mobile').fadeIn()
+    cart.removeClass('is-hidden-tablet').fadeIn()
+    items.removeClass('is-full-mobile')
+    items.removeClass('is-full-tablet')
+    items.addClass('is-half-tablet')
+    items.addClass('is-half-mobile')
+    item.addClass('is-full-mobile')
+    item.addClass('is-full-tablet')
+    item.removeClass('is-half-tablet')
+    item.removeClass('is-half-mobile')
+
+
+  } else {
+    // hide the cart div
+    cart.addClass('is-hidden-mobile').fadeIn()
+    cart.addClass('is-hidden-tablet').fadeIn()
+
+    items.addClass('is-full-mobile')
+    items.addClass('is-full-tablet')
+    items.removeClass('is-half-tablet')
+    items.removeClass('is-half-mobile')
+
+
+    item.removeClass('is-full-mobile')
+    item.removeClass('is-full-tablet')
+    item.addClass('is-half-tablet')
+    item.addClass('is-half-mobile')
+
+
+
+  }
+
+}
 
 </script>

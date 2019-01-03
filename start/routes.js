@@ -28,6 +28,8 @@ Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
 
+Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
+Route.get('/item/hide/:itemId', 'ItemController.hideItem')
 Route.get('/admin/items', 'AdminController.showItems')
 Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')

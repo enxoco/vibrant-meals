@@ -10,7 +10,7 @@
 <section class="item-manager">
   <div class="container">
 <div class="columns is-vcentered">
-  <div class="column is-4">
+  <div class="column is-2">
       <form method="post" action="/item/add" enctype="multipart/form-data">
 
           @if(old('errors'))
@@ -45,8 +45,8 @@
         @endif
   </div>
   <div class="column is-8">
-      <figure class="image is-4by3">
-          <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description">
+      <figure class="image is-3by1">
+          <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description" height="250" width="250">
       </figure>
       <div class="file">
           <label class="file-label">
@@ -154,24 +154,20 @@
                   <div class="field is-horizontal">
                     <div class="control">
                     @each(c in categories)
-                    <input class="is-checkradio" id="is_{{c.desc}}" type="checkbox" name="is_keto">
-                    <label for="is_{{c.desc}}">{{c.desc}}</label>
+                    <input class="is-checkradio categories-check" id="{{c.desc}}" type="checkbox" name="{{c.desc}}" onClick="clearGroup(this);">
+                    <label for="{{c.desc}}">{{c.desc}}</label>
                     @endeach
+                    <input id="checked-cat" type="hidden" value=""/>
+
                     </div>
                   </div>
                   <div class="field is-horizontal">
                       <div class="control">
-                          <input class="is-checkradio" id="is_keto" type="checkbox" name="is_keto">
-                          <label for="is_keto">Keto</label>
-
-                          <input class="is-checkradio" id="is_whole30" type="checkbox" name="is_whole30">
-                          <label for="is_whole30">Whole 30</label>
-
-                          <input class="is-checkradio" id="is_lowCarb" type="checkbox" name="is_lowCarb">
-                          <label for="is_lowCarb">Low Carb</label>
-                          <input class="is-checkradio" id="is_paleo" type="checkbox" name="is_paleo">
-                          <label for="is_paleo">Paleo</label>
-                            </div>
+                          @each(f in all_filters)
+                          <input class="is-checkradio" id="{{f.id}}" type="checkbox" name="{{f.name }}">
+                          <label for="{{f.id }}">{{ f.name }}</label>
+                          @endeach
+                      </div>
                     </div>
                   <div class="field is-grouped">
                     <div class="control">
@@ -192,6 +188,7 @@
   <script>
     // Simple script to parse the item name input and convert it to a sku
     var itemTitleField = document.getElementById('name')
+ 
     
     itemTitleField.onkeyup = function() {
       
@@ -209,8 +206,29 @@
         var final = String(final)
         var final = final.toLowerCase()
         var final = final.replace('and', '')
-        document.getElementById('sku').value = final.replace(/,/g, '_')
+        document.getElementById('sku').value = $('#checked-cat').val() + final.replace(/,/g, '_')
       } 
+    }
+    function clearGroup(elem) {
+        var group = $('.categories-check');
+        if (elem.checked == true) {
+          for (var i=0; i<group.length; i++) {
+            if (group[i] != elem) {
+
+              $('#checked-cat').val(elem.id.toLowerCase().slice(0,5) + '-')
+              $('#name').keyup()
+
+            group[i].checked = false;
+            }
+          }
+        }
+        else {
+          $('#checked-cat').val('')
+          $('#name').keyup()
+
+        }
+
+        
     }
          function readURL(input) {
             if (input.files && input.files[0]) {
