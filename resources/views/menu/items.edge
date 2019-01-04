@@ -18,7 +18,15 @@
     top: 100px;
   }
 
-
+  @media screen and (min-width: 1900px) {
+  .is-four-fifths-mac {
+    flex: none;
+    width: 80% !important; 
+    }
+    #cart {
+      display: block !important;
+    }
+}
 
   </style>
 <nav class="nav has-background-dark">
@@ -37,7 +45,7 @@
 
 </nav>
 <div class="columns">
-<div class="column is-four-fifths is-four-fifths-widescreen is-full-mobile is-full-tablet" id="items-column">
+<div class="column is-four-fifths-mac is-full-mobile is-full-tablet" id="items-column">
   <div class="columns is-multiline" style="align-items: flex-start; padding-left:10px; padding-right:10px;">
         @each(item in items)
         @if(item.is_visible != 1)
@@ -119,7 +127,7 @@
 </div><!--/master-column-->
 
 <!--is-hidden-tablet-->
-  <div class="column is-one-fifth-desktop is-half-mobile is-half-tablet is-hidden-tablet" id="cart">
+  <div class="column is-one-fifth-desktop is-one-third-mobile is-one-third-tablet is-hidden-tablet" id="cart">
       &nbsp
        <div id="cartTotal">$Cart total:</div>
       @each(c in cart)
@@ -225,30 +233,21 @@ function showCartmenu() {
     cart.removeClass('is-hidden-tablet').fadeIn()
     items.removeClass('is-full-mobile')
     items.removeClass('is-full-tablet')
-    items.addClass('is-half-tablet')
-    items.addClass('is-half-mobile')
-    item.addClass('is-full-mobile')
-    item.addClass('is-full-tablet')
-    item.removeClass('is-half-tablet')
-    item.removeClass('is-half-mobile')
+    items.addClass('is-two-thirds-mobile')
+    items.addClass('is-two-thirds-tablet')
 
 
   } else {
     // hide the cart div
+    console.log('hide div')
     cart.addClass('is-hidden-mobile').fadeIn()
     cart.addClass('is-hidden-tablet').fadeIn()
-
+    cart.addClass('is-hidden-mobile').fadeIn()
+    cart.addClass('is-hidden-tablet').fadeIn()
     items.addClass('is-full-mobile')
     items.addClass('is-full-tablet')
-    items.removeClass('is-half-tablet')
-    items.removeClass('is-half-mobile')
-
-
-    item.removeClass('is-full-mobile')
-    item.removeClass('is-full-tablet')
-    item.addClass('is-half-tablet')
-    item.addClass('is-half-mobile')
-
+    items.removeClass('is-two-thirds-mobile')
+    items.removeClass('is-two-thirds-tablet')
 
 
   }

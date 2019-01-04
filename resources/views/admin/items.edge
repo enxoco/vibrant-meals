@@ -18,10 +18,9 @@
     </div>
   </div>
   </nav>
-<div class="container">
-    <input type="text" id="search-criteria"/>
-
-  <div class="columns is-multiline">
+{{--  <div class="container">  --}}
+  @!include('layout.admin.side-nav')
+  <div class="columns is-multiline is-four-fifths">
       @each(i in items)
       <div class="column is-one-third" id="item">
           <div class="card">
@@ -74,7 +73,7 @@
         </div><!--/modal-->
       @endeach
   </div>
-</div>
+{{--  </div>  --}}
 <script src="/js/jquery-2.2.4.min.js"></script>
 
 <script>
