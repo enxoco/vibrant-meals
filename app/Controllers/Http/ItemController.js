@@ -10,6 +10,8 @@ const Helpers = use('Helpers')
 const Env = use('Env')
 const Drive = use('Drive')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
+const moment = require('moment')
+
 
 var cartCur = []
 
@@ -79,6 +81,7 @@ class ItemController {
             
         return view.render('add-item', {categories, all_filters: allFilters})
     }
+    
     async updateItem ({ view, request, response, params, session }) {
 
         const obj = request.all()
@@ -196,9 +199,9 @@ class ItemController {
           } catch (error) {
             return response.send(`Error ${error}`)
           }
-      }
+    }
     
-      async editItem ({ view, request, response, params }) {
+    async editItem ({ view, request, response, params }) {
     
           
             const item = await Database
@@ -253,13 +256,11 @@ class ItemController {
             return view.render('edit-item', {item: item[0], categories: categories, all_filters: filters})
     
 
-      }
+    }
     
-      async addItem ({ view, request, response, params, session }) {
-        const obj = request.all()
-    
-        const profilePic = request.file('item-image')
-    
+    async addItem ({ view, request, response, params, session }) {
+      const obj = request.all()
+      const profilePic = request.file('item-image')
         if (profilePic) {
           try {
             let name = `item-${params.itemId}_${profilePic.clientName}`
@@ -272,12 +273,8 @@ class ItemController {
             session.flash({error: `Sorry, something went wrong: ${error}`})
             return response.redirect('back')
           }
-    
-    
         }
-    
-        // var imgFile = await profilePic.moveAll('public/images/uploads/')
-    
+      
         var sugar = null
         var sodium = null
         if(obj.is_keto) {
@@ -343,23 +340,54 @@ class ItemController {
           if(price.length == 2) {
             price += '0'
           }
-          const plan = await stripe.plans.create({
-            amount: parseInt(price),
-            interval: "month",
-            product: {
-              name: obj.name
-            },
-            currency: "usd",
+
+      
+          // Need to first create a product, then create a sku for that product.
+          const product = await stripe.products.create({
+            name: obj.name,
+            type: 'good',
+            description: obj.description,
           });
+          console.log(product.id)
+          if (obj.quantity) {
+            const sku = await stripe.skus.create({
+              product: product.id,
+              price: parseInt(price),
+              currency: 'usd',
+              id: obj.sku,
+              inventory: {type: 'finite', quantity: obj.quantity}
+            });
+          } else {
+            const sku = await stripe.skus.create({
+              product: product.id,
+              price: parseInt(price),
+              currency: 'usd',
+              id: obj.sku,
+              inventory: {type: 'infinite'}
+            });
+          }
+
+
+          // Instead of creating a plan, we actually need to create a product.
+          // const plan = await stripe.plans.create({
+          //   amount: parseInt(price),
+          //   interval: "month",
+          //   product: {
+          //     name: obj.name
+          //   },
+          //   currency: "usd",
+          // });
+
+
           // Create a subscription in Stripe
-          stripe.subscriptions.create({
-            customer: user[0].stripe_id,
-            items: [
-              {
-                plan: plan.id,
-              },
-            ]
-          });
+          // stripe.subscriptions.create({
+          //   customer: user[0].stripe_id,
+          //   items: [
+          //     {
+          //       plan: plan.id,
+          //     },
+          //   ]
+          // });
           const success = await Database
           .table('items')
           .insert({
@@ -375,7 +403,7 @@ class ItemController {
             eightySixCount: eightySixCount,
             sugar: sugar,
             sodium: sodium,
-            stripe_id: plan.id
+            stripe_id: obj.sku
           })
 
           const allFilters = await Database
@@ -392,10 +420,10 @@ class ItemController {
           var filter = allFilters[i].name
           if (obj[filter] == 'on') {
             const db_update = await Database
-            .raw('INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES('+ success +','+ allFilters[i].id+')')
+            .raw(`INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES(${success}, ${allFilters[i].id})`)
           } else if (!obj[filter]) {
             const db_update = await Database
-            .raw('DELETE FROM items_in_filters WHERE item_id = ' + parseInt(success) + ' AND filter_id = ' + allFilters[i].id +')' )
+            .raw(`DELETE FROM items_in_filters WHERE item_id = ${parseInt(success)} AND filter_id = ${allFilters[i].id}`)
           }
         }
 
@@ -403,10 +431,10 @@ class ItemController {
           var filter = allCategories[i].desc
           if (obj[filter] == 'on') {
             const db_update = await Database
-            .raw('INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES('+ success +','+ allCategories[i].id+')')
+            .raw(`INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES(${success}, ${allCategories[i].id})`)
           } else if (!obj[filter]) {
             const db_update = await Database
-            .raw('DELETE FROM items_in_categories WHERE item_id = ' + parseInt(success) + ' AND category_id = ' + allCategories[i].id )
+            .raw(`DELETE FROM items_in_categories WHERE item_id = ${parseInt(success)} AND category_id = ${allCategories[i].id} `)
           }
         }
         return view.render('edit-item', {item: obj, categories: allCategories, all_filters: allFilters})
@@ -415,16 +443,23 @@ class ItemController {
           return response.send(`Error ${error}`)
         }
     
-      }
+    }
 
     async addToCart ({ request, session, response }) {
         var form = request.all()
-        var cart = session.get('cartItem') 
+        var cart = session.get('cartItem')
+        var cartCount = session.get('cartCount') 
+        if (cartCount) {
+          cartCount += 1
+          session.put('cartCount', cartCount)
+        } else {
+          session.put('cartCount', 1)
+        }
         if (cart) { // Check to see if there are items in the cart
+          
             cartCur = cart // If we already have items in the cart, set that the contents of the cartItem session key to the cartCur array
             for (var i = 0; i < cartCur.length; i++) {
                 if (cartCur[i].id == form.id) {
-                  console.log('start')
 
                     var quantity = parseInt(cartCur[i].quantity)
 
@@ -464,6 +499,7 @@ class ItemController {
         return response.redirect('back')
     }
 
+    // Reduce quantity of items in cart
     async subCart ({ session, response, params }) {
         var cart = session.get('cartItem')
         await Database
@@ -489,31 +525,32 @@ class ItemController {
         return response.redirect('back')
     }
 
-    async showMenu ({ view, session }) {
+    async showMenu ({ view, session, response }) {
       const item = await Database
-      .select('*')
-      .from('items')
-      // .where('id', params.itemId)
-      // .limit(1)
+        .select('*')
+        .from('items')
 
       const categories = await Database
-          .select('id', 'desc')
-          .table('item_categories')
+        .select('id', 'desc')
+        .table('item_categories')
+      
       const filters = await Database
-          .select('id', 'name')
-          .table('item_filters')
+        .select('id', 'name')
+        .table('item_filters')
       
       const items_in_categories = await Database
-          .select('item_categories.desc AS name')
-          .table('items_in_categories')
-          .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
-          // .where('items_in_categories.item_id', params.itemId)
+        .select('item_categories.desc AS name')
+        .table('items_in_categories')
+        .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
 
-          const itemFilters = await Database
-          .select('item_filters.name AS name')
-          .table('items_in_filters')
-          .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
-          // .where('items_in_filters.item_id', params.itemId)
+      const itemFilters = await Database
+        .select('item_filters.name AS name')
+        .table('items_in_filters')
+        .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
+
+      var cart = session.get('cartItem')
+      var cartCount = session.get('cartCount')
+
           for (var i = 0; i < item.length; i++) {
             const items_in_categories = await Database
             .select('item_categories.desc AS name')
@@ -534,12 +571,50 @@ class ItemController {
               item[0].category = items_in_categories[0].name
 
           }
+          const items = await Database
+          .select('*')
+          .from('items')
 
+          if (session.get('adonis_auth')) {
+            const user = await Database
+            .table('users')
+            .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
+            .where('id', session.get('adonis_auth'))  
+    
 
-        var cart = session.get('cartItem')
-        return view.render('menu.items', {cart, categories: categories, items: item, cart: cart})
+    
+            const store = await Database
+              .select('*')
+              .from('locations')
+              .where('id', session.get('locationId'))
+            const prefDay = user[0].fulfillment_day
+            if (prefDay == 'wednesday') {// User has chosen to receive deliveries on Wednesday..
+              var day = moment().format('dddd')
+              if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
+                const nextAvalDate = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate, store})
+              } else {// We have passed the cut off for this week, need to schedule for next week.
+                const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate, store})
+              }
+            } else {// Need to work on this, currently no view is being rendered when monday is chosen
+              var day = moment().format('dddd')
+              if (day == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
+                const nextAvalDate = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')    
+                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate})
+              
+              } else {
+                const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD')
+                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate})
+              }
+    
+            }
+          } else {
+            return view.render('menu.items', {cart, categories: categories, items: item, cartCount})
+          }
+        // return view.render('menu.items', {cart, categories: categories, items: item, cart: cart, session: session.all()})
     }
-    async list ({ params, view, session }) {
+    async list ({ params, view, session, response }) {
 
         var cat_ids = params.cat_id
 
@@ -550,7 +625,7 @@ class ItemController {
     
             const items = await Database
             .from('items')
-            .select('id', 'name', 'price', 'sku', 'img_url')
+            .select('*')
             .whereIn('id', subquery)
 
         
@@ -559,7 +634,6 @@ class ItemController {
         .distinct('desc', 'id')
         var cart = session.get('cartItem')
       
-
         return view.render('menu.items', {items, categories: categories, cart})
     }
 }

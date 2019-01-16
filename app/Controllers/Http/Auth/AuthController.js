@@ -117,19 +117,19 @@ class AuthController {
       return stores
   }
   
-  async showDeliveryOptions ({ view, request, response, session, params }) {
-    const userZip = await session.get('zip')
-    const radius = params.radius
+  async showDeliveryOptions (zip) {
     const storeZip = 37409
-    var radArr = zipcodes.distance(params.zip, 37409);
+    var radArr = zipcodes.distance(zip, 37409);
     if (radArr > 25) {
       var is_deliverable = false
+      return false
     } else {
       var is_deliverable = true
+      return true
     }
 
-
-      return view.render('auth.register-delivery', {dist: radArr, is_deliverable: is_deliverable})      
+     
+      return view.render('menu.items', {showDeliverModal: 1, dist: radArr, is_deliverable: is_deliverable})      
   }
 
 
@@ -198,7 +198,14 @@ class AuthController {
       session.flash({status: 'Account Created'})
 
       const stores = await this.showPickupOptions(userInfo.zip)
-      return view.render(`auth.register-${fulMethod}`, {stores})
+      const deliverable = await this.showDeliveryOptions(userInfo.zip)
+      const meta = {
+        stores: stores,
+        method: fulMethod,
+        day: fulDay,
+        deliverable: deliverable
+      }
+      return view.render('menu.items', {stores, fulMethod, fulDay, fulMethod, meta, deliverable})
     } catch (error) {
       return response.send(`error from main function: ${error}`)
       if(error.code == 'ER_DUP_ENTRY') {
