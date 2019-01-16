@@ -67,92 +67,92 @@ $('.keto-filter').click(function() {
 		})
 
 
-((dropClasses, forEach) => {
-	customElements.define(
-	  'bulma-tile',
-	  class extends HTMLElement {
-		static get observedAttributes() {
-		  return ['size', 'vertical'];
-		}
-		attributeChangedCallback() {
-		  this.update();
-		}
-		connectedCallback() {
-		  this.update();
-		}
-		update() {
-		  const classes = ['tile'];
-		  const {nodeName} = this;
-		  if (this.observer) {
-			this.observer.disconnect();
-			this.observer = null;
-		  }
-		  if (this.parentNode.nodeName === nodeName) {
-			const child = this.firstElementChild;
-			if (child && child.nodeName !== nodeName) {
-			  classes.push('is-parent');
-			  forEach(
-				this.children,
-				child => child.classList.add('tile', 'is-child')
-			  );
-			}
-		  } else {
-			classes.push('is-ancestor');
-			this.observer = new MutationObserver(records => {
-			  let update = false;
-			  forEach(
-				records,
-				record => {
-				  if (record.target.nodeName === nodeName) {
-					update = true;
-					forEach(
-					  record.removedNodes,
-					  target => {
-						if (target.nodeType === 1)
-						  dropClasses(target);
-					  }
-					);
-				  }
-				}
-			  );
-			  if (update) {
-				forEach(
-				  this.querySelectorAll(nodeName),
-				  tile => tile.update()
-				);
-			  }
-			});
-			this.observer.observe(this, {
-			  childList: true,
-			  subtree: true
-			});
-		  }
-		  if (this.size)
-			classes.push('is-' + this.size);
-		  if (this.hasAttribute('vertical'))
-			classes.push('is-vertical');
-		  dropClasses(this);
-		  this.classList.add(...classes);
-		}
-	  }
-	);
-  })(
-	el => {
-	  el.classList.remove(
-		'tile',
-		'is-ancestor',
-		'is-parent',
-		'is-child',
-		'is-1', 'is-2', 'is-3',
-		'is-4', 'is-5', 'is-6',
-		'is-7', 'is-8', 'is-9',
-		'is-10', 'is-11', 'is-12'
-	  );
-	},
-	(list, fn) => {
-	  const length = list.length;
-	  for (let i = 0; i < length; i++)
-		fn(list[i]);
-	}
-	);
+// ((dropClasses, forEach) => {
+// 	customElements.define(
+// 	  'bulma-tile',
+// 	  class extends HTMLElement {
+// 		static get observedAttributes() {
+// 		  return ['size', 'vertical'];
+// 		}
+// 		attributeChangedCallback() {
+// 		  this.update();
+// 		}
+// 		connectedCallback() {
+// 		  this.update();
+// 		}
+// 		update() {
+// 		  const classes = ['tile'];
+// 		  const {nodeName} = this;
+// 		  if (this.observer) {
+// 			this.observer.disconnect();
+// 			this.observer = null;
+// 		  }
+// 		  if (this.parentNode.nodeName === nodeName) {
+// 			const child = this.firstElementChild;
+// 			if (child && child.nodeName !== nodeName) {
+// 			  classes.push('is-parent');
+// 			  forEach(
+// 				this.children,
+// 				child => child.classList.add('tile', 'is-child')
+// 			  );
+// 			}
+// 		  } else {
+// 			classes.push('is-ancestor');
+// 			this.observer = new MutationObserver(records => {
+// 			  let update = false;
+// 			  forEach(
+// 				records,
+// 				record => {
+// 				  if (record.target.nodeName === nodeName) {
+// 					update = true;
+// 					forEach(
+// 					  record.removedNodes,
+// 					  target => {
+// 						if (target.nodeType === 1)
+// 						  dropClasses(target);
+// 					  }
+// 					);
+// 				  }
+// 				}
+// 			  );
+// 			  if (update) {
+// 				forEach(
+// 				  this.querySelectorAll(nodeName),
+// 				  tile => tile.update()
+// 				);
+// 			  }
+// 			});
+// 			this.observer.observe(this, {
+// 			  childList: true,
+// 			  subtree: true
+// 			});
+// 		  }
+// 		  if (this.size)
+// 			classes.push('is-' + this.size);
+// 		  if (this.hasAttribute('vertical'))
+// 			classes.push('is-vertical');
+// 		  dropClasses(this);
+// 		  this.classList.add(...classes);
+// 		}
+// 	  }
+// 	);
+//   })(
+// 	el => {
+// 	  el.classList.remove(
+// 		'tile',
+// 		'is-ancestor',
+// 		'is-parent',
+// 		'is-child',
+// 		'is-1', 'is-2', 'is-3',
+// 		'is-4', 'is-5', 'is-6',
+// 		'is-7', 'is-8', 'is-9',
+// 		'is-10', 'is-11', 'is-12'
+// 	  );
+// 	},
+// 	(list, fn) => {
+// 	  const length = list.length;
+// 	  for (let i = 0; i < length; i++)
+// 		fn(list[i]);
+// 	}
+	// );
 	
