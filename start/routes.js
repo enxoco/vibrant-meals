@@ -17,6 +17,20 @@ const Route = use('Route')
 
 // Items by category id
 
+/*
+|---------------------------------------------------------------------------
+| Backend/Admin routes
+|---------------------------------------------------------------------------
+*/
+
+Route.get('/admin/items', 'AdminController.showItems')
+Route.get('/admin/categories', 'AdminController.showCategories')
+Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
+Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
+Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
+
+
+Route.get('/checkout', 'CheckoutController.startCheckout')
 Route.post('/cart/addItem', 'ItemController.addToCart')
 Route.get('/cart/clear', 'ItemController.clearCart')
 Route.get('/cart/sub/:cartPos', 'ItemController.subCart')
@@ -30,10 +44,7 @@ Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
 
 Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
 Route.get('/item/hide/:itemId', 'ItemController.hideItem')
-Route.get('/admin/items', 'AdminController.showItems')
-Route.get('/admin/categories', 'AdminController.showCategories')
-Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
-Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
+
 
 Route.get('/item/add/:itemId', 'ItemController.editItem')
 Route.post('/item/add/:itemId', 'ItemController.updateItem')
@@ -61,8 +72,6 @@ Route.post('/contact', 'ContactController.sendMessage').as('contact.send')
 /**
  * Social Login Route
  */
-Route.get('/auth/:provider', 'Auth/AuthController.redirectToProvider').as('social.login')
-Route.get('/auth/:provider/callback', 'Auth/AuthController.handleProviderCallback').as('social.login.callback')
 
 Route.group(() => {
   Route.get('/account', 'AccountController.edit').as('user.account')
@@ -72,31 +81,6 @@ Route.group(() => {
   Route.get('/account/unlink/:provider', 'AccountController.unlinkSocialMediaAccount').as('unlink.sm')
   Route.get('/account/delete', 'AccountController.destroy').as('account.delete')
 
-  Route.get('/api/github', 'GithubController.index').as('api.github')
-  Route.get('/api/twitter', 'TwitterController.index').as('api.twitter')
-  Route.post('/api/twitter/send', 'TwitterController.sendTweet').as('api.twitter.send')
-  Route.get('/api/facebook', 'FacebookController.index').as('api.facebook')
-  Route.get('/api/foursquare', 'FoursquareController.index').as('api.foursquare')
-  Route.get('/api/instagram', 'InstagramController.index').as('api.instagram')
-  Route.get('/api/lastfm', 'LastFmController.index').as('api.lastfm')
-  Route.get('/api/linkedin', 'LinkedinController.index').as('api.linkedin')
-  Route.get('/api/nyt', 'NewYorkTimeController.index').as('api.nyt')
-  Route.get('/api/stripe', 'StripeController.index').as('api.stripe')
-  Route.post('/api/stripe', 'StripeController.postStripe').as('api.stripe.post')
-  Route.get('/api/paypal', 'PayPalController.index').as('api.paypal')
-  Route.get('/api/paypal/success', 'PayPalController.getPayPalSuccess').as('api.paypal.success')
-  Route.get('/api/paypal/cancel', 'PayPalController.getPayPalCancel').as('api.paypal.cancel')
-  Route.get('/api/tumblr', 'TumblrController.index').as('api.tumblr')
-  Route.get('/api/scraping', 'ScarpingController.index').as('api.scraping')
-  Route.get('/api/yahoo', 'YahooController.index').as('api.yahoo')
-  Route.get('/api/clockwork', 'ClockworkController.index').as('api.clockwork')
-  Route.post('/api/clockwork', 'ClockworkController.postClockwork').as('api.clockwork.post')
-  Route.get('/api/lob', 'LobController.index').as('api.lob')
-  Route.get('/api/slack', 'SlackController.index').as('api.slack')
-  Route.post('/api/slack', 'SlackController.sendMessage').as('api.slack.send')
-  Route.get('/api/upload', 'UploadController.index').as('api.upload')
-  Route.post('/api/upload/apply', 'UploadController.upload').as('api.uploadfile')
-  Route.get('/api/google-maps', 'GoogleMapController.index').as('api.googlemap')
 })
 
 Route.get('/api', async ({ view }) => view.render('api'))
