@@ -1,11 +1,16 @@
-@layout('layout.admin')
-@section('content')
+<link rel="stylesheet" href="/css/bulma.min.css" />
 
-<div class="box cta">
-<p class="has-text-centered">
-		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-</p>
-</div>
+<nav class="nav has-background-dark">
+    nav bar
+  </nav>
+
+<nav class="level">
+</nav>
+<script src="/js/jquery-2.2.4.min.js"></script>
+
+
+    <div class="columns">
+    @!include('layout.admin.side-nav')
 
 <section class="item-manager">
   <div class="container">
@@ -46,8 +51,8 @@
   </div>
   <div class="column is-8">
     <div class="card-image">
-      <figure class="image is-4by3">
-          <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description" height="400px" width="400px">
+      <figure class="image is-preview-image">
+          <img id="preview" src="https://picsum.photos/800/600/?random" alt="Description" height="250px" width="250px">
       </figure>
     </div>  
       <div class="file">
@@ -245,4 +250,3 @@
             }
         }
         </script>
-@endsection

@@ -1,11 +1,10 @@
-@layout('layout.admin')
-@section('content')
-<form action="/register" method="post">
+<link rel="stylesheet" href="/css/bulma-checkradio.min.css">
+
+<form action="/register" method="post" id="register-form">
   {{ csrfField() }}
   <input type="hidden" id="acctCreated"/>
 
-<div class="container">
-  <div class="column is-10 is-offset-1">
+
     <div class="card">
     <header class="card-header">
     <p class="card-header-title">
@@ -62,49 +61,16 @@
                 <input class="is-checkradio is-block is-success is-large" id="wedButton" type="checkbox" name="wednesday" checked="checked">
                 <label for="wedButton">Wednesday</label>
               </div>
-              
+            </form>
         </div><!--/field-->
       </div><!--/column-->
      </div><!--/columns--> 
     </div><!--/content-->
   </div><!--/card-content-->
-  <footer class="card-footer">
-    <div class="column is-12 is-offset-6 is-jumbo">
-    <button type="submit" class="card-footer-item is-success button" value="submit">Continue</button>
-    </div>
-  </form>
-  </footer>
+    
 </div>
-    
-  </div><!--/column-->
-</div><!--/container-->
-    
-  <script>
 
-         function mainPreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+<script>
 
-                reader.onload = function (e) {
-                    $('#main-image-preview')
-                        .attr('src', e.target.result);
-                };
 
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function altPreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#alt-image-preview')
-                        .attr('src', e.target.result);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        </script>
-@endsection
+</script>

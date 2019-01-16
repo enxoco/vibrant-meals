@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
+
 <style>
     #cart {
     position: absolute;
@@ -30,7 +31,9 @@
 
   </style>
 <nav class="nav has-background-dark">
-    nav bar{{cry}}
+    nav bar{{items}}
+    {{ toJSON({ items }) }}
+   Meta {{ toJSON({ meta }) }}
 </nav>
 
 <nav class="nav" style="padding:20px;">
@@ -40,7 +43,7 @@
   <a class="button is-info" href="/menu/all">All</a>
 
   <a class="button is-danger" href="/cart/clear">Clear Cart</a>
-  <a class="button is-success" href="#" id="showCart" style="z-index:99999999;" onclick="showCartmenu()">View Cart</a>
+  <a class="button is-success" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>
 
 
 </nav>
@@ -107,16 +110,16 @@
               <div class="modal-card">
                 <header class="modal-card-head">
                   <p class="modal-card-title">Delete {{item.name}} ?</p>
-                  <a class="delete" aria-label="close" onclick="return launchModal('{{item.id}}', '{{item.name}}')"></a>
+                  <a class="delete" aria-label="close" onclick="closeModal()"></a>
                 </header>
                 <section class="modal-card-body">
-                  Are you sure you want to delete this item?  By clicking continue you will remove this item from the database
+                  Are you sure you want to delete this item?  By clicking continue you will remove this item fromcart tota the database
                   as well as delete any saved images of this item.  This will also remove this item from all associated filters
                   and categories.
                 </section>
                 <footer class="modal-card-foot">
                   <a class="button is-danger" href="/item/delete/{{item.id}}" onclick="launchModal({{item.id}})">Delete Item</a>
-                  <a class="button close-modal" onclick="return launchModal('{{item.id}}', '{{item.name}}')">Cancel</a>
+                  <a class="button close-modal" onclick="closeModal()">Cancel</a>
                 </footer>
               </div>
             </div><!--/modal-->
@@ -130,6 +133,7 @@
   <div class="column is-one-fifth-desktop is-one-third-mobile is-one-third-tablet is-hidden-tablet" id="cart">
       &nbsp
        <div id="cartTotal">$Cart total:</div>
+    <a class="button is-success" href="/checkout">Checkout</a>
       @each(c in cart)
       @unless(c.quantity == 0)
       <div class="card">
@@ -161,97 +165,138 @@
 </div>
 </div>
 
-<script src="/js/jquery-2.2.4.min.js"></script>
-
-<script>
-var total = 0
-for (var i = 0; i < 50; i++) {
-  var price = $('#subtotal-' + i).text()
-  price = parseFloat(price.replace('$', ''))
-  if (price) {
-    total += price
-  }
-
-  $('#cartTotal').text('Cart Total: $' + total)
-}
 
 
-function submitForm(id) {
-  $('#scroll').val('s')
-  $('#item_' + id).submit()
+<div class="modal
+@if(cartCount && cartCount == 1)
+is-active
+@endif
+" id="register">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width:50%;">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Create a meal plan?</p>
+        <a class="delete" aria-label="close" onclick="return launchModal('{{i.id}}', '{{i.name}}')"></a>
+      </header>
+      <section class="modal-card-body registration-body">
+        @if(fulMethod == 'delivery')
+          @!include('auth.register-delivery')
+        @elseif(fulMethod == 'pickup')
+        @!include('auth.register-pickup')
 
-
-}
-
-window.onscroll = function() {myFunction()};
-
-// Get the navbar
-var navbar = document.getElementById("cart");
-
-// Get the offset position of the navbar
-var sticky = navbar.offsetTop;
-
-// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function myFunction() {
-  var target = $(".nav");
-  var x = target.position();
-  console.log("Top: " + x.top + " Left: " + x.left);
-  if (window.pageYOffset >= sticky) {
-    navbar.classList.add("sticky")
-  } else {
-    navbar.classList.remove("sticky");
-  }
-}
-
-function launchModal(id) {
-  if ($('#modal-'+ id + '').hasClass('is-active')) {
-    $('#modal-'+ id + '').removeClass('is-active')
-    location.reload(true)
-  } else {
-    $('#modal-'+ id + '').addClass('is-active')
-
-  }
-}
-$('.modal-background').click(function() {
-$('.close-modal').trigger('click');
-});
-$('#delete-item').on('click', function(){
+          @else
+        @!include('auth.register')
+        @endif
+        You can save 15% off of your order by selecting 5 items or more.  By creating an account you can also set up a recurring subscription.  Would you like to create an account now?
+      </section>
+      <footer class="modal-card-foot modal-card-foot-registration">
+        <a class="button is-danger" href="/item/delete/{{i.id}}" onclick="launchModal({{i.id}})">Delete Item</a>
+        <a class="button close-modal" onclick="closeModal()">Cancel</a>
+      </footer>
+    </div>
+  </div><!--/modal-->
+  <script src="/js/jquery-2.2.4.min.js"></script>
+  <script src="/js/product-card.js"></script>
   
-  $('#modal-item').addClass("is-active")
-})
+  <script>
+    $(document).ready(function(){
+      $('.modal-card-foot-registration').html('<a class="card-footer-item is-success button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
+    });
+    function signupSubmit() {
+      $('#register-form').submit()
+    }
 
-function showCartmenu() {
-  var cart = $('#cart')
-  var items = $('#items-column')
-  var item = $('.item-column')
+  var total = 0
+  for (var i = 0; i < 50; i++) {
+    var price = $('#subtotal-' + i).text()
+    price = parseFloat(price.replace('$', ''))
+    if (price) {
+      total += price
+    }
+  
+    $('#cartTotal').text('Cart Total: $' + total)
+  }
+  
+  function submitForm(id) {
+    $('#scroll').val('s')
+    $('#item_' + id).submit()
+  
+  
+  }
+  
+  window.onscroll = function() {myFunction()};
+  
+  // Get the navbar
+  var navbar = document.getElementById("cart");
+  
+  // Get the offset position of the navbar
+  var sticky = navbar.offsetTop;
+  
+  // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+  function myFunction() {
+    var target = $(".nav");
+    var x = target.position();
+    console.log("Top: " + x.top + " Left: " + x.left);
+    if (window.pageYOffset >= sticky) {
+      navbar.classList.add("sticky")
+    } else {
+      navbar.classList.remove("sticky");
+    }
+  }
+  
+  function launchModal(id) {
+    if ($('#modal-'+ id + '').hasClass('is-active')) {
+      $('#modal-'+ id + '').removeClass('is-active')
+      location.reload(true)
+    } else {
+      $('#modal-'+ id + '').addClass('is-active')
+  
+    }
+  }
+  function closeModal() {
+    if($('.modal').hasClass('is-active')) {
+      $('.modal').removeClass('is-active')
+    }
+  }
+  $('.modal-background').click(function() {
+    closeModal()
+  });
 
-
-  if (cart.hasClass('is-hidden-mobile') || cart.hasClass('is-hidden-tablet')) {
-    // Show the cart div and make it half screen
-    cart.addClass('cart-mobile')
-    cart.removeClass('is-hidden-mobile').fadeIn()
-    cart.removeClass('is-hidden-tablet').fadeIn()
-    items.removeClass('is-full-mobile')
-    items.removeClass('is-full-tablet')
-    items.addClass('is-two-thirds-mobile')
-    items.addClass('is-two-thirds-tablet')
-
-
-  } else {
-    // hide the cart div
-    console.log('hide div')
-    cart.addClass('is-hidden-mobile').fadeIn()
-    cart.addClass('is-hidden-tablet').fadeIn()
-    cart.addClass('is-hidden-mobile').fadeIn()
-    cart.addClass('is-hidden-tablet').fadeIn()
-    items.addClass('is-full-mobile')
-    items.addClass('is-full-tablet')
-    items.removeClass('is-two-thirds-mobile')
-    items.removeClass('is-two-thirds-tablet')
-
-
+  
+  function showCartmenu() {
+    var cart = $('#cart')
+    var items = $('#items-column')
+    var item = $('.item-column')
+  
+  
+    if (cart.hasClass('is-hidden-mobile') || cart.hasClass('is-hidden-tablet')) {
+      // Show the cart div and make it half screen
+      cart.addClass('cart-mobile')
+      cart.removeClass('is-hidden-mobile').fadeIn()
+      cart.removeClass('is-hidden-tablet').fadeIn()
+      items.removeClass('is-full-mobile')
+      items.removeClass('is-full-tablet')
+      items.addClass('is-two-thirds-mobile')
+      items.addClass('is-two-thirds-tablet')
+  
+  
+    } else {
+      // hide the cart div
+      console.log('hide div')
+      cart.addClass('is-hidden-mobile').fadeIn()
+      cart.addClass('is-hidden-tablet').fadeIn()
+      cart.addClass('is-hidden-mobile').fadeIn()
+      cart.addClass('is-hidden-tablet').fadeIn()
+      items.addClass('is-full-mobile')
+      items.addClass('is-full-tablet')
+      items.removeClass('is-two-thirds-mobile')
+      items.removeClass('is-two-thirds-tablet')
+  
+  
+    }
+  
   }
 
-}
-
-</script>
+  
+  
+  </script>

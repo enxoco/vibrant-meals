@@ -19,8 +19,9 @@
   </div>
   </nav>
 {{--  <div class="container">  --}}
-  @!include('layout.admin.side-nav')
-  <div class="columns is-multiline is-four-fifths">
+  <div class="columns">
+      @!include('layout.admin.side-nav')
+    <div class="columns is-multiline">
       @each(i in items)
       <div class="column is-one-third" id="item">
           <div class="card">
@@ -72,6 +73,7 @@
           </div>
         </div><!--/modal-->
       @endeach
+      </div>
   </div>
 {{--  </div>  --}}
 <script src="/js/jquery-2.2.4.min.js"></script>
@@ -97,11 +99,32 @@ $('#delete-item').on('click', function(){
 
 
 $("input").keyup(function(){
-    $('.column').hide();
+  $('.is-one-third > .card').hide()
+  // $('.is-one-third > .card').removeProp('overflow')
+  // $('.is-one-third > .card').removeProp('min-width')
+  // $('.is-one-third > .card').removeProp('top')
+  // $('.is-one-third > .card').removeProp('left')
+  // $('.is-one-third > .card').removeProp('zoom')
+  // $('.is-one-third > .card').css('position', 'relative')
+  
+
+
+  // $('.item').each(function(){
+    //   console.log('hiding div' + JSON.stringify($(this)))
+    //   $(this).hide()
+    // })
     var txt = $('#search-criteria').val();
-    $('.column').each(function(){
+    $('.is-one-third > .card').each(function(){
        if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-           $(this).show();
+           $(this).show()
+          //  $(this).css('overflow', 'auto')
+          //  $(this).css('min-width', '400px')
+          //  $(this).css('position', 'relative')
+          //  $(this).css('top', '50%')
+          //  $(this).css('left', '50%')
+          //  $(this).css('zoom', '2')
+
+
        }
     });
 });

@@ -1,12 +1,7 @@
-@layout('layout.admin')
-@section('content')
-{{ toJSON({ dist }) }}
-{{ toJSON({ is_deliverable }) }}
+{{ toJSON({ deliverable }) }}
 <form id="fulfillment" method="POST" action="/register/stepTwo">
   <input type="hidden" id="acctCreated"/>
 
-<div class="container">
-  <div class="column is-10 is-offset-1">
     <div class="card">
     <header class="card-header">
     <p class="card-header-title">
@@ -24,7 +19,7 @@
     <div class="content">
       <div class="columns">
           {{ csrfField() }}
-          @if(is_deliverable == false)
+          @if(deliverable == false)
         Sorry this address is outside of our delivery zone
         @else
       <div class="column has-border-right ">
@@ -79,36 +74,3 @@
   </form>
   </footer>
 </div>
-    
-  </div><!--/column-->
-</div><!--/container-->
-    
-  <script>
-
-         function mainPreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#main-image-preview')
-                        .attr('src', e.target.result);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function altPreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#alt-image-preview')
-                        .attr('src', e.target.result);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        </script>
-@endsection

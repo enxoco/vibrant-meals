@@ -1,14 +1,16 @@
-@layout('layout.admin')
-@section('content')
+<link rel="stylesheet" href="/css/bulma.min.css" />
 
-<div class="box cta">
-<p class="has-text-centered">
-  
-		<span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    <a type="button" class="button is-success" href="item/add/{{ item.id }}/child">Add Variation</a>
+<nav class="nav has-background-dark">
+    nav bar
+  </nav>
 
-  </p>
-</div>
+<nav class="level">
+</nav>
+<script src="/js/jquery-2.2.4.min.js"></script>
+
+
+    <div class="columns">
+    @!include('layout.admin.side-nav')
 <section class="item-manager">
   <div class="container">
   <div class="column is-10 is-offset-1">
@@ -253,4 +255,3 @@
         </script>
 
         
-@endsection

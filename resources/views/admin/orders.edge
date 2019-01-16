@@ -1,0 +1,9 @@
+@each(o in orders)
+
+Order number: {{o.id}}
+stripe order number: {{o.order_id}}
+paid: no
+fulfilled? {{o.fulfillment_status}}
+fulfillment Date: {{o.fulfillment_date}}
+
+@endeach
