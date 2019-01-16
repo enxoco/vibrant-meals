@@ -15,6 +15,8 @@ class OrdersSchema extends Schema {
       table.integer('shipping')// Shipping
       table.integer('taxes')// Taxes
       table.integer('total')// Total
+      table.string('order_id')// Coming from stripe
+      table.integer('user_id')// To link orders to users
 
 
       table.timestamps()
