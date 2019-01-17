@@ -1,39 +1,12 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
+<link rel="stylesheet" href="/css/cart.css" />
 
-<style>
-    #cart {
-    position: absolute;
-    right: .025vw;
-  }
-  .sticky {
-    position: fixed !important;
-    top: 0px;
-    overflow: auto;
-    height: 100vh;
-  }
-  .cart-mobile {
-    background: #efefef;
-    height: 100%;
-    width: 50%;
-    text-align: center;
-    top: 100px;
-  }
 
-  @media screen and (min-width: 1900px) {
-  .is-four-fifths-mac {
-    flex: none;
-    width: 80% !important; 
-    }
-    #cart {
-      display: block !important;
-    }
-}
-
-  </style>
 <nav class="nav has-background-dark">
-    nav bar{{items}}
-    {{ toJSON({ items }) }}
-   Meta {{ toJSON({ meta }) }}
+  <pre>
+    {{ toJSON({ nextAvalDate }) }}
+
+  </pre>
 </nav>
 
 <nav class="nav" style="padding:20px;">
@@ -175,17 +148,24 @@ is-active
     <div class="modal-background"></div>
     <div class="modal-card" style="width:50%;">
       <header class="modal-card-head">
-        <p class="modal-card-title">Create a meal plan?</p>
+        <p class="modal-card-title">
+            @if(fulMethod == 'delivery')
+            Delivery Details
+          @elseif(fulMethod == 'pickup')
+            Pickup Details
+          @else
+            Registration
+          @endif
+        </p>
         <a class="delete" aria-label="close" onclick="return launchModal('{{i.id}}', '{{i.name}}')"></a>
       </header>
       <section class="modal-card-body registration-body">
         @if(fulMethod == 'delivery')
           @!include('auth.register-delivery')
         @elseif(fulMethod == 'pickup')
-        @!include('auth.register-pickup')
-
-          @else
-        @!include('auth.register')
+          @!include('auth.register-pickup')
+        @else
+          @!include('auth.register')
         @endif
         You can save 15% off of your order by selecting 5 items or more.  By creating an account you can also set up a recurring subscription.  Would you like to create an account now?
       </section>
@@ -197,11 +177,33 @@ is-active
   </div><!--/modal-->
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/product-card.js"></script>
-  
+  @if(fulMethod == 'delivery')
+  <script>
+    $(document).ready(function(){
+      $('.modal-card-foot-registration').html('<a id="continueUser" class="card-footer-item is-success button">Create an account</a><a id="continueGuest" class="card-footer-item is-success button">Continue as Guest</a><input type="hidden" id="reg_method" value="" name="reg_method">')
+    
+      $('#continueGuest').click(function() {
+        $('#reg_method').val('guest')
+        $('#fulfillment').attr('action', '/register/guest')
+        $('#fulfillment').submit()
+    })
+    
+    $('#continueUser').click (function() {
+        $('#reg_method').val('user')
+        $('#fulfillment').attr('action', '/register/user')
+        $('#fulfillment').submit()
+
+    })   
+    });
+  </script>
+  @else
   <script>
     $(document).ready(function(){
       $('.modal-card-foot-registration').html('<a class="card-footer-item is-success button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
     });
+  </script>
+  @endif
+  <script>
     function signupSubmit() {
       $('#register-form').submit()
     }
@@ -298,5 +300,5 @@ is-active
   }
 
   
-  
+ 
   </script>

@@ -8,6 +8,10 @@ const zipcodes = require('zipcodes')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
 const ItemCategory = use('App/Models/ItemCategory')
 const Item = use('App/Models/Item')
+const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
+const showPickupOptions = use('App/Controllers/Helpers/FetchPickupOptions')
+const showDeliveryOptions = use('App/Controllers/Helpers/FetchDeliveryOptions')
+const nextFulfillment = use('App/Controllers/Helpers/FetchNextFulfillment')
 
 class AuthController {
 
@@ -49,28 +53,41 @@ class AuthController {
     return view.render('auth.login')
   }
 
-  async stepTwo ({ request, response, view, params, session }) {
-    if (params.reg_method == 'user') {// Do user registration
-      // Also we need to grab the users preffered location and add it to their profile
-      session.put('needs_registration', 1)
-      console.log(`all: ${request.all()}`)
-      var location = request.only(['location'])
-      var locationId = location.location
+  async updateCustomerAddress ({ request, response, view, params, session }) {
+    if (params.reg_method == 'user') {// Update a users profile with address
+      // session.put('needs_registration', 1)
+      const user = session.get('adonis_auth')
+
+      const req = request.all()
+      
+      const update = await Database
+        .table('delivery_customer_metas')
+        .insert({
+          user_id: user,
+          street_addr: req.st_addr,
+          city: req.city,
+          state: req.state,
+          zip: req.zip
+        })
+      
+      return response.send(update)
+      // var location = request.only(['location'])
+      // var locationId = location.location
 
     
-      if (location) {
-        var id = session.get('adonis_auth')
-        await Database
-          .table('users')
-          .update({
-            pickup_location: locationId
-          })
-          .where('id', id)
+      // if (location) {
+      //   var id = session.get('adonis_auth')
+      //   await Database
+      //     .table('users')
+      //     .update({
+      //       pickup_location: locationId
+      //     })
+      //     .where('id', id)
         
-        session.put('locationId', locationId)
-      }
-      
-      return response.redirect('/')
+      //   session.put('locationId', locationId)
+      // }
+      // console.log('step two')
+      // return response.redirect('/')
 
     
     } else {// Just show menu and continue as guest
@@ -95,43 +112,6 @@ class AuthController {
       return response.redirect('/')
     }
   }
-
-  async showPickupOptions (zip) {
-
-    var radArr = zipcodes.radius(zip, 20);
-
-    const locations = await Database
-      .from('locations')
-      .select('*')
-    var stores = []
-      for (var i = 0; i < locations.length; i++) {
-        for (var x = 0; x < radArr.length; x++) {
-          var test = parseInt(radArr[x])
-          if (test === locations[i].zip) {
-            var dist = zipcodes.distance(zip, locations[i].zip); //In Miles
-
-            stores.push({store: locations[i], dist: dist})
-          }
-        }
-      }
-      return stores
-  }
-  
-  async showDeliveryOptions (zip) {
-    const storeZip = 37409
-    var radArr = zipcodes.distance(zip, 37409);
-    if (radArr > 25) {
-      var is_deliverable = false
-      return false
-    } else {
-      var is_deliverable = true
-      return true
-    }
-
-     
-      return view.render('menu.items', {showDeliverModal: 1, dist: radArr, is_deliverable: is_deliverable})      
-  }
-
 
 
   async postLogin ({request, session, auth, response}) {
@@ -168,7 +148,7 @@ class AuthController {
 
   async postGuestRegistration ({request, response, session, view}) {
 
-    try {
+    // try {
       const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
 
       const customer = stripe.customers.create({
@@ -194,26 +174,36 @@ class AuthController {
       session.put('adonis_auth', newUser)
       session.put('zip', userInfo.zip)
 
-
       session.flash({status: 'Account Created'})
+      // We need to pass this information along with everything else to our view
+      const stores = await showPickupOptions(userInfo.zip)
+      const deliverable = await showDeliveryOptions(userInfo.zip)
 
-      const stores = await this.showPickupOptions(userInfo.zip)
-      const deliverable = await this.showDeliveryOptions(userInfo.zip)
-      const meta = {
-        stores: stores,
-        method: fulMethod,
-        day: fulDay,
-        deliverable: deliverable
-      }
-      return view.render('menu.items', {stores, fulMethod, fulDay, fulMethod, meta, deliverable})
-    } catch (error) {
-      return response.send(`error from main function: ${error}`)
-      if(error.code == 'ER_DUP_ENTRY') {
-        session.flash({error: 'This email address is already in use'})
-        return response.redirect('back')
-      }
-    }
-return response.send('hello')
+      // This won't work because their are no items passed in
+      // return view.render('menu.items', {stores, deliverable})
+
+      // Get our menu items, filters, categories, etc...
+      const menu_items = await fetchMenu()
+
+      // not working atm
+      const user = await User.find(newUser)
+      // Increase our cart count so that modal is closed whne page is rendered
+      var cartCount = session.get('cartCount')
+      session.put('cartCount', cartCount++)
+
+
+    // } catch (error) {
+    //   // return response.send(`error from main function: ${error}`)
+    //   if(error.code == 'ER_DUP_ENTRY') {
+    //     session.flash({error: 'This email address is already in use'})
+    //     return response.redirect('back')
+    //   }
+    //   return view.render('menu.items', {categories: menu_items.categories, user: newUser, items: menu_items.items, cartCount, hasAccount: false, session: user, stores, deliverable, fulMethod})
+
+    //   return response.send('error occured', JSON.stringify(error))
+    // }
+
+    return view.render('menu.items', {categories: menu_items.categories, user, items: menu_items.items, cartCount, hasAccount: false, session: user, stores, deliverable, fulMethod})
   }
 
   // async postRegister ({request, session, response}) {
@@ -240,10 +230,11 @@ return response.send('hello')
   //   response.redirect('/login')
   // }
 
-  async logout ({ auth, response, session }) {
+   async logout ({ auth, response, session }) {
+
     await auth.logout()
     session.clear()
-    response.redirect('/login')
+    response.redirect('/menu/all')
   }
 
 

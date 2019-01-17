@@ -40,7 +40,7 @@ Route.get('/menu/all', 'ItemController.showMenu')
 Route.get('/items/category/:cat_id', 'ItemController.list')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
-Route.post('/register/:reg_method', 'Auth/AuthController.stepTwo')
+Route.post('/register/:reg_method', 'Auth/AuthController.updateCustomerAddress')
 
 Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
 Route.get('/item/hide/:itemId', 'ItemController.hideItem')

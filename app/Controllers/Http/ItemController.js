@@ -1,23 +1,23 @@
 'use strict'
 
 const Database = use('Database')
-const Categories = use('App/Models/ItemCategory')
-const ItemCategory = use('App/Models/ItemCategory')
-const Item = use('App/Models/Item')
-const users = make('App/Services/UserService')
-const User = use('App/Models/User')
 const Helpers = use('Helpers')
-const Env = use('Env')
 const Drive = use('Drive')
 const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
-const moment = require('moment')
-
+const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
+const nextFulfillment = use('App/Controllers/Helpers/FetchNextFulfillment')
+const showDeliveryOptions = use('App/Controllers/Helpers/FetchDeliveryOptions')
 
 var cartCur = []
 
 class ItemController {
 
-    async hideItem ({ request, params, response, session }) {
+  /**
+   * 
+   * These are admin related functions for managing menus on the item
+   * 
+   */
+    async hideItem ({ params, response }) {
       const id = params.itemId
 
       const visible = await Database
@@ -44,42 +44,42 @@ class ItemController {
 
 
     }
-    async deleteItem ({ request, response, view, params, session }) {
+
+    async deleteItem ({ params }) {
 
       const imgUrl = await Database
         .table('items')
         .select('img_url', 'alt_img_url')
         .where('id', params.itemId)
-        const removeCat = await Database
+      await Database
         .table('items_in_categories')
         .where('item_id', params.itemId)
         .del()
 
-        await Database
-          .table('items_in_filters')
-          .where('item_id', params.itemId)
-          .del()
-      const removeItem = await Database
+      await Database
+        .table('items_in_filters')
+        .where('item_id', params.itemId)
+        .del()
+      
+      await Database
         .table('items')
         .where('id', params.itemId)
         .del()
-      console.log('item: ' + removeItem)
 
-      console.log('cat: ' + removeCat)
       await Drive.delete('/uploads/' + imgUrl[0].img_url)
       await Drive.delete('/uploads/' + imgUrl[0].alt_img_url)
     }
 
-    async addItemView ({ request, response, view }) {
-        const categories = await Database
-            .from('item_categories')
-            .select('id', 'desc')
+    async addItemView ({ view }) {
+      const categories = await Database
+        .from('item_categories')
+        .select('id', 'desc')
 
-            const allFilters = await Database
-            .table('item_filters')
-            .select('name', 'id')
+      const allFilters = await Database
+        .table('item_filters')
+        .select('name', 'id')
             
-        return view.render('add-item', {categories, all_filters: allFilters})
+      return view.render('add-item', {categories, all_filters: allFilters})
     }
     
     async updateItem ({ view, request, response, params, session }) {
@@ -526,115 +526,66 @@ class ItemController {
     }
 
     async showMenu ({ view, session, response }) {
-      const item = await Database
-        .select('*')
-        .from('items')
-
-      const categories = await Database
-        .select('id', 'desc')
-        .table('item_categories')
-      
-      const filters = await Database
-        .select('id', 'name')
-        .table('item_filters')
-      
-      const items_in_categories = await Database
-        .select('item_categories.desc AS name')
-        .table('items_in_categories')
-        .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
-
-      const itemFilters = await Database
-        .select('item_filters.name AS name')
-        .table('items_in_filters')
-        .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
-
+      // Setup our cart items variable
       var cart = session.get('cartItem')
+
+      // Get our cart count if available.  This is used for basic analytics
+      // Used mainly to track whether we should show the registration modal
       var cartCount = session.get('cartCount')
 
-          for (var i = 0; i < item.length; i++) {
-            const items_in_categories = await Database
-            .select('item_categories.desc AS name')
-            .table('items_in_categories')
-            .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
-            .where('items_in_categories.item_id', item[i].id)
+      // Fetch our menu object containing items, filters, categories, etc...
+      const menu_items = await fetchMenu()
 
-            const itemFilters = await Database
-            .select('item_filters.name AS name')
-            .table('items_in_filters')
-            .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
-            .where('items_in_filters.item_id', item[i].id)
+      if (session.get('adonis_auth')) { // If the user already has an account, load their fulfillment preferences
 
-            item[i].filters = itemFilters
-            item[i].categories = items_in_categories
-          }
-          if(items_in_categories && items_in_categories.length != 0) {
-              item[0].category = items_in_categories[0].name
-
-          }
-          const items = await Database
+        const user = await Database
+        .table('users')
+        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
+        .where('id', session.get('adonis_auth'))  
+  
+        const store = await Database
           .select('*')
-          .from('items')
-
-          if (session.get('adonis_auth')) {
-            const user = await Database
-            .table('users')
-            .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
-            .where('id', session.get('adonis_auth'))  
-    
-
-    
-            const store = await Database
-              .select('*')
-              .from('locations')
-              .where('id', session.get('locationId'))
-            const prefDay = user[0].fulfillment_day
-            if (prefDay == 'wednesday') {// User has chosen to receive deliveries on Wednesday..
-              var day = moment().format('dddd')
-              if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
-                const nextAvalDate = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
-                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate, store})
-              } else {// We have passed the cut off for this week, need to schedule for next week.
-                const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
-                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate, store})
-              }
-            } else {// Need to work on this, currently no view is being rendered when monday is chosen
-              var day = moment().format('dddd')
-              if (day == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
-                const nextAvalDate = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')    
-                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate})
-              
-              } else {
-                const nextAvalDate = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD')
-                return view.render('menu.items', {cart, categories: categories, user, items: item, cart: cart, nextAvalDate})
-              }
-    
-            }
-          } else {
-            return view.render('menu.items', {cart, categories: categories, items: item, cartCount})
-          }
-        // return view.render('menu.items', {cart, categories: categories, items: item, cart: cart, session: session.all()})
-    }
-    async list ({ params, view, session, response }) {
-
-        var cat_ids = params.cat_id
-
-            const subquery = Database
-            .from('items_in_categories')
-            .where('category_id', cat_ids)
-            .select('item_id')
-    
-            const items = await Database
-            .from('items')
-            .select('*')
-            .whereIn('id', subquery)
-
+          .from('locations')
+          .where('id', session.get('locationId'))   
+        const nextAvalDate = await nextFulfillment(user[0].fulfillment_day)
+        const deliverable = await showDeliveryOptions(user.zip)
         
-        const categories = await Database
+        return view.render('menu.items', {cart, categories: menu_items.categories, user, items: menu_items.items, nextAvalDate, store, hasAccount: true, fulMethod: 'delivery', deliverable})
+
+      } // If we reach this condition, it means the user is not logged in.  Just show them the menu
+        // and we will collect their details before order is placed.
+        return view.render('menu.items', {cart, categories: menu_items.categories, items: menu_items.items, cartCount, hasAccount: false, fulMethod: 'delivery'})
+    }
+
+
+    /**
+     * 
+     * This function is used to list the items in a particular category 
+     * 
+     * Route /items/category/:cat_id
+     *  |
+     * \ /
+     * 
+     */
+    async list ({ params, view, session, response }) { 
+      var cat_ids = params.cat_id
+      var cart = session.get('cartItem')
+      
+      const subquery = Database
+        .from('items_in_categories')
+        .where('category_id', cat_ids)
+        .select('item_id')
+    
+      const items = await Database
+        .from('items')
+        .select('*')
+        .whereIn('id', subquery)
+
+      const categories = await Database
         .table('item_categories')
         .distinct('desc', 'id')
-        var cart = session.get('cartItem')
       
-        return view.render('menu.items', {items, categories: categories, cart})
+      return view.render('menu.items', {items, categories: categories, cart})
     }
 }
 

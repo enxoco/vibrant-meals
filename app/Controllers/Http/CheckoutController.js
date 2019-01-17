@@ -6,6 +6,7 @@ class CheckoutController {
 
     async startCheckout({ request, response, session}) {
         var cart = session.get('cartItem')
+        console.log('the cart is ', cart)
         var stripeItems = []
         for (var i = 0; i < cart.length; i++) {
             stripeItems.push({
@@ -47,17 +48,48 @@ class CheckoutController {
               },
               email: user.email
             });
+        } else { // Order should be sent out for delivery
+          
+          const location = await Database
+            .table('locations')
+            .where('id', user.pickup_location)
+            .first()
+          // Before we can process an order we need to get the customers delivery information..
+
+          const deliveryAddr = await Database
+            .table('deliver¥_customer_meta')
+            .select('*')
+            .where('user_id', user.id)
+
+          if (deliveryAddr) { // If we have a delivery address, procede with order
+            var order = await stripe.orders.create({
+              currency: 'usd',
+              items: stripeItems,
+              shipping: { // shipping address could be either customers address for delivery or store address for pickup
+                name: user.name,
+                address: {
+                  line1: location.street_addr,
+                  city: location.city,
+                  state: location.state,
+                  country: 'US',
+                  postal_code: location.zip
+                }
+              },
+              email: user.email
+            });
+            await Database
+              .insert({
+                user_id: 1,
+                order_id: order.id,
+                is_paid: 0
+              })
+              .table('orders')
+            return response.send(order.id)
+          } else { // We don't have address, need to send a form to user to get address
+
+          }
+
         }
-
-
-          await Database
-            .insert({
-              user_id: 1,
-              order_id: order.id,
-              is_paid: 0
-            })
-            .table('orders')
-        return response.send(order.id)
     }
 }
 
