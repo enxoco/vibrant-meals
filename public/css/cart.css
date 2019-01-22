@@ -1,0 +1,27 @@
+#cart {
+    position: absolute;
+    right: .025vw;
+  }
+  .sticky {
+    position: fixed !important;
+    top: 0px;
+    overflow: auto;
+    height: 100vh;
+  }
+  .cart-mobile {
+    background: #efefef;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    top: 100px;
+  }
+
+  @media screen and (min-width: 1900px) {
+  .is-four-fifths-mac {
+    flex: none;
+    width: 80% !important; 
+    }
+    #cart {
+      display: block !important;
+    }
+}

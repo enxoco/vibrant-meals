@@ -1,9 +1,256 @@
-@each(o in orders)
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+<style>
+  html, body {
+    background-color: #f5f5f5;
+  }
 
-Order number: {{o.id}}
-stripe order number: {{o.order_id}}
-paid: no
-fulfilled? {{o.fulfillment_status}}
-fulfillment Date: {{o.fulfillment_date}}
+  .date-picker, .dropdown-content {
+    min-width: 200px;
+    position: relative;
+    left: 50%;
+  }
+  .navbar-item img {
+    max-height: 5.75rem;
+    position: relative;
+    left: 57px;
+    top: 0px;
+  }
 
-@endeach
+  nav.navbar {
+    background: #565856;
+    width: 110%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    min-height: 137px;
+  }
+  .tile-top {
+    margin-top: 10rem !important;
+}
+
+
+  .navbar-menu {
+    max-width: 74vw;
+  }
+</style>
+
+<div class="container is-fluid">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/dashboard">
+                        <img src="//static1.squarespace.com/static/572361987c65e48584ee75e7/t/59de5426c027d815f059e045/1547849127338/?format=1500w" alt="Bulma: Free, open source, & modern CSS framework based on Flexbox" height="200px">
+                    </a>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                    
+                                    <div class="dropdown">
+                                        <div class="dropdown-trigger">
+                                            <button class="button is-light is-outlined date-picker" aria-haspopup="true" aria-controls="dropdown-menu">
+                                            <span>This week</span>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                            </button>
+                                        </div>
+                                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                            <div class="dropdown-content">
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                <a class="button is-primary">
+                                    <strong>CPU cores: {{stats.cpuCount}}</strong>
+                                </a>
+                                <a class="button is-info">
+                                    Total Memory: <strong>{{stats.memTotal}}</strong>
+                                </a>
+                                <a class="button is-info">
+                                    Free Memory: <strong>{{stats.memFree}}</strong>
+                                </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="tile is-ancestor tile-top">
+    <div class="tile is-parent is-vertical">
+        <div class="notification is-primary">
+                <article class="tile is-child">
+                        <p class="title has-text-centered">{{pagetype}}</p>
+
+                        <nav class="level">
+                                <div class="level-item has-text-centered">
+                                  <div>
+                                    <p class="heading">Open orders</p>
+                                    <p class="title">{{orderCount}}</p>
+                                  </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                  <div>
+                                    <p class="heading">Scheduled deliveries</p>
+                                    <p class="title">{{deliveries.length}}</p>
+                                  </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                        <div>
+                                          <p class="heading">Scheduled pickups</p>
+                                          <p class="title">{{pickups.length}}</p>
+                                        </div>
+                                      </div>
+                                <div class="level-item has-text-centered">
+                                  <div>
+                                    <p class="heading">Monday fulfillments</p>
+                                    <p class="title">{{mondayFulfillments.length}}</p>
+                                  </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                  <div>
+                                    <p class="heading">Wednesday Fulfillments</p>
+                                    <p class="title">{{wednesdayFulfillments.length}}</p>
+                                  </div>
+                                </div>
+                              </nav>
+                        </article>
+        </div>
+<!--        @!include('Tiles.top-users')-->
+    </div>
+
+<!--@!include('Tiles.top-sites')@!include('Tiles.blocked-sites')-->
+
+</div>
+
+<div class="tile is-ancestor">
+    <!--@!include('Tiles.recent-sites')@!include('Tiles.Config.custom-blocked')@!include('Tiles.Config.custom-allowed')-->
+</div>
+
+<div class="tile is-ancestor">
+  <div class="tile is-parent">
+    <article class="tile is-child box">
+      <p class="title">Item Quantities</p>
+      <p class="subtitle">Quantity of items needed to fulfill current orders</p>
+      <div class="content">
+        @each(o in orders)
+        <p><strong>{{o.item}}</strong><span class="tag is-success is-pulled-right">{{o.count}}</span></p><br />
+        <hr>
+        @endeach
+
+      </div>
+    </article>
+  </div>
+  <div class="tile is-parent">
+    <article class="tile is-child box">
+      <p class="title">Scheduled pickups</p>
+      <p class="subtitle">Orders scheduled for pickup by customer.</p>
+      <div class="content">
+        @each(p in pickups)
+        Order number: {{p.id}}<br />
+      Order total: {{currency(p.amount)}}<br />
+        Customer name: {{p.shipping.name}}<br />
+        Items:
+            @each(i in p.items)
+                @if(i.amount == "0")
+                @else
+                {{i.description}},
+                @endif
+            @endeach
+        @endeach
+    </div>
+    </article>
+  </div>
+  <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">Scheduled deliveries</p>
+          <p class="subtitle">Orders scheduled for delivery.</p>
+          <div class="content">
+          @each(p in deliveries)
+
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                Order number: {{p.id}}<br />
+                                Order total: {{currency(p.amount)}}<br />
+                                Items:
+                                @each(i in p.items)
+                                    @if(i.amount == "0")
+                                    @else
+                                    {{i.description}},
+                                    @endif
+                                @endeach
+                                <br />
+                                Delivery Information: <br>
+                                    <div class="is-pulled-right">
+                                        <strong>Customer name:</strong> <small>{{p.shipping.name}}</small><br />
+                                        <strong>Address:</strong> <small>{{p.shipping.address.line1}}</small><br />
+                                        <strong>City:</strong> <small>{{p.shipping.address.city}}</small><br />
+                                        <strong>Zip:</strong> <small>{{p.shipping.address.postal_code}}</small><br />
+                                    </div>
+                                    <br>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <hr>
+
+            @endeach
+            <br />
+
+
+        </div>
+        </article>
+      </div>
+</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+  // Dropdown controls
+
+var dropdown = document.querySelector('.dropdown');
+    dropdown.addEventListener('click', function(event) {
+    event.stopPropagation();
+    dropdown.classList.toggle('is-active');
+});
+</script>
+
+<script src="/js/moment.js"></script>
+<script>
+
+var future = []
+var past = []
+for (var i = 1; i < 4; i++) {
+  past.push(moment().subtract(i, 'weeks').startOf('isoweek').format('LL'))
+}
+for (var x = 0; x < past.length; x++) {
+  $('.dropdown-content').append('<a href="/dashboard/' + x + '" class="dropdown-item">'+past[x]+'</a>')
+}
+
+for (var i = 1; i < 4; i++) {
+  future.push(moment().add(i, 'weeks').startOf('isoweek').format('LL'))
+}
+
+
+for (var x = 0; x < future.length; x++) {
+  $('.dropdown-content').append('<a href="/dashboard/' + x + '" class="dropdown-item">'+future[x]+'</a>')
+}
+
+
+</script>
+<script>
+    $('a').click(function(e){
+      e.preventDefault()
+        alert(JSON.stringify($(this).data('old')))
+        var new = $('#blocked-')
+    })
+</script>

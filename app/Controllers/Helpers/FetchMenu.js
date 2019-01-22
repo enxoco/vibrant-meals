@@ -12,7 +12,7 @@ const Database = use('Database')
  */
 module.exports = async function() {
           // Set up our master list of items, categories and filter relationships
-          const item = await Database
+        const item = await Database
           .select('*')
           .from('items')
   

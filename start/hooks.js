@@ -1,11 +1,20 @@
-'use strict'
-
-const { ioc } = require('@adonisjs/fold')
 const { hooks } = require('@adonisjs/ignitor')
-const bitbucket = use('App/Extensions/Bitbucket')
+const moment = require('moment')
 
-hooks.before.providersRegistered(() => {
-  ioc.extend('Adonis/Addons/Ally', 'bitbucket', function () {
-    return bitbucket
+
+hooks.after.providersBooted(() => {
+  const View = use('View')
+
+  View.global('convertTime', function (time) {
+
+    // Remove milliseconds from our time object
+      var t = time.split('.')[0]
+
+      // convert 24hour to 12 hour
+      return moment(t, ["HH:mm:ss"]).format("h:mm A")
+  })
+
+  View.global('currency', function(num) {
+    return `$${(num / 100).toFixed(2)}`
   })
 })

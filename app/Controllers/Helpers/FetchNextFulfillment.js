@@ -23,16 +23,16 @@ module.exports = async function(prefDay) {
   if (prefDay == 'wednesday') {// User has chosen to receive deliveries on Wednesday..
     var day = moment().format('dddd')
     if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
-      return moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+      return moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
     } else {// We have passed the cut off for this week, need to schedule for next week.
-      return moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD')
+      return moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
     }
   } else {// Need to work on this, currently no view is being rendered when monday is chosen
       var day = moment().format('dddd')
         if (day == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
-          return moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD')    
+          return moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')    
         } else {
-          return moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD')
+          return moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
         }
   }
 }
