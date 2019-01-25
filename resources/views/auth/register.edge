@@ -22,7 +22,7 @@
     <div class="content">
       <div class="columns">
           {{ csrfField() }}
-      <!--<div class="column has-border-right ">
+      <div class="column has-border-right ">
         <div class="field is-horizontal has-margin-bottom-50 has-margin-top-50">
           <div class="field-label is-normal">
             <label class="label has-background-white">Email</label>
@@ -48,7 +48,7 @@
           </div>
         </div>
       
-      </div>-->
+      </div>
             <div class="column">
         <div class="field is-horizontal has-margin-top-50 has-margin-left-50">
             <div class="field">
@@ -70,3 +70,23 @@
   </div><!--/card-content-->
     
 </div>
+
+<script src="/js/jquery-2.2.4.min.js"></script>
+
+<script>
+var ip = '75.136.21.180'
+var access_key = 'a30e90d0c810992415e2eb14c1e5e9bb';
+
+// get the API result via jQuery.ajax
+$.ajax({
+    url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,   
+    dataType: 'jsonp',
+    success: function(json) {
+
+        // output the "capital" object inside "location"
+        $('#zip').val(json.zip)
+        
+    }
+});
+
+    </script>

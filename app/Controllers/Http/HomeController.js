@@ -1,7 +1,9 @@
 'use strict'
 
+const Database = use('Database')
 class HomeController {
   async index ({ response, view, session }) {
+
 
 
       // ToDo
@@ -17,6 +19,44 @@ class HomeController {
 
       // session.put('initial_order_completed', user.initial_order_completed)
 
+  }
+
+
+  async showStores({request, response, view}) {
+      const stores = await Database
+        .table('locations')
+        .select('*')
+        var features = []
+        for (var i = 0; i < stores.length; i++) {
+          features.push({
+            type:"Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [
+                stores[i].longitude,
+                stores[i].latitude
+              ]
+            },
+            properties: {
+              phoneFormatted: "(423) 555-5555",
+              phone: "4235555555",
+              address: stores[i].street_addr,
+              postalCode: stores[i].zip,
+              state: stores[i].state,
+              city: stores[i].city,
+              closing: stores[i].closing_time,
+              desc: stores[i].name,
+              storeId: stores[i].id
+            }
+          })
+
+        }
+        const geojson = {
+          type: "FeatureCollection",
+          features: features
+        }
+        return geojson
+      return view.render('api.stores', {stores:geojson})
   }
 }
 

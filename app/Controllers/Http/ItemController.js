@@ -549,13 +549,16 @@ class ItemController {
           .where('id', session.get('locationId'))   
         const nextAvalDate = await nextFulfillment(user[0].fulfillment_day)
         session.put('fulfillment_day', nextAvalDate)
-        const deliverable = await showDeliveryOptions(user.zip)
+
+          const deliverable = await showDeliveryOptions(user.zip)
+
+      
         
-        return view.render('menu.items', {cart, categories: menu_items.categories, user, items: menu_items.items, nextAvalDate, store, hasAccount: true, fulMethod: user[0].fulfillment_method, deliverable})
+        return view.render('menu.items', {cart, categories: menu_items.categories, user, items: menu_items.items, nextAvalDate, store, hasAccount: true, fulMethod: user[0].fulfillment_method, deliverable, session: session.all()})
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.
-        return view.render('menu.items', {cart, categories: menu_items.categories, items: menu_items.items, cartCount, hasAccount: false})
+        return view.render('menu.items', {cart, categories: menu_items.categories, items: menu_items.items, cartCount, hasAccount: false, session: session.all()})
     }
 
 

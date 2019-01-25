@@ -143,19 +143,31 @@ class AuthController {
   }
 
   async showRegister ({ request, response, view }) {
+    const ip = "75.136.21.180"
     return view.render('auth.register')
   }
 
+  /**
+ * 
+ * This will be the first point of contact with the customer
+ * We need to get their preference for pickup/delivery and save that to the session.
+ * Then we need to show them a modal asking for name and zip.
+ * 
+ * Need to modify this so that it is not trying to create a user as we
+ * will not have any identifing information at this point.
+ * 
+ * TODO -- Create another function that asks for name/zip code and use that to
+ * create a user in stripe and backend.
+ */
   async postGuestRegistration ({request, response, session, view}) {
 
-    // try {
-      const userInfo = request.only(['email', 'zip', 'pickup', 'delivery', 'monday', 'wednesday'])
+      const userInfo = request.only(['pickup', 'delivery', 'monday', 'wednesday'])
 
-      const customer = stripe.customers.create({
-        email: userInfo.email,
-      })
+      // const customer = stripe.customers.create({
+      //   email: userInfo.email,
+      // })
 
-     const stripeId = await customer //Get our stripe id
+    //  const stripeId = await customer
       
       if (userInfo.wednesday == 'on') {
         var fulDay = 'wednesday'
@@ -169,15 +181,21 @@ class AuthController {
       }
       const newUser = await Database
       .table('users')
-      .insert({email: userInfo.email, zip: userInfo.zip, fulfillment_method: fulMethod, fulfillment_day: fulDay, stripe_id: stripeId.id })
+      .insert({
+        //email: userInfo.email,  // Dont have email or zip yet, but we can still create a user to store prefs 
+        //zip: userInfo.zip, 
+        fulfillment_method: fulMethod, 
+        fulfillment_day: fulDay, 
+        //stripe_id: stripeId.id 
+      })
 
       session.put('adonis_auth', newUser)
-      session.put('zip', userInfo.zip)
+      // session.put('zip', userInfo.zip)
 
       session.flash({status: 'Account Created'})
       // We need to pass this information along with everything else to our view
-      const stores = await showPickupOptions(userInfo.zip)
-      const deliverable = await showDeliveryOptions(userInfo.zip)
+      // const stores = await showPickupOptions(userInfo.zip)
+      // const deliverable = await showDeliveryOptions(userInfo.zip)
 
       // This won't work because their are no items passed in
       // return view.render('menu.items', {stores, deliverable})
@@ -186,7 +204,7 @@ class AuthController {
       const menu_items = await fetchMenu()
 
       // not working atm
-      const user = await User.find(newUser)
+      // const user = await User.find(newUser)
       // Increase our cart count so that modal is closed whne page is rendered
       var cartCount = session.get('cartCount')
       session.put('cartCount', cartCount++)
@@ -203,7 +221,7 @@ class AuthController {
     //   return response.send('error occured', JSON.stringify(error))
     // }
 
-    return view.render('menu.items', {categories: menu_items.categories, user, items: menu_items.items, cartCount, hasAccount: false, session: user, stores, deliverable, fulMethod})
+    return view.render('menu.items', {categories: menu_items.categories, items: menu_items.items, cartCount, hasAccount: false, fulMethod, fulDay, session: session.all()})
   }
 
   // async postRegister ({request, session, response}) {

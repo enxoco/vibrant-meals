@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset='utf-8' />
+      <title>Store Locator</title>
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
+      <!-- Mapbox GL JS -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" rel="stylesheet" />
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+      <link href="/bulma/css/bulma-extensions.min.css" rel="stylesheet" />
+      <!-- Geocoder plugin -->
+      <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+      <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' type='text/css' />
+      <!-- Turf.js plugin -->
+      <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+      <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countdown/2.6.0/countdown.min.js"></script>
+
+ 
+<script>
+    (function(){var countdown,moment,ref,ref1,slice=[].slice;countdown=(ref=typeof require==="function"?require("countdown"):void 0)!=null?ref:this.countdown;moment=(ref1=typeof require==="function"?require("moment"):void 0)!=null?ref1:this.moment;moment.fn.countdown=function(){var args,other;other=arguments[0],args=2<=arguments.length?slice.call(arguments,1):[];return countdown.apply(null,[this.toDate(),moment(other).toDate()].concat(slice.call(args)))}}).call(this);
+    </script>
+      <style>
+
+
+body {
+          color:#404040;
+          font:400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+          margin:0;
+          padding:0;
+          -webkit-font-smoothing:antialiased;
+        }
+
+        * {
+          -webkit-box-sizing:border-box;
+          -moz-box-sizing:border-box;
+          box-sizing:border-box;
+        }
+
+        .sidebar {
+          position:absolute;
+          width:33.3333%;
+          height:100%;
+          top:0;left:0;
+          overflow:hidden;
+          border-right:1px solid rgba(0,0,0,0.25);
+        }
+        .pad2 {
+          padding:20px;
+        }
+
+        .map {
+          position:absolute;
+          left:33.3333%;
+          width:66.6666%;
+          top:0;bottom:0;
+        }
+
+        h1 {
+          font-size:22px;
+          margin:0;
+          font-weight:400;
+          line-height: 20px;
+          padding: 20px 2px;
+        }
+
+        a {
+          color:#404040;
+          text-decoration:none;
+        }
+
+        a:hover {
+          color:#101010;
+        }
+
+        .heading {
+          background:#fff;
+          border-bottom:1px solid #eee;
+          min-height:60px;
+          line-height:60px;
+          padding:0 10px;
+          background-color: #00853e;
+          color: #fff;
+        }
+
+        .listings {
+          height:100%;
+          overflow:auto;
+          padding-bottom:60px;
+        }
+
+        .listings .item {
+          display:block;
+          border-bottom:1px solid #eee;
+          padding:10px;
+          text-decoration:none;
+        }
+
+        .listings .item:last-child { border-bottom:none; }
+        .listings .item .title {
+          display:block;
+          color:#00853e;
+          font-weight:700;
+        }
+
+        .listings .item .title small { font-weight:400; }
+        .listings .item.active .title,
+        .listings .item .title:hover { color:#8cc63f; }
+        .listings .item.active {
+          background-color:#f8f8f8;
+        }
+        ::-webkit-scrollbar {
+          width:3px;
+          height:3px;
+          border-left:0;
+          background:rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-track {
+          background:none;
+        }
+        ::-webkit-scrollbar-thumb {
+          background:#00853e;
+          border-radius:0;
+        }
+
+        .marker {
+          border: none;
+          cursor: pointer;
+          height: 56px;
+          width: 56px;
+          background-image: url(marker.png);
+          background-color: rgba(0, 0, 0, 0);
+        }
+
+        .clearfix { display:block; }
+        .clearfix:after {
+          content:'.';
+          display:block;
+          height:0;
+          clear:both;
+          visibility:hidden;
+        }
+
+        /* Marker tweaks */
+        .mapboxgl-popup {
+          padding-bottom: 50px;
+        }
+
+        .mapboxgl-popup-close-button {
+          display:none;
+        }
+        .mapboxgl-popup-content {
+          font:400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+          padding:0;
+          width:180px;
+        }
+        .mapboxgl-popup-content-wrapper {
+          padding:1%;
+        }
+        .mapboxgl-popup-content h3 {
+          background:#91c949;
+          color:#fff;
+          margin:0;
+          display:block;
+          padding:10px;
+          border-radius:3px 3px 0 0;
+          font-weight:700;
+          margin-top:-15px;
+        }
+
+        .mapboxgl-popup-content h4 {
+          margin:0;
+          display:block;
+          padding: 10px 10px 10px 10px;
+          font-weight:400;
+        }
+
+        .mapboxgl-popup-content div {
+          padding:10px;
+        }
+
+        .mapboxgl-container .leaflet-marker-icon {
+          cursor:pointer;
+        }
+
+        .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+          margin-top: 15px;
+        }
+
+        .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+          border-bottom-color: #91c949;
+        }
+
+        .mapboxgl-ctrl-geocoder {
+          border: 2px solid #00853e;
+          border-radius: 0;
+          position: relative;
+          top: 0;
+          width: 800px;
+          margin-top: 0;
+          border: 0;
+        }
+
+        .mapboxgl-ctrl-geocoder > div {
+          min-width:100%;
+          margin-left:0;
+        }
+      </style>
+  </head>
+
+  <body>
+
+              
+      <input type="hidden" id="geoData" value="{{toJSON(stores)}}" />
+      <div class='sidebar'>
+            <div class='heading'>
+              <h1>Our locations</h1>
+              <div id="geocoder" class="geocoder"></div>
+            </div>
+          <div id='listings' class='listings'></div>
+          </div>
+          <div class="container">
+          <div id='map' class='map'> </div>
+          </div>
+  <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
+
+        geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        query: {searchInput: "37409"},
+
+        proximity: {latitude:-85.30968009999998, longitude:35.0456297}
+    });
+    document.getElementById('geocoder').appendChild(geocoder.onAdd(map))
+
+
+      var stores = JSON.parse($('#geoData').val())
+  // This will let you use the .remove() function later on
+  if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+      if (this.parentNode) {
+          this.parentNode.removeChild(this);
+      }
+    };
+  }
+
+
+  // This adds the map
+  var map = new mapboxgl.Map({
+    // container id specified in the HTML
+    container: 'map',
+    // style URL
+    style: 'mapbox://styles/mapbox/light-v10',
+    // initial position in [long, lat] format
+    center: [-85.3171557, 35.0691112],
+    // initial zoom
+    zoom: -99
+  });
+
+  // This adds the data to the map
+  map.on('load', function (e) {
+
+
+    // Initialize the list
+    buildLocationList(stores);
+
+    // This is where your '.addLayer()' used to be, instead add only the source without styling a layer
+    // map.addSource("places", {
+    //   "type": "geojson",
+    //   "data": stores
+    // });
+    // document.getElementById('geocoder').appendChild(geocoder.onAdd());
+
+    map.addControl(geocoder, 'top-right');
+
+    // map.addSource('single-point', {
+    //   "type": "geojson",
+    //   "data": {
+    //     "type": "FeatureCollection",
+    //     "features": [] // Notice that initially there are no features
+    //   }
+    // });
+
+    // map.addLayer({
+    //   "id": "point",
+    //   "source": "single-point",
+    //   "type": "circle",
+    //   "paint": {
+    //     "circle-radius": 10,
+    //     "circle-color": "#007cbf",
+    //     "circle-stroke-width": 3,
+    //     "circle-stroke-color": "#fff"
+    //   }
+    // });
+ 
+    geocoder.on('result', function(ev) {
+      var searchResult = ev.result.geometry;
+
+
+    map.getSource('single-point').setData(searchResult);
+      var options = {units: 'miles'};
+      stores.features.forEach(function(store){
+        Object.defineProperty(store.properties, 'distance', {
+          value: turf.distance(searchResult, store.geometry, options),
+          writable: true,
+          enumerable: true,
+          configurable: true
+        });
+      });
+
+      stores.features.sort(function(a,b){
+        if (a.properties.distance > b.properties.distance) {
+          return 1;
+        }
+        if (a.properties.distance < b.properties.distance) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+
+      var listings = document.getElementById('listings');
+      while (listings.firstChild) {
+        listings.removeChild(listings.firstChild);
+      }
+
+      buildLocationList(stores);
+
+      function sortLonLat(storeIdentifier) {
+        var lats = [stores.features[storeIdentifier].geometry.coordinates[1], searchResult.coordinates[1]]
+        var lons = [stores.features[storeIdentifier].geometry.coordinates[0], searchResult.coordinates[0]]
+
+        var sortedLons = lons.sort(function(a,b){
+            if (a > b) { return 1; }
+            if (a.distance < b.distance) { return -1; }
+            return 0;
+          });
+        var sortedLats = lats.sort(function(a,b){
+            if (a > b) { return 1; }
+            if (a.distance < b.distance) { return -1; }
+            return 0;
+          });
+
+        // map.fitBounds([
+        //   [sortedLons[0], sortedLats[0]],
+        //   [sortedLons[1], sortedLats[1]]
+        // ], {
+        //   padding: 100
+        // });
+      };
+
+      sortLonLat(0);
+      // We dont need markers on the map.
+    //   createPopUp(stores.features[0]);
+
+    });
+  });
+
+  // This is where your interactions with the symbol layer used to be
+  // Now you have interactions with DOM markers instead
+  stores.features.forEach(function(marker, i) {
+    // Create an img element for the marker
+    var el = document.createElement('div');
+    el.id = "marker-" + i;
+    el.className = 'marker';
+
+    el.addEventListener('click', function(e){
+
+        // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+        var activeItem = document.getElementsByClassName('active');
+
+        e.stopPropagation();
+        if (activeItem[0]) {
+           activeItem[0].classList.remove('active');
+        }
+
+        var listing = document.getElementById('listing-' + i);
+        listing.classList.add('active');
+
+    });
+  });
+
+  function buildLocationList(data) {
+    for (i = 0; i < data.features.length; i++) {
+      var currentFeature = data.features[i];
+      var prop = currentFeature.properties;
+
+      var listings = document.getElementById('listings');
+      var listing = listings.appendChild(document.createElement('div'));
+      listing.className = 'item';
+      listing.id = "listing-" + i;
+
+      var link = listing.appendChild(document.createElement('a'));
+      link.href = '#';
+      link.className = 'title';
+      link.dataPosition = i;
+      link.innerHTML = prop.desc;
+      var year = moment().format("YYYY-MM-DD")
+        var dateString = year + " " + prop.closing
+        var timeToClosing = moment(dateString.toString()).countdown()
+        // if (timeToClosing.hours == 0) {
+        // link.innerHTML +=' Open till <a style="color:red;">'+ moment(prop.closing, ["HH:mm:ss"]).format("h:mm A") +'</a>'
+        // } else {
+        // link.innerHTML +=' Open till <a style="color:green;">'+ moment(prop.closing, ["HH:mm:ss"]).format("h:mm A") +'</a>'
+
+        // }
+
+      var details = listing.appendChild(document.createElement('div'));
+      details.innerHTML = prop.address;
+      if (prop.closing) {
+
+        // details.innerHTML += ' &middot; Open till:' + timeToClosing;
+      }
+
+      if (prop.distance) {
+        var roundedDistance = Math.round(prop.distance*100)/100;
+        if (roundedDistance > 30) {
+          details.innerHTML += '<p><strong>' + roundedDistance + ' miles away - Shipping only</strong></p>';
+        } else {
+          details.innerHTML += '<p><strong>' + roundedDistance + ' miles away</strong></p>';
+
+        }
+      }
+
+
+    //   link.addEventListener('click', function(e){
+    //     // Update the currentFeature to the store associated with the clicked link
+    //     var clickedListing = data.features[this.dataPosition];
+
+    //     // 1. Fly to the point
+    //     flyToStore(clickedListing);
+
+    //     // 2. Close all other popups and display popup for clicked store
+    //     createPopUp(clickedListing);
+
+    //     // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+    //     var activeItem = document.getElementsByClassName('active');
+
+    //     if (activeItem[0]) {
+    //        activeItem[0].classList.remove('active');
+    //     }
+    //     this.parentNode.classList.add('active');
+
+    //   });
+    }
+  }
+
+
+
+
+    </script>
+      <script src="/bulma/js/bulma-extensions.min.js"></script>
+    <script>
+        !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.bulmaQuickview=t():e.bulmaQuickview=t()}("undefined"!=typeof self?self:this,function(){return function(n){var i={};function r(e){if(i[e])return i[e].exports;var t=i[e]={i:e,l:!1,exports:{}};return n[e].call(t.exports,t,t.exports,r),t.l=!0,t.exports}return r.m=n,r.c=i,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:n})},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=0)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=n(1),o=n(2),s=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var i in n)Object.prototype.hasOwnProperty.call(n,i)&&(e[i]=n[i])}return e},a=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();var u=Symbol("onQuickviewShowClick"),l=Symbol("onQuickviewDismissClick"),r=function(e){function r(e){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{};!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,r);var n=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Object.getPrototypeOf(r)).call(this));if(n.element="string"==typeof e?document.querySelector(e):e,!n.element)throw new Error("An invalid selector or non-DOM node has been provided.");return n._clickEvents=["click"],n.options=s({},o.a,t),n[u]=n[u].bind(n),n[l]=n[l].bind(n),n.init(),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,i["a"]),a(r,[{key:"init",value:function(){this.quickview=document.getElementById(this.element.dataset.target),this.dismissElements=document.querySelectorAll('[data-dismiss="quickview"]'),this._bindEvents(),this.emit("quickview:ready",{element:this.element,quickview:this.quickview})}},{key:"_bindEvents",value:function(){var n=this;this._clickEvents.forEach(function(e){n.element.addEventListener(e,n[u],!1)}),[].forEach.call(this.dismissElements,function(t){n._clickEvents.forEach(function(e){t.addEventListener(e,n[l],!1)})})}},{key:u,value:function(e){this.quickview.classList.add("is-active"),this.emit("quickview:show",{element:this.element,quickview:this.quickview})}},{key:l,value:function(e){this.quickview.classList.remove("is-active"),this.emit("quickview:hide",{element:this.element,quickview:this.quickview})}}],[{key:"attach",value:function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:'[data-show="quickview"]',t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},n=new Array,i=document.querySelectorAll(e);return[].forEach.call(i,function(e){setTimeout(function(){n.push(new r(e,t))},100)}),n}}]),r}();t.default=r},function(e,t,n){"use strict";var i=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();var r=function(){function t(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:[];!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),this._listeners=new Map(e),this._middlewares=new Map}return i(t,[{key:"listenerCount",value:function(e){return this._listeners.has(e)?this._listeners.get(e).length:0}},{key:"removeListeners",value:function(){var t=this,e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:null,n=1<arguments.length&&void 0!==arguments[1]&&arguments[1];null!==e?Array.isArray(e)?name.forEach(function(e){return t.removeListeners(e,n)}):(this._listeners.delete(e),n&&this.removeMiddleware(e)):this._listeners=new Map}},{key:"middleware",value:function(e,t){var n=this;Array.isArray(e)?name.forEach(function(e){return n.middleware(e,t)}):(Array.isArray(this._middlewares.get(e))||this._middlewares.set(e,[]),this._middlewares.get(e).push(t))}},{key:"removeMiddleware",value:function(){var t=this,e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:null;null!==e?Array.isArray(e)?name.forEach(function(e){return t.removeMiddleware(e)}):this._middlewares.delete(e):this._middlewares=new Map}},{key:"on",value:function(e,t){var n=this,i=2<arguments.length&&void 0!==arguments[2]&&arguments[2];if(Array.isArray(e))e.forEach(function(e){return n.on(e,t)});else{var r=(e=e.toString()).split(/,|, | /);1<r.length?r.forEach(function(e){return n.on(e,t)}):(Array.isArray(this._listeners.get(e))||this._listeners.set(e,[]),this._listeners.get(e).push({once:i,callback:t}))}}},{key:"once",value:function(e,t){this.on(e,t,!0)}},{key:"emit",value:function(n,i){var r=this,o=2<arguments.length&&void 0!==arguments[2]&&arguments[2];n=n.toString();var s=this._listeners.get(n),a=null,u=0,l=o;if(Array.isArray(s))for(s.forEach(function(e,t){o||(a=r._middlewares.get(n),Array.isArray(a)?(a.forEach(function(e){e(i,function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:null;null!==e&&(i=e),u++},n)}),u>=a.length&&(l=!0)):l=!0),l&&(e.once&&(s[t]=null),e.callback(i))});-1!==s.indexOf(null);)s.splice(s.indexOf(null),1)}}]),t}();t.a=r},function(e,t,n){"use strict";t.a={}}]).default});
+          var quickviews = bulmaQuickview.attach(); // quickviews now contains an array of all Quickview instances
+</script>
+  </body>
+</html>
