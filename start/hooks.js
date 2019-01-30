@@ -22,4 +22,17 @@ hooks.after.providersBooted(() => {
   View.global('currency', function(num) {
     return `$${(num / 100).toFixed(2)}`
   })
+
+  View.global('parseItem', function(item){
+
+    var itemKeys = {
+      price: item.price,
+      id: item.stripe_id,
+      quantity: 0
+
+    }
+ 
+    return JSON.stringify(item)
+    
+  }) 
 })

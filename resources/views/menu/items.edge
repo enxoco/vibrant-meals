@@ -1,12 +1,352 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
 <link rel="stylesheet" href="/css/cart.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-extensions@4.0.0/dist/css/bulma-extensions.min.css" />
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
+<link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+
+<!-- Mapbox GL JS -->
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+<!-- Geocoder plugin -->
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' type='text/css' />
+<!-- Turf.js plugin -->
+<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+<script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
+
+<style>
 
 
-<nav class="nav has-background-dark">
-  <pre>
-    {{ toJSON({ session }) }}
+body {
+  color: #444749;
+}
+  /*Codepen only above this line*/
+  .box {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+  }
+  .modal-content {
+    width: 800px;
+    max-height: 750px;
+    overflow: hidden;
+  }
+  .modal-close {
+    position: relative;
+    left: 0;
+    top: 0;
+    z-index: 99;
+  }
+  .close-delivery {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 99;
+  }
 
-  </pre>
+  .modal-close:hover {
+    background-color: red;
+  }
+
+  .modal-heading {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .modal-subheading {
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .modal-menu-option {
+    font-size: 1.55rem;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 5px 6px 22px rgba(155, 155, 155, 0.233328);
+    padding: 1.75rem 0;
+    letter-spacing: 0.75rem;
+    width: 394px;
+    height: 492px;
+  }
+  .initial-modal {
+    min-height: 300px;
+    /*   position: relative;
+    left:10px;
+    padding-bottom: 200px;
+  */
+  }
+  .store-modal {
+
+  }
+  .delivery-modal {
+    max-width: 500px;
+  }
+
+  .sidebar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  .pad2 {
+    padding: 20px;
+  }
+
+  .map {
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    top: 0;
+    bottom: 0;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 20px 2px;
+  }
+
+  a {
+    color: #404040;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #101010;
+  }
+
+  .heading {
+    left: 20%;
+    position: relative;
+    top: 5px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    min-height: 60px;
+    line-height: 60px;
+    padding: 0 10px;
+    color: #fff;
+  }
+
+  .listings {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 60px;
+  }
+
+  .listings .item {
+    display: block;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  .listings .item:last-child {
+    border-bottom: none;
+  }
+  .listings .item .title {
+    display: block;
+    color: #00853e;
+    font-weight: 700;
+  }
+
+  .listings .item .title small {
+    font-weight: 400;
+  }
+  .listings .item.active .title,
+  .listings .item .title:hover {
+    color: #8cc63f;
+  }
+  .listings .item.active {
+    background-color: #f8f8f8;
+  }
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-left: 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  ::-webkit-scrollbar-track {
+    background: none;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #00853e;
+    border-radius: 0;
+  }
+
+  .marker {
+    border: none;
+    cursor: pointer;
+    height: 56px;
+    width: 56px;
+    background-image: url(marker.png);
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .clearfix {
+    display: block;
+  }
+  .clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+
+  /* Marker tweaks */
+  .mapboxgl-popup {
+    padding-bottom: 50px;
+  }
+
+  .mapboxgl-popup-close-button {
+    display: none;
+  }
+  .mapboxgl-popup-content {
+    font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", Sans-serif;
+    padding: 0;
+    width: 180px;
+  }
+  .mapboxgl-popup-content-wrapper {
+    padding: 1%;
+  }
+  .mapboxgl-popup-content h3 {
+    background: #91c949;
+    color: #fff;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+    font-weight: 700;
+    margin-top: -15px;
+  }
+
+  .mapboxgl-popup-content h4 {
+    margin: 0;
+    display: block;
+    padding: 10px 10px 10px 10px;
+    font-weight: 400;
+  }
+
+  .mapboxgl-popup-content div {
+    padding: 10px;
+  }
+
+  .mapboxgl-container .leaflet-marker-icon {
+    cursor: pointer;
+  }
+
+  .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+    margin-top: 15px;
+  }
+
+  .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+    border-bottom-color: #91c949;
+  }
+
+  .mapboxgl-ctrl-geocoder {
+    border: 2px solid #00853e;
+    border-radius: 0;
+    position: relative;
+    top: 0;
+    width: 800px;
+    margin-top: 0;
+    border: 0;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .columns.is-full {
+    width: 100%;
+}
+  /* .modal-close-delivery.button.is-large.is-danger{
+    position: relative;
+    top: 10px;
+    left: 10px;
+    z-index:3;
+  } */
+
+  .geocoder {
+    position: absolute;
+    z-index: 1;
+    width: 30%;
+    right: 80px;
+    top: 20px;
+  }
+
+  .modal-heading {
+    font-style: normal;
+font-weight: normal;
+line-height: normal;
+font-size: 28px;
+text-align: center;
+letter-spacing: 2.33333px;
+
+color: #444749;
+  }
+
+  nav {
+    height: 100px;
+  }
+
+  .item {
+    padding: 10px;
+  }
+
+  .modal-footing {
+    position: relative;
+    font-size: 28px;
+    text-align: center;
+    letter-spacing: 2.33333px;
+    color: #444749;
+    width: 394px;
+    text-transform: uppercase;
+    padding-top: 20px;
+    }
+    .modal.is-active {
+    position: fixed;
+    top: 100px;
+}
+
+.navbar-item img {
+    max-height: 150px;
+    top: 10px;
+    position: relative;
+}
+.modal-background {
+  background-color: #F2F2F2 !important;
+}
+
+.list-item.active {
+    background: #3b8f6b;
+    color: white;
+}
+</style>
+<nav class="nav has-background-primary">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="/images/logo.png" width="103" height="60">
+        </a>
+    
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+<div id="sessionData"></div>
+
 </nav>
 
 <nav class="nav" style="padding:20px;">
@@ -17,6 +357,12 @@
 
   <a class="button is-danger" href="/cart/clear">Clear Cart</a>
   <a class="button is-success" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>
+  <div class="field" id="fulfillmentMethodRadio">
+      <input class="is-checkradio" id="pickupRadio" value="pickup" type="radio" name="exampleRadioInline">
+      <label for="pickupRadio" id="pickupRadioLabel">Pickup</label>
+      <input class="is-checkradio" id="deliveryRadio" value="delivery" type="radio" name="exampleRadioInline">
+      <label for="deliveryRadio" id="deliveryRadioLabel">Delivery</label>
+    </div>
 
 
 </nav>
@@ -27,54 +373,56 @@
         @if(item.is_visible != 1)
         @else
             <div class="column is-half-tablet is-half-mobile is-one-third-desktop item-column">
-          <div class="card">
-            <form method="post" action="/cart/addItem" name="item_{{item.id}}" id="item_{{item.id}}">
-              <input type="hidden" id="id" name="id" value="{{item.id}}" />
-              <input type="hidden" id="sku" name="sku" value="{{item.sku}}" />
-              <input type="hidden" id="name" name="name" value="{{item.name}}" />
-              <input type="hidden" id="price" name="price" value="{{item.price}}" />
-              <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
-              <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
-              <input id="scroll" name="scroll" value="" type="hidden"/>
-
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
-                </figure>
-              </div><!--/card-image-->
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p class="title is-4">{{ item.name }} - ${{ item.price }}</p>
-                    @each(c in item.categories)
-                    <p class="subtitle is-6">{{c.name}}</p>
-                    @endeach
-                    
-                    <p class="subtitle is-6">
-                        @each(f in item.filters)
-                        <span class="tag is-info">{{f.name}}</span>
-                      @if($loop.last)
-                      @else
-                      @endif
-                        @endeach
-                      </p>
-                    
-                  </div><!--/media-content-->
-                </div><!--/media-->
-                <div class="content">
-                    {{item.description}}
-                    <br>
-
-                    
-                  </div><!--/content-->
-                  <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
-                  <a href="#" class="button is-success" onclick="submitForm({{item.id}})"> Add to Cart </a>
-                  <a id="delete-item" class="button is-danger modal-button open-modal" 
-                  data-target="modal-ter" 
-                  aria-haspopup="true" 
-                  onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>
-              </div><!--/card-content-->
-                </form>
+              <div class="card">
+                  <form name="item" id="item_{{item.id}}">
+                    <input type="hidden" id="id" name="id" value="{{item.id}}" />
+                    <input type="hidden" id="sku" name="sku" value="{{item.sku}}" />
+                    <input type="hidden" id="name" name="name" value="{{item.name}}" />
+                    <input type="hidden" id="price" name="price" value="{{item.price}}" />
+                    <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
+                    <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
+                    <input id="scroll" name="scroll" value="" type="hidden"/>
+      
+                    <div class="card-image">
+                      <figure class="image is-4by3">
+                        <img src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
+                      </figure>
+                    </div><!--/card-image-->
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <p class="title is-4">{{ item.name }} - ${{ item.price }}</p>
+                          @each(c in item.categories)
+                          <p class="subtitle is-6">{{c.name}}</p>
+                          @endeach
+                          
+                          <p class="subtitle is-6">
+                              @each(f in item.filters)
+                              <span class="tag is-info">{{f.name}}</span>
+                            @if($loop.last)
+                            @else
+                            @endif
+                              @endeach
+                            </p>
+                          
+                        </div><!--/media-content-->
+                      </div><!--/media-->
+                      <div class="content">
+                          {{item.description}}
+                          <br>
+      
+                          
+                        </div><!--/content-->
+                        <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
+                        <a id="checkout-prompt-1" class="button is-primary is-large modal-button" data-target="modal" aria-haspopup="true" onclick="submitForm({{item.id}})">Add to cart</a>
+                        <!--<a href="#" class="button is-success" onclick="submitForm({{item.id}})"> Add to Cart </a>-->
+                        <a id="delete-item" class="button is-danger modal-button open-modal" 
+                        data-target="modal-ter" 
+                        aria-haspopup="true" 
+                        onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>
+                    </div><!--/card-content-->
+                      </form>
+       
               </div><!--/card-->
             </div><!--/column-->
             
@@ -139,61 +487,50 @@
 </div>
 
 
+@!include('auth.register')
 
-<div class="modal
-@if(cartCount && cartCount == 1)
-is-active
-@endif
-" id="register">
-    <div class="modal-background"></div>
-    <div class="modal-card" style="width:50%;">
-      <header class="modal-card-head">
-        <p class="modal-card-title">
-            @if(fulMethod == 'delivery')
-            Delivery Details
-          @elseif(fulMethod == 'pickup')
-            Pickup Details
-          @else
-            Registration
-          @endif
-        </p>
-        <a class="delete" aria-label="close" onclick="return launchModal('{{i.id}}', '{{i.name}}')"></a>
-      </header>
-      <section class="modal-card-body registration-body">
-        @if(fulMethod == 'delivery')
-          @!include('auth.register-delivery')
-        @elseif(fulMethod == 'pickup')
-          @!include('auth.register-pickup')
-        @else
-          @!include('auth.register')
-        @endif
-        You can save 15% off of your order by selecting 5 items or more.  By creating an account you can also set up a recurring subscription.  Would you like to create an account now?
-      </section>
-      <footer class="modal-card-foot modal-card-foot-registration">
-        <a class="button is-danger" href="/item/delete/{{i.id}}" onclick="launchModal({{i.id}})">Delete Item</a>
-        <a class="button close-modal" onclick="closeModal()">Cancel</a>
-      </footer>
-    </div>
-  </div><!--/modal-->
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/product-card.js"></script>
-  @if(fulMethod == 'delivery')
   <script>
     $(document).ready(function(){
+      $('.modal-close').on('click', function(){
+  $('.modal').removeClass('is-active')
+})
+      var m = localStorage.getItem("fulfillment_method")
+      if (m) {
+        $('#' + m + 'Radio').prop('checked', true)
+
+        if (m == 'pickup') {
+          if (JSON.parse(localStorage.myStore))
+          var store = JSON.parse(localStorage.myStore)
+            $('#pickupRadioLabel').text("Pickup From " + store.desc)
+
+        }
+     }
+    })
+    </script>
+  @if(fulMethod == 'delivery')
+
+  <script>
+
+
+      // cartObj.clickCount = 0
+    $(document).ready(function(){
+
       $('.modal-card-foot-registration').html('<a id="continueUser" class="card-footer-item is-success button">Create an account</a><a id="continueGuest" class="card-footer-item is-success button">Continue as Guest</a><input type="hidden" id="reg_method" value="" name="reg_method">')
     
-      $('#continueGuest').click(function() {
-        $('#reg_method').val('guest')
-        $('#fulfillment').attr('action', '/register/guest')
-        $('#fulfillment').submit()
-    })
+    //   $('#continueGuest').click(function() {
+    //     $('#reg_method').val('guest')
+    //     $('#fulfillment').attr('action', '/register/guest')
+    //     $('#fulfillment').submit()
+    // })
     
-    $('#continueUser').click (function() {
-        $('#reg_method').val('user')
-        $('#fulfillment').attr('action', '/register/user')
-        $('#fulfillment').submit()
+    // $('#continueUser').click (function() {
+    //     $('#reg_method').val('user')
+    //     $('#fulfillment').attr('action', '/register/user')
+    //     $('#fulfillment').submit()
 
-    })   
+    // })   
     });
   </script>
   @else
@@ -201,12 +538,12 @@ is-active
     $(document).ready(function(){
       $('.modal-card-foot-registration').html('<a class="card-footer-item is-success button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
     });
-  </script>
+   </script>
   @endif
   <script>
-    function signupSubmit() {
-      $('#register-form').submit()
-    }
+    // function signupSubmit() {
+    //   $('#register-form').submit()
+    // }
 
   var total = 0
   for (var i = 0; i < 50; i++) {
@@ -218,14 +555,70 @@ is-active
   
     $('#cartTotal').text('Cart Total: $' + total)
   }
-  
+  var cartItems = []
+  $('#fulfillmentMethodRadio input:radio').click(function() {
+    
+    if ($(this).val() == 'pickup') {
+      if(localStorage.myStore) {
+        var store = JSON.parse(localStorage.myStore)
+        $('#pickupRadioLabel').text("Pickup From " + store.desc)
+
+      }
+
+
+
+      $('#pickup').click()
+    } else {
+      deliveryForm()
+      $('#stop').click()
+    }
+    $('#' + $(this).val() + 'Radio').prop('checked', true)
+
+    localStorage.setItem("fulfillment_method", $(this).val())
+  });
   function submitForm(id) {
-    $('#scroll').val('s')
-    $('#item_' + id).submit()
-  
+    if (localStorage.getItem("custEngageCompleted") != 1) {
+      $('#modal-initial-click').addClass('is-active')
+      localStorage.setItem("custEngageCompleted", 1);
+
+      custEngageCompleted++ // Don't show the initial modal anymore
+    }
+
+    $('form#item_'+id).submit()
   
   }
+
   
+$("form").on( "submit", function( event ) {
+  event.preventDefault();
+
+  $.post('/cart/addItem', $(this).serialize(), function(data) {
+    for (var i = 0; i < data.length; i++) {
+      var html = '<div class="card">\
+          <div class="card-content">\
+            <div class="media">\
+              <div class="media-left">\
+                <figure class="image is-48x48">\
+                  <img src="'+data[i].img_url+'" alt="Placeholder image">\
+                </figure>\
+              </div>\
+              <div class="media-content">\
+                <p class="title is-6">'+data[0].name+' x '+data[0].quantity+'</p>\
+              <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}\
+                <div class="buttons">\
+                <a class="button is-danger is-rounded is-small-mobile"  href="/cart/remove/{{$loop.index}}">x</a>\
+                <a class="button is-info" href="/cart/sub/{{$loop.index}}">-</a>\
+                <a class="button is-success" onclick="submitForm({{c.id}})">+</a>\
+                </div>\
+              </p>\
+              </div>\
+            </div>\
+          </div>\
+        </div><br>'
+    }
+    $('#cart').innerHTML += html
+  })
+});
   window.onscroll = function() {myFunction()};
   
   // Get the navbar
@@ -249,7 +642,6 @@ is-active
   function launchModal(id) {
     if ($('#modal-'+ id + '').hasClass('is-active')) {
       $('#modal-'+ id + '').removeClass('is-active')
-      location.reload(true)
     } else {
       $('#modal-'+ id + '').addClass('is-active')
   
@@ -299,6 +691,653 @@ is-active
   
   }
 
+
+$(".modal-close").click(function() {
+  $("[class*='is-active']").removeClass("is-active");
+});
+
+var prefs = {};
+
+
+$("#pickup").click(function() {
+  sessionStorage.setItem("fulfillment_method", "pickup")
+  // This will let you use the .remove() function later on
+  var modal ='<div class="modal-background"></div>\
+  <button class="modal-close close-delivery button is-large is-primary" aria-label="close"></button>\
+    <div class="modal-content">\
+        <div class="content store-modal" id="listings">\
+        </div>\
+    </div>';
+  $("#modal-pickup").append(modal);
+  $("#modal-pickup").addClass("is-active")
+  var stores = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-85.3171557", "35.0691112"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "601 Cherokee Blvd",
+          postalCode: 37405,
+          state: "TN",
+          city: "Chattanooga",
+          closing: "20:00",
+          desc: "Vibrant Meals Kitchen",
+          storeId: 1
+        }
+      },
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-85.3106732", "35.0641196"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "125 Cherokee Blvd",
+          postalCode: 37405,
+          state: "TN",
+          city: "Chattanooga",
+          closing: "20:00",
+          desc: "Chattanooga Functional Fitness",
+          storeId: 2
+        }
+      },
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-85.31406600000003", "35.0389277"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "525 West Main Street",
+          postalCode: 37402,
+          state: "TN",
+          city: "Chattanooga",
+          closing: "20:00",
+          desc: "Kyle House Fitness",
+          storeId: 3
+        }
+      },
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-84.76723400000003", "35.134262"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "5806 Waterlevel Highway",
+          postalCode: 37323,
+          state: "TN",
+          city: "Cleveland",
+          closing: "20:00",
+          desc: "Crossfit Anistemi",
+          storeId: 4
+        }
+      },
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-84.8766215", "35.157391"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "282 Church St SE",
+          postalCode: 37311,
+          state: "TN",
+          city: "Cleveland",
+          closing: "20:00",
+          desc: "Body By Hannah",
+          storeId: 5
+        }
+      }
+    ]
+  };
+
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
+
+    // Initialize the list
+    buildLocationList(stores);
+
+    var cords = document.getElementById("cords").value;
+    var cord = cords.split(",");
+
+    var options = {
+      units: "miles"
+    };
+    var searchResult = {"type":"Point","coordinates":[-85.3068,35.0292]}
+    stores.features.forEach(function(store) {
+      Object.defineProperty(store.properties, "distance", {
+        value: turf.distance(searchResult, store.geometry, options),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      });
+    });
+    stores.features.sort(function(a, b) {
+      if (a.properties.distance > b.properties.distance) {
+        return 1;
+      }
+      if (a.properties.distance < b.properties.distance) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    var listings = document.getElementById("listings");
+    while (listings.firstChild) {
+      listings.removeChild(listings.firstChild);
+    }
+    buildLocationList(stores);
+
+    function sortLonLat(storeIdentifier) {
+      var lats = [
+        stores.features[storeIdentifier].geometry.coordinates[1],
+        searchResult.coordinates[1]
+      ];
+      var lons = [
+        stores.features[storeIdentifier].geometry.coordinates[0],
+        searchResult.coordinates[0]
+      ];
+      var sortedLons = lons.sort(function(a, b) {
+        if (a > b) {
+          return 1;
+        }
+        if (a.distance < b.distance) {
+          return -1;
+        }
+        return 0;
+      });
+      var sortedLats = lats.sort(function(a, b) {
+        if (a > b) {
+          return 1;
+        }
+        if (a.distance < b.distance) {
+          return -1;
+        }
+        return 0;
+      });
+
+    }
+    sortLonLat(0);
+  // This is where your interactions with the symbol layer used to be
+  // Now you have interactions with DOM markers instead
+
+
+
+
+  function buildLocationList(data) {
+    for (i = 0; i < data.features.length; i++) {
+      var currentFeature = data.features[i];
+      var prop = currentFeature.properties;
+      var listings = document.getElementById("listings");
+      var listing = listings.appendChild(document.createElement("div"));
+      listing.classList.add("listing-item")
+      console.log('1')
+      var miles = prop.distance
+      if (miles) {
+        listing.innerHTML = "<div class='list-item'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'>"+ miles.toFixed(1) +" miles away</span></div>"
+
+      }
+//       listing.className = "item";
+//       listing.id = "listing-" + i;
+//       var link = listing.appendChild(document.createElement("a"));
+//       link.href = "#";
+//       link.className = "title";
+//       link.dataPosition = i;
+//       link.innerHTML = prop.desc;
+//       var details = listing.appendChild(document.createElement("div"));
+//       details.innerHTML =
+//         prop.address +
+//         ", " +
+//         prop.city +
+//         " Open till - " +
+//         formatDate(currentFeature.properties.closing);
+//       details.innerHTML +=
+//         '<div class="field is-pulled-right">\
+//   <input id="set-store-id-' +
+//         currentFeature.properties.storeId +
+//         '" type="checkbox" name="store-' +
+//         currentFeature.properties.storeId +
+//         '" class="switch is-large">\
+//   <label for="set-store-id-' +
+//         currentFeature.properties.storeId +
+//         '"></label>\
+// </div>';
+// details.innerHTML += '<a href="#"><span></span></a>'
+//       if (prop.distance) {
+//         var roundedDistance = Math.round(prop.distance * 100) / 100;
+//         details.innerHTML +=
+//           "<p><strong>" + roundedDistance + " miles away</strong></p>";
+//       }
+
+//       var list = document.getElementsByClassName("item")
+
+//       var listing = document.getElementById("listing-" + i);
+//       listing.click(function(){
+//         console.log('this')
+//       })
+
+      // link.addEventListener("click", function(e) {
+      //   listing.classList.add("active");
+
+      //   // Update the currentFeature to the store associated with the clicked link
+      //   var clickedListing = data.features[this.dataPosition];
+      //   // sessionStorage.setItem("myStore", JSON.stringify(clickedListing.properties))
+      // localStorage.setItem("fulfillment_method", "pickup")
+      // localStorage.setItem("myStore", JSON.stringify(clickedListing.properties))
+      // $('#pickupRadioLabel').text('Pickup From ' +clickedListing.properties.desc)
+      // $('#pickupRadio').prop('checked', true)
+      // $(document).ready(function () {
+
+      //   // Open in new window
+      //   $("#listing-"+i).click(function () {
+      //       window.open("https://google.com");
+      //       return false;
+      //   });
+            
+      // });
+      //   document.getElementById("set-store-id-" + clickedListing.properties.storeId).click();
+
+      // });
+    }
+  }
+
+  $(".list-item").on('click', function(){
+    $(".list-item").removeClass("active")
+    $(this).addClass("active")
+    console.log(JSON.stringify($(this)))
+
+  })
+
+  $("#modal-initial-click").removeClass("is-active");
+  $("#modal-pickup").addClass("is-active");
+})
+
+$('#delivery').click(function(){
+  localStorage.setItem("fulfillment_method", "delivery")
+  $("#modal-initial-click").removeClass("is-active");
+  $("#modal-delivery").removeClass("is-active")
+})
+
+
+
+
+function deliveryForm() {
+    localStorage.setItem("fulfillment_method", "delivery")
+    $("#modal-initial-click").removeClass("is-active")
+    $('#modal-delivery').addClass("is-active")
   
+  var stores = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: ["-85.3171557", "35.0691112"]
+        },
+        properties: {
+          phoneFormatted: "(423) 555-5555",
+          phone: "4235555555",
+          address: "601 Cherokee Blvd",
+          postalCode: 37405,
+          state: "TN",
+          city: "Chattanooga",
+          closing: "20:00",
+          desc: "Vibrant Meals Kitchen",
+          storeId: 1
+        }
+      }
+    ]
+  };
+  // document.getElementById("modal-delivery").classList.remove("is-active");
+
+    sessionStorage.setItem("fulfillment_method", "delivery")
+  
+  // This will let you use the .remove() function later on
+
+  /* For deliveries, we want to add an autocomplete function.
+  *
+  * We can do this using the geocoder.  Basically, on page load
+  * we can create an empty array and as a user fills in the fields,
+  * we can add to this array and also pass it to the geocoder
+  * setInput() function.
+  *
+  */
+
+
+  var custAddr = {};
+
+  return
+  $("#modal-delivery").addClass("is-active")
+  // This will let you use the .remove() function later on
+  if (!("remove" in Element.prototype)) {
+    Element.prototype.remove = function() {
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+    };
+  }
+
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
+  // This adds the map
+  var map = new mapboxgl.Map({
+    // container id specified in the HTML
+    container: "map",
+    // style URL
+    style: "mapbox://styles/mapbox/light-v10",
+    // initial position in [long, lat] format
+    center: [-85.3171557, 35.0691112],
+    // initial zoom
+    zoom: 13
+  });
+  // This adds the data to the map
+  map.on("load", function(e) {
+    jQuery(function($) {
+    $("#address-input").on("keyup", function() {
+      custAddr.street = $(this).val();
+      geocoder.query(custAddr.street);
+    });
+    $("#city").on("keyup", function() {
+      custAddr.city = $(this).val();
+      geocoder.query(custAddr.street + "," + custAddr.city);
+      geocoder.result();
+    });
+    $("#state").on("keyup", function() {
+      custAddr.state = $(this).val();
+      geocoder.query(
+        custAddr.street + "," + custAddr.city,
+        +"," + custAddr.state
+      );
+    });
+  });
+
+    // This is where your '.addLayer()' used to be, instead add only the source without styling a layer
+
+    map.addSource("places", {
+      type: "geojson",
+      data: stores
+    });
+    // Initialize the list
+    buildLocationList(stores);
+    geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      proximity: {
+        latitude: -85.30968009999998,
+        longitude: 35.0456297
+      }
+    });
+    document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
+    // Example of setting an executing a search query programaticall
+    // geocoder.query("3530 broad street")
+
+    map.addSource("single-point", {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: [] // Notice that initially there are no features
+      }
+    });
+    map.addLayer({
+      id: "point",
+      source: "single-point",
+      type: "circle",
+      paint: {
+        "circle-radius": 10,
+        "circle-color": "#007cbf",
+        "circle-stroke-width": 3,
+        "circle-stroke-color": "#fff"
+      }
+    });
+
+    geocoder.on("loading", function(ev) {
+      // geocoder.setInput("3530 broad street")
+    });
+    geocoder.on("result", function(ev) {
+      
+      // if ( $('.suggestions').children().length == 0 ) {
+      //   var userAddr = ev.result.place_name.split(",");
+      //   for (var i = 0; i < userAddr.length; i++) {
+      //     userAddr[i] = userAddr[i].trim()
+
+      //   $('#address-input').val(userAddr[0])
+      //   $('#city').val(userAddr[1])
+      //   $('#state').val(userAddr[2].split(' ')[0])
+      //   $('#postCode').val(userAddr[2].split(' ')[1])
+      //   }
+      // }
+      // alert(JSON.stringify(ev.result.place_name))
+      var userAddr = ev.result.place_name.split(",");
+      var prefs = {}
+      prefs.userAddress = {
+        street: userAddr[0],
+        city: userAddr[1],
+        state: userAddr[2]
+      };
+      localStorage.setItem("deliveryAddress", JSON.stringify(prefs))
+
+
+      // [-85.3171557,35.0691112]
+      var searchResult = ev.result.geometry;
+      map.getSource("single-point").setData(searchResult);
+      var options = {
+        units: "miles"
+      };
+      stores.features.forEach(function(store) {
+        Object.defineProperty(store.properties, "distance", {
+          value: turf.distance(searchResult, store.geometry, options),
+          writable: true,
+          enumerable: true,
+          configurable: true
+        });
+      });
+      stores.features.sort(function(a, b) {
+        if (a.properties.distance > b.properties.distance) {
+          return 1;
+        }
+        if (a.properties.distance < b.properties.distance) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      var listings = document.getElementById("listings");
+      while (listings.firstChild) {
+        listings.removeChild(listings.firstChild);
+      }
+      buildLocationList(stores);
+
+      function sortLonLat(storeIdentifier) {
+        var lats = [
+          stores.features[storeIdentifier].geometry.coordinates[1],
+          searchResult.coordinates[1]
+        ];
+        var lons = [
+          stores.features[storeIdentifier].geometry.coordinates[0],
+          searchResult.coordinates[0]
+        ];
+        var sortedLons = lons.sort(function(a, b) {
+          if (a > b) {
+            return 1;
+          }
+          if (a.distance < b.distance) {
+            return -1;
+          }
+          return 0;
+        });
+        var sortedLats = lats.sort(function(a, b) {
+          if (a > b) {
+            return 1;
+          }
+          if (a.distance < b.distance) {
+            return -1;
+          }
+          return 0;
+        });
+
+      }
+      sortLonLat(0);
+    });
+    // This is where your interactions with the symbol layer used to be
+    // Now you have interactions with DOM markers instead
+    stores.features.forEach(function(marker, i) {
+      // Create an img element for the marker
+      var el = document.createElement("div");
+      el.id = "set-store-id-" + i;
+      el.className = "switch";
+      // Add markers to the map at all points
+      // new mapboxgl.Marker(el, {offset: [0, -23]})
+      //     .setLngLat(marker.geometry.coordinates)
+      //     .addTo(map);
+      el.addEventListener("click", function(e) {
+        // 1. Fly to the point
+        flyToStore(marker);
+        // 2. Close all other popups and display popup for clicked store
+        createPopUp(marker);
+        // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+        var activeItem = document.getElementsByClassName("active");
+        e.stopPropagation();
+        if (activeItem[0]) {
+          activeItem[0].classList.remove("active");
+        }
+        var listing = document.getElementById("listing-" + i);
+        listing.classList.add("active");
+      });
+    });
+
+    function flyToStore(currentFeature) {
+      prefs.myStore = currentFeature.properties;
+      localStorage.setItem("deliveryDistance", currentFeature.properties.mileage)
+      localStorage.setItem("myStore", JSON.stringify(currentFeature.properties))
+      localStorage.setItem("fulfillment_method", "pickup")
+
+      document.getElementById("modal-delivery").classList.remove("is-active");
+      var myNode = document.getElementById("modal-delivery");
+      while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+      }
+      map.flyTo({
+        center: currentFeature.geometry.coordinates,
+        zoom: 15
+      });
+    }
+
+    function buildLocationList(data) {
+      for (i = 0; i < data.features.length; i++) {
+        var currentFeature = data.features[i];
+        var prop = currentFeature.properties;
+        var listings = document.getElementById("listings");
+        var listing = listings.appendChild(document.createElement("div"));
+        listing.className = "item";
+        listing.id = "listing-" + i;
+        var link = listing.appendChild(document.createElement("a"));
+        link.href = "#";
+        link.className = "title";
+        link.dataPosition = i;
+        link.innerHTML = prop.desc;
+        var details = listing.appendChild(document.createElement("div"));
+        details.innerHTML =
+          prop.address +
+          ", " +
+          prop.city +
+          " Open till - " +
+          formatDate(currentFeature.properties.closing);
+        details.innerHTML +=
+          '<div class="field is-pulled-right">\
+  <input id="set-store-id-' +
+          currentFeature.properties.storeId +
+          '" type="checkbox" name="store-' +
+          currentFeature.properties.storeId +
+          '" class="switch is-large">\
+  <label for="set-store-id-' +
+          currentFeature.properties.storeId +
+          '"></label>\
+</div>';
+        if (prop.distance) {
+
+          var roundedDistance = Math.round(prop.distance * 100) / 100;
+          localStorage.setItem("deliveryRange", roundedDistance)
+          if (roundedDistance > 9) {
+            console.log("address is more than 9 miles away");
+          }
+          details.innerHTML +=
+            "<p><strong>" + roundedDistance + " miles away</strong></p>";
+        }
+        link.addEventListener("click", function(e) {
+          // Update the currentFeature to the store associated with the clicked link
+          var clickedListing = data.features[this.dataPosition];
+          document
+            .getElementById("set-store-id-" + clickedListing.properties.storeId)
+            .click();
+          // 1. Fly to the point
+          flyToStore(clickedListing);
+          // 2. Close all other popups and display popup for clicked store
+          createPopUp(clickedListing);
+          // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+          var activeItem = document.getElementsByClassName("active");
+          if (activeItem[0]) {
+            activeItem[0].classList.remove("active");
+          }
+          this.parentNode.classList.add("active");
+        });
+      }
+    }
+  });
+
+  $("#modal-initial-click").removeClass("is-active");
+  $("#modal-delivery").addClass("is-active");
+}
+
+function formatDate(date) {
+  var time = date.split(":");
+  var hh = parseInt(time[0]);
+  var m = parseInt(time[1]);
+  var h = hh;
+  if (h >= 12) {
+    h = hh - 12;
+    dd = "PM";
+  }
+  if (h == 0) {
+    h = 12;
+  }
+
+  m = m < 10 ? "0" + m : m;
+
+  /* if you want 2 digit hours: */
+  // h = h<10?"0"+h:h;
+  var timeStr = h + ":" + m + "" + dd;
+  return timeStr;
+}
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+function showPosition(position) {
+  var cord = [];
+  cord.push(position.coords.longitude);
+  cord.push(position.coords.latitude);
+  $("#cords").val(cord);
+}
+
+
  
   </script>

@@ -234,8 +234,6 @@ body {
 
         geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
-        query: {searchInput: "37409"},
-
         proximity: {latitude:-85.30968009999998, longitude:35.0456297}
     });
     document.getElementById('geocoder').appendChild(geocoder.onAdd(map))

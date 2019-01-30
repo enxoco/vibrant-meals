@@ -469,6 +469,7 @@ class ItemController {
                     .table('items')
                     .decrement('eightySixCount', 1)
                     .where('id', cartCur[i].id)
+                    return cartCur
                     return response.redirect('back', true)
                 }
             }
@@ -490,11 +491,12 @@ class ItemController {
         }
         // Set the cartItem session key to the contents of our cartCur array
         session.put('cartItem', cartCur)
-        return response.redirect('back')
+        return response.send(cartCur)
     }
 
     async clearCart ({ response, session}) {
         session.put('cartItem', '') // Clear the cart from the session
+        session.put('cartCount', 0)
         cartCur = [] // Make sure to reset the cart array as it may contain old cart items
         return response.redirect('back')
     }

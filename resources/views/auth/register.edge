@@ -1,92 +1,192 @@
 <link rel="stylesheet" href="/css/bulma-checkradio.min.css">
 
-<form action="/register" method="post" id="register-form">
-  {{ csrfField() }}
-  <input type="hidden" id="acctCreated"/>
+<input id="cords" type="hidden" />
+<script>
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
 
+  function showPosition(position) {
+    var cord = []
+    cord.push(position.coords.longitude)
+    cord.push(position.coords.latitude)
+    $('#cords').val(cord)
+  }
+  getLocation()
+</script>
+<div id="modal-initial-click" class="modal modal-fx-superScaled" style="background:#F2F2F2;">
+  <div class="modal-background"></div>
+      <div class="media-left">
+        <button class="modal-close button is-large is-primary" aria-label="close"></button>
 
-    <div class="card">
-    <header class="card-header">
-    <p class="card-header-title">
-      Pickup or delivery
-    </p>
-    <a href="#" class="card-header-icon" aria-label="more options">
-      <span class="icon">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </a>
-  </header>
-  @!include('layout.alerts')
-
-  <div class="card-content">
-    <div class="content">
-      <div class="columns">
-          {{ csrfField() }}
-      <div class="column has-border-right ">
-        <div class="field is-horizontal has-margin-bottom-50 has-margin-top-50">
-          <div class="field-label is-normal">
-            <label class="label has-background-white">Email</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-              <input class="input" type="email" name="email" id="email" required>
-              </p>
-            </div>
-          </div>
-        </div>
-                <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label has-background-white">Zip Code</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control">
-              <input class="input" type="number" name="zip" id="zip" required>
-              </p>
-            </div>
-          </div>
-        </div>
-      
       </div>
-            <div class="column">
-        <div class="field is-horizontal has-margin-top-50 has-margin-left-50">
-            <div class="field">
-                <input class="is-checkradio is-block is-success is-large" id="pickupButton" type="checkbox" name="pickup" checked="checked">
-                <label for="pickupButton">Pickup...</label>
-                <input class="is-checkradio is-block is-success is-large" id="deliveryButton" type="checkbox" name="delivery">
-                <label for="deliveryButton">Delivery</label>
-                <div style="height: 75px"></div>
-                <input class="is-checkradio is-block is-success is-large" id="monButton" type="checkbox" name="monday">
-                <label for="monButton">Monday</label>
-                <input class="is-checkradio is-block is-success is-large" id="wedButton" type="checkbox" name="wednesday" checked="checked">
-                <label for="wedButton">Wednesday</label>
+        <div class="modal-heading" style="z-index:1;">How do you want your meals?</div>
+        <br>
+        <div class="columns is-full">
+          <div class="column is-one-quarter is-offset-one-quarter">
+            <a class="button modal-menu-option" id="pickup">
+              <img src="/images/pickup-icon.png" />
+            </a>
+            <div class="modal-footing">
+            Pick them up
+            </div>
+          </div>
+
+          <div class="column is-one-quarter">
+            <a class="button modal-menu-option" id="delivery">
+                <img src="/images/delivery-icon.png" />
+
+              </a>
+              <div class="modal-footing">
+            Deliveried to you
               </div>
-            </form>
-        </div><!--/field-->
-      </div><!--/column-->
-     </div><!--/columns--> 
-    </div><!--/content-->
-  </div><!--/card-content-->
-    
+          </div>
+        </div>
 </div>
 
-<script src="/js/jquery-2.2.4.min.js"></script>
+<div id="modal-pickup" class="modal modal-fx-superScaled">
+
+</div>
+
+<div id="modal-delivery" class="modal modal-fx-superScaled">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <div class="media-left">
+        <button class="modal-close button is-large is-primary" aria-label="close"></button>
+
+      </div>
+      <div class="content initial-modal">
+        <div class="modal-heading">Delivery Address</div>
+        <div class="modal-subheading">Enter your address below</div>
+        <br>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Street Address</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded has-icons-left has-icons-right">
+                <input class="input is-success" type="text" id="address-input">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">City/State/Zip</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded has-icons-left">
+                <input class="input" type="text" placeholder="e.g. Chattanooga" id="city">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <p class="control is-expanded has-icons-left has-icons-right">
+                <input class="input is-success" type="email" placeholder="e.g. TN" id="state">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <p class="control is-expanded has-icons-left has-icons-right">
+                <input class="input is-success" type="email" placeholder="e.g. 37409" id="postCode">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        
+        
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <!-- Left empty for spacing -->
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary" id="checkAddress">
+                  Check address
+                </button>
+              </div>
+            </div>
+            <div id="alert"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-var ip = '75.136.21.180'
-var access_key = 'a30e90d0c810992415e2eb14c1e5e9bb';
 
-// get the API result via jQuery.ajax
-$.ajax({
-    url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,   
-    dataType: 'jsonp',
-    success: function(json) {
+  $('#checkAddress').on('click', function() {
 
-        // output the "capital" object inside "location"
-        $('#zip').val(json.zip)
-        
+    var store = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-85.317172,35.069111]
+      }
     }
-});
 
-    </script>
+    
+
+    if (localStorage.userAddr.street) {
+      $('#address-input').text(localStorage.userAddr.street)
+    }
+
+    var st = $('#address-input').val()
+    var city = $('#city').val()
+    var state = $('#state').val()
+    var post = $('#postCode').val()
+  
+    var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
+
+    var userAddr = {
+      street: st,
+      city: city,
+      state: state,
+      zip: post
+    }
+    localStorage.userAddr = JSON.stringify(userAddr)
+    var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
+    $.get(userSearch, function(data) {
+      var userCords = data.features[0].geometry.coordinates
+      var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
+      $.get(query, function(distance) {
+        var miles = distance.routes[0].distance*0.000621371192
+        $('#alert').html(miles.toFixed(1))
+        localStorage.deliveryDistance = miles.toFixed(1)
+        localStorage.removeItem("myStore")
+      })
+    })
+  })
+</script>
