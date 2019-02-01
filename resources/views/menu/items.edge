@@ -16,12 +16,39 @@
 <!-- Turf.js plugin -->
 <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 <style>
+  .card-image {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .cart-image {
+    width: 100px;
+    height: auto;
+    border-radius: 0px;
+  }
+
+  .item-card {
+    width: 30%;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 
 
 body {
   color: #444749;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  background-color: #f2f2f2;
+  color: #444749;
+
+  mix-blend-mode: normal;
+  opacity: 0.87;
 }
   /*Codepen only above this line*/
   .box {
@@ -80,6 +107,7 @@ body {
   */
   }
   .store-modal {
+    background-color: white;
 
   }
   .delivery-modal {
@@ -327,11 +355,62 @@ color: #444749;
   background-color: #F2F2F2 !important;
 }
 
+.list-item {
+  font-family: Montserrat;
+font-style: normal;
+font-weight: normal;
+line-height: normal;
+font-size: 22px;
+letter-spacing: 1.83333px;
+text-transform: uppercase;
+
+color: #444749;
+
+mix-blend-mode: normal;
+opacity: 0.87;
+}
 .list-item.active {
     background: #3b8f6b;
     color: white;
 }
+
+.input {
+    border: none;
+    font-size: 1.25rem;
+    text-align: left;
+}
+
+::-moz-placeholder {
+  color: black !important;
+}
+::-webkit-input-placeholder {
+  color: black !important;
+}
+
+img.filter-icon {
+    position: relative;
+    top: 20px;
+}
+.category-divider {
+    border: 3px solid #569e7f;
+}
+
+.checkout-prompt-1 {
+  padding-bottom: 20px;
+}
+
+.checkout-button {
+    width: 100%;
+    font-size: 1.25em;
+    margin-top: 20px;
+}
+.checkout-button:hover {
+  background-color: #f2f2f2 !important;
+  color: #569e7f !important;
+  border: 1px solid #569e7f !important;
+}
 </style>
+<body>
 <nav class="nav has-background-primary">
     <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
@@ -350,13 +429,14 @@ color: #444749;
 </nav>
 
 <nav class="nav" style="padding:20px;">
-    @each(category in categories)
+<!--    @each(category in categories)
     <a class="button is-info" href="/items/category/{{category.id}}">{{category.desc}}</a>
-  @endeach
+  @endeach-->
+  <img src="/images/navbard.png" />
   <a class="button is-info" href="/menu/all">All</a>
 
   <a class="button is-danger" href="/cart/clear">Clear Cart</a>
-  <a class="button is-success" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>
+  <a class="button is-primary" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>
   <div class="field" id="fulfillmentMethodRadio">
       <input class="is-checkradio" id="pickupRadio" value="pickup" type="radio" name="exampleRadioInline">
       <label for="pickupRadio" id="pickupRadioLabel">Pickup</label>
@@ -369,62 +449,53 @@ color: #444749;
 <div class="columns">
 <div class="column is-four-fifths-mac is-full-mobile is-full-tablet" id="items-column">
   <div class="columns is-multiline" style="align-items: flex-start; padding-left:10px; padding-right:10px;">
+      <div style="width: 20px;"></div>
+
         @each(item in items)
         @if(item.is_visible != 1)
         @else
-            <div class="column is-half-tablet is-half-mobile is-one-third-desktop item-column">
-              <div class="card">
-                  <form name="item" id="item_{{item.id}}">
-                    <input type="hidden" id="id" name="id" value="{{item.id}}" />
-                    <input type="hidden" id="sku" name="sku" value="{{item.sku}}" />
-                    <input type="hidden" id="name" name="name" value="{{item.name}}" />
-                    <input type="hidden" id="price" name="price" value="{{item.price}}" />
-                    <input type="hidden" id="img_url" name="img_url" value="{{item.img_url}}" />
-                    <input type="hidden" type="number" id="quantity" name="quantity" value=1 />
-                    <input id="scroll" name="scroll" value="" type="hidden"/>
-      
-                    <div class="card-image">
-                      <figure class="image is-4by3">
-                        <img src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
-                      </figure>
-                    </div><!--/card-image-->
-                    <div class="card-content">
-                      <div class="media">
-                        <div class="media-content">
-                          <p class="title is-4">{{ item.name }} - ${{ item.price }}</p>
-                          @each(c in item.categories)
-                          <p class="subtitle is-6">{{c.name}}</p>
+          <div class="item-card">
+              <div class="card-image">
+                <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
+                <div class="category-divider is-primary has-background-color-primary"></div>
+              </div><!--/card-image-->
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.price }}</span></p>
+                     <!-- @each(c in item.categories)
+                        <p class="subtitle is-6">{{c.name}}</p>
+                      @endeach-->
+                        <!--  This should be replaced with icons .<p class="subtitle is-6">
+                          @each(f in item.filters)
+                            <span class="tag is-info">{{f.name}}</span>
+                              @if($loop.last)
+                              @else
+                              @endif
                           @endeach
-                          
-                          <p class="subtitle is-6">
-                              @each(f in item.filters)
-                              <span class="tag is-info">{{f.name}}</span>
-                            @if($loop.last)
-                            @else
-                            @endif
-                              @endeach
-                            </p>
-                          
-                        </div><!--/media-content-->
-                      </div><!--/media-->
-                      <div class="content">
-                          {{item.description}}
-                          <br>
-      
-                          
-                        </div><!--/content-->
+                        </p>-->
+                  </div><!--/media-content-->
+                </div><!--/media-->
+                <div class="content">
+                  {{ truncate(item.description,25 , '...') }}<br />
+                  <img class="filter-icon" src="/images/oval-icon.png" />
+                  <a class="checkout-prompt-1 is-pulled-right" data-id="{{item.id}}" data-sku="{{item.sku}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}" data-quantity="1" href="#" class="is-pulled-right">
+                    <img src="/images/cart-icon.png" />
+                  </a>
+                </div><!--/content-->
+
+                        <!-- Admin only
                         <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
-                        <a id="checkout-prompt-1" class="button is-primary is-large modal-button" data-target="modal" aria-haspopup="true" onclick="submitForm({{item.id}})">Add to cart</a>
-                        <!--<a href="#" class="button is-success" onclick="submitForm({{item.id}})"> Add to Cart </a>-->
+
+                        <a href="#" class="button is-primary" onclick="submitForm({{item.id}})"> Add to Cart </a>
                         <a id="delete-item" class="button is-danger modal-button open-modal" 
                         data-target="modal-ter" 
                         aria-haspopup="true" 
-                        onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>
-                    </div><!--/card-content-->
-                      </form>
+                        onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>-->
+              </div><!--/card-content-->
        
-              </div><!--/card-->
-            </div><!--/column-->
+            </div><!--/card-->
+              <div style="width: 20px;"></div>
             
           <div class="modal" id="modal-{{item.id}}">
               <div class="modal-background"></div>
@@ -452,43 +523,28 @@ color: #444749;
 
 <!--is-hidden-tablet-->
   <div class="column is-one-fifth-desktop is-one-third-mobile is-one-third-tablet is-hidden-tablet" id="cart">
-      &nbsp
-       <div id="cartTotal">$Cart total:</div>
-    <a class="button is-success" href="/checkout">Checkout</a>
-      @each(c in cart)
-      @unless(c.quantity == 0)
-      <div class="card">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="/{{c.img_url}}" alt="Placeholder image">
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-6">{{ c.name }} x {{ c.quantity }}</p>
-              <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}
-                <div class="buttons">
-                <a class="button is-danger is-rounded is-small-mobile"  href="/cart/remove/{{$loop.index}}">x</a>
-                <a class="button is-info" href="/cart/sub/{{$loop.index}}">-</a>
-                <a class="button is-success" onclick="submitForm({{c.id}})">+</a>
-                </div>
-              </p>
-              </div>
-            </div>
-          </div>
-        </div><br>
-      @else
-        
-      @endunless
 
-        @endeach
-</div>
-</div>
+
+      <div id="alert">
+        <div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div>
+      </div>
+      @if(cart.length < 5)
+        <a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>
+      @else
+      <a class="button is-primary checkout-button" href="/checkout">Checkout</a>
+      @endif
+
+  </div>
+
+</div><!--/main columns-->
 
 
 @!include('auth.register')
+@!include('Modals.initial')
+@!include('Modals.pickupLocations')
+@!include('Modals.deliveryAddress')
 
+</body>
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/product-card.js"></script>
   <script>
@@ -517,7 +573,7 @@ color: #444749;
       // cartObj.clickCount = 0
     $(document).ready(function(){
 
-      $('.modal-card-foot-registration').html('<a id="continueUser" class="card-footer-item is-success button">Create an account</a><a id="continueGuest" class="card-footer-item is-success button">Continue as Guest</a><input type="hidden" id="reg_method" value="" name="reg_method">')
+      $('.modal-card-foot-registration').html('<a id="continueUser" class="card-footer-item is-primary button">Create an account</a><a id="continueGuest" class="card-footer-item is-primary button">Continue as Guest</a><input type="hidden" id="reg_method" value="" name="reg_method">')
     
     //   $('#continueGuest').click(function() {
     //     $('#reg_method').val('guest')
@@ -536,7 +592,7 @@ color: #444749;
   @else
   <script>
     $(document).ready(function(){
-      $('.modal-card-foot-registration').html('<a class="card-footer-item is-success button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
+      $('.modal-card-foot-registration').html('<a class="card-footer-item is-primary button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
     });
    </script>
   @endif
@@ -553,7 +609,7 @@ color: #444749;
       total += price
     }
   
-    $('#cartTotal').text('Cart Total: $' + total)
+    // $('#cartTotal').text('Cart Total: $' + total)
   }
   var cartItems = []
   $('#fulfillmentMethodRadio input:radio').click(function() {
@@ -577,12 +633,7 @@ color: #444749;
     localStorage.setItem("fulfillment_method", $(this).val())
   });
   function submitForm(id) {
-    if (localStorage.getItem("custEngageCompleted") != 1) {
-      $('#modal-initial-click').addClass('is-active')
-      localStorage.setItem("custEngageCompleted", 1);
 
-      custEngageCompleted++ // Don't show the initial modal anymore
-    }
 
     $('form#item_'+id).submit()
   
@@ -594,27 +645,22 @@ $("form").on( "submit", function( event ) {
 
   $.post('/cart/addItem', $(this).serialize(), function(data) {
     for (var i = 0; i < data.length; i++) {
-      var html = '<div class="card">\
-          <div class="card-content">\
+      var html = '<div class="card-content">\
             <div class="media">\
-              <div class="media-left">\
-                <figure class="image is-48x48">\
                   <img src="'+data[i].img_url+'" alt="Placeholder image">\
-                </figure>\
-              </div>\
               <div class="media-content">\
                 <p class="title is-6">'+data[0].name+' x '+data[0].quantity+'</p>\
               <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}\
                 <div class="buttons">\
                 <a class="button is-danger is-rounded is-small-mobile"  href="/cart/remove/{{$loop.index}}">x</a>\
                 <a class="button is-info" href="/cart/sub/{{$loop.index}}">-</a>\
-                <a class="button is-success" onclick="submitForm({{c.id}})">+</a>\
+                <a class="button is-primary" onclick="submitForm({{c.id}})">+</a>\
                 </div>\
               </p>\
               </div>\
             </div>\
           </div>\
-        </div><br>'
+        <br>'
     }
     $('#cart').innerHTML += html
   })
@@ -629,14 +675,14 @@ $("form").on( "submit", function( event ) {
   
   // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
   function myFunction() {
-    var target = $(".nav");
-    var x = target.position();
-    console.log("Top: " + x.top + " Left: " + x.left);
-    if (window.pageYOffset >= sticky) {
-      navbar.classList.add("sticky")
-    } else {
-      navbar.classList.remove("sticky");
-    }
+    // var target = $(".nav");
+    // var x = target.position();
+    // console.log("Top: " + x.top + " Left: " + x.left);
+    // if (window.pageYOffset >= sticky) {
+    //   navbar.classList.add("sticky")
+    // } else {
+    //   navbar.classList.remove("sticky");
+    // }
   }
   
   function launchModal(id) {
@@ -697,20 +743,7 @@ $(".modal-close").click(function() {
 });
 
 var prefs = {};
-
-
-$("#pickup").click(function() {
-  sessionStorage.setItem("fulfillment_method", "pickup")
-  // This will let you use the .remove() function later on
-  var modal ='<div class="modal-background"></div>\
-  <button class="modal-close close-delivery button is-large is-primary" aria-label="close"></button>\
-    <div class="modal-content">\
-        <div class="content store-modal" id="listings">\
-        </div>\
-    </div>';
-  $("#modal-pickup").append(modal);
-  $("#modal-pickup").addClass("is-active")
-  var stores = {
+var stores = {
     type: "FeatureCollection",
     features: [
       {
@@ -806,11 +839,18 @@ $("#pickup").click(function() {
     ]
   };
 
+$("#pickup").click(function() {
+  localStorage.setItem("fulfillment_method", "pickup")
+
+  $("#modal-pickup").addClass("is-active")
+
+
   mapboxgl.accessToken =
     "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
 
     // Initialize the list
-    buildLocationList(stores);
+    // buildLocationList(stores);
+
 
     var cords = document.getElementById("cords").value;
     var cord = cords.split(",");
@@ -886,80 +926,34 @@ $("#pickup").click(function() {
       var listings = document.getElementById("listings");
       var listing = listings.appendChild(document.createElement("div"));
       listing.classList.add("listing-item")
-      console.log('1')
+      console.log(prop)
       var miles = prop.distance
-      if (miles) {
-        listing.innerHTML = "<div class='list-item'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'>"+ miles.toFixed(1) +" miles away</span></div>"
+      if (localStorage.pickupLocation) {
+        var pickupLocation = JSON.parse(localStorage.pickupLocation)
+          if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
+          listing.innerHTML = "<div class='list-item' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+        } else {
+          listing.innerHTML = "<div class='list-item active' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+
+        }
+      } else {
+
+          listing.innerHTML = "<div class='list-item' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
 
       }
-//       listing.className = "item";
-//       listing.id = "listing-" + i;
-//       var link = listing.appendChild(document.createElement("a"));
-//       link.href = "#";
-//       link.className = "title";
-//       link.dataPosition = i;
-//       link.innerHTML = prop.desc;
-//       var details = listing.appendChild(document.createElement("div"));
-//       details.innerHTML =
-//         prop.address +
-//         ", " +
-//         prop.city +
-//         " Open till - " +
-//         formatDate(currentFeature.properties.closing);
-//       details.innerHTML +=
-//         '<div class="field is-pulled-right">\
-//   <input id="set-store-id-' +
-//         currentFeature.properties.storeId +
-//         '" type="checkbox" name="store-' +
-//         currentFeature.properties.storeId +
-//         '" class="switch is-large">\
-//   <label for="set-store-id-' +
-//         currentFeature.properties.storeId +
-//         '"></label>\
-// </div>';
-// details.innerHTML += '<a href="#"><span></span></a>'
-//       if (prop.distance) {
-//         var roundedDistance = Math.round(prop.distance * 100) / 100;
-//         details.innerHTML +=
-//           "<p><strong>" + roundedDistance + " miles away</strong></p>";
-//       }
 
-//       var list = document.getElementsByClassName("item")
 
-//       var listing = document.getElementById("listing-" + i);
-//       listing.click(function(){
-//         console.log('this')
-//       })
-
-      // link.addEventListener("click", function(e) {
-      //   listing.classList.add("active");
-
-      //   // Update the currentFeature to the store associated with the clicked link
-      //   var clickedListing = data.features[this.dataPosition];
-      //   // sessionStorage.setItem("myStore", JSON.stringify(clickedListing.properties))
-      // localStorage.setItem("fulfillment_method", "pickup")
-      // localStorage.setItem("myStore", JSON.stringify(clickedListing.properties))
-      // $('#pickupRadioLabel').text('Pickup From ' +clickedListing.properties.desc)
-      // $('#pickupRadio').prop('checked', true)
-      // $(document).ready(function () {
-
-      //   // Open in new window
-      //   $("#listing-"+i).click(function () {
-      //       window.open("https://google.com");
-      //       return false;
-      //   });
-            
-      // });
-      //   document.getElementById("set-store-id-" + clickedListing.properties.storeId).click();
-
-      // });
     }
   }
 
   $(".list-item").on('click', function(){
     $(".list-item").removeClass("active")
     $(this).addClass("active")
-    console.log(JSON.stringify($(this)))
+    var storeId = ($(this).attr('data-store'))
+    $('.modal').removeClass("is-active")
+    $('#pickupRadio').attr('checked', 'checked')
+    localStorage.pickupLocation = JSON.stringify(stores.features[storeId].properties)
+
 
   })
 
@@ -1337,7 +1331,82 @@ function showPosition(position) {
   cord.push(position.coords.latitude);
   $("#cords").val(cord);
 }
+$('.checkout-prompt-1').on('click', function(){
+  if (localStorage.getItem("custEngageCompleted") != 1) {
+      $('#modal-initial-click').addClass('is-active')
+      localStorage.setItem("custEngageCompleted", 1);
+      var c = JSON.parse(localStorage.cart)
+      var item = $(this).data()
+      c.push(item)
+      localStorage.setItem('cart', JSON.stringify(c))
+      updateCartDiv(c)
+      return false
+    }
+    var item = $(this).data()
 
+  // var item = $(this).data()
+    var cartItems = JSON.parse(localStorage.cart)
+    cartItems.push(item)
 
- 
-  </script>
+    function checkDuplicateInObject(propertyName, inputArray) {
+    var seenDuplicate = false,
+        testObject = {};
+    
+    inputArray.map(function(item) {
+      var itemPropertyName = item[propertyName]; 
+      if (itemPropertyName in testObject) {
+        testObject[itemPropertyName].quantity++;
+        item.duplicate = true;
+        seenDuplicate = true;
+      }
+      else {
+        testObject[itemPropertyName] = item;
+        delete item.duplicate;
+      }
+    });
+    
+    return cartItems;
+  }
+  var cart = checkDuplicateInObject('id', cartItems)
+  var updatedCart = []
+  for (var i = 0; i < cart.length; i++) {
+    if (!cart[i].duplicate){
+      updatedCart.push(cart[i])
+    }
+    
+  }
+    // updateCartDiv(cartItems)
+  console.log(updatedCart)
+    localStorage.setItem('cart', JSON.stringify(updatedCart))
+    updateCartDiv(updatedCart)
+})
+
+function updateCartDiv(cartItems) {
+
+  $('#cart').html('')
+  for (var i = 0; i < cartItems.length; i++) {
+    var card = '<div class="columns">\
+        <div class="column is-one-fifth cart-items">\
+          <a href="#" onclick="submitForm({{c.id}})"><img src="/images/plus-icon.png"></a><br />\
+          <div class="item-quantity">'+cartItems[i].quantity+'</div>\
+          <a href="/cart/sub/{{$loop.index}}"><img src="/images/minus-icon.png"></a>\
+        </div>\
+        <div class="column">\
+          <img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" />\
+        </div>\
+        <div class="column">\
+            <p class="title is-6">'+cartItems[i].name+'</p>\
+        </div>\
+      </div><br>'
+      $('#cart').append(card)
+  }
+
+}
+//Initializd our cart if one is not yet set
+if (!localStorage.cart) {
+  localStorage.setItem('cart','[]')
+}
+if (!localStorage.custEngageCompleted) {
+  localStorage.setItem('custEngageCompleted', 0)
+}
+  </script> 
