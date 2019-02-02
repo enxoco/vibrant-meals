@@ -1,24 +1,30 @@
-<div id="modal-initial-click" class="modal modal-fx-slideTop" style="background:#F2F2F2;">
+<div id="modal-initial-click" class="modal modal-fx-slideTop is-active" style="background:#F2F2F2;">
   <div class="modal-background"></div>
     <div class="media-left">
 <!--      <button class="modal-close button is-large is-primary" aria-label="close"></button>  -->
     </div>
     <div class="modal-heading" style="z-index:1;">How do you want your meals?</div><br>
-      <div class="columns is-full">
-        <div class="column is-one-quarter is-offset-one-quarter">
-          <a class="button modal-menu-option" id="pickup">
-            <img src="/images/pickup-icon.png" />
+      <ul class="initial-modal-flex-container">
+          <a class="flex-item button modal-menu-option" id="pickup">
+            <img class="pickup-icon" src="/images/pickup-icon.png" />
+            <div class="modal-footing">Pick them up</div>
           </a>
-        <div class="modal-footing">Pick them up</div>
-        </div>
-        <div class="column is-one-quarter">
-          <a class="button modal-menu-option" id="delivery">
-            <img src="/images/delivery-icon.png" />
-          </a>
+          <a class="flex-item button modal-menu-option" id="delivery">
+            <img class="delivery-icon" src="/images/delivery-icon.png" />
             <div class="modal-footing">
-              Delivered to you
-            </div>
-        </div>
-      </div>
+                Delivered to you
+              </div>
+          </a>
+
+        </ul>
 </div>
-  
+
+
+<script>
+
+$('a#pickup').on('hover', function(){
+  console.log('hello')
+  $(this).css('background-color', '#aad0ae')
+  $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
+})
+</script>

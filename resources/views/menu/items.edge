@@ -7,48 +7,291 @@
 
 <!-- Mapbox GL JS -->
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
 <!-- Geocoder plugin -->
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' type='text/css' />
 <!-- Turf.js plugin -->
 <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
+
 <style>
+
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .flex-item {
+    padding: 5px;
+    width: 90%;
+    height: auto;
+    margin-top: 10px;
+  }
+  .flex-container {
+    width: 100%;
+  }
+  .cart-container {
+    width: 50%;
+  }
+  .initial-modal-flex-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column;
+    justify-content: space-evenly;
+  }
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .flex-item {
+    padding: 5px;
+    width: 90%;
+    height: auto;
+    margin-top: 10px;
+  }
+  .flex-container {
+    width: 70%;
+    left: 2%;
+    position: relative;
+}
+  .cart-container {
+    width: 50%;
+  }
+  .initial-modal-flex-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column;
+    justify-content: space-evenly;
+  }
+  .modal-menu-option {
+    margin-bottom: 10%;
+    font-size: 1.55rem;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 5px 6px 22px rgba(155, 155, 155, 0.233328);
+    letter-spacing: 0.75rem;
+    flex-flow: column;
+    flex-direction: column;
+    width: 90%;
+    padding: 100px;
+    left: 5%;
+}
+} 
+
+/* Medium devices (iPhone X, 768px and up) */
+@media only screen and (min-width: 768px) {  
+  .flex-item {
+    padding: 5px;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+.flex-container {
+    width: 70%;
+    left: 2%;
+    position: relative;
+}
+  .cart-container {
+    width: 30%;
+  }
+  .initial-modal-flex-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column;
+    justify-content: space-evenly;
+  }
+  .modal-menu-option {
+    margin-bottom: 10%;
+    font-size: 1.55rem;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 5px 6px 22px rgba(155, 155, 155, 0.233328);
+    letter-spacing: 0.75rem;
+    flex-flow: column;
+    flex-direction: column;
+    width: 90%;
+    padding: 100px;
+    left: 5%;
+}
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .flex-item {
+    padding: 5px;
+    width: 33%%;
+    height: auto;
+    margin-top: 10px;
+  }
+  .flex-container {
+    width: 70%;
+  }
+  .cart-container {
+    width: 30%;
+  }
+  .initial-modal-flex-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row;
+    justify-content: space-evenly;
+  }
+  .modal-menu-option {
+    padding: 200px;
+  }
+} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .flex-item {
+    padding: 5px;
+    width: 33%;
+    height: auto;
+    margin-top: 10px;
+  }
+  .flex-container {
+    width: 70%;
+  }
+  .cart-container {
+    width: 30%;
+  }
+  .initial-modal-flex-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row;
+    justify-content: space-evenly;
+  }
+  .modal-menu-option {
+    padding: 200px;
+  }
+}
+
+a.more-info {
+    position: relative;
+    font-size: 3rem;
+    bottom: -72px;
+    right: -35%;
+}
+div#item-quantity {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding-top: 15%;
+    background: white;
+    box-shadow: 1px 1px 1px 1px gainsboro;
+    pointer-events: none;
+}
+img.cart-control {
+  height: 35px;
+  width: 35px;
+}
+.item-quantity {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+  .fulfillment-label {
+    border-right: 1px solid black;
+    padding: 10px;
+  }
+  .fulfillment-options {
+    display: flex;
+    padding-bottom: 20px;
+  }
+  .fulfillment-option {
+    border-right: 20px solid transparent;
+  }
+  .wrapper {
+    display: flex;
+  }
+
   .card-image {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
 
-  .cart-image {
-    width: 100px;
-    height: auto;
-    border-radius: 0px;
-  }
+
+  p.title.is-6 {
+    align-self: baseline;
+}
 
   .item-card {
     width: 30%;
     background-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 0px gainsboro;
+    border: .25px solid black;
+}
 
+.columns {
+  height: 100%
+}
 
+html {
+  background-color: #f2f2f2;
+
+}
 body {
   color: #444749;
   font-family: Montserrat;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
   background-color: #f2f2f2;
   color: #444749;
+  height: 100%;
+  /* font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+
 
   mix-blend-mode: normal;
-  opacity: 0.87;
+  opacity: 0.87; */
 }
   /*Codepen only above this line*/
   .box {
@@ -94,11 +337,11 @@ body {
     text-align: center;
     border-radius: 8px;
     box-shadow: 5px 6px 22px rgba(155, 155, 155, 0.233328);
-    padding: 1.75rem 0;
     letter-spacing: 0.75rem;
-    width: 394px;
-    height: 492px;
-  }
+    flex-flow: column;
+    flex-direction: column;
+    padding: 200px;
+}
   .initial-modal {
     min-height: 300px;
     /*   position: relative;
@@ -114,26 +357,6 @@ body {
     max-width: 500px;
   }
 
-  .sidebar {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    border-right: 1px solid rgba(0, 0, 0, 0.25);
-  }
-  .pad2 {
-    padding: 20px;
-  }
-
-  .map {
-    position: absolute;
-    left: 50%;
-    width: 50%;
-    top: 0;
-    bottom: 0;
-  }
 
   h1 {
     font-size: 22px;
@@ -210,14 +433,7 @@ body {
     border-radius: 0;
   }
 
-  .marker {
-    border: none;
-    cursor: pointer;
-    height: 56px;
-    width: 56px;
-    background-image: url(marker.png);
-    background-color: rgba(0, 0, 0, 0);
-  }
+
 
   .clearfix {
     display: block;
@@ -230,97 +446,23 @@ body {
     visibility: hidden;
   }
 
-  /* Marker tweaks */
-  .mapboxgl-popup {
-    padding-bottom: 50px;
-  }
-
-  .mapboxgl-popup-close-button {
-    display: none;
-  }
-  .mapboxgl-popup-content {
-    font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", Sans-serif;
-    padding: 0;
-    width: 180px;
-  }
-  .mapboxgl-popup-content-wrapper {
-    padding: 1%;
-  }
-  .mapboxgl-popup-content h3 {
-    background: #91c949;
-    color: #fff;
-    margin: 0;
-    display: block;
-    padding: 10px;
-    border-radius: 3px 3px 0 0;
-    font-weight: 700;
-    margin-top: -15px;
-  }
-
-  .mapboxgl-popup-content h4 {
-    margin: 0;
-    display: block;
-    padding: 10px 10px 10px 10px;
-    font-weight: 400;
-  }
-
-  .mapboxgl-popup-content div {
-    padding: 10px;
-  }
-
-  .mapboxgl-container .leaflet-marker-icon {
-    cursor: pointer;
-  }
-
-  .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
-    margin-top: 15px;
-  }
-
-  .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-    border-bottom-color: #91c949;
-  }
-
-  .mapboxgl-ctrl-geocoder {
-    border: 2px solid #00853e;
-    border-radius: 0;
-    position: relative;
-    top: 0;
-    width: 800px;
-    margin-top: 0;
-    border: 0;
-  }
-
   .title {
     font-size: 20px;
   }
 
   .columns.is-full {
     width: 100%;
-}
-  /* .modal-close-delivery.button.is-large.is-danger{
-    position: relative;
-    top: 10px;
-    left: 10px;
-    z-index:3;
-  } */
-
-  .geocoder {
-    position: absolute;
-    z-index: 1;
-    width: 30%;
-    right: 80px;
-    top: 20px;
   }
 
   .modal-heading {
     font-style: normal;
-font-weight: normal;
-line-height: normal;
-font-size: 28px;
-text-align: center;
-letter-spacing: 2.33333px;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 28px;
+    text-align: center;
+    letter-spacing: 2.33333px;
 
-color: #444749;
+    color: #444749;
   }
 
   nav {
@@ -336,7 +478,6 @@ color: #444749;
     font-size: 28px;
     text-align: center;
     letter-spacing: 2.33333px;
-    color: #444749;
     width: 394px;
     text-transform: uppercase;
     padding-top: 20px;
@@ -370,7 +511,7 @@ mix-blend-mode: normal;
 opacity: 0.87;
 }
 .list-item.active {
-    background: #3b8f6b;
+    background: #aad0ae;
     color: white;
 }
 
@@ -389,25 +530,51 @@ opacity: 0.87;
 
 img.filter-icon {
     position: relative;
-    top: 20px;
+    top: 40px;
 }
-.category-divider {
-    border: 3px solid #569e7f;
+.category-divider-primary {
+    border: 3px solid #aad0ae;
+}
+.category-divider-breakfast {
+  border: 3px solid #f7e393;
+}
+.category-divider-elite {
+  border: 3px solid #d86a6a;
 }
 
 .checkout-prompt-1 {
-  padding-bottom: 20px;
+  float: right;
+    /* display: flex;
+    justify-content: flex-end; */
 }
 
 .checkout-button {
-    width: 100%;
+    width: 50%;
     font-size: 1.25em;
+    align-self: center;
     margin-top: 20px;
 }
 .checkout-button:hover {
   background-color: #f2f2f2 !important;
   color: #569e7f !important;
   border: 1px solid #569e7f !important;
+}
+
+.disabled, .disabled:hover {
+    background: #aad0ae59 !important;
+    color: white !important;
+    border: none !important;
+    cursor: not-allowed;
+    
+}
+
+.card-content {
+    background-color: white;
+    border-bottom-right-radius: 10px;
+    padding: 1.5rem;
+    border-bottom-left-radius: 10px;
+    box-shadow: 2px 2px 7px 2px gainsboro;
+    min-height: 125px;
 }
 </style>
 <body>
@@ -417,132 +584,60 @@ img.filter-icon {
           <img src="/images/logo.png" width="103" height="60">
         </a>
     
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
 
-<div id="sessionData"></div>
+
+  <div id="sessionData"></div>
 
 </nav>
-
 <nav class="nav" style="padding:20px;">
-<!--    @each(category in categories)
-    <a class="button is-info" href="/items/category/{{category.id}}">{{category.desc}}</a>
-  @endeach-->
-  <img src="/images/navbard.png" />
-  <a class="button is-info" href="/menu/all">All</a>
-
-  <a class="button is-danger" href="/cart/clear">Clear Cart</a>
-  <a class="button is-primary" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>
-  <div class="field" id="fulfillmentMethodRadio">
-      <input class="is-checkradio" id="pickupRadio" value="pickup" type="radio" name="exampleRadioInline">
-      <label for="pickupRadio" id="pickupRadioLabel">Pickup</label>
-      <input class="is-checkradio" id="deliveryRadio" value="delivery" type="radio" name="exampleRadioInline">
-      <label for="deliveryRadio" id="deliveryRadioLabel">Delivery</label>
+    <div class="fulfillment-options">
+        <div class="fulfillment-option">
+      <a id="pickupRadio">
+        Pickup 
+        <img src="/images/pencil-icon.png" />
+    
+      </a>
+        </div>
+        <div class="fulfillment-option has-border-left">
+      <a id="deliveryRadio">
+          Delivery
+          <img src="/images/pencil-icon.png" />
+    
+      </a>
+    </div>
+    <div class="categories">
+        CATEGORIES - 
+        @each(category in categories)
+           <a class="" href="/items/category/{{category.id}}">{{category.desc}}
+           </a>
+         @endeach
+    </div>
     </div>
 
+    <!--<a class="button is-info" href="/menu/all">All</a>
+
+  <a class="button is-danger" href="/cart/clear">Clear Cart</a>
+  <a class="button is-primary" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>-->
 
 </nav>
-<div class="columns">
-<div class="column is-four-fifths-mac is-full-mobile is-full-tablet" id="items-column">
-  <div class="columns is-multiline" style="align-items: flex-start; padding-left:10px; padding-right:10px;">
-      <div style="width: 20px;"></div>
-
-        @each(item in items)
-        @if(item.is_visible != 1)
-        @else
-          <div class="item-card">
-              <div class="card-image">
-                <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
-                <div class="category-divider is-primary has-background-color-primary"></div>
-              </div><!--/card-image-->
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.price }}</span></p>
-                     <!-- @each(c in item.categories)
-                        <p class="subtitle is-6">{{c.name}}</p>
-                      @endeach-->
-                        <!--  This should be replaced with icons .<p class="subtitle is-6">
-                          @each(f in item.filters)
-                            <span class="tag is-info">{{f.name}}</span>
-                              @if($loop.last)
-                              @else
-                              @endif
-                          @endeach
-                        </p>-->
-                  </div><!--/media-content-->
-                </div><!--/media-->
-                <div class="content">
-                  {{ truncate(item.description,25 , '...') }}<br />
-                  <img class="filter-icon" src="/images/oval-icon.png" />
-                  <a class="checkout-prompt-1 is-pulled-right" data-id="{{item.id}}" data-sku="{{item.sku}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}" data-quantity="1" href="#" class="is-pulled-right">
-                    <img src="/images/cart-icon.png" />
-                  </a>
-                </div><!--/content-->
-
-                        <!-- Admin only
-                        <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
-
-                        <a href="#" class="button is-primary" onclick="submitForm({{item.id}})"> Add to Cart </a>
-                        <a id="delete-item" class="button is-danger modal-button open-modal" 
-                        data-target="modal-ter" 
-                        aria-haspopup="true" 
-                        onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>-->
-              </div><!--/card-content-->
-       
-            </div><!--/card-->
-              <div style="width: 20px;"></div>
-            
-          <div class="modal" id="modal-{{item.id}}">
-              <div class="modal-background"></div>
-              <div class="modal-card">
-                <header class="modal-card-head">
-                  <p class="modal-card-title">Delete {{item.name}} ?</p>
-                  <a class="delete" aria-label="close" onclick="closeModal()"></a>
-                </header>
-                <section class="modal-card-body">
-                  Are you sure you want to delete this item?  By clicking continue you will remove this item fromcart tota the database
-                  as well as delete any saved images of this item.  This will also remove this item from all associated filters
-                  and categories.
-                </section>
-                <footer class="modal-card-foot">
-                  <a class="button is-danger" href="/item/delete/{{item.id}}" onclick="launchModal({{item.id}})">Delete Item</a>
-                  <a class="button close-modal" onclick="closeModal()">Cancel</a>
-                </footer>
-              </div>
-            </div><!--/modal-->
-            @endif
-        @endeach
-
-  </div><!--/columns-->
-</div><!--/master-column-->
-
+<ul class="wrapper">
+@!include('menu.items-container')
 <!--is-hidden-tablet-->
-  <div class="column is-one-fifth-desktop is-one-third-mobile is-one-third-tablet is-hidden-tablet" id="cart">
-
-
-      <div id="alert">
-        <div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div>
-      </div>
-      @if(cart.length < 5)
-        <a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>
-      @else
-      <a class="button is-primary checkout-button" href="/checkout">Checkout</a>
-      @endif
-
-  </div>
-
-</div><!--/main columns-->
-
-
+  <ul class="cart-container" id="cart">
+    
+  </ul>
+</ul>
 @!include('auth.register')
 @!include('Modals.initial')
 @!include('Modals.pickupLocations')
 @!include('Modals.deliveryAddress')
+@!include('Modals.itemCard')
 
 </body>
   <script src="/js/jquery-2.2.4.min.js"></script>
@@ -552,50 +647,10 @@ img.filter-icon {
       $('.modal-close').on('click', function(){
   $('.modal').removeClass('is-active')
 })
-      var m = localStorage.getItem("fulfillment_method")
-      if (m) {
-        $('#' + m + 'Radio').prop('checked', true)
 
-        if (m == 'pickup') {
-          if (JSON.parse(localStorage.myStore))
-          var store = JSON.parse(localStorage.myStore)
-            $('#pickupRadioLabel').text("Pickup From " + store.desc)
-
-        }
-     }
     })
     </script>
-  @if(fulMethod == 'delivery')
 
-  <script>
-
-
-      // cartObj.clickCount = 0
-    $(document).ready(function(){
-
-      $('.modal-card-foot-registration').html('<a id="continueUser" class="card-footer-item is-primary button">Create an account</a><a id="continueGuest" class="card-footer-item is-primary button">Continue as Guest</a><input type="hidden" id="reg_method" value="" name="reg_method">')
-    
-    //   $('#continueGuest').click(function() {
-    //     $('#reg_method').val('guest')
-    //     $('#fulfillment').attr('action', '/register/guest')
-    //     $('#fulfillment').submit()
-    // })
-    
-    // $('#continueUser').click (function() {
-    //     $('#reg_method').val('user')
-    //     $('#fulfillment').attr('action', '/register/user')
-    //     $('#fulfillment').submit()
-
-    // })   
-    });
-  </script>
-  @else
-  <script>
-    $(document).ready(function(){
-      $('.modal-card-foot-registration').html('<a class="card-footer-item is-primary button" id="signup-form-submit" onclick="signupSubmit()">Continue</a></form>')
-    });
-   </script>
-  @endif
   <script>
     // function signupSubmit() {
     //   $('#register-form').submit()
@@ -612,59 +667,9 @@ img.filter-icon {
     // $('#cartTotal').text('Cart Total: $' + total)
   }
   var cartItems = []
-  $('#fulfillmentMethodRadio input:radio').click(function() {
-    
-    if ($(this).val() == 'pickup') {
-      if(localStorage.myStore) {
-        var store = JSON.parse(localStorage.myStore)
-        $('#pickupRadioLabel').text("Pickup From " + store.desc)
-
-      }
 
 
 
-      $('#pickup').click()
-    } else {
-      deliveryForm()
-      $('#stop').click()
-    }
-    $('#' + $(this).val() + 'Radio').prop('checked', true)
-
-    localStorage.setItem("fulfillment_method", $(this).val())
-  });
-  function submitForm(id) {
-
-
-    $('form#item_'+id).submit()
-  
-  }
-
-  
-$("form").on( "submit", function( event ) {
-  event.preventDefault();
-
-  $.post('/cart/addItem', $(this).serialize(), function(data) {
-    for (var i = 0; i < data.length; i++) {
-      var html = '<div class="card-content">\
-            <div class="media">\
-                  <img src="'+data[i].img_url+'" alt="Placeholder image">\
-              <div class="media-content">\
-                <p class="title is-6">'+data[0].name+' x '+data[0].quantity+'</p>\
-              <p class="subtitle is-6" id="subtotal-{{$loop.index}}">${{ (c.quantity * c.price) }}\
-                <div class="buttons">\
-                <a class="button is-danger is-rounded is-small-mobile"  href="/cart/remove/{{$loop.index}}">x</a>\
-                <a class="button is-info" href="/cart/sub/{{$loop.index}}">-</a>\
-                <a class="button is-primary" onclick="submitForm({{c.id}})">+</a>\
-                </div>\
-              </p>\
-              </div>\
-            </div>\
-          </div>\
-        <br>'
-    }
-    $('#cart').innerHTML += html
-  })
-});
   window.onscroll = function() {myFunction()};
   
   // Get the navbar
@@ -838,7 +843,7 @@ var stores = {
     ]
   };
 
-$("#pickup").click(function() {
+$("#pickup, #pickupRadio").click(function() {
   localStorage.setItem("fulfillment_method", "pickup")
 
   $("#modal-pickup").addClass("is-active")
@@ -919,6 +924,7 @@ $("#pickup").click(function() {
 
 
   function buildLocationList(data) {
+    console.log('hello')
     for (i = 0; i < data.features.length; i++) {
       var currentFeature = data.features[i];
       var prop = currentFeature.properties;
@@ -930,14 +936,14 @@ $("#pickup").click(function() {
       if (localStorage.pickupLocation) {
         var pickupLocation = JSON.parse(localStorage.pickupLocation)
           if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
-          listing.innerHTML = "<div class='list-item' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+          listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
         } else {
-          listing.innerHTML = "<div class='list-item active' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+          listing.innerHTML = "<div class='list-item active' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
 
         }
       } else {
 
-          listing.innerHTML = "<div class='list-item' data-store='"+i+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+          listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
 
       }
 
@@ -948,10 +954,15 @@ $("#pickup").click(function() {
   $(".list-item").on('click', function(){
     $(".list-item").removeClass("active")
     $(this).addClass("active")
-    var storeId = ($(this).attr('data-store'))
+    var st = ($(this).data())
+    var myStore = {}
+    myStore.id = st.storeid
+    myStore.name = st.store
+    localStorage.myStore = JSON.stringify(myStore)
     $('.modal').removeClass("is-active")
-    $('#pickupRadio').attr('checked', 'checked')
-    localStorage.pickupLocation = JSON.stringify(stores.features[storeId].properties)
+
+    $('#pickupRadio').html('<p class="underline">Pickup from<img src="/images/pencil-icon.png" /><br /> ' + st.store )
+    localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
 
 
   })
@@ -1330,7 +1341,10 @@ function showPosition(position) {
   cord.push(position.coords.latitude);
   $("#cords").val(cord);
 }
-$('.checkout-prompt-1').on('click', function(){
+$('.checkout-prompt-1').on('click', function(e){
+  e.preventDefault()
+  e.stopPropagation()
+  $('.modal').removeClass('is-active')
   if (localStorage.getItem("custEngageCompleted") != 1) {
       $('#modal-initial-click').addClass('is-active')
       localStorage.setItem("custEngageCompleted", 1);
@@ -1378,26 +1392,82 @@ $('.checkout-prompt-1').on('click', function(){
     updateCartDiv(updatedCart)
 })
 
+
+// Checkout button inside modal
+  function addToCartFromModal(item){
+    item.quantity = 1
+    $('.modal').removeClass('is-active')
+  if (localStorage.getItem("custEngageCompleted") != 1) {
+      $('#modal-initial-click').addClass('is-active')
+      localStorage.setItem("custEngageCompleted", 1);
+      var c = JSON.parse(localStorage.cart)
+      // var item = $(this).data()
+      c.push(item)
+      localStorage.setItem('cart', JSON.stringify(c))
+      updateCartDiv(c)
+      return false
+    }
+    // var item = $(this).data()
+
+  // var item = $(this).data()
+    var cartItems = JSON.parse(localStorage.cart)
+    cartItems.push(item)
+
+    function checkDuplicateInObject(propertyName, inputArray) {
+    var seenDuplicate = false,
+        testObject = {};
+    
+    inputArray.map(function(item) {
+      var itemPropertyName = item[propertyName]; 
+      if (itemPropertyName in testObject) {
+        testObject[itemPropertyName].quantity++;
+        item.duplicate = true;
+        seenDuplicate = true;
+      }
+      else {
+        testObject[itemPropertyName] = item;
+        delete item.duplicate;
+      }
+    });
+    
+    return cartItems;
+  }
+  var cart = checkDuplicateInObject('id', cartItems)
+  var updatedCart = []
+  for (var i = 0; i < cart.length; i++) {
+    if (!cart[i].duplicate){
+      updatedCart.push(cart[i])
+    }
+    
+  }
+    localStorage.setItem('cart', JSON.stringify(updatedCart))
+    updateCartDiv(updatedCart)
+}
+
 function updateCartDiv(cartItems) {
 
   $('#cart').html('')
+  var cartCount = 0
+  // $('#cart').append('<div id="navMenu" class="navbar-menu"><div class="navbar-end">')
+
   for (var i = 0; i < cartItems.length; i++) {
-    var card = '<div class="columns">\
-        <div class="column is-one-fifth cart-items">\
-          <a href="#" onclick="addCart('+i+')"><img src="/images/plus-icon.png"></a><br />\
-          <div class="item-quantity">'+cartItems[i].quantity+'</div>\
-          <a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img src="/images/minus-icon.png"></a>\
-        </div>\
-        <div class="column">\
-          <img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" />\
-        </div>\
-        <div class="column">\
-            <p class="title is-6">'+cartItems[i].name+'</p>\
-        </div>\
-      </div><br>'
+    cartCount += cartItems[i].quantity
+    localStorage.setItem('cartCount', cartCount)
+    var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('#cart').append(card)
   }
+  $('#cart').append('</div></div>')
+  if (localStorage.cartCount < 5) {
+    $('#cart').append('<a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
 
+  } else if(localStorage.cartCount >= 5) {
+    $('#cart').append('<a class="button is-primary checkout-button">Checkout</a>')
+
+  } else if (localStorage.cartCount == 1) {
+    $('#cart').append('<div id="alert"><div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div></div><a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
+  } else if (localStorage.cartCount == 0) {
+    $('#cart').html('a')
+  }
 }
 //Initializd our cart if one is not yet set
 if (!localStorage.cart) {
@@ -1410,8 +1480,21 @@ if (!localStorage.custEngageCompleted) {
   localStorage.setItem('custEngageCompleted', 0)
 }
 
+if (!localStorage.cartCount) {
+  localStorage.setItem('cartCount', 0)
+}
+
+if (!localStorage.fulfillmentMethod && localStorage.myStore) {
+  var store = JSON.parse(localStorage.myStore)
+  $('#pickupRadio').html('Pickup from <img src="/images/pencil-icon.png" /> <br />' + store.name + '    ')
+
+
+}
 function subCart(id) {
   var cart = JSON.parse(localStorage.cart)
+  count = localStorage.cartCount
+  count--
+  localStorage.setItem('cartCount', count)
   var updatedCart = []
   cart[id].quantity--
   for (var x = 0; x < cart.length; x++) {
@@ -1435,5 +1518,63 @@ function addCart(id) {
 }
 
 
+$('#pickupRadio').on('click', function(){
+$('#modal-pickup').addClass('is-active')
+  localStorage.setItem('fulfillment_method', 'pickup')
+  localStorage.removeItem('deliveryDistance')
+  localStorage.removeItem('userAddr')
+})
+
 
   </script> 
+
+<script>
+  (function() {
+        var burger = document.querySelector('.burger');
+        var nav = document.querySelector('#'+burger.dataset.target);
+
+        burger.addEventListener('click', function(){
+          burger.classList.toggle('is-active');
+          nav.classList.toggle('is-active');
+        });
+      })();
+
+      $('a#deliveryRadio').on('click', function(){
+        showCartmenu()
+      })
+
+      $('.card-content, .card-image').on('click',function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        $('#modal-item').addClass('is-active')
+        var item = $(this).closest('li').data()
+        $('.item-card-title').html('<img src="/'+item.img_url+'"/>' + item.name)
+        $('.item-card-description').html('<section class="item-description">'+item.desc + '</section>')
+        $('.item-card-description').append("<a onclick='addToCartFromModal("+JSON.stringify(item)+")' data-quantity='1' class='is-pulled-right'><img src='/images/cart-icon.png' /></a>")
+      })
+
+      $('#pickup').on('mouseover', function(){
+        console.log('hello')
+        $(this).css('background-color', '#aad0ae')
+        $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
+        $(this).find('.modal-footing').css('color', 'white')
+      })
+      $('#pickup').on('mouseout', function(){
+        $(this).css('background-color', 'white')
+        $('.pickup-icon').attr('src', '/images/pickup-icon-inactive.png')
+        $(this).find('.modal-footing').css('color', '#363636')
+      })
+
+      $('#delivery').on('mouseover', function(){
+        console.log('hello')
+        $(this).css('background-color', '#aad0ae')
+        $('.delivery-icon').attr('src', '/images/delivery-icon-active.png')
+        $(this).find('.modal-footing').css('color', 'white')
+      })
+      $('#delivery').on('mouseout', function(){
+        $(this).css('background-color', 'white')
+        $('.delivery-icon').attr('src', '/images/delivery-icon-inactive.png')
+        $(this).find('.modal-footing').css('color', '#363636')
+      })
+
+      </script>

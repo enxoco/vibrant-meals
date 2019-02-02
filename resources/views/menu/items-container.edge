@@ -1,0 +1,63 @@
+<ul class="flex-container">
+
+@each(item in items)
+@if(item.is_visible != 1)
+@else
+
+  <li class="flex-item" class="item-card" data-id="{{item.id}}" data-sku="{{item.sku}}" data-desc="{{item.description}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}">
+      <div class="card-image">
+        <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
+        @if(lowerCase(item.categories[0].name))
+        <div class="category-divider-{{ lowerCase(item.categories[0].name) }} is-primary has-background-color-primary"></div>
+        @else 
+        <div class="category-divider-primary is-primary has-background-color-primary"></div>
+
+        @endif
+      </div><!--/card-image-->
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.price }}</span></p>
+          </div><!--/media-content-->
+        </div><!--/media-->
+        <div class="content">
+          <img class="filter-icon" src="/images/oval-icon.png" />
+          
+          <a class="checkout-prompt-1" data-id="{{item.id}}" data-sku="{{item.sku}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}" data-quantity="1" href="#" class="is-pulled-right">
+            <img src="/images/cart-icon.png" />
+          </a>
+        </div><!--/content-->
+
+                <!-- Admin only
+                <a href="/item/add/{{item.id}}" class="button is-warning"> Edit </a>
+
+                <a href="#" class="button is-primary" onclick="submitForm({{item.id}})"> Add to Cart </a>
+                <a id="delete-item" class="button is-danger modal-button open-modal" 
+                data-target="modal-ter" 
+                aria-haspopup="true" 
+                onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>-->
+      </div><!--/card-content-->
+
+    </div><!--/card-->
+    
+  <div class="modal" id="modal-{{item.id}}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Delete {{item.name}} ?</p>
+          <a class="delete" aria-label="close" onclick="closeModal()"></a>
+        </header>
+        <section class="modal-card-body">
+          Are you sure you want to delete this item?  By clicking continue you will remove this item fromcart tota the database
+          as well as delete any saved images of this item.  This will also remove this item from all associated filters
+          and categories.
+        </section>
+        <footer class="modal-card-foot">
+          <a class="button is-danger" href="/item/delete/{{item.id}}" onclick="launchModal({{item.id}})">Delete Item</a>
+          <a class="button close-modal" onclick="closeModal()">Cancel</a>
+        </footer>
+      </div>
+    </li><!--/modal-->
+    @endif
+@endeach
+</ul>
