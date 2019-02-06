@@ -17,7 +17,7 @@ module.exports = async function() {
           .from('items')
   
         const categories = await Database
-          .select('id', 'desc')
+          .select('id', 'desc', 'color')
           .table('item_categories')
         
         const filters = await Database

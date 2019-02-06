@@ -5,7 +5,16 @@ require('moment-countdown');
 hooks.after.providersBooted(() => {
   const View = use('View')
 
+  View.global('convertCatName', function(label) {
+    
+    label = label.replace(' ', '_')
+    label = label.toLowerCase()
+    console.log(label)
+    return label
+  })
+
   View.global('convertTime', function (time) {
+
 
     var year = moment().format("YYYY-MM-DD")
     var dateString = year + " " + time

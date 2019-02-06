@@ -7,7 +7,8 @@ class ItemCategoriesSchema extends Schema {
   up () {
     this.createIfNotExists('item_categories', (table) => {
       table.increments('id')
-      table.string('desc').nullable()
+      table.text('desc').nullable()// This column needs to be changed to type text so that it can fit long descriptions
+      table.string('color')
       table.timestamps()
     })
   }

@@ -21,19 +21,28 @@ class ItemCategorySeeder {
       .insert([
         {
           id: 1,
-          desc: 'Breakfast'
+          desc: 'Everyday',
+          color: '#AAD0AE'
         },
         {
           id: 2,
-          desc: 'Elite'
+          desc: 'Low Carb',
+          color: '#FED39F'
         },
         {
           id: 3,
-          desc: 'Everyday'
+          desc: 'Performance',
+          color: '#D86A6A'
         },
         {
           id: 4,
-          desc: 'Performance'
+          desc: 'Plant Based',
+          color: '#D4C3DF'
+        },
+        {
+          id: 5,
+          desc: 'Breakfast',
+          color: '#F7E393'
         }
       ])
   }
