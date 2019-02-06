@@ -1,24 +1,179 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
 <link rel="stylesheet" href="/css/cart.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-extensions@4.0.0/dist/css/bulma-extensions.min.css" />
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
 <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
 <!-- Mapbox GL JS -->
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
 <!-- Geocoder plugin -->
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+<script async src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
 <!-- Turf.js plugin -->
-<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-<script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+<script async type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
 
 <style>
 
+  /* cyrillic-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNa7lqDY.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qPK7lqDY.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNK7lqDY.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qO67lqDY.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qN67lqDY.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7lqDY.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7l.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhduz8A.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxduz8A.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxduz8A.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBduz8A.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBduz8A.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRduz8A.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v11/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+div#modal-item > .modal-card > .modal-content {
+    width: 100%;
+    padding: 10px;
+}
 .flex-container {
   padding: 0;
   margin: 0;
@@ -34,6 +189,10 @@
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+
+  p.title.is-6 {
+    display: none;
+  }
   .flex-item {
     padding: 5px;
     width: 90%;
@@ -63,6 +222,9 @@
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+  /* p.title.is-6 {
+    display: none;
+  } */
   .flex-item {
     padding: 5px;
     width: 90%;
@@ -70,7 +232,7 @@
     margin-top: 10px;
   }
   .flex-container {
-    width: 70%;
+    width: 100%;
     left: 2%;
     position: relative;
 }
@@ -101,12 +263,14 @@
     flex-direction: column;
     width: 90%;
     padding: 100px;
-    left: 5%;
 }
 } 
 
 /* Medium devices (iPhone X, 768px and up) */
 @media only screen and (min-width: 768px) {  
+  /* p.title.is-6 {
+    display: none;
+  } */
   .flex-item {
     padding: 5px;
     width: 100%;
@@ -114,7 +278,7 @@
     margin-top: 10px;
 }
 .flex-container {
-    width: 70%;
+    width: 100%;
     left: 2%;
     position: relative;
 }
@@ -145,12 +309,12 @@
     flex-direction: column;
     width: 90%;
     padding: 100px;
-    left: 5%;
 }
 } 
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
+  
   .flex-item {
     padding: 5px;
     width: 33%%;
@@ -190,7 +354,7 @@
     margin-top: 10px;
   }
   .flex-container {
-    width: 70%;
+    width: 100%;
   }
   .cart-container {
     width: 30%;
@@ -245,6 +409,7 @@ img.cart-control {
   .fulfillment-options {
     display: flex;
     padding-bottom: 20px;
+    width: 100%;
   }
   .fulfillment-option {
     border-right: 20px solid transparent;
@@ -258,10 +423,6 @@ img.cart-control {
     border-top-right-radius: 10px;
   }
 
-
-  p.title.is-6 {
-    align-self: baseline;
-}
 
   .item-card {
     width: 30%;
@@ -532,15 +693,16 @@ img.filter-icon {
     position: relative;
     top: 40px;
 }
-.category-divider-primary {
-    border: 3px solid #aad0ae;
+
+@each(c in categories)
+
+.button.category-divider-{{convertCatName(c.desc)}} {
+  background: {{c.color}};
 }
-.category-divider-breakfast {
-  border: 3px solid #f7e393;
+.category-divider-{{convertCatName(c.desc)}} {
+  border: 3px solid {{c.color}};
 }
-.category-divider-elite {
-  border: 3px solid #d86a6a;
-}
+@endeach
 
 .checkout-prompt-1 {
   float: right;
@@ -553,11 +715,14 @@ img.filter-icon {
     font-size: 1.25em;
     align-self: center;
     margin-top: 20px;
-}
-.checkout-button:hover {
-  background-color: #f2f2f2 !important;
+    background-color: #f2f2f2 !important;
   color: #569e7f !important;
   border: 1px solid #569e7f !important;
+}
+.checkout-button:hover {
+  background-color: #aad0ae !important;
+  color: white !important;
+  border: none !important;
 }
 
 .disabled, .disabled:hover {
@@ -578,6 +743,7 @@ img.filter-icon {
 }
 </style>
 <body>
+  <input type="hidden" id="cords" />
 <nav class="nav has-background-primary">
     <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
@@ -595,42 +761,14 @@ img.filter-icon {
   <div id="sessionData"></div>
 
 </nav>
-<nav class="nav" style="padding:20px;">
-    <div class="fulfillment-options">
-        <div class="fulfillment-option">
-      <a id="pickupRadio">
-        Pickup 
-        <img src="/images/pencil-icon.png" />
-    
-      </a>
-        </div>
-        <div class="fulfillment-option has-border-left">
-      <a id="deliveryRadio">
-          Delivery
-          <img src="/images/pencil-icon.png" />
-    
-      </a>
-    </div>
-    <div class="categories">
-        CATEGORIES - 
-        @each(category in categories)
-           <a class="" href="/items/category/{{category.id}}">{{category.desc}}
-           </a>
-         @endeach
-    </div>
-    </div>
 
-    <!--<a class="button is-info" href="/menu/all">All</a>
-
-  <a class="button is-danger" href="/cart/clear">Clear Cart</a>
-  <a class="button is-primary" href="#" id="showCart" onclick="showCartmenu()">View Cart</a>-->
-
-</nav>
 <ul class="wrapper">
+
 @!include('menu.items-container')
+
 <!--is-hidden-tablet-->
   <ul class="cart-container" id="cart">
-    
+
   </ul>
 </ul>
 @!include('auth.register')
@@ -638,23 +776,21 @@ img.filter-icon {
 @!include('Modals.pickupLocations')
 @!include('Modals.deliveryAddress')
 @!include('Modals.itemCard')
+@!include('Modals.pickupDay')
+@!include('Modals.checkout')
 
 </body>
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/product-card.js"></script>
   <script>
     $(document).ready(function(){
+
       $('.modal-close').on('click', function(){
   $('.modal').removeClass('is-active')
 })
 
     })
-    </script>
 
-  <script>
-    // function signupSubmit() {
-    //   $('#register-form').submit()
-    // }
 
   var total = 0
   for (var i = 0; i < 50; i++) {
@@ -690,22 +826,22 @@ img.filter-icon {
     // }
   }
   
-  function launchModal(id) {
-    if ($('#modal-'+ id + '').hasClass('is-active')) {
-      $('#modal-'+ id + '').removeClass('is-active')
-    } else {
-      $('#modal-'+ id + '').addClass('is-active')
+  // function launchModal(id) {
+  //   if ($('#modal-'+ id + '').hasClass('is-active')) {
+  //     $('#modal-'+ id + '').removeClass('is-active')
+  //   } else {
+  //     $('#modal-'+ id + '').addClass('is-active')
   
-    }
-  }
-  function closeModal() {
-    if($('.modal').hasClass('is-active')) {
-      $('.modal').removeClass('is-active')
-    }
-  }
-  $('.modal-background').click(function() {
-    closeModal()
-  });
+  //   }
+  // }
+  // function closeModal() {
+  //   if($('.modal').hasClass('is-active')) {
+  //     $('.modal').removeClass('is-active')
+  //   }
+  // }
+  // $('.modal-background').click(function() {
+  //   closeModal()
+  // });
 
   
   function showCartmenu() {
@@ -735,8 +871,6 @@ img.filter-icon {
       items.addClass('is-full-tablet')
       items.removeClass('is-two-thirds-mobile')
       items.removeClass('is-two-thirds-tablet')
-  
-  
     }
   
   }
@@ -847,7 +981,8 @@ $("#pickup, #pickupRadio").click(function() {
   localStorage.setItem("fulfillment_method", "pickup")
 
   $("#modal-pickup").addClass("is-active")
-
+  var cords = document.getElementById("cords").value;
+    var cord = cords.split(",");
 
   mapboxgl.accessToken =
     "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
@@ -856,13 +991,11 @@ $("#pickup, #pickupRadio").click(function() {
     // buildLocationList(stores);
 
 
-    var cords = document.getElementById("cords").value;
-    var cord = cords.split(",");
 
     var options = {
       units: "miles"
     };
-    var searchResult = {"type":"Point","coordinates":[-85.3068,35.0292]}
+    var searchResult = {"type":"Point","coordinates":cord}
     stores.features.forEach(function(store) {
       Object.defineProperty(store.properties, "distance", {
         value: turf.distance(searchResult, store.geometry, options),
@@ -924,14 +1057,12 @@ $("#pickup, #pickupRadio").click(function() {
 
 
   function buildLocationList(data) {
-    console.log('hello')
     for (i = 0; i < data.features.length; i++) {
       var currentFeature = data.features[i];
       var prop = currentFeature.properties;
       var listings = document.getElementById("listings");
       var listing = listings.appendChild(document.createElement("div"));
       listing.classList.add("listing-item")
-      console.log(prop)
       var miles = prop.distance
       if (localStorage.pickupLocation) {
         var pickupLocation = JSON.parse(localStorage.pickupLocation)
@@ -963,7 +1094,11 @@ $("#pickup, #pickupRadio").click(function() {
 
     $('#pickupRadio').html('<p class="underline">Pickup from<img src="/images/pencil-icon.png" /><br /> ' + st.store )
     localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
-
+      if (localStorage.checkoutInitiated == 1) {
+        $(".modal").removeClass("is-active")
+        nextAvalFulfill()
+        $("#modal-pickup-day").addClass("is-active")
+      }
 
   })
 
@@ -977,335 +1112,6 @@ $('#delivery').click(function(){
   $("#modal-delivery").removeClass("is-active")
 })
 
-
-
-
-function deliveryForm() {
-    localStorage.setItem("fulfillment_method", "delivery")
-    $("#modal-initial-click").removeClass("is-active")
-    $('#modal-delivery').addClass("is-active")
-  
-  var stores = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: ["-85.3171557", "35.0691112"]
-        },
-        properties: {
-          phoneFormatted: "(423) 555-5555",
-          phone: "4235555555",
-          address: "601 Cherokee Blvd",
-          postalCode: 37405,
-          state: "TN",
-          city: "Chattanooga",
-          closing: "20:00",
-          desc: "Vibrant Meals Kitchen",
-          storeId: 1
-        }
-      }
-    ]
-  };
-  // document.getElementById("modal-delivery").classList.remove("is-active");
-
-    sessionStorage.setItem("fulfillment_method", "delivery")
-  
-  // This will let you use the .remove() function later on
-
-  /* For deliveries, we want to add an autocomplete function.
-  *
-  * We can do this using the geocoder.  Basically, on page load
-  * we can create an empty array and as a user fills in the fields,
-  * we can add to this array and also pass it to the geocoder
-  * setInput() function.
-  *
-  */
-
-
-  var custAddr = {};
-
-  return
-  $("#modal-delivery").addClass("is-active")
-  // This will let you use the .remove() function later on
-  if (!("remove" in Element.prototype)) {
-    Element.prototype.remove = function() {
-      if (this.parentNode) {
-        this.parentNode.removeChild(this);
-      }
-    };
-  }
-
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
-  // This adds the map
-  var map = new mapboxgl.Map({
-    // container id specified in the HTML
-    container: "map",
-    // style URL
-    style: "mapbox://styles/mapbox/light-v10",
-    // initial position in [long, lat] format
-    center: [-85.3171557, 35.0691112],
-    // initial zoom
-    zoom: 13
-  });
-  // This adds the data to the map
-  map.on("load", function(e) {
-    jQuery(function($) {
-    $("#address-input").on("keyup", function() {
-      custAddr.street = $(this).val();
-      geocoder.query(custAddr.street);
-    });
-    $("#city").on("keyup", function() {
-      custAddr.city = $(this).val();
-      geocoder.query(custAddr.street + "," + custAddr.city);
-      geocoder.result();
-    });
-    $("#state").on("keyup", function() {
-      custAddr.state = $(this).val();
-      geocoder.query(
-        custAddr.street + "," + custAddr.city,
-        +"," + custAddr.state
-      );
-    });
-  });
-
-    // This is where your '.addLayer()' used to be, instead add only the source without styling a layer
-
-    map.addSource("places", {
-      type: "geojson",
-      data: stores
-    });
-    // Initialize the list
-    buildLocationList(stores);
-    geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      proximity: {
-        latitude: -85.30968009999998,
-        longitude: 35.0456297
-      }
-    });
-    document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
-    // Example of setting an executing a search query programaticall
-    // geocoder.query("3530 broad street")
-
-    map.addSource("single-point", {
-      type: "geojson",
-      data: {
-        type: "FeatureCollection",
-        features: [] // Notice that initially there are no features
-      }
-    });
-    map.addLayer({
-      id: "point",
-      source: "single-point",
-      type: "circle",
-      paint: {
-        "circle-radius": 10,
-        "circle-color": "#007cbf",
-        "circle-stroke-width": 3,
-        "circle-stroke-color": "#fff"
-      }
-    });
-
-    geocoder.on("loading", function(ev) {
-      // geocoder.setInput("3530 broad street")
-    });
-    geocoder.on("result", function(ev) {
-      
-      // if ( $('.suggestions').children().length == 0 ) {
-      //   var userAddr = ev.result.place_name.split(",");
-      //   for (var i = 0; i < userAddr.length; i++) {
-      //     userAddr[i] = userAddr[i].trim()
-
-      //   $('#address-input').val(userAddr[0])
-      //   $('#city').val(userAddr[1])
-      //   $('#state').val(userAddr[2].split(' ')[0])
-      //   $('#postCode').val(userAddr[2].split(' ')[1])
-      //   }
-      // }
-      // alert(JSON.stringify(ev.result.place_name))
-      var userAddr = ev.result.place_name.split(",");
-      var prefs = {}
-      prefs.userAddress = {
-        street: userAddr[0],
-        city: userAddr[1],
-        state: userAddr[2]
-      };
-      localStorage.setItem("deliveryAddress", JSON.stringify(prefs))
-
-
-      // [-85.3171557,35.0691112]
-      var searchResult = ev.result.geometry;
-      map.getSource("single-point").setData(searchResult);
-      var options = {
-        units: "miles"
-      };
-      stores.features.forEach(function(store) {
-        Object.defineProperty(store.properties, "distance", {
-          value: turf.distance(searchResult, store.geometry, options),
-          writable: true,
-          enumerable: true,
-          configurable: true
-        });
-      });
-      stores.features.sort(function(a, b) {
-        if (a.properties.distance > b.properties.distance) {
-          return 1;
-        }
-        if (a.properties.distance < b.properties.distance) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
-      var listings = document.getElementById("listings");
-      while (listings.firstChild) {
-        listings.removeChild(listings.firstChild);
-      }
-      buildLocationList(stores);
-
-      function sortLonLat(storeIdentifier) {
-        var lats = [
-          stores.features[storeIdentifier].geometry.coordinates[1],
-          searchResult.coordinates[1]
-        ];
-        var lons = [
-          stores.features[storeIdentifier].geometry.coordinates[0],
-          searchResult.coordinates[0]
-        ];
-        var sortedLons = lons.sort(function(a, b) {
-          if (a > b) {
-            return 1;
-          }
-          if (a.distance < b.distance) {
-            return -1;
-          }
-          return 0;
-        });
-        var sortedLats = lats.sort(function(a, b) {
-          if (a > b) {
-            return 1;
-          }
-          if (a.distance < b.distance) {
-            return -1;
-          }
-          return 0;
-        });
-
-      }
-      sortLonLat(0);
-    });
-    // This is where your interactions with the symbol layer used to be
-    // Now you have interactions with DOM markers instead
-    stores.features.forEach(function(marker, i) {
-      // Create an img element for the marker
-      var el = document.createElement("div");
-      el.id = "set-store-id-" + i;
-      el.className = "switch";
-      // Add markers to the map at all points
-      // new mapboxgl.Marker(el, {offset: [0, -23]})
-      //     .setLngLat(marker.geometry.coordinates)
-      //     .addTo(map);
-      el.addEventListener("click", function(e) {
-        // 1. Fly to the point
-        flyToStore(marker);
-        // 2. Close all other popups and display popup for clicked store
-        createPopUp(marker);
-        // 3. Highlight listing in sidebar (and remove highlight for all other listings)
-        var activeItem = document.getElementsByClassName("active");
-        e.stopPropagation();
-        if (activeItem[0]) {
-          activeItem[0].classList.remove("active");
-        }
-        var listing = document.getElementById("listing-" + i);
-        listing.classList.add("active");
-      });
-    });
-
-    function flyToStore(currentFeature) {
-      prefs.myStore = currentFeature.properties;
-      localStorage.setItem("deliveryDistance", currentFeature.properties.mileage)
-      localStorage.setItem("myStore", JSON.stringify(currentFeature.properties))
-      localStorage.setItem("fulfillment_method", "pickup")
-
-      document.getElementById("modal-delivery").classList.remove("is-active");
-      var myNode = document.getElementById("modal-delivery");
-      while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-      }
-      map.flyTo({
-        center: currentFeature.geometry.coordinates,
-        zoom: 15
-      });
-    }
-
-    function buildLocationList(data) {
-      for (i = 0; i < data.features.length; i++) {
-        var currentFeature = data.features[i];
-        var prop = currentFeature.properties;
-        var listings = document.getElementById("listings");
-        var listing = listings.appendChild(document.createElement("div"));
-        listing.className = "item";
-        listing.id = "listing-" + i;
-        var link = listing.appendChild(document.createElement("a"));
-        link.href = "#";
-        link.className = "title";
-        link.dataPosition = i;
-        link.innerHTML = prop.desc;
-        var details = listing.appendChild(document.createElement("div"));
-        details.innerHTML =
-          prop.address +
-          ", " +
-          prop.city +
-          " Open till - " +
-          formatDate(currentFeature.properties.closing);
-        details.innerHTML +=
-          '<div class="field is-pulled-right">\
-  <input id="set-store-id-' +
-          currentFeature.properties.storeId +
-          '" type="checkbox" name="store-' +
-          currentFeature.properties.storeId +
-          '" class="switch is-large">\
-  <label for="set-store-id-' +
-          currentFeature.properties.storeId +
-          '"></label>\
-</div>';
-        if (prop.distance) {
-
-          var roundedDistance = Math.round(prop.distance * 100) / 100;
-          localStorage.setItem("deliveryRange", roundedDistance)
-          if (roundedDistance > 9) {
-            console.log("address is more than 9 miles away");
-          }
-          details.innerHTML +=
-            "<p><strong>" + roundedDistance + " miles away</strong></p>";
-        }
-        link.addEventListener("click", function(e) {
-          // Update the currentFeature to the store associated with the clicked link
-          var clickedListing = data.features[this.dataPosition];
-          document
-            .getElementById("set-store-id-" + clickedListing.properties.storeId)
-            .click();
-          // 1. Fly to the point
-          flyToStore(clickedListing);
-          // 2. Close all other popups and display popup for clicked store
-          createPopUp(clickedListing);
-          // 3. Highlight listing in sidebar (and remove highlight for all other listings)
-          var activeItem = document.getElementsByClassName("active");
-          if (activeItem[0]) {
-            activeItem[0].classList.remove("active");
-          }
-          this.parentNode.classList.add("active");
-        });
-      }
-    }
-  });
-
-  $("#modal-initial-click").removeClass("is-active");
-  $("#modal-delivery").addClass("is-active");
-}
 
 function formatDate(date) {
   var time = date.split(":");
@@ -1341,6 +1147,10 @@ function showPosition(position) {
   cord.push(position.coords.latitude);
   $("#cords").val(cord);
 }
+
+getLocation()
+
+
 $('.checkout-prompt-1').on('click', function(e){
   e.preventDefault()
   e.stopPropagation()
@@ -1446,7 +1256,7 @@ $('.checkout-prompt-1').on('click', function(e){
 
 function updateCartDiv(cartItems) {
 
-  $('#cart').html('')
+  $('#cart').html('<h1 class="menu-heading">Cart</h1>')
   var cartCount = 0
   // $('#cart').append('<div id="navMenu" class="navbar-menu"><div class="navbar-end">')
 
@@ -1540,7 +1350,7 @@ $('#modal-pickup').addClass('is-active')
       })();
 
       $('a#deliveryRadio').on('click', function(){
-        showCartmenu()
+        $('#modal-delivery').addClass('is-active')
       })
 
       $('.card-content, .card-image').on('click',function(e){
@@ -1553,28 +1363,83 @@ $('#modal-pickup').addClass('is-active')
         $('.item-card-description').append("<a onclick='addToCartFromModal("+JSON.stringify(item)+")' data-quantity='1' class='is-pulled-right'><img src='/images/cart-icon.png' /></a>")
       })
 
-      $('#pickup').on('mouseover', function(){
-        console.log('hello')
+      $('#pickup, #pickupDay').on('mouseover', function(){
         $(this).css('background-color', '#aad0ae')
         $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
         $(this).find('.modal-footing').css('color', 'white')
       })
-      $('#pickup').on('mouseout', function(){
+      $('#pickup, #pickupDay').on('mouseout', function(){
         $(this).css('background-color', 'white')
         $('.pickup-icon').attr('src', '/images/pickup-icon-inactive.png')
         $(this).find('.modal-footing').css('color', '#363636')
       })
 
-      $('#delivery').on('mouseover', function(){
-        console.log('hello')
+      $('#delivery, #deliveryDay').on('mouseover', function(){
         $(this).css('background-color', '#aad0ae')
         $('.delivery-icon').attr('src', '/images/delivery-icon-active.png')
         $(this).find('.modal-footing').css('color', 'white')
       })
-      $('#delivery').on('mouseout', function(){
+      $('#delivery, #deliveryDay').on('mouseout', function(){
         $(this).css('background-color', 'white')
         $('.delivery-icon').attr('src', '/images/delivery-icon-inactive.png')
         $(this).find('.modal-footing').css('color', '#363636')
       })
 
+
+      $(document).on('click', '.checkout-button', function(){
+        localStorage.checkoutInitiated = 1
+        nextAvalFulfill()
+        if (localStorage.myStore) {
+          var storeName = JSON.parse(localStorage.myStore)
+          console.log(storeName)
+          $('.store-desc').html(storeName.name)
+        }
+        if (localStorage.fulfillment_method == 'pickup') {
+          if (!localStorage.pickup_day) {
+            $('#modal-pickup-day').addClass('is-active')
+          }
+        }
+
+        if (!localStorage.fulfillment_method) {
+          $('#modal-initial-click').addClass('is-active')
+        }
+      })
+
+      $(document).on('click', '#pickupDay', function(){ // Store users pickup day preference and move on.
+        var date = $(this).find('.pickup-date').data()
+        localStorage.pickup_day = date.date
+        $('.modal').removeClass('is-active')
+        $('#modal-checkout').addClass('is-active')
+      }) 
+
+
+
+      function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
+        var wednesday
+        var monday 
+        var day = moment().format('dddd')
+        var dayTwo = moment().format('dddd')
+
+        if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
+          var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+        } else {// We have passed the cut off for this week, need to schedule for next week.
+          var wednesday = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+        }
+        
+        if (dayTwo == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
+          var monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')    
+        } else {
+          var monday = moment().add(0, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+        }
+        var result = {
+          monday: monday,
+          wednesday: wednesday
+        }
+        
+        $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
+        $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
+        $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
+        $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
+
+      }
       </script>

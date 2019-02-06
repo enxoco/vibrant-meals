@@ -25,6 +25,9 @@
   display: flex;
   margin-left: 5%;
   flex-direction: column;
+  background: white;
+  padding: 25px;
+  box-shadow: -9px 0px 20px 0px gainsboro;
 }
 
 .cart-items {
@@ -32,11 +35,12 @@
   align-items: center;
   margin-bottom: 35px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .cart-image {
-  width: 125px;
-  height: 125px;
+  width: 100px;
+  height: 100px;
   margin-left: 20px;
   border-radius: 10px;
   margin-right: 20px;

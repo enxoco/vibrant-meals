@@ -1,4 +1,4 @@
-<div id="modal-delivery" class="modal modal-fx-slideBottom">
+<div id="modal-checkout" class="modal modal-fx-slideBottom">
     <div class="modal-background"></div>
     <div class="modal-content">
         <div class="media-left">
@@ -69,62 +69,9 @@
   </div>
 
   <script>
+    // If this modal is being shown, then we should have a fulfillment option chosen.  We may or may not have a pickup location or a delivery address.
 
-      $('#checkAddress').on('click', function() {
-        var store = {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "type": "Point",
-            "coordinates": [-85.317172,35.069111]
-          }
-        }
-    
-        
-    
-        if (localStorage.userAddr) {
-          $('#address-input').text(localStorage.userAddr.street)
-        }
-    
-        var st = $('#address-input').val()
-        var city = $('#city').val()
-        var state = $('#state').val()
-        var post = $('#postCode').val()
-      
-        var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
-    
-        var userAddr = {
-          street: st,
-          city: city,
-          state: state,
-          zip: post
-        }
-        console.log('here')
-        localStorage.userAddr = JSON.stringify(userAddr)
-        localStorage.removeItem("pickupLocation")
-        var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
-        $.get(userSearch, function(data) {
-          var userCords = data.features[0].geometry.coordinates
-          var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
-          $.get(query, function(distance) {
-            var miles = distance.routes[0].distance*0.000621371192
-            if (miles.toFixed(0) > 5) {
-              $('#alert').html('<div class="notification is-danger"><button class="delete"></button>Sorry this address is outside of our delivery zone</div>')
-            } else if (miles.toFixed(0) < 5) {
-                $('#alert').html('<div class="notification is-primary"><button class="delete"></button>You"re all set!</div>')
-    
-              }
-            localStorage.deliveryDistance = miles.toFixed(1)
-            localStorage.removeItem("myStore")
-          })
-        })
-      })
-    
-      // Dismiss alert boxes
-      $(document).on('click', '.notification > button.delete', function() {
-        $('#alert').html('')
-        return false;
-      });
-    
-    
-    </script>
+    if (localStorage.fulfillmentMethod === 'pickup') {
+      // Cust has chosen pickup.  Let's verify their pickup location, as well as show next available date and time.  
+    }
+  </script>

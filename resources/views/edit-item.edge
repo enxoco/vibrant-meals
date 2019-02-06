@@ -8,7 +8,6 @@
 </nav>
 <script src="/js/jquery-2.2.4.min.js"></script>
 
-
     <div class="columns">
     @!include('layout.admin.side-nav')
 <section class="item-manager">
@@ -144,8 +143,8 @@
                   <div class="field is-horizontal">
                     <div class="control">
                       @each(c in categories)
-                      <input class="is-checkradio categories-check" id="{{ c.desc }}" type="checkbox" name="{{ c.desc }}" 
-                      @if(item.category === c.desc)
+                      <input class="is-checkradio categories-check" id="{{convertCatName(c.desc)}}" type="checkbox" name="{{convertCatName(c.desc)}}" 
+                      @if(item.sku.split('-')[0] === convertCatName(c.desc))
                         checked
                         @else
                       @endif

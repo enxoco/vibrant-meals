@@ -161,7 +161,7 @@
                   <div class="field is-horizontal">
                     <div class="control">
                     @each(c in categories)
-                    <input class="is-checkradio categories-check" id="{{c.desc}}" type="checkbox" name="{{c.desc}}" onClick="clearGroup(this);">
+                    <input class="is-checkradio categories-check" id="{{convertCatName(c.desc)}}" type="checkbox" name="{{convertCatName(c.desc)}}" onClick="clearGroup(this);">
                     <label for="{{c.desc}}">{{c.desc}}</label>
                     @endeach
                     <input id="checked-cat" type="hidden" value=""/>
@@ -204,8 +204,8 @@
         var sku = title.split(' ')
         var final = []
         for (var i = 0; i < sku.length; i++) {
+
           if (sku[i] == 'and' || sku[i] == 'with') {
-          
           } else {
             final.push(sku[i].slice(0,5))
           }
@@ -214,7 +214,10 @@
         var final = final.toLowerCase()
         var final = final.replace('and', '')
         document.getElementById('sku').value = $('#checked-cat').val() + final.replace(/,/g, '_')
-      } 
+      } else {
+        var sku = title
+        document.getElementById('sku').value = $('#checked-cat').val() + title.toLowerCase()
+      }
     }
     function clearGroup(elem) {
         var group = $('.categories-check');
@@ -222,7 +225,7 @@
           for (var i=0; i<group.length; i++) {
             if (group[i] != elem) {
 
-              $('#checked-cat').val(elem.id.toLowerCase().slice(0,5) + '-')
+              $('#checked-cat').val(elem.id + '-')
               $('#name').keyup()
 
             group[i].checked = false;

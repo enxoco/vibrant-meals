@@ -1,4 +1,27 @@
 <ul class="flex-container">
+    <div class="fulfillment-options flex-item">
+        <div class="fulfillment-option">
+      <a id="pickupRadio">
+        Pickup 
+        <img src="/images/pencil-icon.png" />
+    
+      </a>
+        </div>
+        <div class="fulfillment-option has-border-left">
+      <a id="deliveryRadio">
+          Delivery
+          <img src="/images/pencil-icon.png" />
+    
+      </a>
+    </div>
+    <div class="categories">
+        @each(category in categories)
+           <a class="button is-primary category-divider-{{ convertCatName(category.desc) }}" href="/items/category/{{category.id}}">{{category.desc}}
+           </a>
+         @endeach
+         <a class="button is-primary" href="/menu/all">All</a>
+    </div>
+    </div>
 
 @each(item in items)
 @if(item.is_visible != 1)
@@ -8,7 +31,7 @@
       <div class="card-image">
         <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
         @if(lowerCase(item.categories[0].name))
-        <div class="category-divider-{{ lowerCase(item.categories[0].name) }} is-primary has-background-color-primary"></div>
+        <div class="category-divider-{{ convertCatName(item.categories[0].name) }} is-primary has-background-color-primary"></div>
         @else 
         <div class="category-divider-primary is-primary has-background-color-primary"></div>
 
