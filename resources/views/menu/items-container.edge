@@ -3,31 +3,34 @@
         <div class="fulfillment-option">
       <a id="pickupRadio">
         Pickup 
-        <img src="/images/pencil-icon.png" />
+        <img src="/images/pencil-icon.png" /><br />
+        &nbsp
     
       </a>
         </div>
         <div class="fulfillment-option has-border-left">
       <a id="deliveryRadio">
           Delivery
-          <img src="/images/pencil-icon.png" />
+          <img src="/images/pencil-icon.png" /><br />
+          &nbsp
     
       </a>
     </div>
     <div class="categories">
         @each(category in categories)
-           <a class="button is-primary category-divider-{{ convertCatName(category.desc) }}" href="/items/category/{{category.id}}">{{category.desc}}
+        
+    <a data-filter="{{ convertCatName(category.desc)}}" class="{{ convertCatName(category.desc) }}">{{category.desc}}
            </a>
          @endeach
-         <a class="button is-primary" href="/menu/all">All</a>
+         <a class="active" href="/menu/all">All</a>
     </div>
     </div>
-
+<div id="item-container">
 @each(item in items)
 @if(item.is_visible != 1)
 @else
 
-  <li class="flex-item" class="item-card" data-id="{{item.id}}" data-sku="{{item.sku}}" data-desc="{{item.description}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}">
+  <li class="flex-item" class="item-card" data-category="{{convertCatName(item.categories[0].name)}}" data-id="{{item.id}}" data-sku="{{item.sku}}" data-desc="{{item.description}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}">
       <div class="card-image">
         <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
         @if(lowerCase(item.categories[0].name))
@@ -61,7 +64,7 @@
                 onclick="return launchModal('{{item.id}}', '{{item.name}}')">Delete item</a>-->
       </div><!--/card-content-->
 
-    </div><!--/card-->
+    </li><!--/card-->
     
   <div class="modal" id="modal-{{item.id}}">
       <div class="modal-background"></div>
@@ -80,7 +83,9 @@
           <a class="button close-modal" onclick="closeModal()">Cancel</a>
         </footer>
       </div>
+  </div>
     </li><!--/modal-->
     @endif
 @endeach
+  </div>
 </ul>

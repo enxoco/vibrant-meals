@@ -32,10 +32,10 @@
 
 .cart-items {
   display: flex;
-  align-items: center;
   margin-bottom: 35px;
   margin-top: 20px;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .cart-image {

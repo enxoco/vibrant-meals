@@ -161,7 +161,7 @@
                   <div class="field is-horizontal">
                     <div class="control">
                     @each(c in categories)
-                    <input class="is-checkradio categories-check" id="{{convertCatName(c.desc)}}" type="checkbox" name="{{convertCatName(c.desc)}}" onClick="clearGroup(this);">
+                    <input class="is-checkradio categories-check" id="{{convertCatName(c.desc)}}" type="checkbox" name="{{c.desc}}" onClick="clearGroup(this);">
                     <label for="{{c.desc}}">{{c.desc}}</label>
                     @endeach
                     <input id="checked-cat" type="hidden" value=""/>
