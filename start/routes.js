@@ -23,6 +23,8 @@ const Route = use('Route')
 |---------------------------------------------------------------------------
 */
 
+Route.get('/checkout/test', async ({ view }) => view.render('menu.checkout'))
+
 Route.get('/admin/items', 'AdminController.showItems')
 Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')

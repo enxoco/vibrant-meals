@@ -1,25 +1,9 @@
-<div id="modal-pickup-day" class="modal modal-fx-slideTop" style="background:#F2F2F2;">
-  <div class="modal-background"></div>
-    <div class="media-left">
-<!--      <button class="modal-close button is-large is-primary" aria-label="close"></button>  -->
-    </div>
-    <div class="modal-heading" style="z-index:1;">You have chosen to pickup your meals at<br /> <span class="store-desc"></span><br /> Please choose from the next available pickup dates.</div><br>
-      <ul class="initial-modal-flex-container">
-          <a class="flex-item button modal-menu-option" id="pickupDay">
-            <img class="pickup-icon" src="/images/pickup-icon.png" />
-            <div class="modal-footing">
-              <span class="pickup-date" id="pickup-monday"></span>
-            </div>
-          </a>
-          <a class="flex-item button modal-menu-option" id="pickupDay">
-            <img class="delivery-icon" src="/images/delivery-icon.png" />
-            <div class="modal-footing">
-                <span class="pickup-date" id="pickup-wednesday"></span>
-              </div>
-          </a>
+<div id="modal-pickup-day" class="modal modal-fx-slideTop">
+  <div class="modal-background opacity-half"></div>
+    <div class="content store-modal" id="pickup-days">
+      <div class="modal-heading" style="z-index:1;">Choose a <strong>pickup</strong> day</div><br>
+      <div id="pickupDaysList">
 
-        </ul>
-        <a class="button is-primary alternate-pickup" style="z-index:4;margin-bottom:10%; font-size:1.25em;padding:25px;">Or choose another available date</a>
-
+      </div>
+      </div>
 </div>
-

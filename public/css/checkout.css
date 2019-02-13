@@ -1,0 +1,14 @@
+.flex-item.checkout-card {
+    width: 46%;
+    background: white;
+    box-shadow: 10px 10px 20px 2px gainsboro;
+    border-radius: 5px;
+    margin: 25px;
+}
+
+h1.card-title {
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 14px;
+    text-align: center;
+}

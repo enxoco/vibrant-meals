@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
+<link rel="stylesheet" href="/bulma/css/bulma-extensions.min.css">
 <!-- Mapbox GL JS -->
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 
@@ -12,7 +13,10 @@
 <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script async type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
+<!--<script src="https://www.paypal.com/sdk/js?client-id=AbZM8b9dqvCsvc3fTdXSUxP0ncIN54rRIqcMBTk3EQLaDUIRFk9REMSpd8ecQwTArBHdGMLB-ha38PWy&disabled-funding=card"></script>
+-->
 <link rel="stylesheet" href="/css/style.css" />
 @each(c in categories)
 <style>
@@ -36,14 +40,18 @@ a.{{convertCatName(c.desc)}}:hover::after {
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
         <img src="/images/logo.png" width="103" height="60">
+        
       </a>
+      
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
+    
   <div id="sessionData"></div>
+  
   </nav>
 
   <ul class="wrapper">
@@ -64,14 +72,25 @@ a.{{convertCatName(c.desc)}}:hover::after {
 
 
 </body>
-  <script src="/js/jquery-2.2.4.min.js"></script>
-  <script src="/js/product-card.js"></script>
+  <!-- Cart functionality goes here -->
+  <script src="/js/update-cart.js"></script>
+  
+  <!-- Handle setting default pickup location -->
+  <script async src="/js/pickup-flow.js"></script>
+  <script async src="/js/product-card.js"></script>
   <script>
     $(document).ready(function(){
 
+      if (localStorage.fulfillment_method == 'pickup') {
+        $('a#pickupRadio').addClass('active')
+        $('a#deliveryRadio').removeClass('active')
+      } else if(localStorage.fulfillment_method == 'delivery') {
+        $('a#pickupRadio').removeClass('active')
+        $('a#deliveryRadio').addClass('active')
+      }
       $('.modal-close').on('click', function(){
-  $('.modal').removeClass('is-active')
-})
+        $('.modal').removeClass('is-active')
+      })
 
     })
 
@@ -261,135 +280,6 @@ var stores = {
     ]
   };
 
-$("#pickup, #pickupRadio").click(function() {
-  localStorage.setItem("fulfillment_method", "pickup")
-
-  $("#modal-pickup").addClass("is-active")
-  var cords = document.getElementById("cords").value;
-    var cord = cords.split(",");
-
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
-
-    // Initialize the list
-    // buildLocationList(stores);
-
-
-
-    var options = {
-      units: "miles"
-    };
-    var searchResult = {"type":"Point","coordinates":cord}
-    stores.features.forEach(function(store) {
-      Object.defineProperty(store.properties, "distance", {
-        value: turf.distance(searchResult, store.geometry, options),
-        writable: true,
-        enumerable: true,
-        configurable: true
-      });
-    });
-    stores.features.sort(function(a, b) {
-      if (a.properties.distance > b.properties.distance) {
-        return 1;
-      }
-      if (a.properties.distance < b.properties.distance) {
-        return -1;
-      }
-      // a must be equal to b
-      return 0;
-    });
-    var listings = document.getElementById("listings");
-    while (listings.firstChild) {
-      listings.removeChild(listings.firstChild);
-    }
-    buildLocationList(stores);
-
-    function sortLonLat(storeIdentifier) {
-      var lats = [
-        stores.features[storeIdentifier].geometry.coordinates[1],
-        searchResult.coordinates[1]
-      ];
-      var lons = [
-        stores.features[storeIdentifier].geometry.coordinates[0],
-        searchResult.coordinates[0]
-      ];
-      var sortedLons = lons.sort(function(a, b) {
-        if (a > b) {
-          return 1;
-        }
-        if (a.distance < b.distance) {
-          return -1;
-        }
-        return 0;
-      });
-      var sortedLats = lats.sort(function(a, b) {
-        if (a > b) {
-          return 1;
-        }
-        if (a.distance < b.distance) {
-          return -1;
-        }
-        return 0;
-      });
-
-    }
-    sortLonLat(0);
-  // This is where your interactions with the symbol layer used to be
-  // Now you have interactions with DOM markers instead
-
-
-
-
-  function buildLocationList(data) {
-    for (i = 0; i < data.features.length; i++) {
-      var currentFeature = data.features[i];
-      var prop = currentFeature.properties;
-      var listings = document.getElementById("listings");
-      var listing = listings.appendChild(document.createElement("div"));
-      listing.classList.add("listing-item")
-      var miles = prop.distance
-      if (localStorage.pickupLocation) {
-        var pickupLocation = JSON.parse(localStorage.pickupLocation)
-          if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
-          listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-        } else {
-          listing.innerHTML = "<div class='list-item active' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-
-        }
-      } else {
-
-          listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-
-      }
-
-
-    }
-  }
-
-  $(".list-item").on('click', function(){
-    $(".list-item").removeClass("active")
-    $(this).addClass("active")
-    var st = ($(this).data())
-    var myStore = {}
-    myStore.id = st.storeid
-    myStore.name = st.store
-    localStorage.myStore = JSON.stringify(myStore)
-    $('.modal').removeClass("is-active")
-
-    $('#pickupRadio').html('<p class="underline">Pickup from<img src="/images/pencil-icon.png" /><br /> ' + st.store )
-    localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
-      if (localStorage.checkoutInitiated == 1) {
-        $(".modal").removeClass("is-active")
-        nextAvalFulfill()
-        $("#modal-pickup-day").addClass("is-active")
-        $('.store-desc').html(JSON.parse(localStorage.myStore).name)
-      }
-
-  })
-
-  $("#modal-initial-click").removeClass("is-active");
-  $("#modal-pickup").addClass("is-active");
-})
 
 $('#delivery').click(function(){
   localStorage.setItem("fulfillment_method", "delivery")
@@ -422,7 +312,9 @@ function formatDate(date) {
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
+    console.log('getting cords')
   } else {
+    console.log('error')
     x.innerHTML = "Geolocation is not supported by this browser.";
   }
 }
@@ -430,6 +322,7 @@ function showPosition(position) {
   var cord = [];
   cord.push(position.coords.longitude);
   cord.push(position.coords.latitude);
+  console.log(cord)
   $("#cords").val(cord);
 }
 
@@ -447,7 +340,7 @@ $('.checkout-prompt-1').on('click', function(e){
       var item = $(this).data()
       c.push(item)
       localStorage.setItem('cart', JSON.stringify(c))
-      updateCartDiv(c)
+      updateCartDiv()
       return false
     }
     var item = $(this).data()
@@ -484,7 +377,7 @@ $('.checkout-prompt-1').on('click', function(e){
     
   }
     localStorage.setItem('cart', JSON.stringify(updatedCart))
-    updateCartDiv(updatedCart)
+    updateCartDiv()
 })
 
 
@@ -499,7 +392,7 @@ $('.checkout-prompt-1').on('click', function(e){
       // var item = $(this).data()
       c.push(item)
       localStorage.setItem('cart', JSON.stringify(c))
-      updateCartDiv(c)
+      updateCartDiv()
       return false
     }
     // var item = $(this).data()
@@ -536,40 +429,17 @@ $('.checkout-prompt-1').on('click', function(e){
     
   }
     localStorage.setItem('cart', JSON.stringify(updatedCart))
-    updateCartDiv(updatedCart)
+    updateCartDiv()
 }
 
-function updateCartDiv(cartItems) {
 
-  $('#cart').html('<h1 class="menu-heading">Cart</h1>')
-  var cartCount = 0
-  // $('#cart').append('<div id="navMenu" class="navbar-menu"><div class="navbar-end">')
-
-  for (var i = 0; i < cartItems.length; i++) {
-    cartCount += cartItems[i].quantity
-    localStorage.setItem('cartCount', cartCount)
-    var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
-      $('#cart').append(card)
-  }
-  $('#cart').append('</div></div>')
-  if (localStorage.cartCount < 5) {
-    $('#cart').append('<a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
-
-  } else if(localStorage.cartCount >= 5) {
-    $('#cart').append('<a class="button is-primary checkout-button">Checkout</a>')
-
-  } else if (localStorage.cartCount == 1) {
-    $('#cart').append('<div id="alert"><div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div></div><a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
-  } else if (localStorage.cartCount == 0) {
-    $('#cart').html('a')
-  }
-}
 //Initializd our cart if one is not yet set
 if (!localStorage.cart) {
   localStorage.setItem('cart','[]')
+  updateCartDiv()
 } else {
   var cart = JSON.parse(localStorage.cart)
-  updateCartDiv(cart)
+  updateCartDiv()
 }
 if (!localStorage.custEngageCompleted) {
   localStorage.setItem('custEngageCompleted', 0)
@@ -579,46 +449,14 @@ if (!localStorage.cartCount) {
   localStorage.setItem('cartCount', 0)
 }
 
-if (!localStorage.fulfillmentMethod && localStorage.myStore) {
-  var store = JSON.parse(localStorage.myStore)
-  $('#pickupRadio').html('Pickup from <img src="/images/pencil-icon.png" /> <br />' + store.name + '    ')
+
+// This will run on page load
+if (!localStorage.fulfillmentMethod && localStorage.pickupLocation) {
+  var store = JSON.parse(localStorage.pickupLocation)
+  $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png" alt="img"/></div><div class="cart-icon-label"><div>'+store.desc+'</div></div>')
 
 
 }
-function subCart(id) {
-  var cart = JSON.parse(localStorage.cart)
-  count = localStorage.cartCount
-  count--
-  localStorage.setItem('cartCount', count)
-  var updatedCart = []
-  cart[id].quantity--
-  for (var x = 0; x < cart.length; x++) {
-    if (cart[x].quantity === 0) {
-
-    } else {
-      updatedCart.push(cart[x])
-    }
-  }
-  localStorage.setItem('cart', JSON.stringify(updatedCart))
-  updateCartDiv(updatedCart)
-}
-
-function addCart(id) {
-  var cart = JSON.parse(localStorage.cart)
-  var updatedCart = []
-  cart[id].quantity++
-
-  localStorage.setItem('cart', JSON.stringify(cart))
-  updateCartDiv(cart)
-}
-
-
-$('#pickupRadio').on('click', function(){
-$('#modal-pickup').addClass('is-active')
-  localStorage.setItem('fulfillment_method', 'pickup')
-  localStorage.removeItem('deliveryDistance')
-  localStorage.removeItem('userAddr')
-})
 
 
   </script> 
@@ -629,14 +467,23 @@ $('#modal-pickup').addClass('is-active')
         var nav = document.querySelector('#'+burger.dataset.target);
 
         burger.addEventListener('click', function(){
+          var cart = $('.cart-container')
+          if ($('.burger').hasClass('is-active')) {
+            cart.css('display', 'none')
+            $('.flex-container').css('width','100%')
+
+          } else {
+            cart.css('display', 'flex')
+            cart.css('width', '')
+            $('.flex-container').css('width','50%')
+          }
+
           burger.classList.toggle('is-active');
-          nav.classList.toggle('is-active');
+          // nav.classList.toggle('is-active');
         });
       })();
 
-      $('a#deliveryRadio').on('click', function(){
-        $('#modal-delivery').addClass('is-active')
-      })
+
 
       $('.card-content, .card-image').on('click',function(e){
         e.preventDefault()
@@ -690,6 +537,13 @@ $('#modal-pickup').addClass('is-active')
         }
       })
 
+      $(document).on('click', '#deliveryRadio', function(){
+        $('a#pickupRadio').removeClass('active')
+        $('a#deliveryRadio').addClass('active')
+        localStorage.fulfillment_method = 'delivery'
+        console.log('deliver')
+      })
+
       $(document).on('click', '#pickupDay', function(){ // Store users pickup day preference and move on.
         var date = $(this).find('.pickup-date').data()
         localStorage.pickup_day = date.date
@@ -702,8 +556,6 @@ $('#modal-pickup').addClass('is-active')
             $('#checkout-fulfillment').html('Your order will be ready for pickup<br /><strong>' + day +'</strong><br />At<br /><strong>'+ store.desc+'<br />'+ store.address +'</strong>')
           }
       }) 
-
-
 
       function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
         var wednesday
@@ -726,6 +578,19 @@ $('#modal-pickup').addClass('is-active')
           monday: monday,
           wednesday: wednesday
         }
+
+        var pickupDayModal = $('#pickupDaysList')
+        var thisMon = moment(monday).format('MMM DD')
+        var nextMon = moment(monday).add(1, 'week').format('MMM DD')
+        var thisWed = moment(wednesday).format('MMM DD')
+        var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
+        pickupDayModal.html('')
+        pickupDayModal.append('<div class="listing-item"><div class="list-item"><span-class="is-pulled-left">Monday<span><span class="store-hours is-pulled-right">'+thisMon+'</span></div></div>')
+        pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+thisWed+'</span></div></div>')
+        pickupDayModal.append('<div class="listing-item"><div class="list-item">Monday<span class="store-hours is-pulled-right">'+nextMon+'</span></div></div>')
+        pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+nextWed+'</span></div></div>')
+
+
         
         $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
         $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
@@ -750,6 +615,8 @@ $('#modal-pickup').addClass('is-active')
         if (this.id == 'stripe-checkout') {
           $('.paypal-checkout').addClass('hidden').fadeOut()
           $('.stripe-checkout').removeClass('hidden').fadeIn()
+        } else {
+          $('div#zoid-paypal-button-7a03492904').click()
         }
       })
 
@@ -757,26 +624,88 @@ $('#modal-pickup').addClass('is-active')
 
 <script>
     $('#stripe-checkout').on('click', function(){
-      var $inputs = $('#checkout-form :input');
 
-
-      var values = {};
-      $inputs.each(function() {
-          values[this.name] = $(this).val();
-      });
-      var unCart = JSON.parse(localStorage.cart)
-      var cart = []
-      for (var i = 0; i < unCart.length; i++) {
-        var c = {sku: unCart[i].sku, quantity: unCart[i].quantity}
-        cart.push(c)
-      }
-      values.cart = cart
-      console.log(values)
     })
 
     
 
+    paypal.Button.render({
+      style: {
+            label: 'paypal',
+            size:  'medium',    // small | medium | large | responsive
+            shape: 'rect',     // pill | rect
+            color: 'blue',     // gold | blue | silver | black
+            tagline: false    
+        },
 
-    
+
+env: 'sandbox', // sandbox | production
+
+// PayPal Client IDs - replace with your own
+// Create a PayPal app: https://developer.paypal.com/developer/applications/create
+client: {
+    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+    production: '<insert production client id>'
+},
+
+// Show the buyer a 'Pay Now' button in the checkout flow
+commit: true,
+
+// payment() is called when the button is clicked
+payment: function(data, actions) {
+
+    // Make a call to the REST api to create the payment
+    return actions.payment.create({
+        payment: {
+            transactions: [
+                {
+                    amount: { total: '0.01', currency: 'USD' }
+                }
+            ]
+        }
+    });
+},
+
+// onAuthorize() is called when the buyer approves the payment
+onAuthorize: function(data, actions) {
+
+    // Make a call to the REST api to execute the payment
+    return actions.payment.execute().then(function() {
+        window.alert('Payment Complete!');
+    });
+}
+
+}, '#paypal-checkout');
+
+(function() {
+  var cart = $('#cart')
+    if (window.innerWidth < 1100) {
+      cart.css('display', 'none')
+      $('.flex-container').css('width','100%')
+    } else {
+      cart.css('display', 'flex')
+      $('.flex-container').css('width','70%')
+
+    }
+})();
+
+window.addEventListener("resize", function(){
+  var cart = $('#cart')
+    if (window.innerWidth < 1100) {
+      cart.css('display', 'none')
+      $('.flex-container').css('width','100%')
+    } else {
+      cart.css('display', 'flex')
+      $('.flex-container').css('width','70%')
+
+    }
+})
+
+$('#burger').on('click', function(){
+  var cart = $('#cart')
+
+  cart.css('display', 'flex')
+  $('.flex-container').css('width','70%')
+})
   </script>
-  
+

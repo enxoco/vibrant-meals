@@ -11,25 +11,25 @@ var elements = stripe.elements();
 // (Note that this demo uses a wider set of styles than the guide below.)
 var style = {
   base: {
-    color: "#32325d",
-    lineHeight: "18px",
+    color: '#32325d',
+    lineHeight: '18px',
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: "antialiased",
-    fontSize: "16px",
-    "::placeholder": {
-      color: "#aab7c4"
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
     }
   },
   invalid: {
-    color: "#fa755a",
-    iconColor: "#fa755a"
+    color: '#fa755a',
+    iconColor: '#fa755a'
   }
 };
 
 // Create an instance of the card Element.
 var card = elements.create("card", { style: style });
 
-// Add an instance of the card Element into the `card-element` <div>.
+// Add an instance of the card Element into the card-element <div>.
 card.mount("#card-element");
 
 // Handle real-time validation errors from the card Element.
@@ -44,30 +44,20 @@ card.addEventListener("change", function(event) {
 
 
 
-
 // Create a token or display an error when the form is submitted.
 var form = document.getElementById('checkout-form')
 var button1 = document.getElementById('createToken')
 
-var promo = document.getElementById('promoCode')
-console.log(promo.value)
-promo.addEventListener('keyup', function() {
-  if (promo.value === 'small18') {
-    form.action = '/subscribe/monthly/small'
-  }
-})
 button1.onclick = function () {
 
-  if (promo.value === 'renew2018') {
-    document.getElementById('submit').click()
 
-  } else {
     stripe.createToken(card).then(function (result) {
+      console.log('done')
       $('input[name=stripeToken]').val(result.token.id)
 
-    //   document.getElementById('submit').click()
-    var $inputs = $('#checkout-form :input');
+      var $inputs = $('#info-basic :input');
 
+    console.log('form')
 
     var values = {};
     $inputs.each(function() {
@@ -86,9 +76,30 @@ button1.onclick = function () {
         values.pickupDay = localStorage.pickupDay
         values.fulfillment_method = 'pickup'
         values.pickupLocation = localStorage.pickupLocation
+
     } else if (localStorage.fulfillment_method == 'delivery') {
 
     }
+
+    var data = $('.list-item.active').data()
+    values.fullName = $('input[name="full-name').val(),
+    values.email = $('input[name="email"]').val()
+    values.street = $('input[name="street-bill"]').val(),
+    values.city = $('input[name="city-bill"]').val(),
+    values.state = $('input[name="state-bill"]').val(),
+    values.zip = $('input[name="zip-bill"]').val()
+    values.password = $('input[name="password"]').val()
+    values.pickupDay = data.day 
+    values.pickupDate = data.date
+    // values.fullName = "Mike Conrad"
+    // values.email = "mkcnrd@gmail.com"
+    // values.street = "86 Carroll Road",
+    // values.state = "GA",
+    // values.city = "Wildwood"
+    // values.zip = "30767"
+    // values.password = "password"
+    // values.pickupDay = data.day 
+    // values.pickupDate = data.date
 
 $.ajax({
     type: "POST",
@@ -103,8 +114,22 @@ $.ajax({
     }
 });
 
-    console.log(values)
-    $('.stripe-checkout').addClass('hidden').fadeOut()
+    // $('.stripe-checkout').addClass('hidden').fadeOut()
     })
-  }
+}
+
+
+function checkPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#password_verify").val();
+
+    if (password != confirmPassword)
+        $("#password_alert").html("Passwords do not match!");
+    else if (password == confirmPassword) {
+        $("#password_alert").html("Passwords match.");
+        $('.checkout-form-row').not('.is-aligned-center').hide()
+
+        $('.checkout-form-row.is-aligned-center').removeClass('hidden').fadeIn()
+
+    }
 }

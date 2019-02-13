@@ -10,7 +10,10 @@ class CheckoutController {
   async stripeCheckout({ request, response }) {
     var req = request.all()
     req = req.data
-    var location = JSON.parse(req.pickupLocation)
+    if (req.pickupLocation) {
+      var location = JSON.parse(req.pickupLocation)
+
+    }
     var stripeItems = []
     for (var i = 0; i < req.cart.length; i++) {
       stripeItems.push({
@@ -20,44 +23,61 @@ class CheckoutController {
       })
     }
 
+    console.log(req)
     // Create user
     const user = new User()
-    var name = req.first_name
-    name += ' '
-    name += req.last_name
+    var name = req.fullName
 
     user.name = name
     user.email = req.email
     user.fulfillment_day = req.fulfillment_day
     user.fulfillment_method = req.fulfillment_method
+    user.pickup_location = JSON.parse(req.pickupLocation).storeId
     user.password = await Hash.make(req.password)
 
-    // await user.save()
+    var newUser = await user.save()
 
-
-        stripe.orders.create({
-          currency: 'usd',
-          items: stripeItems,
-          shipping: { // shipping address could be either customers address for delivery or store address for pickup
-            name: user.name,
-            address: {
-              line1: location.address,
-              city: location.city,
-              state: location.state,
-              country: 'US',
-              postal_code: location.postCode
-            }
+    if (newUser) {
+       stripe.orders.create({
+        currency: 'usd',
+        items: stripeItems,
+        shipping: { // shipping address could be either customers address for delivery or store address for pickup
+          name: user.name,
+          address: {
+            line1: location.address,
+            city: location.city,
+            state: location.state,
+            country: 'US',
+            postal_code: location.postCode,
           },
-          email: user.email
+        },  
+        metadata: {
+          pickup_day: req.pickupDay,
+          pickup_date: req.pickupDate,
+          fulfillment_method: req.fulfillment_method,
+          store_id: location.storeId
+        },
+        email: user.email
+      }, function(err, order) {
+        console.log('order created')
+        if (err){return err}
+        stripe.orders.pay(order.id, {
+          source: req.stripeToken // obtained with Stripe.js
         }, function(err, order) {
-          stripe.orders.pay(order.id, {
-            source: req.stripeToken // obtained with Stripe.js
-          }, function(err, order) {
-            // asynchronously called
-          });
+          if (err) return(err)
+          console.log('created')
+          // asynchronously called
         });
-        
+      });
+      
+    }
 
+
+    if (order) {
+      return response.send(order)
+    } else {
+      return response.send('something happened')
+    }
 
         // console.log('payment', payOrder)
     // } else { // Order should be sent out for delivery
