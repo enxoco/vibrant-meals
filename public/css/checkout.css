@@ -12,3 +12,23 @@ h1.card-title {
     letter-spacing: 14px;
     text-align: center;
 }
+
+.checkout-form-row:nth-child(1) {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cart-icon-label {
+    display: inline-block;
+    max-width: 125px;
+    padding-left: 10px;
+    font-size: 1em;
+    font-weight: 800;
+    position: relative;
+    top: 10px;
+}
+
+#delivery-date-label {
+    max-width: 80%;
+}

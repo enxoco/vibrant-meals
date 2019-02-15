@@ -513,7 +513,7 @@ p {
     position: relative;
 }
   .cart-container {
-    width: 30%;
+    width: 50%;
   }
   .initial-modal-flex-container {
     width: 100%;
@@ -1044,13 +1044,12 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
   font-size: 1.25rem;
   padding: 10px;
   border: none;
-  border-bottom: 3px solid #aad0ad;
   width: 45%;
+  height: 50px;
   background: #F2F2F2;
   margin-bottom: 20px;
   margin-right: 4%;
   border-radius: 4px;
-  border: .5px solid #aad0ad;
   box-shadow: 2px 2px 7px 0px gainsboro;
 }
 
@@ -1061,16 +1060,16 @@ input[type="text"]:focus, input[type="password"]:focus {
     position: relative;
     margin-top: 50px;
 }  
-.checkout-form-row > a {
-    font-size: 4rem;
-    color: #aad0ad;
-    padding-left: 30px;
-    padding-right: 30px;
+.checkout-options > a {
+  color: #aad0ad;
+  padding-left: 30px;
+  padding-right: 30px;
+
 }
 
-.checkout-form-row > a:hover, .checkout-form-row > a.active {
-    border: 1px solid #aad0ad;
-    border-radius: 10em;
+.checkout-options > a:hover, .checkout-options > a.active {
+    border: 1px solid white;
+    border-radius: 10px;
     background: #aad0ad;
     color: white;
 }
@@ -1091,8 +1090,12 @@ div#card-element {
 }
 input#promoCode {
   margin-bottom: 20px;
-  width: 100%;
+  width: 50%;
+  border-radius: 10em;
+  text-align: center;
+  border: 1px solid gainsboro;
 }
+
 div#modal-pickup > .modal-content {
   border: 3px solid #aad0ad;
   box-shadow: 2px 2px 7px 0px gainsboro;
@@ -1114,6 +1117,7 @@ h1.menu-heading {
   font-size: 3rem;
   font-weight: 700;
   text-align: center;
+  line-height: 50px;
 }
 
 .paypal-button.paypal-button-number-0.paypal-button-layout-horizontal.paypal-button-shape-rect.paypal-button-branding-branded.paypal-button-number-single.paypal-button-env-sandbox.paypal-should-focus.paypal-button-label-paypal.paypal-button-color-blue.paypal-button-logo-color-white {
@@ -1178,4 +1182,50 @@ a#pickupRadio.active, a#deliveryRadio.active {
 a#pickupRadio:hover, a#deliveryRadio:hover {
   background: #f2f2f2;
   border-radius: 10px;
+}
+a.button.is-account-choice {
+  width: 25%;
+  white-space: normal;
+  overflow: hidden;
+  font-size: 24px;
+  position: relative;
+  left: 21%;
+  margin-right: 25px;
+}
+
+.modal-content.payment {
+  background: white;
+  padding: 100;
+  min-width: 50%;
+}
+.modal-content.checkout-options {
+  background: white;
+  min-width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 50;
+  height: auto;
+  border: 0.5px solid;
+  border-radius: 10px;
+  box-shadow: 2px 2px 7px 2px gainsboro;
+}
+
+.checkout-options {
+  flex-direction: row;
+  font-size: 3em;
+}
+
+input#total {
+  font-size: 2em;
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-weight: 600;
+  color: black;
+}
+input[name="email"] {
+  width: 95%;
+}
+div#passsword {
+  padding: 50;
 }

@@ -23,7 +23,7 @@ const Route = use('Route')
 |---------------------------------------------------------------------------
 */
 
-Route.get('/checkout/test', async ({ view }) => view.render('menu.checkout'))
+Route.get('/checkout', 'ItemController.showCheckout')
 
 Route.get('/admin/items', 'AdminController.showItems')
 Route.get('/admin/categories', 'AdminController.showCategories')
@@ -85,13 +85,14 @@ Route.post('/password/reset', 'Auth/PasswordController.reset').as('reset.passwor
 Route.get('/contact', 'ContactController.index').as('contact.show')
 Route.post('/contact', 'ContactController.sendMessage').as('contact.send')
 Route.post('/checkout/stripe', 'CheckoutController.stripeCheckout')
+Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')
 
 /**
  * Social Login Route
  */
 
 Route.group(() => {
-  Route.get('/account', 'AccountController.edit').as('user.account')
+  Route.get('/account', 'Auth/AuthController.viewProfile').as('user.account')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
   Route.post('/account/photo', 'AccountController.uploadAvatar').as('account.updateAvatar')
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')
@@ -101,3 +102,6 @@ Route.group(() => {
 })
 
 Route.get('/api', async ({ view }) => view.render('api'))
+
+
+Route.get('/test/items', 'ItemController.listItems')

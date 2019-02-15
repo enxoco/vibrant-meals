@@ -41,6 +41,7 @@
     "clockwork": "^0.1.4",
     "cloudinary": "^1.11.0",
     "countdown": "^2.6.0",
+    "critical": "^1.3.4",
     "fbgraph": "^1.4.4",
     "github": "^14.0.0",
     "instagram-node": "^0.5.8",

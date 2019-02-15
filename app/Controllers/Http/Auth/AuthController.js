@@ -53,6 +53,26 @@ class AuthController {
     return view.render('auth.login')
   }
 
+
+  async viewProfile ({request, response, auth, view}) {
+    if (auth.user.id) {
+      var user = auth.user
+
+      // Get user details from Stripe
+      var existing = await stripe.customers.list(
+        { limit: 1, email: user.email },
+      );
+
+      // Get orders for user from Stripe
+      console.log(existing.data[0]['id'])
+      var orders = await stripe.orders.list(
+        { customer: existing.data[0]['id'] },
+      );
+
+      return view.render('auth.profile', {user: existing.data[0], orders: orders})
+    }
+  }
+
   async updateCustomerAddress ({ request, response, view, params, session }) {
     if (params.reg_method == 'user') {// Update a users profile with address
       // session.put('needs_registration', 1)

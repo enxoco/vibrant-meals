@@ -12,6 +12,15 @@ var cartCur = []
 
 class ItemController {
 
+  async listItems ({view}) {
+
+    var products = await stripe.products.list({ limit: 3 });
+    var prod = products.data
+    // return prod
+    return view.render('products', {prod})
+
+  }
+
   /**
    * 
    * These are admin related functions for managing menus on the item
@@ -260,6 +269,7 @@ class ItemController {
     
     async addItem ({ view, request, response, params, session }) {
       const obj = request.all()
+      return obj
       const profilePic = request.file('item-image')
         if (profilePic) {
           try {
@@ -527,6 +537,7 @@ class ItemController {
         return response.redirect('back')
     }
 
+
     async showMenu ({ view, session, response }) {
       // Setup our cart items variable
       var cart = session.get('cartItem')
@@ -564,6 +575,25 @@ class ItemController {
     }
 
 
+    async showCheckout ({ view, session, auth }) {
+      console.log(auth.user)
+
+      // Fetch our menu object containing items, filters, categories, etc...
+      const menu_items = await fetchMenu()
+
+      if (auth.user) { // If the user already has an account, load their fulfillment preferences
+
+        var user = {
+          name: auth.user.name,
+          email: auth.user.email,
+        }
+        
+        return view.render('menu.checkout', {session})
+
+      } // If we reach this condition, it means the user is not logged in.  Just show them the menu
+        // and we will collect their details before order is placed.
+        return view.render('menu.checkout')
+    }
     /**
      * 
      * This function is used to list the items in a particular category 

@@ -7,9 +7,15 @@ const UsersProfile = use('App/Models/UsersProfile')
 const Hash = use('Hash')
 class CheckoutController {
 
+  async paypalCheckout({ request, response }) {
+    var order = request.all()
+    return order
+  }
+
   async stripeCheckout({ request, response }) {
     var req = request.all()
     req = req.data
+
     if (req.pickupLocation) {
       var location = JSON.parse(req.pickupLocation)
 
@@ -23,52 +29,137 @@ class CheckoutController {
       })
     }
 
-    console.log(req)
-    // Create user
+    // Create a local user
     const user = new User()
     var name = req.fullName
-
-    user.name = name
+    user.name = req.fullName
     user.email = req.email
     user.fulfillment_day = req.fulfillment_day
     user.fulfillment_method = req.fulfillment_method
-    user.pickup_location = JSON.parse(req.pickupLocation).storeId
+
+
+
+    if (req.fulfillment_method == 'pickup') {
+      user.pickup_location = JSON.parse(req.pickupLocation).storeId
+
+    }
+
     user.password = await Hash.make(req.password)
 
     var newUser = await user.save()
 
+
+      var address = req.street
+      var city = req.city
+      var state = req.state
+      var zip = req.zip
+
+    var existing = await stripe.customers.list(
+      { limit: 1, email: user.email },
+    );
+    console.log(existing.data[0])
+    if (existing.data[0] != undefined) {
+
+    } else {
+    var customer = await stripe.customers.create({
+      description: 'Customer for ' + req.email,
+      source: req.stripeToken,
+      email: user.email,
+      metadata: {
+        name: user.name,
+        password: user.password,
+        fulfillment_method: req.fulfillment_method,
+        fulfillment_day: req.fulfillment_day,
+        next_fulfillment: req.pickupDate
+      },
+      shipping: {
+        name: user.email,
+        phone: req.phone,
+        address: {
+          line1: address,
+          city: city,
+          state: state,
+          postal_code: zip
+        }
+      }
+    })
+    }
+
+
     if (newUser) {
-       stripe.orders.create({
-        currency: 'usd',
-        items: stripeItems,
-        shipping: { // shipping address could be either customers address for delivery or store address for pickup
-          name: user.name,
-          address: {
-            line1: location.address,
-            city: location.city,
-            state: location.state,
-            country: 'US',
-            postal_code: location.postCode,
+      console.log('user created')
+      if (req.fulfillment_method == 'pickup') {// Create an order for pickup
+        console.log('pickup')
+        console.log(customer)
+        var order = stripe.orders.create({
+          currency: 'usd',
+          customer: customer['id'],
+          items: stripeItems,
+          shipping: { // shipping address could be either customers address for delivery or store address for pickup
+            name: user.name,
+            address: {
+              line1: location.address,
+              city: location.city,
+              state: location.state,
+              country: 'US',
+              postal_code: location.postCode,
+            },
+          },  
+          metadata: {
+            pickup_day: req.pickupDay,
+            pickup_date: req.pickupDate,
+            fulfillment_method: req.fulfillment_method,
+            store_id: location.storeId
           },
-        },  
-        metadata: {
-          pickup_day: req.pickupDay,
-          pickup_date: req.pickupDate,
-          fulfillment_method: req.fulfillment_method,
-          store_id: location.storeId
-        },
-        email: user.email
-      }, function(err, order) {
-        console.log('order created')
-        if (err){return err}
-        stripe.orders.pay(order.id, {
-          source: req.stripeToken // obtained with Stripe.js
+          email: user.email
         }, function(err, order) {
-          if (err) return(err)
-          console.log('created')
-          // asynchronously called
+          console.log('order created')
+          console.log(order)
+          console.log(err)
+          if (err){return err}
+          stripe.orders.pay(order.id, {
+            source: req.stripeToken // obtained with Stripe.js
+          }, function(err, order) {
+            if (err) return(err)
+            console.log('created')
+            // asynchronously called
+          });
         });
-      });
+      } else {// Default to delivery if no method selected
+        console.log('delivery')
+        var order = stripe.orders.create({
+          currency: 'usd',
+          customer: customer['id'],
+          items: stripeItems,
+          shipping: { // shipping address could be either customers address for delivery or store address for pickup
+            name: user.name,
+            address: {
+              line1: req['street-ship'],
+              city: req['city-ship'],
+              state: req['state-ship'],
+              country: 'US',
+              postal_code: req['zip-ship'],
+            },
+          },  
+          metadata: {
+            delivery_day: req.pickupDay,
+            delivery_date: req.pickupDate,
+            fulfillment_method: req.fulfillment_method,
+          },
+          email: user.email
+        }, function(err, order) {
+          console.log('order created')
+          if (err){return err}
+          stripe.orders.pay(order.id, {
+            source: req.stripeToken // obtained with Stripe.js
+          }, function(err, order) {
+            if (err) return(err)
+            console.log('created')
+            // asynchronously called
+          });
+        });
+      }
+
       
     }
 

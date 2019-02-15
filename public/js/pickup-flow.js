@@ -119,6 +119,7 @@ $(document).on('click', 'a#pickupRadio', function() {
           $(".modal").removeClass("is-active")
           // nextAvalFulfill()
           // $("#modal-pickup-day").addClass("is-active")
+          $('#pickup-label').html(st.store)
           $('.store-desc').html(JSON.parse(localStorage.myStore).name)
         }
         updateCartDiv()
@@ -263,4 +264,28 @@ $(document).on('click', 'a#pickupRadio', function() {
     
       $("#modal-initial-click").removeClass("is-active");
       // $("#modal-pickup").addClass("is-active");
+
+
     })
+
+    function formatDate(date) {
+      var time = date.split(":");
+      var hh = parseInt(time[0]);
+      var m = parseInt(time[1]);
+      var h = hh;
+      if (h >= 12) {
+        h = hh - 12;
+        dd = "PM";
+      }
+      if (h == 0) {
+        h = 12;
+      }
+    
+      m = m < 10 ? "0" + m : m;
+    
+      /* if you want 2 digit hours: */
+      // h = h<10?"0"+h:h;
+      var timeStr = h + ":" + m + "" + dd;
+      return timeStr;
+    }
+    

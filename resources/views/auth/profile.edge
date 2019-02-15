@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/bulma/css/bulma-extensions.min.css">
 <!-- Mapbox GL JS -->
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
+<script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
@@ -14,8 +14,8 @@
 <!-- Turf.js plugin -->
 
 <script async type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script async src="https://www.paypal.com/sdk/js?client-id=sb&"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&"></script>
 
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/css/checkout.css" />
@@ -37,48 +37,24 @@ div#info-basic > input:nth-child(4), div#info-basic > input:nth-child(5) {
 }
 
 #cart {
-  width: 40%;
+  width: 50%;
 }
 div#card-element {
     background: #f2f2f2;
     border-radius: 5px;
     padding: 20px;
+    border: 1px solid #aad0ac;
     box-shadow: 2px 2px 7px 0px gainsboro;
     margin-bottom: 10;
-    height: 75px;
-    width: 50%;
-    position: relative;
-    left:25%;
-}
-.total-input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-h2.label {
-    font-size: 2em;
-}
-
-input[type="text"]:nth-child(3) {
-    width: 94%;
-}
-input[type="text"]:nth-child(4) {
-    width: 40%;
-}
-input[type="text"]:nth-child(5) {
-    width: 25%;
-}
-input[type="text"]:nth-child(6) {
-    width: 20%;
 }
 </style>
 
 <body>
-  @include('Modals.pickupLocations')
+  {{ toJSON({ orders }) }}
   <input type="hidden" id="cords" />
   <nav class="nav has-background-primary">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/">
+      <a class="navbar-item" href="https://bulma.io">
         <img src="/images/logo.png" width="103" height="60">
         
       </a>
@@ -93,42 +69,24 @@ input[type="text"]:nth-child(6) {
   <div id="sessionData"></div>
   
   </nav>
-  <div class="modal is-active">
-      <div class="modal-background"></div>
-      <div class="modal-content checkout-options">
-        <!-- Any other Bulma elements you want -->
-        <h1 class="menu-heading">Choose a payment method</h1>
-        <div class="checkout-options">
-        <a id="stripe-checkout"><i class="fa fa-credit-card-alt"></i></a>
-        <a id="paypal-checkout"><i class="fa fa-paypal"></i></a>
-        </div>
-
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-<ul class="wrapper">
+  <ul class="wrapper">
   <ul class="flex-container">
-    <div class="flex-item checkout-card" id="info-basic">
-      <h1 class="menu-heading">Billing Info</h1>
-      <div class="form-wrapper">
-        <input type="text" name="full-name" placeholder="Full Name" required/>
-        <input type="text" name="phone" placeholder="Phone Number" required />
-        <input type="text" name="street-bill" placeholder="Street Address" required />
-        <input type="text" name="city-bill" placeholder="City" required />
-        <input type="text" name="state-bill" placeholder="State" required />
-        <input type="text" name="zip-bill" placeholder="Zip Code" required />
+    <div class="flex-item checkout-card">
+      <h1 class="card-title">Billing Info</h1>
+      <hr />
 
-        <div class="form-row">
-            <div id="card-element">
-              <!-- A Stripe Element will be inserted here. -->
-            </div>
-            <!-- Used to display form errors. -->
-            <div id="card-errors" role="alert"></div>
-          </div>
-        <a class="button is-primary outlined" id="copyBillingAddr">Change Shipping Address</a>
-      </div>
-        <br />
+      <div class="form-wrapper" id="info-basic">
+        <input type="text" name="full-name" placeholder="Full Name" required value="{{user.metadata.name}}"/>
+      <input type="text" name="email" placeholder="Email" required value="{{user.email}}" />
+        <input type="text" name="phone" placeholder="Phone Number" value="{{user.shipping.phone}}" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="password" name="password_confirm" placeholder="Confirm Password" required />
 
+        <input type="text" name="street-bill" placeholder="Street Address" value="{{user.shipping.address.line1}}" required />
+        <input type="text" name="city-bill" placeholder="City" value="{{user.shipping.address.city}}" required />
+        <input type="text" name="state-bill" placeholder="State" value="{{user.shipping.address.state}}" required />
+        <input type="text" name="zip-bill" placeholder="Zip Code" value="{{user.shipping.address.postal_code}}" required />
+        <a class="button is-primary is-aligned-center" id="copyBillingAddr">Use for shipping</a>
 
       </div>
     </div>
@@ -145,7 +103,7 @@ input[type="text"]:nth-child(6) {
             <input type="text" name="allergy-ship" placeholder="Allergy Info" />
             <a class="button is-primary is-aligned-center">Same as billing</a>
         </div>
-        <h1 class="menu-heading" id="fulfillment-options">Delivery Info</h1>
+        <h1 class="card-title">Pickup Date</h1>
         <hr />
         <div id="pickupDaysList">
         </div>
@@ -154,27 +112,31 @@ input[type="text"]:nth-child(6) {
 
 
     <div class="flex-item checkout-card">
-        <h1 class="menu-heading">Account Information</h1>
+        <h1 class="card-title">Payment Method</h1>
         <div class="form-wrapper">
             <div class="checkout-form">
 
                 <div class="checkout-form-row">
-                    <div id="passsword">
-                        <input type="text" name="email" placeholder="Email" required />
-                        <input type="password" name="password" placeholder="Password" />
-                        <input type="password" name="password_confirm" placeholder="Confirm Password" />
-                
-                    </div>                
-                  </div>
-
+                  <a id="stripe-checkout" class="active"><i class="fa fa-credit-card-alt"></i></a>
+                  <a id="paypal-checkout"><i class="fa fa-paypal"></i></a>
+                </div>
+                <div class="checkout-form-row paypal-checkout" id="paypal-button-container" >
+                </div>
                 <div class="checkout-form-row stripe-checkout">
                     <script src="https://js.stripe.com/v3/"></script>
 
                     <form id="checkout-form">
-
+                      <div class="form-row">
+                        <div id="card-element">
+                          <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" role="alert"></div>
+                      </div>
                     <!-- Used to display form errors. -->
+                    <input type="text" id="promoCode" name="promoCode" placeholder="Coupon Code" />
       
-                    
+                    <a id="createToken" class="button is-everyday">Checkout</a>
                     <input id="token" type="hidden" name="stripeToken" value="" />
                     <input type="hidden" name="stripeId" value="{{stripeId}}" />
                     @if(stripe_pk)
@@ -182,62 +144,15 @@ input[type="text"]:nth-child(6) {
                     @endif
                     </form>
                 </div>
+                    
             </div>
         </div>
     </div>
+    @!include('Modals.pickupLocations')
 
   </ul>
-  <ul class="cart-container" id="cart">
-
-      <h1 class="menu-heading">Order Info</h1>
-      <div class="fulfillment-options flex-item">
-        <a id="pickupRadio">
-          <div class="cart-icon">
-            <img src="/images/pickup-icon.png" alt="img"/>
-          </div>
-          <div class="cart-icon-label" id="pickup-label">Pickup</div>
-        </a>
-        <a id="deliveryRadio">
-          <div class="cart-icon">
-            <img src="/images/delivery-icon.png" alt="img"/>
-          </div>
-          <div class="cart-icon-label" id="delivery-label">Delivery</div>
-        </a>
-      </div>
-      <div class="fulfillment-options flex-item">
-          <a id="deliveryDate">
-            <div class="cart-icon">
-              <i class="fa fa-calendar" style="font-size:4em; color:#3b8f6b;"></i>
-            </div>
-            <div class="cart-icon-label" id="delivery-date-label">Delivery Date</div>
-          </a>
-
-        </div>
-        <div id="cart-items"></div>
-          <strong style="text-align:center;">
-            <input type="text" id="promoCode" name="promoCode" placeholder="Coupon Code" />
-            <div class="total-input">
-              <h2 class="label">Total</h2>
-            <input type="text" id="total" value="Total" disabled /></span></a>
-            </div>
-            <div id="paypal-button-container"></div>
-
-            <div id="checkout-options">
-            </div>
-
-            </a>
-  </ul>
+  <ul class="cart-container" id="cart"></ul>
 </ul>
-
-<div id="modal-paypal-confirmation" class="modal modal-fx-slideBottom" style="top: 0px;">
-    <div class="modal-background" style="background-color:#aad0ad66 !important;"></div>
-    <div class="modal-card" style="min-height:50%; background:white;">
-    <div class="modal-heading item-card-title" style="z-index:1;"></div><br />
-      <div class="modal-content">
-          <div class="content item-modal paypal-order-details"></div>
-      </div>
-    </div>
-</div>
 
 <script>
   function getLocation() {
@@ -355,6 +270,14 @@ getLocation()
   };
 
   function updateCartDiv() {
+    if (localStorage.pickupLocation) {
+      var pickup = JSON.parse(localStorage.pickupLocation).desc
+      $('#cart').html('<h1 class="menu-heading">Recent Orders</h1></h1><div class="fulfillment-options flex-item"><a id="pickupRadio" class="active"><div class="cart-icon"><img src="/images/pickup-icon.png" alt="img"/></div><div class="cart-icon-label">'+pickup+'<div></div></div>\
+      <a id="deliveryRadio"><div class="cart-icon"><img src="/images/delivery-icon.png" alt="img"/></div><div class="cart-icon-label"><div></div></div></a></div>You have chosen to pick up your order from <br /><strong>'+JSON.parse(localStorage.pickupLocation).desc+'<br />'+JSON.parse(localStorage.pickupLocation).address+'<br /><span class="fulfill-details">Please choose a date for pickup <br /></strong></span>')
+    } else {
+      $('#cart').html('<h1 class="menu-heading">Recent Orders</h1><div class="fulfillment-options flex-item"><a id="pickupRadio"><div class="cart-icon"><img src="/images/pickup-icon.png" alt="img"/></div><div class="cart-icon-label"><div></div></div>\
+      <a id="deliveryRadio" class="active"><div class="cart-icon"><img src="/images/delivery-icon.png" alt="img"/></div><div class="cart-icon-label"><div></div></div></a></div>Your order will be delivered to <br /><strong><br /><br /><span class="fulfill-details">Please choose a date for delivery <br /></strong></span>')
+    }
 
     var cartCount = 0
     if (localStorage.cart) {
@@ -365,7 +288,7 @@ getLocation()
       cartCount += cartItems[i].quantity
       localStorage.setItem('cartCount', cartCount)
       var card = '<div class="cart-items"><div class="cart-controls"><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div></div><img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
-      $('#cart-items').html(card)
+      $('#cart').append(card)
     }
         var total = 0
 
@@ -373,7 +296,22 @@ getLocation()
       var t = cartItems[i].quantity * cartItems[i].price
       total += t
     }
-    $('#total').val('$'+t)
+
+    paypal.Buttons({
+    createOrder: function(data, actions) {
+      // Set up the transaction
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total
+          }
+        }]
+      });
+    }
+  }).render('#paypal-button-container');
+
+    $('#cart').append('</div></div>')
+    $('#cart').append('<strong style="text-align:center;"><a class="button is-everyday" style="pointer-events:none;">Total $'+total+'</a>')
 
   }
 
@@ -396,28 +334,22 @@ getLocation()
 </script>
 <script>
 
-
+  document.body.querySelector('#paypal-button-container')
+      .style.display = 'none';
 
   $('#paypal-checkout').on('click', function(){
-    $('.modal').removeClass('is-active')
     $('#card-element').hide()
-    $('#info-basic').hide()
     $('#stripe-checkout').removeClass('active')
     $(this).addClass('active')
     $('.paypal-button.paypal-button-number-0.paypal-button-layout-vertical.paypal-button-shape-rect.paypal-button-number-multiple.paypal-button-env-sandbox.paypal-button-label-paypal.paypal-button-color-gold.paypal-logo-color-blue').click()
     $('#paypal-button-container').show()
-    $('#checkout-options').html('<div id="paypal-button-container" > </div>')
   })
 
   $('#stripe-checkout').on('click', function(){
-    $('.modal').removeClass('is-active')
-    $('#info-basic').show()
-
     $('#paypal-checkout').removeClass('active')
     $(this).addClass('active')
     $('#card-element').show()
     $('#paypal-button-container').hide()
-    $('#checkout-options').html('<a id="createToken" class="button is-everyday">Checkout</a>')
   })
 
 
@@ -443,19 +375,15 @@ getLocation()
         }
 
         var pickupDayModal = $('#pickupDaysList')
-
         var thisMon = moment(monday).format('MMM DD')
         var nextMon = moment(monday).add(1, 'week').format('MMM DD')
         var thisWed = moment(wednesday).format('MMM DD')
         var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
         pickupDayModal.html('')
-        pickupDayModal.append('<h1 class="menu-subheading fulfillment-options-heading">Choose a date</h1>')
         pickupDayModal.append('<div class="listing-item"><div data-day="monday" data-date="'+thisMon+'" class="list-item active"><span-class="is-pulled-left">Monday<span><span class="store-hours is-pulled-right">'+thisMon+'</span></div></div>')
         pickupDayModal.append('<div class="listing-item"><div data-day="wednesday" data-date="'+thisWed+'" class="list-item">Wednesday<span class="store-hours is-pulled-right">'+thisWed+'</span></div></div>')
         pickupDayModal.append('<div class="listing-item"><div data-day="monday" data-date="'+nextMon+'" class="list-item">Monday<span class="store-hours is-pulled-right">'+nextMon+'</span></div></div>')
         pickupDayModal.append('<div class="listing-item"><div data-day="wednesday" data-date="'+nextWed+'" class="list-item">Wednesday<span class="store-hours is-pulled-right">'+nextWed+'</span></div></div>')
-        pickupDayModal.append('<hr />')
-        pickupDayModal.append('<h1 class="menu-subheading fulfillment-options-heading">Choose a time</h1>')
 
 
         
@@ -469,7 +397,7 @@ getLocation()
         nextAvalFulfill()
         if (localStorage.myStore) {
           var storeName = JSON.parse(localStorage.myStore)
-          console.log('store',storeName)
+          console.log(storeName)
           $('.store-desc').html(storeName.name)
         }
 
@@ -479,7 +407,6 @@ getLocation()
         }
 
         $('.list-item').on('click', function(){
-
           var data = $(this).data()
           localStorage.pickupDay = data.day
           localStorage.pickupDate = data.date
@@ -487,34 +414,22 @@ getLocation()
           form.pickupDay = data.day
           $('.list-item').removeClass('active')
           $(this).addClass('active')
-          if (localStorage.pickupLocation) {
-            var store = JSON.parse(localStorage.pickupLocation)
-
-          }
-          $('#delivery-date-label').html('Your order will be ready for pickup between 8am and 4pm <br />')
-          $('#delivery-date-label').append(localStorage.pickupDay.charAt(0).toUpperCase() + localStorage.pickupDay.slice(1) + '<br />' +localStorage.pickupDate)
+          $('.fulfill-details').html('')
+          var store = JSON.parse(localStorage.pickupLocation)
+          $('.fulfill-details').html('<hr />Your order will be ready for pickup on <br /><strong>'+ data.day.charAt(0).toUpperCase() + data.day.slice(1) + ' ' + data.date + '</strong>')
         })
 
         if (localStorage.fulfillment_method == 'pickup') {
           $('#info-billing').hide()
           $('#copyBillingAddr').hide()
-          $('#fulfillment-options').html('Pickup Info')
           var data = $('.list-item.active').data()
           localStorage.pickupDay = data.day
           localStorage.pickupDate = data.date
-          $('#delivery-date-label').html('Your order will be ready for pickup between 8am and 4pm <br />')
-          $('#delivery-date-label').append(localStorage.pickupDay.charAt(0).toUpperCase() + localStorage.pickupDay.slice(1) + '<br />' +localStorage.pickupDate)
-
           form.pickupDate = data.date
           form.pickupDay = data.day
-          var store = JSON.parse(localStorage.pickupLocation)
-
-          $('#pickup-label').html(store.desc)
-
           $('.fulfill-details').html('<hr />Your order will be ready for pickup on <br /><strong>'+ data.day.charAt(0).toUpperCase() + data.day.slice(1) + ' ' + data.date + '</strong>')
 
         }
-
 
 
         $(document).on('click', '#deliveryRadio', function(){
@@ -523,23 +438,9 @@ getLocation()
         localStorage.fulfillment_method = 'delivery'
         localStorage.removeItem('pickupLocation')
         console.log('deliver')
-        $('#pickup-label').html('')
+        updateCartDiv()
       })
       
-      $(document).ready(function(){
-        $('#info-billing').hide()
-        $('#paypal-button-container').hide()
-        if (localStorage.fulfillment_method == 'pickup') {
-          $('a#pickupRadio').addClass()
-          $('#fulfillment-options').html('Pickup Info')
-          $('#delivery-date-label').html('Your order will be ready for pickup between 8am and 4pm <br />')
-          $('#delivery-date-label').append(localStorage.pickupDay.charAt(0).toUpperCase() + localStorage.pickupDay.slice(1) + '<br />' +localStorage.pickupDate)
-
-
-        }
-      })
-
-
 
   $('#pickupRadio').on('click', function() {
     localStorage.fulfillment_method = 'pickup'
@@ -547,48 +448,6 @@ getLocation()
     $(this).addClass('active')
   })
 
-  paypal.Buttons({
-      style: {
-        layout:  'horizontal',
-        color:   'blue',
-        shape:   'pill',
-        label:   'pay',
-        tagline: true
-      },
-      createOrder: function(data, actions) {
-      // Set up the transaction
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: $('#total').val().split('$')[1]
-          }
-        }]
-      })
-    },
-    onApprove: function(data, actions) {
-      return actions.order.get().then(function (orderDetails) {
-         $.ajax({
-            type: "POST",
-            url: "/checkout/paypal",
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: JSON.stringify({data:orderDetails}),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data){
-              $('#paypal-button-container').hide()
-              $('#modal-paypal-confirmation').addClass('is-active')
-              $('.paypal-order-details').append(JSON.stringify(data))
-              // return alert(JSON.stringify(data))
-            },
-            failure: function(errMsg) {
-              // return alert(JSON.stringify(errMsg));
-            }
-        });
-      })
-    }
-  }).render('#paypal-button-container');
-
-  
 </script>
 
 <script src="/js/registration-form.js"></script>
