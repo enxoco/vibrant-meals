@@ -12,12 +12,29 @@ var cartCur = []
 
 class ItemController {
 
-  async listItems ({view}) {
+  async listItems ({view, response}) {
 
-    var products = await stripe.products.list({ limit: 3 });
+    var products = await stripe.products.list({ limit: 6 });
     var prod = products.data
-    // return prod
-    return view.render('products', {prod})
+    var categories = []
+    for (var i = 0; i < prod.length; i++) {
+      categories.push(prod[i].metadata.primary_category)
+    }
+    // var items = []
+    // for (var i = 0; i < prod.length; i++) {
+    //   var product = {'product':prod, skus:[]}
+    //   for (var x = 0; x < prod[i].skus.data.length; x++){
+    //     var sku = prod[i].skus.data[x]
+    //     product.skus.push(sku)
+
+    //   }
+    //   items.push(product)
+    // }
+    // return items
+    // // var prod = products.data
+    // // // return prod
+    // return response.send({items: prod, categories})
+    return view.render('menu.items', {items: prod, categories})
 
   }
 

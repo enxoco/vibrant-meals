@@ -2,36 +2,63 @@
     <nav class="breadcrumb has-dot-seperator categories" aria-label="breadcrumbs">
         <ul>
             @each(category in categories)    
-            <li><a data-filter="{{ convertCatName(category.desc)}}" class="{{ convertCatName(category.desc) }}">{{category.desc}}</a></li>
-          @endeach
+              <!--<li><a data-filter="{{ convertCatName(category)}}" class="{{ convertCatName(category) }}">{{category}}</a></li>-->
+            @endeach
+          
             <a class="active" href="/menu/all">All</a>
         </ul>
       </nav>
 <div id="item-container">
 @each(item in items)
-@if(item.is_visible != 1)
+@if(item.active != true)
 @else
 
-  <li class="flex-item" class="item-card" data-category="{{convertCatName(item.categories[0].name)}}" data-id="{{item.id}}" data-sku="{{item.sku}}" data-desc="{{item.description}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}">
+  <li class="flex-item" class="item-card" 
+    data-id="{{item.id}}" 
+    data-category="{{convertCatName(item.metadata.primary_category)}}" 
+    data-sku="{{item.skus.data[0].id}}" 
+    data-desc="{{item.description}}" 
+    data-name="{{item.name}}" 
+    data-price="{{item.skus.data[0].price}}" 
+    data-img_url="{{item.skus.data[0].image}}"
+  >
       <div class="card-image">
-        <img class="card-image" src="/{{item.img_url}}" id="img_{{item.id}}" alt="Placeholder image">
+        <img class="card-image" 
+          src="{{item.skus.data[0].image}}" 
+          id="img_{{item.id}}" 
+          alt="Placeholder image"
+        >
+
+        <!--
         @if(lowerCase(item.categories[0].name))
         <div class="category-divider-{{ convertCatName(item.categories[0].name) }} is-primary has-background-color-primary"></div>
         @else 
         <div class="category-divider-primary is-primary has-background-color-primary"></div>
 
         @endif
+      -->
       </div><!--/card-image-->
+      <div class="category-divider-primary is-primary has-background-color-primary"></div>
+
       <div class="card-content">
         <div class="media">
           <div class="media-content">
-            <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.price }}</span></p>
+            <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.skus.data[0].price }}</span></p>
           </div><!--/media-content-->
         </div><!--/media-->
         <div class="content">
           <img class="filter-icon" src="/images/oval-icon.png" />
           
-          <a class="checkout-prompt-1" data-id="{{item.id}}" data-sku="{{item.sku}}" data-name="{{item.name}}" data-price="{{item.price}}" data-img_url="{{item.img_url}}" data-quantity="1" href="#" class="is-pulled-right">
+          <a class="checkout-prompt-1" 
+            data-id="{{item.id}}" 
+            data-sku="{{item.skus.data[0].id}}" 
+            data-name="{{item.name}}" 
+            data-price="{{item.skus.data[0].price}}" 
+            data-img_url="{{item.skus.data[0].image}}" 
+            data-quantity="1" 
+            href="#" 
+            class="is-pulled-right"
+          >
             <img src="/images/cart-icon.png" />
           </a>
         </div><!--/content-->

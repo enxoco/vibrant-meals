@@ -336,7 +336,7 @@ $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png
       e.stopPropagation()
       $('#modal-item').addClass('is-active')
       var item = $(this).closest('li').data()
-      $('.item-card-title').html('<img src="/'+item.img_url+'"/>' + item.name)
+      $('.item-card-title').html('<img src="'+item.img_url+'"/>' + item.name)
       $('.item-card-description').html('<section class="item-description">'+item.desc + '</section>')
       $('.item-card-description').append("<a onclick='addToCartFromModal("+JSON.stringify(item)+")' data-quantity='1' class='is-pulled-right'><img src='/images/cart-icon.png' /></a>")
     })

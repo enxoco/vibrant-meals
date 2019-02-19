@@ -1,0 +1,281 @@
+<link rel="stylesheet" href="/css/bulma.min.css" />
+<link rel="stylesheet" href="/css/cart.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+
+<!-- Mapbox GL JS -->
+<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
+
+
+<!-- Geocoder plugin -->
+<!-- Turf.js plugin -->
+
+<script async type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script async src="https://www.paypal.com/sdk/js?client-id=sb&"></script>
+
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/checkout.css" />
+<style>
+    select#variation {
+    min-height: 50px;
+    background: #f2f2f2f2;
+    width: 40%;
+    position: relative;
+    left: 29%;
+    padding: 20;
+}
+textarea {
+    background: #f2f2f2;
+    border: none;
+    min-width: 94%;
+    min-height: 200px;
+    font-size: 1.25em;
+    padding: 25;
+    color: #696f6a;
+    box-shadow: 2px 2px 7px 0px gainsboro;
+    border-radius: 10px;
+}
+
+.admin-bar.flex-item {
+    margin-left: 25;
+    margin-right: 25;
+    background: white;
+    min-width: 95%;
+    padding: 20;
+    box-shadow: 2px 2px 15px 2px gainsboro;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+}
+.admin-bar.flex-item > a {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: black;
+}
+
+span{
+    display: table-cell;
+  /* display:block; */
+  }
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+</style>
+<ul class="wrapper">
+<div class="admin-bar flex-item">
+    <a class="button is-primary">Products</a>
+    <a class="button is-primary">Orders</a>
+
+</div>
+</ul>
+<ul class="wrapper">
+    <ul class="flex-container">
+        <div class="flex-item checkout-card">
+            <h1 class="menu-heading">Item Info</h1>
+                <div class="form-wrapper">
+                    <div class="checkout-form">
+                        <div class="checkout-form-row">
+                            <div id="passsword">
+                                <form id="parent_product">
+                                <input type="text" name="name" placeholder="Name" required />
+                                <input type="text" name="short_name" placeholder="Short Description" />
+                                <input type="number" name="price" placeholder="Price" />
+                                <input type="text" name="quantity" placeholder="Quantity" />
+                                <input type="text" name="category" placeholder="Primary Category" />
+                                <input type="text" name="filters" placeholder="Filters, comma separted" />
+                                <input type="text" name="protein_type" placeholder="Protein Type" />
+                                <input type="text" name="size" placeholder="Size" />
+                                <input type="text" name="flavor" placeholder="Flavor" />
+                                <textarea name="description" placeholder="Enter item description"></textarea>
+                                <hr />
+                                <h1 class="menu-heading">Nutrition Info</h1>
+        
+                                <input type="text" name="calories" placeholder="Calories" />
+                                <input type="text" name="fats" placeholder="Fats" />
+                                <input type="text" name="carbs" placeholder="Carbs" />
+                                <input type="text" name="proteins" placeholder="Proteins" />
+                                <a id="submit" class="button is-primary">submit</a>
+                                </form>
+                            </div>                
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="flex-item checkout-card">
+                <h1 class="menu-heading">Pictures</h1>
+                <div class="form-wrapper">
+                    <div class="checkout-form">
+                        <div class="checkout-form-row">
+                            <div id="passsword">
+                                <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
+                                    <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+                                    <input id="button" type="button" value="Cancel" />
+                                    <br>
+                                    <div class="thumbnails"></div>
+                            </div>                
+                        </div>
+                    </div>
+                </div>
+                <h1 class="menu-heading">Meal Variations</h1>
+                <select id="variation">
+                    <optgroup>
+                    <option>Choose variation type</option>
+                    <option>protein_type</option>
+                    <option>size</option>
+                    <option>flavor</option>
+                    </optgroup>
+                </select>
+                <div class="checkout-form-row">
+                    <div class="form-wrapper">
+                    <div id="item-variations"></div>    
+                    </div>            
+                </div>
+            </div>
+
+</ul>
+</ul>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/446514/jquery.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/446514/jquery.ui.widget.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/446514/jquery.fileupload.js"></script>
+
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/446514/cloudinary-jquery-file-upload.js"></script>  
+<script>
+    const configSettings = {
+    //api_key: '239559663666399',
+    cloud_name: 'themurphs',
+    upload_preset: 'z3dsbrwx',
+    // format: "jpg",
+    // callback: 'https://hookstore.io/bin/jmrrqzk',
+  }
+
+$.cloudinary.config(configSettings);
+
+
+$(document).on('click', '#add-another-variation', function(){
+    var data = $(this).data()
+    var i = data.variation + 1
+    console.log(data)
+    var form = $('#item-variations')
+    form.append('<hr /><form id="variation_'+i+'"><ul id="variation-'+i+'">\
+        <input type="text" name="name" placeholder="Name" required />\
+                <input type="text" name="short_name" placeholder="Short Description" />\
+                <input type="number" name="price" placeholder="Price" />\
+                <input type="text" name="quantity" placeholder="Quantity" />\
+                <input type="text" name="category" placeholder="Category" />\
+                <textarea name="description">Enter item description</textarea>\
+                <input type="text" name="'+data.variationType+'" placeholder="'+data.variationType+'"/>\
+                <input type="text" name="calories" placeholder="Calories" />\
+                <input type="text" name="fats" placeholder="Fats" />\
+                <input type="text" name="carbs" placeholder="Carbs" />\
+                <input type="text" name="proteins" placeholder="Proteins" />\
+                <a class="button add-another" id="add-another-variation" data-variation="'+i+'" data-variation-type="'+data.variationType+'">Add another</a></ul></form>')
+})
+$("select#variation").change(function(){
+    var form = $('#item-variations')
+    form.html('<form id="variation_1" ><ul id="variation-1">\
+        <input type="text" name="name" placeholder="Name" required />\
+                <input type="text" name="short_name" placeholder="Short Description" />\
+                <input type="number" name="price" placeholder="Price" />\
+                <input type="text" name="quantity" placeholder="Quantity" />\
+                <input type="text" name="category" placeholder="Category" />\
+                <textarea name="description" Placeholder="Enter item description"></textarea>\
+                <hr />\
+                <input type="text" name="'+$(this).val()+'" placeholder="'+$(this).val()+'"/>\
+                <input type="text" name="calories" placeholder="Calories" />\
+                <input type="text" name="fats" placeholder="Fats" />\
+                <input type="text" name="carbs" placeholder="Carbs" />\
+                <input type="text" name="proteins" placeholder="Proteins" />\
+                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+$(this).val()+'">Add another</a></ul></form>')
+
+});
+$(document).ready(function() {
+
+  if ($.fn.cloudinary_fileupload !== undefined) {
+      
+    
+   $("input.cloudinary-fileupload[type=file]")
+    .attr("data-form-data", JSON.stringify(configSettings));
+    
+    $("input.cloudinary-fileupload[type=file]")
+      .cloudinary_fileupload()
+    .bind('fileuploadadd', function (e, data) {
+    data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+    var ajax = data.submit();
+      $('#button').on('click',function(e){
+        console.log('cancel upload');
+        ajax.abort();
+  })
+    })
+     .bind("cloudinarydone", function(e, data) {
+      console.log(data.result);
+      $('#parent_product').append('<input type="hidden" name="primary_img" value="'+data.result.url+'" />')
+      $(".thumbnails").append(
+        $.cloudinary.image(data.result.public_id, {
+          format: "jpg",
+          width: 150,
+          height: 100,
+          crop: "thumb",
+          gravity: "face",
+          effect: "saturation:50"
+        })
+      );
+    })
+      .bind("cloudinaryprogress", function(e, data) {
+      $(".progress_bar").css(
+        "width",
+        Math.round(data.loaded * 100.0 / data.total) + "%"
+      );
+    });
+  }
+});
+
+$('#submit').on('click', function(){
+    var master = {}
+    var forms = $('body').find('form')
+
+    for (var i = 0; i < forms.length; i++) {
+        var obj = {};
+        console.log(forms[i])
+        var formName = forms[i].id
+		var elements = forms[i].querySelectorAll( "input, select, textarea" );
+		for( var x = 0; x < elements.length; ++x ) {
+			var element = elements[x];
+			var name = element.name;
+			var value = element.value;
+
+			if( name ) {
+				obj[ name ] = value;
+			}
+        }
+        master[formName] = obj
+    }
+
+    console.log(master)
+    $.ajax({
+        type: "POST",
+        url: "/admin/items/add",
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify(master),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){alert(JSON.stringify(data));},
+        failure: function(errMsg) {
+            alert(JSON.stringify(errMsg));
+        }
+    });
+})
+
+// $(document).ready(function() {
+//   $('input').focus(function(){
+//     placeholder = $(this).attr('placeholder');
+//     if(placeholder != undefined){
+//         $(this).before('<label>'+placeholder+'</label>');
+//     }
+//   });
+//   $('input').blur(function(){
+//     $(this).parent().find('label').remove();
+//   });
+// });
+</script>

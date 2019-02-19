@@ -364,7 +364,7 @@ getLocation()
     for (var i = 0; i < cartItems.length; i++) {
       cartCount += cartItems[i].quantity
       localStorage.setItem('cartCount', cartCount)
-      var card = '<div class="cart-items"><div class="cart-controls"><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div></div><img class="cart-image" src="/'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
+      var card = '<div class="cart-items"><div class="cart-controls"><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div></div><img class="cart-image" src="'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('#cart-items').html(card)
     }
         var total = 0
