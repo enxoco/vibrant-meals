@@ -26,6 +26,8 @@ const Route = use('Route')
 Route.get('/checkout', 'ItemController.showCheckout')
 
 Route.get('/admin/items', 'AdminController.showItems')
+Route.get('/admin/items/:sku', 'ItemController.listItemsAdmin')
+Route.post('admin/items/:sku', 'ItemController.updateItem')
 Route.post('/admin/items/add', 'AdminController.test')
 Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
@@ -104,5 +106,6 @@ Route.group(() => {
 
 Route.get('/api', async ({ view }) => view.render('api'))
 Route.get('/test/admin', async ({ view }) => view.render('admin.items-new'))
+Route.get('/admin/items/:sku', 'ItemController.listItemsAdmin')
 
 Route.get('/test/items', 'ItemController.listItems')

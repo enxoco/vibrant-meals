@@ -62,6 +62,95 @@ input:focus::-webkit-input-placeholder { color:transparent; }
 input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
 input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
 input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+/* 
+h1 {
+  display: table;
+  margin: 40px auto;
+  color: #fff;
+  font: 20px Helvetica;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+} */
+
+form {
+  display: table;
+  margin: 40px auto;
+}
+form label {
+  position: relative;
+  /* display: block; */
+}
+form label input {
+  font: 18px Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  /* display: block; */
+  border: none;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+form label input::-webkit-input-placeholder {
+  transition: all 0.2s ease-in-out;
+  color: #999;
+  font: 18px Helvetica, Arial, sans-serif;
+}
+form label input:-ms-input-placeholder {
+  transition: all 0.2s ease-in-out;
+  color: #999;
+  font: 18px Helvetica, Arial, sans-serif;
+}
+form label input::-ms-input-placeholder {
+  transition: all 0.2s ease-in-out;
+  color: #999;
+  font: 18px Helvetica, Arial, sans-serif;
+}
+form label input::placeholder {
+  transition: all 0.2s ease-in-out;
+  color: #999;
+  font: 18px Helvetica, Arial, sans-serif;
+}
+form label input:focus, form label input.populated {
+  padding-top: 28px;
+  padding-bottom: 12px;
+}
+form label input:focus::-webkit-input-placeholder, form label input.populated::-webkit-input-placeholder {
+  color: transparent;
+}
+form label input:focus:-ms-input-placeholder, form label input.populated:-ms-input-placeholder {
+  color: transparent;
+}
+form label input:focus::-ms-input-placeholder, form label input.populated::-ms-input-placeholder {
+  color: transparent;
+}
+form label input:focus::placeholder, form label input.populated::placeholder {
+  color: transparent;
+}
+form label input:focus + span, form label input.populated + span {
+  opacity: 1;
+  top: 10px;
+}
+form label span {
+    color: #878c88;
+    font-weight: 700;
+    position: absolute;
+    top: -20px !important;
+    left: 10px;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+form input[type="submit"] {
+  transition: all 0.2s ease-in-out;
+  font: 18px Helvetica, Arial, sans-serif;
+  border: none;
+  background: #1aaf75;
+  color: #fff;
+  padding: 16px 40px;
+}
+form input[type="submit"]:hover {
+  background: #109f67;
+}
 </style>
 <ul class="wrapper">
 <div class="admin-bar flex-item">
@@ -79,23 +168,77 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
                         <div class="checkout-form-row">
                             <div id="passsword">
                                 <form id="parent_product">
-                                <input type="text" name="name" placeholder="Name" required />
-                                <input type="text" name="short_name" placeholder="Short Description" />
-                                <input type="number" name="price" placeholder="Price" />
-                                <input type="text" name="quantity" placeholder="Quantity" />
-                                <input type="text" name="category" placeholder="Primary Category" />
-                                <input type="text" name="filters" placeholder="Filters, comma separted" />
-                                <input type="text" name="protein_type" placeholder="Protein Type" />
-                                <input type="text" name="size" placeholder="Size" />
-                                <input type="text" name="flavor" placeholder="Flavor" />
-                                <textarea name="description" placeholder="Enter item description"></textarea>
+                                    <input type="hidden" name="id" value="{{prod.skus.data[0].id}}" />
+                                <label>
+                                    <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
+                                    <span>Name</span>
+                                </label>
+                                <label>
+                                    <input type="text" name="short_name" placeholder="Short Description" />
+                                    <span>Short Description</span>
+                                </label>
+
+                                <label>
+                                    <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}"/>
+                                    <span>Price</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="quantity" placeholder="Quantity" />
+                                    <span>Quantity</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
+                                    <span>Primary Category</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="filters" placeholder="Filters, comma separted" />
+                                    <span>Filters</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[0].attributes.protein_type}}"/>
+                                    <span>Protein Type</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[0].attributes.size}}"/>
+                                    <span>Size</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[0].attributes.flavor}}"/>
+                                    <span>Flavor</span>
+                                </label>
+
+                                <label>
+                                    <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
+                                    <span>Description</span>
+                                </label>
                                 <hr />
                                 <h1 class="menu-heading">Nutrition Info</h1>
-        
-                                <input type="text" name="calories" placeholder="Calories" />
-                                <input type="text" name="fats" placeholder="Fats" />
-                                <input type="text" name="carbs" placeholder="Carbs" />
-                                <input type="text" name="proteins" placeholder="Proteins" />
+
+                                <label>
+                                    <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}"/>
+                                    <span>Calories</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}"/>
+                                    <span>Fats</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}"/>
+                                    <span>Carbs</span>
+                                </label>
+
+                                <label>
+                                    <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}"/>
+                                    <span>Proteins</span>
+                                </label>
                                 <a id="submit" class="button is-primary">submit</a>
                                 </form>
                             </div>                
@@ -103,6 +246,7 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
                     </div>
                 </div>
         </div>
+
         <div class="flex-item checkout-card">
                 <h1 class="menu-heading">Pictures</h1>
                 <div class="form-wrapper">
@@ -129,7 +273,86 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
                 </select>
                 <div class="checkout-form-row">
                     <div class="form-wrapper">
-                    <div id="item-variations"></div>    
+                    <div id="item-variations">
+                        @each(sku in prod.skus.data)
+                        @unless($loop.first)
+                        <form id="variation_{{$loop.index}}">
+                                <input type="hidden" name="id" value="{{prod.skus.data[$loop.index].id}}" />
+
+                                <label>
+                                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
+                                        <span>Name</span>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="short_name" placeholder="Short Description" />
+                                        <span>Short Description</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[$loop.index].price}}"/>
+                                        <span>Price</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="quantity" placeholder="Quantity" />
+                                        <span>Quantity</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
+                                        <span>Primary Category</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="filters" placeholder="Filters, comma separted" />
+                                        <span>Filters</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[$loop.index].attributes.protein_type}}"/>
+                                        <span>Protein Type</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[$loop.index].attributes.size}}"/>
+                                        <span>Size</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[$loop.index].attributes.flavor}}"/>
+                                        <span>Flavor</span>
+                                    </label>
+    
+                                    <label>
+                                        <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
+                                        <span>Description</span>
+                                    </label>
+                                    <hr />
+                                    <h1 class="menu-heading">Nutrition Info</h1>
+    
+                                    <label>
+                                        <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[$loop.index].metadata.calories}}"/>
+                                        <span>Calories</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[$loop.index].metadata.fats}}"/>
+                                        <span>Fats</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[$loop.index].metadata.carbs}}"/>
+                                        <span>Carbs</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[$loop.index].metadata.proteins}}"/>
+                                        <span>Proteins</span>
+                                    </label>
+                        </form>
+                        @endunless
+                        @endeach
+                    </div>    
                     </div>            
                 </div>
             </div>
@@ -255,7 +478,7 @@ $('#submit').on('click', function(){
     console.log(master)
     $.ajax({
         type: "POST",
-        url: "/admin/items/add",
+        url: "/admin/items/noogaroni",
         // The key needs to match your method's input parameter (case-sensitive).
         data: JSON.stringify(master),
         contentType: "application/json; charset=utf-8",
@@ -278,4 +501,30 @@ $('#submit').on('click', function(){
 //     $(this).parent().find('label').remove();
 //   });
 // });
+
+//Function for placeholders
+$(function() {
+    var inputs = $('input, textarea')
+    inputs.each(function(){
+        var i = $(this)
+        if (i.val() == 'undefined') {i.val('')}
+        if (i.val().length) {
+            i.addClass('populated');
+        } else {
+            i.removeClass('populated');
+        }
+    })
+  $('input').on('change', function() {
+    var input = $(this);
+    if (input.val().length) {
+      input.addClass('populated');
+    } else {
+      input.removeClass('populated');
+    }
+  });
+  
+  setTimeout(function() {
+    $('#fname').trigger('focus');
+  }, 500);
+});
 </script>

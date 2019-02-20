@@ -1,131 +1,90 @@
-<link rel="stylesheet" href="/css/bulma.min.css" />
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-  <div class="navbar-start">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: Free, open source, & modern CSS framework based on Flexbox" width="112" height="28">
-      </a>
-      <div class="navbar-end">
-        <div class="navbar-item">
-            <input class="input" id="search-criteria" type="email" placeholder="Search items">
-        </div>
+<ul class="flex-container">
+    <nav class="breadcrumb has-dot-seperator categories" aria-label="breadcrumbs">
+        <ul>
+            <input id="calories" type="range" multiple value="10,80" step="5"/>
+            <div id="steps"></div>
+            @each(category in categories)    
+              <li><a data-filter="{{ category}}" class="{{ convertCatName(category) }}">{{category}}</a></li>
+            @endeach
+          
+            <a class="active" onclick="showAllCategories()">All</a>
+        </ul>
+      </nav>
+<div id="item-container">
+@each(item in items)
+
+  <li class="flex-item" class="item-card" 
+    data-id="{{item.id}}" 
+    data-category="{{item.metadata.primary_category}}" 
+    data-sku="{{item.skus.data[0].id}}" 
+    data-desc="{{item.description}}" 
+    data-name="{{item.name}}" 
+    data-price="{{item.skus.data[0].price}}" 
+    data-img_url="{{item.skus.data[0].image}}"
+    data-calories="{{item.skus.data[0].metadata.calories}}"
+  >
+      <div class="card-image">
+        <img class="card-image" 
+          src="{{item.skus.data[0].image}}" 
+          id="img_{{item.id}}" 
+          alt="Placeholder image"
+        >
+
+      </div><!--/card-image-->
+      <div class="category-divider-primary is-primary has-background-color-primary"></div>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4">{{ item.name }} <span class="is-pulled-right" style="color:#F48566;">${{ item.skus.data[0].price }}</span></p>
+          </div><!--/media-content-->
+        </div><!--/media-->
+        <div class="content">
+          <img class="filter-icon" src="/images/oval-icon.png" />
+          @if(item.skus.data[1])
+          <select>
+            @each(sku in item.skus.data)
+            <option>{{sku.attributes.protein_type}}</option>
+            @endeach
+          </select>
+          @endif
+          <a class="checkout-prompt-1" 
+            data-id="{{item.id}}" 
+            data-sku="{{item.skus.data[0].id}}" 
+            data-name="{{item.name}}" 
+            data-price="{{item.skus.data[0].price}}" 
+            data-img_url="{{item.skus.data[0].image}}" 
+            data-quantity="1" 
+            href="#" 
+            class="is-pulled-right"
+          >
+            <img src="/images/cart-icon.png" />
+          </a>
+        </div><!--/content-->
+
+      </div><!--/card-content-->
+
+    </li><!--/card-->
+    
+  <div class="modal" id="modal-{{item.id}}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Delete {{item.name}} ?</p>
+          <a class="delete" aria-label="close" onclick="closeModal()"></a>
+        </header>
+        <section class="modal-card-body">
+          Are you sure you want to delete this item?  By clicking continue you will remove this item fromcart tota the database
+          as well as delete any saved images of this item.  This will also remove this item from all associated filters
+          and categories.
+        </section>
+        <footer class="modal-card-foot">
+          <a class="button is-danger" href="/item/delete/{{item.id}}" onclick="launchModal({{item.id}})">Delete Item</a>
+          <a class="button close-modal" onclick="closeModal()">Cancel</a>
+        </footer>
       </div>
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
   </div>
-  </nav>
-{{--  <div class="container">  --}}
-  <div class="columns">
-      @!include('layout.admin.side-nav')
-    <div class="columns is-multiline">
-      @each(i in items)
-      <div class="column is-one-third" id="item">
-          <div class="card">
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <img src="/{{i.img_url}}" alt="Placeholder image">
-                    </figure>
-                  </div>
-
-                  <div class="media-content">
-                  <p class="title is-6">{{ i.name }} - ${{ i.price }} - Quantity - {{ i.eightySixCount }}</p>
-                    
-                    <div class="buttons">
-                        <a id="delete-item" class="button is-danger modal-button open-modal" 
-                        data-target="modal-ter" 
-                        aria-haspopup="true" 
-                        onclick="return launchModal('{{i.id}}', '{{i.name}}')">Delete item</a>
-                        @if(i.is_visible == 1)
-                        <a class="button is-danger" href="/item/hide/{{i.id}}">Hide Item</a>
-                        @else
-                        <a class="button is-success" href="/item/hide/{{i.id}}">Show Item</a>
-                        @endif
-
-                    <a href="/item/add/{{i.id}}" class="button is-warning"> Edit </a>
-                  </div>
-                  </div><!--/media-content-->
-                </div><!--/media-->
-              </div><!--/card-content-->
-          </div><!--/card-->
-      </div><!--/column-->
-      <div class="modal" id="modal-{{i.id}}">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Delete {{i.name}} ?</p>
-              <a class="delete" aria-label="close" onclick="return launchModal('{{i.id}}', '{{i.name}}')"></a>
-            </header>
-            <section class="modal-card-body">
-              Are you sure you want to delete this item?  By clicking continue you will remove this item from the database
-              as well as delete any saved images of this item.  This will also remove this item from all associated filters
-              and categories.
-            </section>
-            <footer class="modal-card-foot">
-              <a class="button is-danger" href="/item/delete/{{i.id}}" onclick="launchModal({{i.id}})">Delete Item</a>
-              <a class="button close-modal" onclick="return launchModal('{{i.id}}', '{{i.name}}')">Cancel</a>
-            </footer>
-          </div>
-        </div><!--/modal-->
-      @endeach
-      </div>
+    </li><!--/modal-->
+    @endif
+@endeach
   </div>
-{{--  </div>  --}}
-<script src="/js/jquery-2.2.4.min.js"></script>
-
-<script>
-  
-  function launchModal(id) {
-  if ($('#modal-'+ id + '').hasClass('is-active')) {
-    $('#modal-'+ id + '').removeClass('is-active')
-    location.reload(true)
-  } else {
-    $('#modal-'+ id + '').addClass('is-active')
-
-  }
-}
-$('.modal-background').click(function() {
-$('.close-modal').trigger('click');
-});
-$('#delete-item').on('click', function(){
-  
-  $('#modal-item').addClass("is-active")
-})
-
-
-$("input").keyup(function(){
-  $('.is-one-third > .card').hide()
-  // $('.is-one-third > .card').removeProp('overflow')
-  // $('.is-one-third > .card').removeProp('min-width')
-  // $('.is-one-third > .card').removeProp('top')
-  // $('.is-one-third > .card').removeProp('left')
-  // $('.is-one-third > .card').removeProp('zoom')
-  // $('.is-one-third > .card').css('position', 'relative')
-  
-
-
-  // $('.item').each(function(){
-    //   console.log('hiding div' + JSON.stringify($(this)))
-    //   $(this).hide()
-    // })
-    var txt = $('#search-criteria').val();
-    $('.is-one-third > .card').each(function(){
-       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
-           $(this).show()
-          //  $(this).css('overflow', 'auto')
-          //  $(this).css('min-width', '400px')
-          //  $(this).css('position', 'relative')
-          //  $(this).css('top', '50%')
-          //  $(this).css('left', '50%')
-          //  $(this).css('zoom', '2')
-
-
-       }
-    });
-});
-</script>
+</ul>

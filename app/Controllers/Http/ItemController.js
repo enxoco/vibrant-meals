@@ -8,6 +8,7 @@ const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
 const nextFulfillment = use('App/Controllers/Helpers/FetchNextFulfillment')
 const showDeliveryOptions = use('App/Controllers/Helpers/FetchDeliveryOptions')
 
+
 var cartCur = []
 
 class ItemController {
@@ -35,6 +36,29 @@ class ItemController {
     // // // return prod
     // return response.send({items: prod, categories})
     return view.render('menu.items', {items: prod, categories})
+
+  }
+
+  async listItemsAdmin ({view, response, params}) {
+
+    var products = await stripe.products.retrieve( params.sku );
+    var prod = products
+ 
+    // var items = []
+    // for (var i = 0; i < prod.length; i++) {
+    //   var product = {'product':prod, skus:[]}
+    //   for (var x = 0; x < prod[i].skus.data.length; x++){
+    //     var sku = prod[i].skus.data[x]
+    //     product.skus.push(sku)
+
+    //   }
+    //   items.push(product)
+    // }
+    // return items
+    // // var prod = products.data
+    // // // return prod
+    // return response.send({items: prod, categories})
+    return view.render('admin.items-new', {prod})
 
   }
 
@@ -108,123 +132,35 @@ class ItemController {
       return view.render('add-item', {categories, all_filters: allFilters})
     }
     
-    async updateItem ({ view, request, response, params, session }) {
-
+    async updateItem ({ view, request, response }) {
+      try {
         const obj = request.all()
-        const allFilters = await Database
-          .table('item_filters')
-          .select('name', 'id')
-
-        const allCategories = await Database
-          .table('item_categories')
-          .select('desc', 'id')
-
-        for ( var i = 0; i < allFilters.length; i++) {
-          var filter = allFilters[i].name
-          if (obj[filter] == 'on') {
-            const db_update = await Database
-            .raw('INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES('+ params.itemId +','+ allFilters[i].id+')')
-          } else if (!obj[filter]) {
-            const db_update = await Database
-            .raw('DELETE FROM items_in_filters WHERE item_id = ' + parseInt(params.itemId) + ' AND filter_id = ' + allFilters[i].id )
+        for (var i = 0; i < Object.keys(obj).length; i++) {
+          var sku = obj[Object.keys(obj)[i]]
+          for (var x = 0; x < Object.keys(sku).length; x++) {
+            if(Object.keys(sku)[x] == 'undefined') { Object.keys(sku)[x] }
           }
+          stripe.skus.update(sku.id, {
+            price: sku.price,
+            metadata: {
+              name: sku.name,
+              description: sku.description,
+              primary_category: sku.category,
+              protein_type: sku.protein_type,
+              size: sku.size,
+              flavor: sku.flavor,
+              calories: sku.calories,
+              fats: sku.fats,
+              carbs: sku.carbs,
+              proteins: sku.proteins
+            }
+          });
         }
+        return response.send('success')
+      } catch(e) {
+        return response.send('error')
+      }
 
-        for ( var i = 0; i < allCategories.length; i++) {
-          var cat = allCategories[i].desc
-          if (obj[cat] == 'on') {
-            const db_update = await Database
-            .raw('INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES('+ params.itemId +','+ allCategories[i].id+')')
-          } else if (!obj[cat]) {
-            const db_update = await Database
-            .raw('DELETE FROM items_in_categories WHERE item_id = ' + parseInt(params.itemId) + ' AND category_id = ' + allCategories[i].id )
-          }
-        }
-
-    
-        const profilePic = request.file('item-image')
-        const altImage = request.file('item-image-alt')
-    
-        if (profilePic) {
-          let name = `item-${params.itemId}_${profilePic.clientName}`
-          await profilePic.move(Helpers.publicPath('uploads'), {
-            name: name,
-            overwrite:true
-          })
-          var img_url = `uploads/${name}`
-          await Database
-          .table('items')
-          .where('id', params.itemId)
-          .update({
-            img_url: img_url
-          })
-        }
-    
-        if (altImage) {
-          let name = `item-${params.itemId}_${altImage.clientName}`
-          await altImage.move(Helpers.publicPath('uploads'), {
-            name: name,
-            overwrite:true
-          })
-          var alt_img_url = `uploads/${name}`
-          await Database
-          .table('items')
-          .where('id', params.itemId)
-          .update({
-            alt_img_url: alt_img_url
-          })
-        }
-        
-          var sugar = null
-          var sodium = null
-
-          if(obj.carbs) {
-            var carbs = obj.carbs
-          }
-          if(obj.fat) {
-           var fat = obj.fat
-          }
-          if(obj.calories) {
-            var calories = obj.calories
-          }
-          if(obj.protein) {
-            var protein = obj.protein
-          }
-      
-          if(obj.sugar) {
-            var sugar = obj.sugar
-          }
-          if(obj.sodium) {
-            var sodium = obj.sodium
-          }
-      
-          var eightySixCount = null
-      
-          if(obj.eightySixCount) {
-            var eightySixCount = obj.eightySixCount
-          }
-          try {
-            const success = await Database
-            .table('items')
-            .where('id', params.itemId)
-            .update({
-              name: obj.name,
-              price: obj.price,
-              description: obj.description,
-              calories: calories,
-              fats: fat,
-              carbs: carbs,
-              protein: protein,
-              eightySixCount: eightySixCount,
-              sugar: sugar,
-              sodium: sodium,
-              sku: obj.sku
-            })
-            session.flash({ status: 'Updated Successfully' })
-            return response.redirect('back')
-          } catch (error) {
-            return response.send(`Error ${error}`)
-          }
     }
     
     async editItem ({ view, request, response, params }) {
@@ -375,7 +311,6 @@ class ItemController {
             type: 'good',
             description: obj.description,
           });
-          console.log(product.id)
           if (obj.quantity) {
             const sku = await stripe.skus.create({
               product: product.id,
@@ -593,7 +528,6 @@ class ItemController {
 
 
     async showCheckout ({ view, session, auth }) {
-      console.log(auth.user)
 
       // Fetch our menu object containing items, filters, categories, etc...
       const menu_items = await fetchMenu()
