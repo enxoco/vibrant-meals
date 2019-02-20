@@ -1,19 +1,21 @@
 <link rel="stylesheet" href="/css/bulma.min.css" />
 <link rel="stylesheet" href="/css/cart.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
+<link rel="stylesheet" href="/css/slider.css" />
+
+<link rel="stylesheet" href="" />
 <!-- Mapbox GL JS -->
-<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
 <!-- Geocoder plugin -->
 <!-- Turf.js plugin -->
-<script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script async type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-
+ 
 <link rel="stylesheet" href="/css/style.css" />
+
 @each(c in categories)
 
 <style>
@@ -38,6 +40,7 @@ a.{{convertCatName(c)}}:hover::after {
 
 @endeach
 <body>
+  {{ toJSON({ categories }) }}
 <input type="hidden" id="cords" /><nav class="nav has-background-primary"><div class="navbar-brand"><a class="navbar-item" href="/"><img src="/images/logo.png" width="103" height="60"></a>
 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></a></div>
 </nav>
@@ -60,6 +63,7 @@ a.{{convertCatName(c)}}:hover::after {
   <script src="/js/pickup-flow.js"></script>
   <script src="/js/product-card.js"></script>
   <!-- items.min.js -->
+
   <script>
 $(document).ready(function(){
 
@@ -373,26 +377,26 @@ $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png
 
 }
 
-(function() {
-  var burger = document.querySelector('.burger');
-  var nav = document.querySelector('#'+burger.dataset.target);
+// (function() {
+//   var burger = document.querySelector('.burger');
+//   var nav = document.querySelector('#'+burger.dataset.target);
 
-  burger.addEventListener('click', function(){
-    var cart = $('.cart-container')
-    if ($('.burger').hasClass('is-active')) {
-      cart.css('display', 'none')
-      $('.flex-container').css('width','100%')
+//   burger.addEventListener('click', function(){
+//     var cart = $('.cart-container')
+//     if ($('.burger').hasClass('is-active')) {
+//       cart.css('display', 'none')
+//       $('.flex-container').css('width','100%')
 
-    } else {
-      cart.css('display', 'flex')
-      cart.css('width', '')
-      $('.flex-container').css('width','50%')
-    }
+//     } else {
+//       cart.css('display', 'flex')
+//       cart.css('width', '')
+//       $('.flex-container').css('width','50%')
+//     }
 
-    burger.classList.toggle('is-active');
-    // nav.classList.toggle('is-active');
-  });
-})();
+//     burger.classList.toggle('is-active');
+//     // nav.classList.toggle('is-active');
+//   });
+// })();
 
 $('.card-content, .card-image').on('click',function(e){
   e.preventDefault()
@@ -554,6 +558,30 @@ if (window.innerWidth < 1100) {
 // $('.flex-container').css('width','70%')
 // }) 
 
+var posts = $('.flex-item');
+// posts.hide();
+// posts.fadeOut()
+
+// Click function
+$( ".categories li a" ).click(function() { 
+    // Get data of category
+    var customType = $( this ).data('filter'); // category
+
+    posts
+        .hide()
+        .filter(function () {
+          console.log()
+            return $(this).data('category') === customType;
+        })
+        .fadeIn();
+});
+
+function showAllCategories(){
+  $('.flex-item').fadeIn()
+}
+
+
 
  </script>
 
+<script src="/js/slider.min.js"></script>

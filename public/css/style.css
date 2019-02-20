@@ -582,7 +582,7 @@ p {
 @media only screen and (min-width: 1200px) {
   .flex-item {
     padding: 5px;
-    width: 33%;
+    /* width: 33%; */
     height: auto;
     margin-top: 10px;
   }
@@ -1230,4 +1230,21 @@ input[name="email"] {
 }
 div#passsword {
   padding: 50;
+}
+
+li.flex-item {
+  max-width: 23vw;
+}
+
+#steps-fivepercent-slider .ui-slider-tip {
+  visibility: visible;
+  opacity: 1;
+  height: 200px;
+}
+
+.slider {
+  min-height: 60vh;
+  position: relative;
+  left: 200px;
+  z-index: 9;
 }

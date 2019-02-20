@@ -1,26 +1,29 @@
 <ul class="flex-container">
     <nav class="breadcrumb has-dot-seperator categories" aria-label="breadcrumbs">
         <ul>
+            <input id="calories" type="range" multiple value="10,80" step="5"/>
+            <div id="steps"></div>
             @each(category in categories)    
-              <!--<li><a data-filter="{{ convertCatName(category)}}" class="{{ convertCatName(category) }}">{{category}}</a></li>-->
+              <li><a data-filter="{{ category}}" class="{{ convertCatName(category) }}">{{category}}</a></li>
             @endeach
           
-            <a class="active" href="/menu/all">All</a>
+            <a class="active" onclick="showAllCategories()">All</a>
         </ul>
       </nav>
 <div id="item-container">
 @each(item in items)
-@if(item.active != true)
+@if(item.active != true)  
 @else
 
   <li class="flex-item" class="item-card" 
     data-id="{{item.id}}" 
-    data-category="{{convertCatName(item.metadata.primary_category)}}" 
+    data-category="{{item.metadata.primary_category}}" 
     data-sku="{{item.skus.data[0].id}}" 
     data-desc="{{item.description}}" 
     data-name="{{item.name}}" 
     data-price="{{item.skus.data[0].price}}" 
     data-img_url="{{item.skus.data[0].image}}"
+    data-calories="{{item.skus.data[0].metadata.calories}}"
   >
       <div class="card-image">
         <img class="card-image" 
@@ -39,7 +42,6 @@
       -->
       </div><!--/card-image-->
       <div class="category-divider-primary is-primary has-background-color-primary"></div>
-
       <div class="card-content">
         <div class="media">
           <div class="media-content">
@@ -48,7 +50,13 @@
         </div><!--/media-->
         <div class="content">
           <img class="filter-icon" src="/images/oval-icon.png" />
-          
+          @if(item.skus.data[1])
+          <select>
+            @each(sku in item.skus.data)
+            <option>{{sku.attributes.protein_type}}</option>
+            @endeach
+          </select>
+          @endif
           <a class="checkout-prompt-1" 
             data-id="{{item.id}}" 
             data-sku="{{item.skus.data[0].id}}" 
