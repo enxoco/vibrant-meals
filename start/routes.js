@@ -106,6 +106,5 @@ Route.group(() => {
 
 Route.get('/api', async ({ view }) => view.render('api'))
 Route.get('/test/admin', async ({ view }) => view.render('admin.items-new'))
-Route.get('/admin/items/:sku', 'ItemController.listItemsAdmin')
 
 Route.get('/test/items', 'ItemController.listItems')

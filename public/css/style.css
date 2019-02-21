@@ -1042,7 +1042,7 @@ h2.options {
     cursor: pointer;
 }
 
-input {
+input:not([type="range"]) {
   font-size: 1.25rem;
   padding: 10px;
   border: none;
@@ -1243,7 +1243,6 @@ li.flex-item {
 }
 
 .slider {
-  min-height: 60vh;
   position: relative;
   left: 200px;
   z-index: 9;

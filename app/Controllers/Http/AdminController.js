@@ -5,13 +5,15 @@ var stripe = require("stripe")("sk_test_ZmWaFEiBn0H63gNmfCacBolp");
 class AdminController {
 
     async showItems ({ view }) {
-        const items = await Database
-            .table('items')
-        const categories = await Database
-            .table('item_categories')
-            .distinct('desc', 'id')
-
-        return view.render('admin.items', {categories: categories, items: items})
+        var prod = await stripe.products.list();
+        prod = prod.data
+        var categories = []
+        console.log(prod.length)
+        for (var i = 0; i < prod.length; i++) {
+          categories.push(prod[i].metadata.primary_category)
+        }
+        console.log(categories)
+        return view.render('admin.items', {items: prod, categories})
     }
 
     async showCategories ({ view }) {
