@@ -35,15 +35,16 @@ a.{{convertCatName(c)}}:hover::after {
 .category-divider-primary.is-primary.has-background-color-primary {
     background: #aad0ad;
     min-height: 10px;
+    width: 400px;
 }
+
+
 </style>
 
 @endeach
 <body>
-  {{ toJSON({ categories }) }}
-<input type="hidden" id="cords" /><nav class="nav has-background-primary"><div class="navbar-brand"><a class="navbar-item" href="/"><img src="/images/logo.png" width="103" height="60"></a>
-<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></a></div>
-</nav>
+<input type="hidden" id="cords" />
+@!include('layout.user-nav.edge')
 <ul class="wrapper">
  @!include('menu.items-container')
     <ul class="cart-container" id="cart">
@@ -405,7 +406,7 @@ $('.card-content, .card-image').on('click',function(e){
   var item = $(this).closest('li').data()
   $('.item-card-title').html('<img src="'+item.img_url+'"/>' + item.name)
   $('.item-card-description').html('<section class="item-description">'+item.desc + '</section>')
-  $('.item-card-description').append("<a onclick='addToCartFromModal("+JSON.stringify(item)+")' data-quantity='1' class='is-pulled-right'><img src='/images/cart-icon.png' /></a>")
+  $('.item-card-description').append("<a onclick='addToCartFromModal("+JSON.stringify(item)+")' data-quantity='1' class='is-pulled-right'><img src='/images/cart-icon.png' height='35px' /></a>")
 })
 
 $('#pickup, #pickupDay').on('mouseover', function(){
@@ -547,7 +548,7 @@ if (window.innerWidth < 1100) {
   $('.flex-container').css('width','100%')
 } else {
   cart.css('display', 'flex')
-  $('.flex-container').css('width','70%')
+  $('.flex-container').css('width','91%')
 }
 })
 

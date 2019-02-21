@@ -1,8 +1,9 @@
 <ul class="flex-container">
     <nav class="breadcrumb has-dot-seperator categories" aria-label="breadcrumbs">
         <ul>
-            <input id="calories" type="range" multiple value="10,80" step="5"/>
-            <div id="steps"></div>
+           <!-- <input id="calories" type="range" multiple value="10,80" step="5"/>
+            <div id="steps"></div>-->
+            <li><a class="filter"><i class="fa fa-filter"></i></a></li>
             @each(category in categories)    
               <li><a data-filter="{{ category}}" class="{{ convertCatName(category) }}">{{category}}</a></li>
             @endeach
@@ -67,7 +68,7 @@
             href="#" 
             class="is-pulled-right"
           >
-            <img src="/images/cart-icon.png" />
+            <img src="/images/cart-icon.png" style="height:35px;" />
           </a>
         </div><!--/content-->
 

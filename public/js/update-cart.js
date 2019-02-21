@@ -28,11 +28,11 @@ function updateCartDiv() {
 
     $('#cart').append('</div></div>')
     if (localStorage.cartCount < 5) {
-      $('#cart').append('<a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
+      $('#cart').append('<a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Next</a>')
     } else if(localStorage.cartCount >= 5) {
-      $('#cart').append('<a href="/checkout" class="button is-primary checkout-button">Checkout</a>')
+      $('#cart').append('<a href="/checkout" class="button is-primary checkout-button">Next</a>')
     } else if (localStorage.cartCount == 1) {
-      $('#cart').append('<div id="alert"><div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div></div><a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Checkout</a>')
+      $('#cart').append('<div id="alert"><div class="notification is-primary checkout-warning"><button class="delete"></button>Please add at least 5 items to your cart</div></div><a class="button is-primary tooltip disabled checkout-button" data-tooltip="Please add at least 5 items to cart">Next</a>')
     } else if (localStorage.cartCount == 0) {
       $('#cart').html('a')
     }

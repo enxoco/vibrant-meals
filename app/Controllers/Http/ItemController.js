@@ -39,10 +39,14 @@ class ItemController {
 
   }
 
+
+  /* Show form for editing a current item */
+
   async listItemsAdmin ({view, response, params}) {
 
     var products = await stripe.products.retrieve( params.sku );
     var prod = products
+    console.log('created items')
  
     // var items = []
     // for (var i = 0; i < prod.length; i++) {
@@ -156,7 +160,7 @@ class ItemController {
             }
           });
         }
-        return response.send('success')
+        return response.send({'status': 'success'})
       } catch(e) {
         return response.send('error')
       }

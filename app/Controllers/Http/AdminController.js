@@ -12,7 +12,7 @@ class AdminController {
         for (var i = 0; i < prod.length; i++) {
           categories.push(prod[i].metadata.primary_category)
         }
-        console.log(categories)
+        console.log('hello')
         return view.render('admin.items', {items: prod, categories})
     }
 
@@ -26,7 +26,10 @@ class AdminController {
 
     async test ({request, response}) {
         var form = request.all()
-        var prod = form.parent_product
+
+        console.log(form)
+            var prod = form.parent_product
+
         var id = prod.name.replace(/ /g, '_')
         id = id.toLowerCase()
 
@@ -73,42 +76,10 @@ class AdminController {
             if (sku.protein_type !== '') {
                 var attr = 'protein_type'
                 var value = sku.protein_type
+            } else {
+                var value = ''
             }
-            stripe.skus.create({
-                product: id,
-                id: sku_id + '_' + value.toLowerCase(),
-                price: parseInt(price),
-                currency: 'usd',
-                inventory: {type: 'finite', quantity: 500},
-                image: prod.primary_img,
-                attributes: {
-                    [attr]: value
-                },
-                metadata: {
-                    category: sku.category,
-                    [attr]: value,
-                    fats: sku.fats,
-                    carbs: sku.carbs,
-                    proteins: sku.proteins,
-                    calories: sku.calories
-                },
-              })
-              for (var i = 1; i < Object.keys(form).length; i++) {
-                var sku = form['variation_'+i]
-
-                if (typeof sku.flavor !== 'undefined') {
-                    var attr = 'flavor'
-                    var value = sku.flavor
-                }
-                if (typeof sku.size !== 'undefined') {
-                    var attr = 'size'
-                    var value = sku.size
-                }
-                if (typeof sku.protein_type !== 'undefined') {
-                    var attr = 'protein_type'
-                    var value = sku.protein_type
-                }
-
+            if (form.variation_1) {
                 stripe.skus.create({
                     product: id,
                     id: sku_id + '_' + value.toLowerCase(),
@@ -128,7 +99,79 @@ class AdminController {
                         calories: sku.calories
                     },
                   })
-              }
+                  for (var i = 1; i < Object.keys(form).length; i++) {
+                    var sku = form['variation_'+i]
+    
+                    if (typeof sku.flavor !== 'undefined') {
+                        var attr = 'flavor'
+                        var value = sku.flavor
+                    }
+                    if (typeof sku.size !== 'undefined') {
+                        var attr = 'size'
+                        var value = sku.size
+                    }
+                    if (typeof sku.protein_type !== 'undefined') {
+                        var attr = 'protein_type'
+                        var value = sku.protein_type
+                    }
+    
+                    stripe.skus.create({
+                        product: id,
+                        id: sku_id + '_' + value.toLowerCase(),
+                        price: parseInt(price),
+                        currency: 'usd',
+                        inventory: {type: 'finite', quantity: 500},
+                        image: prod.primary_img,
+                        attributes: {
+                            [attr]: value
+                        },
+                        metadata: {
+                            category: sku.category,
+                            [attr]: value,
+                            fats: sku.fats,
+                            carbs: sku.carbs,
+                            proteins: sku.proteins,
+                            calories: sku.calories
+                        },
+                      })
+                  }
+            } else {
+                stripe.skus.create({
+                    product: id,
+                    id: sku_id + '_' + value.toLowerCase(),
+                    price: parseInt(price),
+                    currency: 'usd',
+                    inventory: {type: 'finite', quantity: 500},
+                    image: prod.primary_img,
+                    metadata: {
+                        category: sku.category,
+                        [attr]: value,
+                        fats: sku.fats,
+                        carbs: sku.carbs,
+                        proteins: sku.proteins,
+                        calories: sku.calories
+                    },
+                  })
+                  for (var i = 1; i < Object.keys(form).length; i++) {
+
+                    stripe.skus.create({
+                        product: id,
+                        id: sku_id,
+                        price: parseInt(price),
+                        currency: 'usd',
+                        inventory: {type: 'finite', quantity: 500},
+                        image: prod.primary_img,
+                        metadata: {
+                            category: sku.category,
+                            fats: sku.fats,
+                            carbs: sku.carbs,
+                            proteins: sku.proteins,
+                            calories: sku.calories
+                        },
+                      })
+                  }
+            }
+
         });
           return response.send(product)
     }
