@@ -1,7 +1,6 @@
 const { hooks } = require('@adonisjs/ignitor')
 const moment = require('moment')
 require('moment-countdown');
-var sr = require('screenres');
 
 hooks.after.providersBooted(() => {
   const View = use('View')

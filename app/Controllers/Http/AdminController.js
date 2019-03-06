@@ -9,6 +9,35 @@ class AdminController {
     return view.render('admin.coupons', {coupons})
   }
 
+  async listCustomers({view}) {
+
+    // Grab all customers from Stripe
+    var customers = await stripe.customers.list()
+    customers = customers.data
+
+    // Initialize empty variable to hold user's lifetime spending
+    var totalSpend = 0
+
+    // For each customer, pull a list of their orders.
+    for (var i = 0; i < customers.length; i++) {
+      var order = await stripe.orders.list({
+        customer: customers[i].id,
+      })
+
+      // Loop over all orders for a user and grab the total amounts
+      for (var x = 0; x < order.data.length; x++) {
+        totalSpend += order.data[i].amount
+      }
+
+      // Add the lifetime spending for the customer onto customer object
+      customers[i].totalSpend = totalSpend
+      // Add customers most recent order to their object
+      customers[i].recent_order = order.data[0]
+    }
+
+    return view.render('admin.customers', {customers})
+  }
+
     async showItems ({ view }) {
         var prod = await stripe.products.list();
         prod = prod.data

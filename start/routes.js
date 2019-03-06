@@ -114,6 +114,8 @@ Route.get('/menu', 'ItemController.listItems').as('menu.items')
 Route.get('/admin/dashboard', async({view}) => view.render('layout.admin.dashboard'))
 
 
+Route.get('/admin/customers', 'AdminController.listCustomers')
+
 /* Coupon management routes */
 
 
