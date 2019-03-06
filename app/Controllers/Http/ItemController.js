@@ -15,27 +15,16 @@ class ItemController {
 
   async listItems ({view, response}) {
 
-    var products = await stripe.products.list({ limit: 6 });
+    var products = await stripe.products.list();
     var prod = products.data
     var categories = []
     for (var i = 0; i < prod.length; i++) {
       categories.push(prod[i].metadata.primary_category)
     }
-    // var items = []
-    // for (var i = 0; i < prod.length; i++) {
-    //   var product = {'product':prod, skus:[]}
-    //   for (var x = 0; x < prod[i].skus.data.length; x++){
-    //     var sku = prod[i].skus.data[x]
-    //     product.skus.push(sku)
+    var uniq = [ ...new Set(categories) ];
 
-    //   }
-    //   items.push(product)
-    // }
-    // return items
-    // // var prod = products.data
-    // // // return prod
-    // return response.send({items: prod, categories})
-    return view.render('menu.items', {items: prod, categories})
+
+    return view.render('menu.menu-new', {items: prod, categories: uniq})
 
   }
 
@@ -62,7 +51,7 @@ class ItemController {
     // // var prod = products.data
     // // // return prod
     // return response.send({items: prod, categories})
-    return view.render('admin.items-new', {prod})
+    return view.render('admin.items-edit', {prod})
 
   }
 
@@ -72,31 +61,12 @@ class ItemController {
    * 
    */
     async hideItem ({ params, response }) {
-      const id = params.itemId
-
-      const visible = await Database
-        .table('items')
-        .select('is_visible')
-        .where('id', id)
-        .first()
-
-      if (visible.is_visible == 1) {
-        const success = await Database
-        .table('items')
-        .update('is_visible', '0')
-        .where('id', id)
-
-      } else {
-        const success = await Database
-        .table('items')
-        .update('is_visible', 1)
-        .where('id', id)
-
-      }
-
+      stripe.products.update(params.itemId, {active: false,})
       return response.redirect('back')
-
-
+    }
+    async showItem ({ params, response }) {
+      stripe.products.update(params.itemId, {active: true,})
+      return response.redirect('back')
     }
 
     async deleteItem ({ params }) {
@@ -139,27 +109,39 @@ class ItemController {
     async updateItem ({ view, request, response }) {
       try {
         const obj = request.all()
+        delete obj['']
+
+        var prod = obj[Object.keys(obj)[0]]
+
+        stripe.products.update(prod.id, {
+          name: prod.name,
+          description: prod.description,
+          metadata: {
+            primary_category: prod.primary_category,
+
+          }
+        })
         for (var i = 0; i < Object.keys(obj).length; i++) {
           var sku = obj[Object.keys(obj)[i]]
-          for (var x = 0; x < Object.keys(sku).length; x++) {
-            if(Object.keys(sku)[x] == 'undefined') { Object.keys(sku)[x] }
-          }
+          console.log(sku)
+
           stripe.skus.update(sku.id, {
             price: sku.price,
             metadata: {
+              primary_category: sku.primary_category,
               name: sku.name,
               description: sku.description,
               primary_category: sku.category,
               protein_type: sku.protein_type,
               size: sku.size,
-              flavor: sku.flavor,
-              calories: sku.calories,
               fats: sku.fats,
               carbs: sku.carbs,
               proteins: sku.proteins
             }
           });
         }
+      
+
         return response.send({'status': 'success'})
       } catch(e) {
         return response.send('error')

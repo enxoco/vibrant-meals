@@ -1,11 +1,13 @@
 $(document).on('click', 'a#pickupRadio', function() {
-  $('a#pickupRadio').addClass('active')
-  $('a#deliveryRadio').removeClass('active')
+  $('#pickupRadio').closest('.fulfillment-option').addClass('active')
+  $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
+  $('.cart-icon-label.delivery').html('')
+
   localStorage.setItem("fulfillment_method", "pickup")
     $("#modal-pickup").addClass("is-active")
     var cords = document.getElementById("cords").value;
     var cord = cords.split(",");
-  
+
     // Using mapbox to sort and order our list of locations based on how far they are from main store.
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
@@ -14,6 +16,7 @@ $(document).on('click', 'a#pickupRadio', function() {
       var options = {
         units: "miles"
       };
+      
 
       // Initial search is taking in user coordinates from Geolocation.  Need to add a fallback in
       // case user denies gelocation request.
@@ -90,46 +93,56 @@ $(document).on('click', 'a#pickupRadio', function() {
         if (localStorage.pickupLocation) {
           var pickupLocation = JSON.parse(localStorage.pickupLocation)
             if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
-            listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
+              listing.innerHTML = '<ul class="list-group">\
+              <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+                '+prop.desc+'<br />'+prop.address+'\
+                <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+              </li>\
+            </ul>'
           } else {
-            listing.innerHTML = "<div class='list-item active' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-  
+            listing.innerHTML = '<ul class="list-group">\
+            <li class="list-group-item active d-flex justify-content-between align-items-center" >\
+              '+prop.desc+'<br />'+prop.address+'\
+              <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /><br />'+miles.toFixed(1)+' Miles away</span>\
+            </li>\
+          </ul>'  
           }
         } else {
   
-            listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-  
+          listing.innerHTML = '<ul class="list-group">\
+          <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+            '+prop.desc+'<br />'+prop.address+'\
+            <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+          </li>\
+        </ul>'  
         }
-  
-  
       }
     }
   
     // Handle when a user clicks on a store location to set it as their preference.
-    $(".list-item").on('click', function(){
-      $(".list-item").removeClass("active")
+    $(".list-group-item").on('click', function(){
+      $('.list-group-item').removeClass('active')
+      $($(this)).addClass("active")
+      
+      setTimeout(function() {
+        $('#modal-pickup').modal('toggle')
+    }, 500);
       var st = ($(this).data())
       var myStore = {}
       myStore.id = st.storeid
       myStore.name = st.store
       localStorage.myStore = JSON.stringify(myStore)
-      $('.modal').removeClass("is-active")
       localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
         if (localStorage.checkoutInitiated == 1) {
-          $(".modal").removeClass("is-active")
           // nextAvalFulfill()
           // $("#modal-pickup-day").addClass("is-active")
           $('#pickup-label').html(st.store)
           $('.store-desc').html(JSON.parse(localStorage.myStore).name)
         }
         updateCartDiv()
-        $('#pickupRadio').addClass('active')
-        $('#deliveryRadio').removeClass('active')
+        $('#pickupRadio').closest('.fulfillment-option').addClass('active')
+        $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
     })
-
-  
-    $("#modal-initial-click").removeClass("is-active");
-    // $("#modal-pickup").addClass("is-active");
   })
 
 
@@ -137,7 +150,11 @@ $(document).on('click', 'a#pickupRadio', function() {
     $('a#pickupRadio').addClass('active')
     $('a#deliveryRadio').removeClass('active')
     localStorage.setItem("fulfillment_method", "pickup")
-      $("#modal-pickup").addClass("is-active")
+    setTimeout(function() {
+      $('#modal-initial-click').modal('toggle')
+  }, 500);
+    
+      $("#modal-pickup").modal('toggle')
       var cords = document.getElementById("cords").value;
       var cord = cords.split(",");
     
@@ -225,47 +242,49 @@ $(document).on('click', 'a#pickupRadio', function() {
           if (localStorage.pickupLocation) {
             var pickupLocation = JSON.parse(localStorage.pickupLocation)
               if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
-              listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-            } else {
-              listing.innerHTML = "<div class='list-item active' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-    
+                listing.innerHTML = '<ul class="list-group">\
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+                  '+prop.desc+'<br />'+prop.address+'\
+                  <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+                </li>\
+              </ul>'
+                        } else {
+                          listing.innerHTML = '<ul class="list-group">\
+                          <li class="list-group-item active d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+                            '+prop.desc+'<br />'+prop.address+'\
+                            <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+                          </li>\
+                        </ul>'    
             }
           } else {
     
-              listing.innerHTML = "<div class='list-item' data-storeId='"+i+"' data-store='"+prop.desc+"'>"+prop.desc+"<span class='store-hours is-pulled-right'>OPEN TILL "+formatDate(prop.closing)+"</span><br />"+prop.address+" <span class='miles is-pulled-right'><strong>"+ miles.toFixed(1) +"</strong> miles away</span></div>"
-    
+            listing.innerHTML = '<ul class="list-group">\
+            <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+              '+prop.desc+'<br />'+prop.address+'\
+              <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+            </li>\
+          </ul>'    
           }
-    
-    
         }
       }
     
       // Handle when a user clicks on a store location to set it as their preference.
-      $(".list-item").on('click', function(){
-        $(".list-item").removeClass("active")
+      $(".list-group-item").on('click', function(){
+        $(".list-group-item").removeClass("active")
         var st = ($(this).data())
         var myStore = {}
         myStore.id = st.storeid
         myStore.name = st.store
         localStorage.myStore = JSON.stringify(myStore)
-        $('.modal').removeClass("is-active")
+        $('.modal').modal('hide')
         localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
           if (localStorage.checkoutInitiated == 1) {
-            $(".modal").removeClass("is-active")
-            // nextAvalFulfill()
-            // $("#modal-pickup-day").addClass("is-active")
             $('.store-desc').html(JSON.parse(localStorage.myStore).name)
           }
           updateCartDiv()
           $('#pickupRadio').addClass('active')
           $('#deliveryRadio').removeClass('active')
       })
-  
-    
-      $("#modal-initial-click").removeClass("is-active");
-      // $("#modal-pickup").addClass("is-active");
-
-
     })
 
     function formatDate(date) {
@@ -288,4 +307,3 @@ $(document).on('click', 'a#pickupRadio', function() {
       var timeStr = h + ":" + m + "" + dd;
       return timeStr;
     }
-    

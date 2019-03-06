@@ -16,65 +16,66 @@ class CheckoutController {
     var req = request.all()
     req = req.data
 
-    if (req.pickupLocation) {
-      var location = JSON.parse(req.pickupLocation)
 
+    if (req.user.pickup_location) {
+      var location = JSON.parse(req.user.pickup_location)
     }
+   
+    var cart = JSON.parse(req.cart)
     var stripeItems = []
-    for (var i = 0; i < req.cart.length; i++) {
+    for (var i = 0; i < cart.length; i++) {
       stripeItems.push({
         type: 'sku',
-        parent: req.cart[i].sku,
-        quantity: parseInt(req.cart[i].quantity)
+        parent: cart[i].sku,
+        quantity: parseInt(cart[i].quantity)
       })
     }
 
     // Create a local user
     const user = new User()
-    var name = req.fullName
-    user.name = req.fullName
-    user.email = req.email
-    user.fulfillment_day = req.fulfillment_day
-    user.fulfillment_method = req.fulfillment_method
+    user.name = req.user.firstName + req.user.lastName
+    user.email = req.user.email
+    user.fulfillment_day = req.user.fulfillment_day
+    user.fulfillment_method = req.user.fulfillment_method
 
 
-
-    if (req.fulfillment_method == 'pickup') {
-      user.pickup_location = JSON.parse(req.pickupLocation).storeId
-
+    if (req.user.fulfillment_method == 'pickup') {
+      user.pickup_location = location.storeId
     }
 
-    user.password = await Hash.make(req.password)
-
-    var newUser = await user.save()
+    user.password = await Hash.make(req.user.password)
 
 
-      var address = req.street
-      var city = req.city
-      var state = req.state
-      var zip = req.zip
-
+    if (req.user.fulfillment_method == 'pickup') {
+      var address = req.billing.street
+      var city = req.billing.city
+      var state = req.billing.state
+      var zip = req.billing.zip
+    } else {
+      var address = req.shipping.street
+      var city = req.shipping.city
+      var state = req.shipping.state
+      var zip = req.shipping.zip
+    }
     var existing = await stripe.customers.list(
       { limit: 1, email: user.email },
     );
-    console.log(existing.data[0])
     if (existing.data[0] != undefined) {
 
     } else {
     var customer = await stripe.customers.create({
-      description: 'Customer for ' + req.email,
-      source: req.stripeToken,
+      description: 'Customer for ' + req.user.email,
+      source: req.billing.stripeToken,
       email: user.email,
       metadata: {
         name: user.name,
-        password: user.password,
-        fulfillment_method: req.fulfillment_method,
-        fulfillment_day: req.fulfillment_day,
-        next_fulfillment: req.pickupDate
+        fulfillment_method: req.user.fulfillment_method,
+        fulfillment_day: req.user.fulfillment_day,
+        next_fulfillment: req.user.fulfillment_date
       },
       shipping: {
         name: user.email,
-        phone: req.phone,
+        phone: req.user.phone,
         address: {
           line1: address,
           city: city,
@@ -84,11 +85,17 @@ class CheckoutController {
       }
     })
     }
+    user.stripe_id = customer.id
+
+    var newUser = await user.save()
+
+
 
 
     if (newUser) {
+    
       console.log('user created')
-      if (req.fulfillment_method == 'pickup') {// Create an order for pickup
+      if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
         console.log('pickup')
         console.log(customer)
         var order = stripe.orders.create({
@@ -102,13 +109,13 @@ class CheckoutController {
               city: location.city,
               state: location.state,
               country: 'US',
-              postal_code: location.postCode,
+              postal_code: location.postalCode,
             },
           },  
           metadata: {
-            pickup_day: req.pickupDay,
-            pickup_date: req.pickupDate,
-            fulfillment_method: req.fulfillment_method,
+            fulfillment_day: req.user.fulfillment_day,
+            fulfillment_date: req.user.fulfillment_date,
+            fulfillment_method: req.user.fulfillment_method,
             store_id: location.storeId
           },
           email: user.email
@@ -118,7 +125,7 @@ class CheckoutController {
           console.log(err)
           if (err){return err}
           stripe.orders.pay(order.id, {
-            source: req.stripeToken // obtained with Stripe.js
+            source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
             console.log('created')
@@ -134,24 +141,24 @@ class CheckoutController {
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: user.name,
             address: {
-              line1: req['street-ship'],
-              city: req['city-ship'],
-              state: req['state-ship'],
+              line1: req.shipping.street,
+              city: req.shipping.city,
+              state: req.shipping.state,
               country: 'US',
-              postal_code: req['zip-ship'],
+              postal_code: req.shipping.zip,
             },
           },  
           metadata: {
-            delivery_day: req.pickupDay,
-            delivery_date: req.pickupDate,
-            fulfillment_method: req.fulfillment_method,
+            delivery_day: req.user.fulfillment_day,
+            delivery_date: req.user.fulfillment_date,
+            fulfillment_method: req.user.fulfillment_method,
           },
           email: user.email
         }, function(err, order) {
           console.log('order created')
           if (err){return err}
           stripe.orders.pay(order.id, {
-            source: req.stripeToken // obtained with Stripe.js
+            source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
             console.log('created')
@@ -170,55 +177,6 @@ class CheckoutController {
       return response.send('something happened')
     }
 
-        // console.log('payment', payOrder)
-    // } else { // Order should be sent out for delivery
-      
-    //   const location = await Database
-    //     .table('locations')
-    //     .where('id', user.pickup_location)
-    //     .first()
-    //   // Before we can process an order we need to get the customers delivery information..
-
-    //   const deliveryAddr = await Database
-    //     .table('delivery_customer_metas')
-    //     .select('*')
-    //     .where('user_id', user.id)
-    //     .first()
-
-    //   if (deliveryAddr) { // If we have a delivery address, procede with order
-    //     var order = await stripe.orders.create({
-    //       currency: 'usd',
-    //       items: stripeItems,
-    //       shipping: { // shipping address could be either customers address for delivery or store address for pickup
-    //         name: user.email, // At this point the user has not created an account and therefore we do not have a name
-    //         address: {
-    //           line1: deliveryAddr.street_addr,
-    //           city: deliveryAddr.city,
-    //           state: deliveryAddr.state,
-    //           country: 'US',
-    //           postal_code: deliveryAddr.zip
-    //         }
-    //       },
-    //       metadata: {
-    //         "method": "delivery",
-    //         "fulfillment_day": user.fulfillment_day,
-    //         "fulfillment_date": fulfillment_day
-    //       },
-    //       email: user.email
-    //     });
-    //     await Database
-    //       .insert({
-    //         user_id: 1,
-    //         order_id: order.id,
-    //         is_paid: 0
-    //       })
-    //       .table('orders')
-    //     return response.send(order.id)
-    //   } else { // We don't have address, need to send a form to user to get address
-
-    //   }
-
-    // }
   }
 
     async startCheckout({ request, response, session}) {

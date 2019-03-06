@@ -25,9 +25,9 @@ const Route = use('Route')
 
 Route.get('/checkout', 'ItemController.showCheckout')
 
-Route.get('/admin/items', 'AdminController.showItems')
-Route.get('/admin/items/:sku', 'ItemController.listItemsAdmin')
-Route.post('admin/items/add/:sku', 'ItemController.updateItem')
+Route.get('/admin/products', 'AdminController.showItems')
+Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
+Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
 Route.post('/admin/items/add', 'AdminController.test')
 Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
@@ -45,9 +45,9 @@ Route.post('/cart/addItem', 'ItemController.addToCart')
 Route.get('/cart/clear', 'ItemController.clearCart')
 Route.get('/cart/sub/:cartPos', 'ItemController.subCart')
 Route.get('/cart/remove/:cartPos', 'ItemController.removeItem')
-Route.get('/', 'ItemController.showMenu')
+// Route.get('/', 'ItemController.showMenu')
 
-// Route.get('/', 'HomeController.index').as('welcomePage')
+Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/menu/all', 'ItemController.showMenu')
 Route.get('/items/category/:cat_id', 'ItemController.list')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
@@ -55,7 +55,8 @@ Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register/:reg_method', 'Auth/AuthController.updateCustomerAddress')
 
 Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
-Route.get('/item/hide/:itemId', 'ItemController.hideItem')
+Route.get('/products/hide/:itemId', 'ItemController.hideItem')
+Route.get('/products/show/:itemId', 'ItemController.showItem')
 
 Route.get('/api/stores/all', 'HomeController.showStores')
 
@@ -107,6 +108,14 @@ Route.group(() => {
 Route.get('/api', async ({ view }) => view.render('api'))
 
 /*Show new item form */
-Route.get('/test/admin', async ({ view }) => view.render('admin.items-new'))
+Route.get('/products/add', async ({ view }) => view.render('admin.items-new'))
 
-Route.get('/test/items', 'ItemController.listItems').as('menu.items')
+Route.get('/menu', 'ItemController.listItems').as('menu.items')
+Route.get('/admin/dashboard', async({view}) => view.render('layout.admin.dashboard'))
+
+
+/* Coupon management routes */
+
+
+Route.get('/admin/coupon', 'AdminController.listCoupons')
+Route.post('/admin/coupon/add', 'AdminController.addCoupon')

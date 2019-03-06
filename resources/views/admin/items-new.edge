@@ -1,164 +1,20 @@
+@layout('layout.admin.master')
+@section('content')
 
-<style>
-    select#variation {
-    min-height: 50px;
-    background: #f2f2f2f2;
-    width: 40%;
-    position: relative;
-    left: 29%;
-    padding: 20;
-}
-textarea {
-    background: #f2f2f2;
-    border: none;
-    min-width: 94%;
-    min-height: 200px;
-    font-size: 1.25em;
-    padding: 25;
-    color: #696f6a;
-    box-shadow: 2px 2px 7px 0px gainsboro;
-    border-radius: 10px;
-}
 
-.admin-bar.flex-item {
-    margin-left: 25;
-    margin-right: 25;
-    background: white;
-    min-width: 95%;
-    padding: 20;
-    box-shadow: 2px 2px 15px 2px gainsboro;
-    border: 1px solid gainsboro;
-    border-radius: 10px;
-}
-.admin-bar.flex-item > a {
-    font-size: 1.25em;
-    font-weight: 600;
-    color: black;
-}
-
-span{
-    display: table-cell;
-  /* display:block; */
-  }
-input:focus::-webkit-input-placeholder { color:transparent; }
-input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
-input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
-input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
-
-form {
-  display: table;
-  margin: 40px auto;
-}
-form label {
-  position: relative;
-  /* display: block; */
-}
-form label input {
-  font: 18px Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-  /* display: block; */
-  border: none;
-  padding: 20px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-}
-form label input::-webkit-input-placeholder {
-  transition: all 0.2s ease-in-out;
-  color: #999;
-  font: 18px Helvetica, Arial, sans-serif;
-}
-form label input:-ms-input-placeholder {
-  transition: all 0.2s ease-in-out;
-  color: #999;
-  font: 18px Helvetica, Arial, sans-serif;
-}
-form label input::-ms-input-placeholder {
-  transition: all 0.2s ease-in-out;
-  color: #999;
-  font: 18px Helvetica, Arial, sans-serif;
-}
-form label input::placeholder {
-  transition: all 0.2s ease-in-out;
-  color: #999;
-  font: 18px Helvetica, Arial, sans-serif;
-}
-form label input:focus, form label input.populated {
-  padding-top: 28px;
-  padding-bottom: 12px;
-}
-form label input:focus::-webkit-input-placeholder, form label input.populated::-webkit-input-placeholder {
-  color: transparent;
-}
-form label input:focus:-ms-input-placeholder, form label input.populated:-ms-input-placeholder {
-  color: transparent;
-}
-form label input:focus::-ms-input-placeholder, form label input.populated::-ms-input-placeholder {
-  color: transparent;
-}
-form label input:focus::placeholder, form label input.populated::placeholder {
-  color: transparent;
-}
-form label input:focus + span, form label input.populated + span {
-  opacity: 1;
-  top: 10px;
-}
-form label span {
-    color: #878c88;
-    font-weight: 700;
-    position: absolute;
-    top: -20px !important;
-    left: 10px;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-}
-form input[type="submit"] {
-  transition: all 0.2s ease-in-out;
-  font: 18px Helvetica, Arial, sans-serif;
-  border: none;
-  background: #1aaf75;
-  color: #fff;
-  padding: 16px 40px;
-}
-form input[type="submit"]:hover {
-  background: #109f67;
-}
-img.thumbnail {
-  width: 150px;
-}
-/* .c-form__item {
-    margin-left: 20;
-    margin-right: 20;
-    display: flex;
-    flex-direction: column;
-}
-span.range-label {
-    display: flex;
-    text-align: center;
-    align-self: center;
-    align-items: inherit;
-    font-weight: 700;
-} */
-</style>
-<ul class="wrapper">
-<div class="admin-bar flex-item">
-    <a class="button is-primary" href="/admin/items">Products</a>
-    <a class="button is-primary">Orders</a>
-
-</div>
-</ul>
-<ul class="wrapper">
-    <ul class="flex-container">
+<!--
+<div class="content">
+  <div class="row">
         <div class="flex-item checkout-card">
             <h1 class="menu-heading">Item Info</h1>
                 <div class="form-wrapper">
                     <div class="checkout-form">
                         <div class="checkout-form-row">
                             <div id="passsword">
-                                <form id="parent_product">
+                                <form id="this-isnt-showing">
+                                    <input type="hidden" name="id" value="{{prod.skus.data[0].id}}" />
                                 <label>
-                                    <input type="text" name="name" placeholder="Name" required />
+                                    <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
                                     <span>Name</span>
                                 </label>
                                 <label>
@@ -167,7 +23,7 @@ span.range-label {
                                 </label>
 
                                 <label>
-                                    <input type="number" name="price" placeholder="Price" />
+                                    <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}"/>
                                     <span>Price</span>
                                 </label>
 
@@ -177,7 +33,7 @@ span.range-label {
                                 </label>
 
                                 <label>
-                                    <input type="text" name="category" placeholder="Primary Category" />
+                                    <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
                                     <span>Primary Category</span>
                                 </label>
 
@@ -187,44 +43,44 @@ span.range-label {
                                 </label>
 
                                 <label>
-                                    <input type="text" name="protein_type" placeholder="Protein Type" />
+                                    <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[0].attributes.protein_type}}"/>
                                     <span>Protein Type</span>
                                 </label>
 
                                 <label>
-                                    <input type="text" name="size" placeholder="Size" />
+                                    <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[0].attributes.size}}"/>
                                     <span>Size</span>
                                 </label>
 
                                 <label>
-                                    <input type="text" name="flavor" placeholder="Flavor" />
+                                    <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[0].attributes.flavor}}"/>
                                     <span>Flavor</span>
                                 </label>
 
                                 <label>
-                                    <textarea name="description" placeholder="Enter item description"></textarea>
+                                    <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
                                     <span>Description</span>
                                 </label>
                                 <hr />
                                 <h1 class="menu-heading">Nutrition Info</h1>
 
                                 <label>
-                                    <input type="text" name="calories" placeholder="Calories" />
+                                    <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}"/>
                                     <span>Calories</span>
                                 </label>
 
                                 <label>
-                                    <input type="text" name="fats" placeholder="Fats" />
+                                    <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}"/>
                                     <span>Fats</span>
                                 </label>
 
                                 <label>
-                                    <input type="text" name="carbs" placeholder="Carbs" />
+                                    <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}"/>
                                     <span>Carbs</span>
                                 </label>
 
                                 <label>
-                                    <input type="text" name="proteins" placeholder="Proteins" />
+                                    <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}"/>
                                     <span>Proteins</span>
                                 </label>
                                 <a id="submit" class="button is-primary">submit</a>
@@ -240,7 +96,9 @@ span.range-label {
                 <div class="form-wrapper">
                     <div class="checkout-form">
                             <div class="thumbnails">
-
+                                    @each(sku in prod.skus.data)
+                                    <img class="thumbnail" src="{{sku.image}}" /> 
+                                    @endeach
                                 </div>
                         <div class="checkout-form-row">
                             <div id="passsword">
@@ -265,14 +123,332 @@ span.range-label {
                 <div class="checkout-form-row">
                     <div class="form-wrapper">
                     <div id="item-variations">
+                        @each(sku in prod.skus.data)
+                        @unless($loop.first)
+                        <form id="variation_{{$loop.index}}">
+                                <input type="hidden" name="id" id="sku_id" value="{{prod.skus.data[$loop.index].id}}" />
 
+                                <label>
+                                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
+                                        <span>Name</span>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="short_name" placeholder="Short Description" />
+                                        <span>Short Description</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[$loop.index].price}}"/>
+                                        <span>Price</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="quantity" placeholder="Quantity" />
+                                        <span>Quantity</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
+                                        <span>Primary Category</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="filters" placeholder="Filters, comma separted" />
+                                        <span>Filters</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[$loop.index].attributes.protein_type}}"/>
+                                        <span>Protein Type</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[$loop.index].attributes.size}}"/>
+                                        <span>Size</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[$loop.index].attributes.flavor}}"/>
+                                        <span>Flavor</span>
+                                    </label>
+    
+                                    <label>
+                                        <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
+                                        <span>Description</span>
+                                    </label>
+                                    <hr />
+                                    <h1 class="menu-heading">Nutrition Info</h1>
+    
+                                    <label>
+                                        <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[$loop.index].metadata.calories}}"/>
+                                        <span>Calories</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[$loop.index].metadata.fats}}"/>
+                                        <span>Fats</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[$loop.index].metadata.carbs}}"/>
+                                        <span>Carbs</span>
+                                    </label>
+    
+                                    <label>
+                                        <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[$loop.index].metadata.proteins}}"/>
+                                        <span>Proteins</span>
+                                    </label>
+                        </form>
+                        @endunless
+                        @endeach
                     </div>    
                     </div>            
                 </div>
             </div>
 
 </ul>
-</ul>
+</ul>-->
+
+<div class="content">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-user">
+              <div class="image">
+                
+              </div>
+              <div class="card-body">
+                <div class="author">
+                  <a href="#">
+                    <h5 class="title">{{prod.name}}</h5>
+                  </a>
+                  <div class="thumbnails"></div>
+                  <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
+                  <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+                  <input id="button" type="button" value="Cancel" />
+                  <!--
+                  <p class="description">
+                    @chetfaker
+                  </p>-->
+                </div>
+                <!--
+                <p class="description text-center">
+                  "I like the way you work it
+                  <br> No diggity
+                  <br> I wanna bag it up"
+                </p>
+            -->
+              </div>
+
+              <div class="card-footer">
+
+                <hr>
+                <div class="button-container">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                      <h5>
+                        @if(prod.skus)
+                        {{prod.skus.data.length - 1}}
+                        @else
+                        0
+                        @endif
+                        <br>
+                        <small>Variations</small>
+                      </h5>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                      <h5>2GB
+                        <br>
+                        <small>Images</small>
+                      </h5>
+                    </div>
+                    <div class="col-lg-3 mr-auto">
+                      <h5>24,6$
+                        <br>
+                        <small>Spent</small>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+                    <div class="card-header">
+                      <h4 class="card-title">Variations</h4>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled team-members">
+                        <li>
+                          <div class="row">
+                            <div class="col-md-12 col-12">
+                              Use the form to the right to create additional sizes for this product.  Once you are done adding sizes, click the save button below to create the item in Stripe.
+                              <br />
+
+                            </div>
+
+                          </div>
+                        </li>
+
+                      </ul>
+                      <div class="row">
+                          <div class="update ml-auto mr-auto">
+                            <button type="submit" class="btn btn-success save-form">Save Item</button>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+          </div>
+          <!-- item-card -->
+          <div class="col-md-8">
+            <div class="card card-user">
+              <div class="card-header">
+                <h5 class="card-title">Add Item</h5>
+              </div>
+              <div class="card-body">
+                <form id="parent_product">
+                  <div class="row">
+                    <div class="col-md-4 pr-1">
+                      <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-2">
+                      <div class="form-group">
+                        <label>Short Description</label>
+                        <input type="text" name="short_name" class="form-control" placeholder="Short Description" value="">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Price</label>
+                        <input type="text" name="price" class="form-control" placeholder="Price" value="{{prod.skus.data[0].price}}">
+                      </div>
+                    </div>
+                    <div class="col-md-2 pr-4">
+                            <div class="form-group">
+                              <label>Quantity</label>
+                              <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="">
+                            </div>
+                          </div>
+                  </div>
+                  <div class="row">
+
+                    <div class="col-md-3 pr-2">
+                      <div class="form-group">
+                        <label>Product Category</label>
+                        <input type="text" class="form-control" placeholder="Category" size="primary_category" value="{{prod.metadata.primary_category}}">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-2">
+                        <div class="form-group">
+                            <label>Size</label>
+                              <input type="text" class="form-control" placeholder="Size" name="size" value="{{prod.skus.data[0].attributes.size}}">
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Calories</label>
+                        <input type="text" class="form-control" name="calories" placeholder="calories" value="{{prod.skus.data[0].metadata.calories}}">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Carbs</label>
+                              <input type="text" class="form-control" name="carbs" placeholder="carbs" value="{{prod.skus.data[0].metadata.carbs}}">
+                            </div>
+                          </div>                    <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Proteins</label>
+                                  <input type="text" class="form-control" name="proteins" placeholder="proteins" value="{{prod.skus.data[0].metadata.proteins}}">
+                                </div>
+                              </div>                    <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label>Fats</label>
+                                      <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
+                                    </div>
+                                  </div>                    
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" class="form-control textarea">{{prod.description}}</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+              
+            </div>
+            <div class="card">
+                    <div class="card-header">
+                      <h4 class="card-title">Size Variations</h4>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled size-variations">
+                        <li class="form-variation">
+                          <form id="variation_1">
+                          <div class="row">
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Label</label>
+                                  <input type="text" class="form-control" name="size" placeholder="Size Label" value="{{prod.skus.data[0].metadata.size}}">
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                  <label>Price</label>
+                                  <input type="text" class="form-control" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}">
+                                </div>
+
+                              </div>   
+                            <div class="col-md-2">
+                              <div class="form-group">
+                                <label>Calories</label>
+                                  <input type="text" class="form-control" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}">
+                              </div>
+                            </div>
+                                        <div class="col-md-2">
+                                                <div class="form-group">
+                                                  <label>Carbs</label>
+                                                  <input type="text" class="form-control" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}">
+                                                </div>
+                                              </div> 
+                                              <div class="col-md-2">
+                                                    <div class="form-group">
+                                                      <label>Proteins</label>
+                                                      <input type="text" class="form-control" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}">
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <label>Fats</label>
+                                                          <input type="text" class="form-control" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}">
+                                                        </div>
+
+                                                      </div>   
+                                                      <div class="col-md-8">
+                                                          <btn data-toggle="tooltip" data-placement="top" title="Add another size" class="btn btn-md btn-outline-success btn-round btn-icon add-another"><i class="nc-icon nc-simple-add"></i></btn>
+                                                          <btn class="btn btn-md btn-outline-danger btn-round btn-icon remove-size" data-toggle="tooltip" data-placement="top" title="Delete this size"><i class="nc-icon nc-simple-remove"></i></btn>
+                                                      </div> 
+                                                                     
+                                      </div>
+                          </form>
+                        </li>
+                        <div class="dropdown-divider"></div>
+
+                      </ul>
+                    </div>
+                  </div>
+          </div> <!-- /item card-->
+        </div>
+
+        </div>
+      </div>
 <script>
     (function() {
       function getScript(url,success){
@@ -305,25 +481,25 @@ span.range-label {
 
 $.cloudinary.config(configSettings);
 
+$(document).on('click', '.add-another', function(){
+  var id = $('body').find('form').length
+  id = id - 1 //Get number of forms on the page and subtract 1
+  $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
+  $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
 
-$(document).on('click', '#add-another-variation', function(){
-    var data = $(this).data()
-    var i = data.variation + 1
-    var form = $('#item-variations')
-    form.append('<hr /><form id="variation_'+i+'"><ul id="variation-'+i+'">\
-        <input type="text" name="name" placeholder="Name" required />\
-                <input type="text" name="short_name" placeholder="Short Description" />\
-                <input type="number" name="price" placeholder="Price" />\
-                <input type="text" name="quantity" placeholder="Quantity" />\
-                <input type="text" name="category" placeholder="Category" />\
-                <textarea name="description">Enter item description</textarea>\
-                <input type="text" name="'+data.variationType+'" placeholder="'+data.variationType+'"/>\
-                <input type="text" name="calories" placeholder="Calories" />\
-                <input type="text" name="fats" placeholder="Fats" />\
-                <input type="text" name="carbs" placeholder="Carbs" />\
-                <input type="text" name="proteins" placeholder="Proteins" />\
-                <a class="button add-another" id="add-another-variation" data-variation="'+i+'" data-variation-type="'+data.variationType+'">Add another</a></ul></form>')
 })
+
+$(document).on('click', '.remove-size', function(){
+  var id = $('body').find('form').length
+  id = id - 1
+  console.log(id)
+  if (id != 2) {
+    $(this).closest('li.form-variation').remove()
+
+  }
+})
+
+
 $("select#variation").change(function(){
     var form = $('#item-variations')
     form.html('<form id="variation_1" ><ul id="variation-1">\
@@ -381,14 +557,13 @@ $(document).ready(function() {
   }
 });
 
-$('#submit').on('click', function(){
+$('.save-form').on('click', function(){
     var master = {}
     var forms = $('body').find('form')
 
     for (var i = 0; i < forms.length; i++) {
         var obj = {};
         var formName = forms[i].id
-        console.log(formName)
 		var elements = forms[i].querySelectorAll( "input, select, textarea" );
 		for( var x = 0; x < elements.length; ++x ) {
 			var element = elements[x];
@@ -400,7 +575,7 @@ $('#submit').on('click', function(){
 			}
         }
         master[formName] = obj
-    }    
+    }
     $.ajax({
         type: "POST",
         url: "/admin/items/add",
@@ -450,9 +625,4 @@ $(function() {
     </script>
 
 
-<link rel="stylesheet" href="/css/bulma.min.css" />
-<link rel="stylesheet" href="/css/cart.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
-<link rel="stylesheet" href="/css/style.css" />
-<link rel="stylesheet" href="/css/checkout.css" />
+@endsection

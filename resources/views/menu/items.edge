@@ -446,9 +446,9 @@ $(document).on('click', '.checkout-button', function(){
   }
 })
 
-$(document).on('click', '#deliveryRadio', function(){
-  $('a#pickupRadio').removeClass('active')
-  $('a#deliveryRadio').addClass('active')
+$(document).on('click', 'a#deliveryRadio', function(){
+  $('.col.pl-1.cart-icon-label.pickup').removeClass('active')
+  $('.col.pl-1.cart-icon-label.delivery').addClass('active')
   localStorage.fulfillment_method = 'delivery'
   console.log('deliver')
 })

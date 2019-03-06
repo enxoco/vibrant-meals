@@ -939,11 +939,11 @@ a#pickupRadio, a#deliveryRadio {
       padding-bottom: 5px;
       content: '';
   } */
-  .checkout-prompt-1 {
+  /* .checkout-prompt-1 {
     float: right;
       /* display: flex;
       justify-content: flex-end; */
-  }
+  } */
   
   .checkout-button {
       width: 50%;
@@ -1278,8 +1278,13 @@ a.navbar-item.link {
 
 
 
-.checkout-prompt-1 {
+/* .checkout-prompt-1 {
   float: right;
   top: 33px;
   position: relative;
+} */
+
+.checkout-prompt-1 {
+  font-size: 3em;
+  color: #aad0ad;
 }

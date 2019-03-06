@@ -1,9 +1,22 @@
 'use strict'
 
 const Database = use('Database')
-class HomeController {
-  async index ({ response, view, session }) {
+var stripe = require("stripe")("sk_test_ZmWaFEiBn0H63gNmfCacBolp");
 
+class HomeController {
+  async index ({ response, view, session, auth }) {
+
+    const user = auth.user
+
+    if (user) {
+      stripe.customers.retrieve(
+        user.stripe_id,
+        function(err, customer) {
+          // asynchronously called
+          console.log(customer)
+        }
+      );
+    }
 
 
       // ToDo
@@ -18,6 +31,7 @@ class HomeController {
       // So if we visit the site on Tuesday Morning, we should not be shown this week as a possible delivery.
 
       // session.put('initial_order_completed', user.initial_order_completed)
+      return view.render('welcome')
 
   }
 

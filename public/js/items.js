@@ -310,27 +310,6 @@ $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png
 
 }
 
-(function() {
-      var burger = document.querySelector('.burger');
-      var nav = document.querySelector('#'+burger.dataset.target);
-
-      burger.addEventListener('click', function(){
-        var cart = $('.cart-container')
-        if ($('.burger').hasClass('is-active')) {
-          cart.css('display', 'none')
-          $('.flex-container').css('width','100%')
-
-        } else {
-          cart.css('display', 'flex')
-          cart.css('width', '')
-          $('.flex-container').css('width','50%')
-        }
-
-        burger.classList.toggle('is-active');
-        // nav.classList.toggle('is-active');
-      });
-    })();
-
     $('.card-content, .card-image').on('click',function(e){
       e.preventDefault()
       e.stopPropagation()
@@ -461,17 +440,7 @@ $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png
       }
     })
 
-(function() {
-var cart = $('#cart')
-  if (window.innerWidth < 1100) {
-    cart.css('display', 'none')
-    $('.flex-container').css('width','100%')
-  } else {
-    cart.css('display', 'flex')
-    $('.flex-container').css('width','70%')
 
-  }
-})();
 
 window.addEventListener("resize", function(){
 var cart = $('#cart')
@@ -485,9 +454,3 @@ var cart = $('#cart')
   }
 })
 
-$('#burger').on('click', function(){
-var cart = $('#cart')
-
-cart.css('display', 'flex')
-$('.flex-container').css('width','70%')
-})

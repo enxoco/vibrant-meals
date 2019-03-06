@@ -1,6 +1,7 @@
 const { hooks } = require('@adonisjs/ignitor')
 const moment = require('moment')
 require('moment-countdown');
+var sr = require('screenres');
 
 hooks.after.providersBooted(() => {
   const View = use('View')
@@ -29,9 +30,16 @@ hooks.after.providersBooted(() => {
   })
 
   View.global('currency', function(num) {
-    return `$${(num / 100).toFixed(2)}`
+    console.log(num)
+
+    return `$${(num / 100).toFixed(2) * 1}`
   })
 
+
+  View.global('getKeys', function(obj) {
+    console.log(obj)
+    // return Object.keys(obj)
+  })
   View.global('parseItem', function(item){
 
     var itemKeys = {
@@ -44,4 +52,15 @@ hooks.after.providersBooted(() => {
     return JSON.stringify(item)
     
   }) 
+
+  View.global('screenWidth', function(){
+    var d = sr.get(); // [1440, 900]
+    return parseInt(d[1])
+
+  })
+
+  View.global('convertTime', function(unix){
+    var day = moment.unix(unix).format('LLL')
+    return day
+  })
 })

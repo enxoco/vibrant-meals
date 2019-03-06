@@ -1,26 +1,21 @@
-<div id="modal-initial-click" class="modal modal-fx-slideTop" style="background:#F2F2F2;">
-  <div class="modal-background"></div>
-    <div class="media-left">
-<!--      <button class="modal-close button is-large is-primary" aria-label="close"></button>  -->
+<div class="modal fade" id="modal-initial-click" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="background:white;">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content" style="border:none;">
+      <div class="modal-body">
+        <h5 class="title" style="text-align:center; font-size:4em; padding-bottom:100px;">Pickup or Delivery?</h5>
+        <div class="row d-flex justify-content-center">
+          <div class="col d-flex justify-content-center">            
+            <a id="pickup" style="padding:50px; border-radius:1em;">
+              <img class="pickup-icon" src="/images/pickup-icon.png" />
+            </a>
+          </div>
+          <div class="col d-flex justify-content-center">            
+            <a class="modal-menu-option" id="delivery"  style="padding:50px; border-radius:1em;">
+              <img class="delivery-icon" src="/images/delivery-icon.png" />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="modal-heading" style="z-index:1;">How do you want your meals?</div><br>
-      <ul class="initial-modal-flex-container">
-          <a class="flex-item button modal-menu-option" id="pickup">
-            <img class="pickup-icon" src="/images/pickup-icon.png" />
-            <div class="modal-footing">Pick them up</div>
-          </a>
-          <a class="flex-item button modal-menu-option" id="delivery">
-            <img class="delivery-icon" src="/images/delivery-icon.png" />
-            <div class="modal-footing">
-                Delivered to you
-              </div>
-          </a>
-
-        </ul>
+  </div>
 </div>
-
-
-<script>
-
-
-</script>

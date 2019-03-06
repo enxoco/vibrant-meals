@@ -4,6 +4,11 @@ var stripe = require("stripe")("sk_test_ZmWaFEiBn0H63gNmfCacBolp");
 
 class AdminController {
 
+  async listCoupons ({view, response}) {
+    const coupons = await stripe.coupons.list()
+    return view.render('admin.coupons', {coupons})
+  }
+
     async showItems ({ view }) {
         var prod = await stripe.products.list();
         prod = prod.data
@@ -27,8 +32,7 @@ class AdminController {
     async test ({request, response}) {
         var form = request.all()
 
-        console.log(form)
-            var prod = form.parent_product
+        var prod = form.parent_product
 
         var id = prod.name.replace(/ /g, '_')
         id = id.toLowerCase()
@@ -41,93 +45,39 @@ class AdminController {
           price += '0'
         }
 
-        if (sku.flavor !== '') {
-            var attr = 'flavor'
-        }
-        if (sku.size !== '') {
-            var attr = 'size'
-        }
-        if (sku.protein_type !== '') {
-            var attr = 'protein_type'
-        }
 
         var product = await stripe.products.create({
             name: prod.name,
             type: 'good',
             description: prod.description,
             id: id,
-            attributes: [attr],
+            attributes: ['size'],
             metadata: {
                 primary_category: sku.category
             }
           }, function(err, product) {
             // Now that primary product is created, we need to create skus
             // Start with the parent item
-            var sku = form['parent_product']
 
-            if (sku.flavor !== '') {
-                var attr = 'flavor'
-                var value = sku.flavor
-            }
-            if (sku.size !== '') {
-                var attr = 'size'
-                var value = sku.size
-            }
-            if (sku.protein_type !== '') {
-                var attr = 'protein_type'
-                var value = sku.protein_type
-            } else {
-                var value = ''
-            }
-            if (form.variation_1) {
-                stripe.skus.create({
-                    product: id,
-                    id: sku_id + '_' + value.toLowerCase(),
-                    price: parseInt(price),
-                    currency: 'usd',
-                    inventory: {type: 'finite', quantity: 500},
-                    image: prod.primary_img,
-                    attributes: {
-                        [attr]: value
-                    },
-                    metadata: {
-                        category: sku.category,
-                        [attr]: value,
-                        fats: sku.fats,
-                        carbs: sku.carbs,
-                        proteins: sku.proteins,
-                        calories: sku.calories
-                    },
-                  })
                   for (var i = 1; i < Object.keys(form).length; i++) {
-                    var sku = form['variation_'+i]
-    
-                    if (typeof sku.flavor !== 'undefined') {
-                        var attr = 'flavor'
-                        var value = sku.flavor
-                    }
-                    if (typeof sku.size !== 'undefined') {
-                        var attr = 'size'
-                        var value = sku.size
-                    }
-                    if (typeof sku.protein_type !== 'undefined') {
-                        var attr = 'protein_type'
-                        var value = sku.protein_type
-                    }
-    
+                    var sku = form[Object.keys(form)[i]]
+                    console.log(sku)
+                    var size = sku.size
+                    size = size.toLowerCase()
+
                     stripe.skus.create({
                         product: id,
-                        id: sku_id + '_' + value.toLowerCase(),
+                        id: sku_id + '_' + size,
                         price: parseInt(price),
                         currency: 'usd',
                         inventory: {type: 'finite', quantity: 500},
                         image: prod.primary_img,
                         attributes: {
-                            [attr]: value
+                            size: size
                         },
                         metadata: {
                             category: sku.category,
-                            [attr]: value,
+                            size: size,
                             fats: sku.fats,
                             carbs: sku.carbs,
                             proteins: sku.proteins,
@@ -135,46 +85,56 @@ class AdminController {
                         },
                       })
                   }
-            } else {
-                stripe.skus.create({
-                    product: id,
-                    id: sku_id + '_' + value.toLowerCase(),
-                    price: parseInt(price),
-                    currency: 'usd',
-                    inventory: {type: 'finite', quantity: 500},
-                    image: prod.primary_img,
-                    metadata: {
-                        category: sku.category,
-                        [attr]: value,
-                        fats: sku.fats,
-                        carbs: sku.carbs,
-                        proteins: sku.proteins,
-                        calories: sku.calories
-                    },
-                  })
-                  for (var i = 1; i < Object.keys(form).length; i++) {
-
-                    stripe.skus.create({
-                        product: id,
-                        id: sku_id,
-                        price: parseInt(price),
-                        currency: 'usd',
-                        inventory: {type: 'finite', quantity: 500},
-                        image: prod.primary_img,
-                        metadata: {
-                            category: sku.category,
-                            fats: sku.fats,
-                            carbs: sku.carbs,
-                            proteins: sku.proteins,
-                            calories: sku.calories
-                        },
-                      })
-                  }
-            }
 
         });
           return response.send(product)
     }
+
+
+    async addCoupon ({ request, response }) {
+      const couponData = request.only(['percentage', 'coupon_name'])
+      try {
+        const status = await this.createCoupon(couponData)
+        console.log(status)
+        return response.send(status)
+      } catch (e) {
+        return response.send(e.message)
+      }
+    }
+  
+    createCoupon (couponData) {
+      return new Promise((resolve, reject) => {
+        stripe.coupons.create({
+          percent_off: couponData.percentage,
+          duration: 'forever',
+          id: couponData.coupon_name
+        }, (err) => {
+          if (err) { return reject(err) }
+          return resolve('Coupon Created')
+        });
+      })
+    }
+    //  addCoupon(request, response) {
+    //   var form = request.all()
+
+    //   const coupon = await stripe.coupons.create({
+    //     percent_off: form.percentage,
+    //     duration: 'forever',
+    //     id: form.coupon_name
+    //   }, function(err, coupon) {
+    //     // asynchronously called
+    //     if (coupon) {
+    //       var message = 'Coupon created successfully'
+  
+    //     }
+    //     if (err) {
+    //       var message = err.message
+    //     }
+    //   });
+    //   console.log(await coupon)
+      
+    //   return response.send(message)
+    // }
 }
 
 module.exports = AdminController

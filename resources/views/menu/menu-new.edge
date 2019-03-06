@@ -1,0 +1,181 @@
+@layout('layout.user.master')
+
+@section('content')
+@!include('Modals.initial')
+
+      <div class="content">
+          <div class="row categories-row">
+              <div class="col">
+                <a class="filters" href="#filters">
+                    <i class="fa fa-filter"></i>
+                </a>
+              </div>
+              <div class="col">
+                <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
+              </div>
+              @each(category in categories)
+              @unless(category == '')
+              <div class="col">
+                  <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category) }}</h2></a>
+              </div>
+              @endunless
+              @endeach
+          </div>
+        <div class="row">
+          @each(item in items)
+          @unless(item.active === false)
+          <div class="col-6 col-lg-4 filter {{item.metadata.primary_category}}">
+          <div class="card card-user"
+          data-category="{{item.metadata.primary_category}}"
+          data-sku="{{item.skus.data[0].id}}"
+          data-meta='{{toJSON(item.skus.data[0].metadata)}}'
+          >
+                <div class="image">
+                  <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                  <div class="col-12 col-md-9 ">
+                      <h5 class="card-title">{{item.name}}</h5>
+                  </div>
+                  <div class="col price">
+                      <h5>{{currency(item.skus.data[0].price)}}</h5>
+                  </div>
+                    </div>
+
+                </div>
+  
+                <div class="card-footer">
+  
+                  <hr class="d-none d-lg-block">
+                  <div class="button-container">
+                    <div class="row ">
+                      <div class="col ml-auto d-none d-lg-block">
+                        <h5>
+                            {{item.skus.data[0].metadata.calories}}
+                          <br>
+                          <small>Calories</small>
+                        </h5>
+                      </div>
+                      <div class="col ml-auto d-none d-lg-block">
+                            <h5>
+                             {{item.skus.data[0].metadata.fats}}
+
+                              <br>
+                              <small>Fats</small>
+                            </h5>
+                          </div>
+                          <div class="col ml-auto d-none d-lg-block">
+                                <h5>
+                                    {{item.skus.data[0].metadata.carbs}}
+
+                                  <br>
+                                  <small>Carbs</small>
+                                </h5>
+                              </div>
+
+                      <div class="col mr-auto">
+
+
+          <a class="checkout-prompt-1"
+            data-id="{{item.id}}" 
+            data-sku="{{item.skus.data[0].id}}" 
+            data-name="{{item.name}}" 
+            data-price="{{item.skus.data[0].price}}" 
+            data-img_url="{{item.skus.data[0].image}}" 
+            data-quantity="1" 
+            href="#" 
+            class="is-pulled-right"
+          >
+
+                       <img src="/images/cart-icon.png" height="40px" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+          <!-- Modal -->
+  <div class="modal fade" id="{{item.skus.data[0].id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+  
+                  <h5 class="card-title">{{item.name}}</h5>
+  
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <img class="lazy" data-src="{{item.skus.data[0].image}}" />
+          <hr />
+          {{item.description}}
+          <hr />
+          <div class="row">
+  
+          </div>
+          </div>
+          <div class="modal-footer">
+              <a data-dismiss="modal" class="checkout-prompt-1"
+              data-id="{{item.id}}" 
+              data-sku="{{item.skus.data[0].id}}" 
+              data-name="{{item.name}}" 
+              data-price="{{item.skus.data[0].price}}" 
+              data-img_url="{{item.skus.data[0].image}}" 
+              data-quantity="1" 
+              href="#" 
+              class="is-pulled-right"
+            >
+  
+                         <img src="/images/cart-icon.png" height="40px" />
+                          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+        @endunless
+
+        @endeach
+        </div>
+      </div>
+      <footer class="footer footer-black  footer-white ">
+        <div class="container-fluid">
+          <div class="row">
+            <nav class="footer-nav">
+              <ul>
+                <li>
+                  <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
+                </li>
+                <li>
+                  <a href="http://blog.creative-tim.com/" target="_blank">Blog</a>
+                </li>
+                <li>
+                  <a href="https://www.creative-tim.com/license" target="_blank">Licenses</a>
+                </li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="fa fa-heart heart"></i> by enxo.co
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+
+</body>
+<script>
+
+</script>
+
+
+</html>
+@endsection

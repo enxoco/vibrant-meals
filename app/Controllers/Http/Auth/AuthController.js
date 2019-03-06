@@ -155,8 +155,10 @@ class AuthController {
 
     try {
       await users.login(userInfo, auth)
+      console.log('login')
       return response.redirect('/')
     } catch (error) {
+      console.log('error')
       session.flash({ error: 'Invalid Login Credentials' })
       return response.redirect('back')
     }
