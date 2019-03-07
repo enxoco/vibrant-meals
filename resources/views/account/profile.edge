@@ -1,268 +1,544 @@
-@layout('layout.master')
-
+@layout('layout.user.home')
 @section('content')
-	<div class="container mb-4">
-		<div class="row">
-			<div class="col-md-12">
-				@include('layout.alerts')
-				<h3 class="my-4">Profile Information</h3>
-				<form action="{{ route('account.update') }}" method="post">
-					{{ csrfField() }}
-					<div class="form-group row">
-						<label for="email" class="col-md-3 col-form-label">Email</label>
-						<div class="col-md-7">
-							<input type="email" placeholder="email" name="email" id="email"
-								class="form-control {{ elIf('is-invalid', getErrorFor('email'), hasErrorFor('email')) }}"
-							  value="{{ old('email', account.email || '') }}" required>
-							<div class="invalid-feedback">{{ getErrorFor('email') }}</div>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="name" class="col-md-3 col-form-label">Name</label>
-						<div class="col-md-7">
-							<input type="text" placeholder="name" name="name" id="name"
-								class="form-control {{ elIf('is-invalid', getErrorFor('name'), hasErrorFor('name')) }}"
-								value="{{ old('name', account.name || '') }}" required>
-							<div class="invalid-feedback">{{ getErrorFor('name') }}</div>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="username" class="col-md-3 col-form-label">Username</label>
-						<div class="col-md-7">
-							<input type="text" placeholder="username" name="username" id="username" class="form-control"
-							 value="{{ old('username', account.username || '') }}"/>
-						 </div>
-					 </div>
-					<fieldset class="form-group">
+
+<div class="content">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-user card-profile">
+              <div class="image">
+                
+              </div>
+              <div class="card-body">
+                <div class="author">
+                  <a href="#">
+					<h5 class="title">{{customer.metadata.name}}</h5>
+					{{customer.email}}
+				  </a>
+				  <hr class="mb-5">
+				  <p class="description">Billing Info</p>
+				  <form id="billing">
 						<div class="row">
-							<legend class="col-form-legend col-md-3">Gender</legend>
-							<div class="col-md-7">
-								<div class="form-check">
-									<label class="form-check-label">
-										<input class="form-check-input" type="radio" name="gender" id="gender1" value="M"
-											{{ account.gender == "M" ? 'checked' : '' }}>
-										Male
-									</label>
+								<div class="col">
+										<div class="form-group">
+										  <label>Street Address</label>
+										  <input type="street" name="street" required value="{{customer.shipping.address.line1}}" class="form-control">
+										</div>
+									  </div>
+						</div>
+						<div class="row">
+									  <div class="col">
+											<div class="form-group">
+											  <label>City</label>
+											  <input type="text" name="city" required value="{{customer.shipping.address.city}}" class="form-control">
+											</div>
+										  </div>
+										  <div class="col">
+												<div class="form-group">
+												  <label>State</label>
+												<input type="text" name="state" required value="{{customer.shipping.address.state}}" class="form-control">
+												</div>
+											  </div>
+											  <div class="col">
+													<div class="form-group">
+													  <label>Zip Code</label>
+													<input type="text" name="postal_code" required value="{{customer.shipping.address.postal_code}}" class="form-control">
+													</div>
+												  </div>
+							  </div>
+							  <div class="row">
+									<div class="update ml-auto mr-auto">
+									  <a class="btn btn-success update-billing">Update</a>
+									</div>
+								  </div>
+				  </form>
+
+                  <!--
+                  <p class="description">
+                    @chetfaker
+                  </p>-->
+                </div>
+                <!--
+                <p class="description text-center">
+                  "I like the way you work it
+                  <br> No diggity
+                  <br> I wanna bag it up"
+                </p>
+            -->
+              </div>
+
+              <div class="card-footer">
+
+                <hr>
+                <div class="button-container">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                      <h5>
+                        @if(prod.skus)
+                        {{prod.skus.data.length - 1}}
+                        @else
+                        0
+                        @endif
+                        <br>
+                        <small>Variations</small>
+                      </h5>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                      <h5>2GB
+                        <br>
+                        <small>Images</small>
+                      </h5>
+                    </div>
+                    <div class="col-lg-3 mr-auto">
+                      <h5>24,6$
+                        <br>
+                        <small>Spent</small>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-profile">
+                    <div class="card-header">
+                      <h4 class="card-title">Update Password</h4>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled team-members">
+                        <li>
+                          <div class="row">
+                            <div class="col-md-12 col-12">
+									<div class="row">
+											<div class="col">
+													<div class="form-group">
+													  <label>New Password</label>
+													  <input type="password" name="password" required class="form-control">
+													</div>
+												  </div>
+												  <div class="col">
+														<div class="form-group">
+														  <label>Confirm password</label>
+														  <input type="password" name="password_confirmation" required class="form-control">
+														</div>
+													  </div>
+										  </div>
+
+                            </div>
+
+                          </div>
+                        </li>
+
+                      </ul>
+                      <div class="row">
+                          <div class="update ml-auto mr-auto">
+                            <button type="submit" class="btn btn-success update-password">Update</button>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+		  </div>
+		  
+		  <div class="col-md-6">
+
+				<div class="card card-profile">
+						<div class="card-header">
+						  <h4 class="card-title">Delivery Preferences</h4>
+						</div>
+						<div class="card-body">
+						  <ul class="list-unstyled team-members">
+							<li>
+							  <div class="row">
+								  <p class="description">Pickup or Delivery?</p>
+								<div class="col-md-12 col-12">
+									<div class="row">
+										<a href="/account/method/pickup" class="active">
+											<img class="cart-icon pt-2" src="/images/pickup-icon.png" />
+										</a>
+										<a href="/account/method/delivery">
+											<img class="cart-icon pt-2" src="/images/delivery-icon.png" />
+										</a>
+									</div>
 								</div>
-								<div class="form-check">
-									<label class="form-check-label">
-										<input class="form-check-input" type="radio" name="gender" id="gender2" value="F"
-											{{ account.gender == "F" ? 'checked' : '' }}>
-										Female
-									</label>
-								</div>
+	
+							  </div>
+							</li>
+	
+						  </ul>
+						  <div class="row">
+							  <div class="update ml-auto mr-auto">
+								<button type="submit" class="btn btn-success update-password">Update</button>
+							  </div>
 							</div>
 						</div>
-					</fieldset>
-					<div class="form-group row">
-						<label for="location" class="col-md-3 col-form-label">Location</label>
-						<div class="col-md-7">
-							<input type="text" name="location" id="location" class="form-control"
-							   value="{{ old('location', account.location || '') }}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="website" class="col-md-3 col-form-label">Website</label>
-						<div class="col-md-7">
-							<input type="text" name="website" id="website" class="form-control"
-							   value="{{ old('website', account.website || '') }}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-md-4"></div>
-						<div class="col-md-4">
-							<button type="submit" class="btn btn btn-primary btn-block">
-								<i class="fa fa-pencil"></i> Update Profile
-							</button>
-						</div>
-					</div>
-				</form>
-				<hr>
+					  </div>
+					  <div class="card card-profile">
+							<div class="card-header">
+							  <h4 class="card-title"> Recent Orders</h4>
+							</div>
+							<div class="card-body">
+							  <div class="table-responsive">
+								<table class="table" id="recent_orders">
+								  <thead class=" text-primary">
+									<th>
+									  Order Number
+									</th>
+									<th>
+									  Order Total
+									</th>
+									<th>
+									  Pickup/Delivery
+									</th>
+	
+								  </thead>
+								  <tbody>
+									  @each(p in customer.orders.data)
+									<tr>
+									  <td>
+										{{p.id}}
+									  </td>
+									  <td>
+											{{currency(p.amount)}}
+									  </td>
+									  <td>
+										{{p.metadata.fulfillment_method}}
+									  </td>
+	
+									</tr>
+									@endeach  
+								  </tbody>
+								</table>
+							  </div>
+							</div>
+						  </div>
+		
+			  </div>
+          <!-- item-card -->
+          <div class="col-md-8">
+            <div class="card card-user card-profile">
+              <div class="card-header">
+                <h5 class="card-title">Add Item</h5>
+              </div>
+              <div class="card-body">
+                <form id="parent_product">
+                  <div class="row">
+                    <div class="col-md-4 pr-1">
+                      <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-2">
+                      <div class="form-group">
+                        <label>Short Description</label>
+                        <input type="text" name="short_name" class="form-control" placeholder="Short Description" value="">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Price</label>
+                        <input type="text" name="price" class="form-control" placeholder="Price" value="{{prod.skus.data[0].price}}">
+                      </div>
+                    </div>
+                    <div class="col-md-2 pr-4">
+                            <div class="form-group">
+                              <label>Quantity</label>
+                              <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="">
+                            </div>
+                          </div>
+                  </div>
+                  <div class="row">
 
-				<h3>Manage Your Avatar Here</h3>
-				<form action="{{ route('account.updateAvatar') }}" method="post" enctype="multipart/form-data">
-					{{ csrfField() }}
-					<div class="form-group row">
-						<div class="col-md-3 col-form-label">
-							<img src="{{ account.toJSON().avatarpath }}" width="100" height="100"
-								 class="rounded-circle">
-						</div>
-						<div class="col-md-7">
-							<br>
-							<label for="avatar" class="custom-file col-sm-4">
-					    	<input type="file" id="avatar" name="avatar" class="custom-file-input">
-					    	<span class="custom-file-control"></span>
-					  	</label>
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-md-4"></div>
-						<div class="col-md-4">
-							<button type="submit" class="btn btn btn-primary btn-block">
-								<i class="fa fa-user-circle"></i> Change Avatar</button>
-						</div>
-					</div>
-				</form>
-				<hr>
+                    <div class="col-md-3 pr-2">
+                      <div class="form-group">
+                        <label>Product Category</label>
+                        <input type="text" class="form-control" placeholder="Category" size="primary_category" value="{{prod.metadata.primary_category}}">
+                      </div>
+                    </div>
+                    <div class="col-md-3 pr-2">
+                        <div class="form-group">
+                            <label>Size</label>
+                              <input type="text" class="form-control" placeholder="Size" name="size" value="{{prod.skus.data[0].attributes.size}}">
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Calories</label>
+                        <input type="text" class="form-control" name="calories" placeholder="calories" value="{{prod.skus.data[0].metadata.calories}}">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Carbs</label>
+                              <input type="text" class="form-control" name="carbs" placeholder="carbs" value="{{prod.skus.data[0].metadata.carbs}}">
+                            </div>
+                          </div>                    <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Proteins</label>
+                                  <input type="text" class="form-control" name="proteins" placeholder="proteins" value="{{prod.skus.data[0].metadata.proteins}}">
+                                </div>
+                              </div>                    <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label>Fats</label>
+                                      <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
+                                    </div>
+                                  </div>                    
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" class="form-control textarea">{{prod.description}}</textarea>
+                      </div>
+                    </div>
+                  </div>
 
-				<h3 class="my-4">Change Password</h3>
-				<form action="{{ route('account.updatePwd') }}" method="POST">
-					{{ csrfField() }}
-					<div class="form-group row">
-						<label for="password" class="col-md-3 control-label">New Password</label>
-						<div class="col-md-7">
-							<input type="password" placeholder="password" name="password" id="password" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="password_confirmation" class="col-md-3 col-form-label">Confirm Password</label>
-						<div class="col-md-7">
-							<input type="password" placeholder="password_confirmation" name="password_confirmation" id="password_confirmation" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-md-4"></div>
-						<div class="col-md-4">
-							<button type="submit" class="btn btn-primary btn-block">
-								<i class="fa fa-lock"></i> Change Password
-							</button>
-						</div>
-					</div>
-				</form>
-				<hr>
-				<h3 class="my-4">Linked Accounts</h3>
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-4">
-							{{-- Handles Instagram link/unlink --}}
-							@if(inArray(linkedAccount, 'instagram'))
-								<p><a role="button" class="btn btn-outline-danger btn-block"
-											href="{{ route('unlink.sm', {provider: 'instagram'}) }}"
-											onclick="return confirm('Are you sure, you want to unlink your Account')">
-											<i class="fa fa-unlink"></i> Unlink your Instagram account</a></p>
-							@else
-								<p><a role="button" class="btn btn-outline-info btn-block"
-											href="{{ route('social.login', {provider: 'instagram'}) }}">
-											<i class="fa fa-link"></i> Link your Instagram account</a></p>
-							@endif
-						</div>
+                </form>
+              </div>
+              
+            </div>
+            <div class="card card-profile">
+                    <div class="card-header">
+                      <h4 class="card-title">Size Variations</h4>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled size-variations">
+                        <li class="form-variation">
+                          <form id="variation_1">
+                          <div class="row">
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Label</label>
+                                  <input type="text" class="form-control" name="size" placeholder="Size Label" value="{{prod.skus.data[0].metadata.size}}">
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                  <label>Price</label>
+                                  <input type="text" class="form-control" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}">
+                                </div>
 
-						<div class="col-lg-4">
-							@if(inArray(linkedAccount, 'google'))
-								<p><a href="{{ route('unlink.sm', {provider: 'google'}) }}"
-									  	role="button" class="btn btn-outline-danger btn-block"
-										  onclick="return confirm('Are you sure, you want to unlink your Account')">
-											<i class="fa fa-unlink"></i> Unlink your Google account</a></p>
-							@else
-								<p><a role="button" class="btn btn-outline-info btn-block"
-											href="{{ route('social.login', {provider: 'google'}) }}">
-											<i class="fa fa-link"></i> Link your Google account</a></p>
-							@endif
-						</div>
+                              </div>   
+                            <div class="col-md-2">
+                              <div class="form-group">
+                                <label>Calories</label>
+                                  <input type="text" class="form-control" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}">
+                              </div>
+                            </div>
+                                        <div class="col-md-2">
+                                                <div class="form-group">
+                                                  <label>Carbs</label>
+                                                  <input type="text" class="form-control" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}">
+                                                </div>
+                                              </div> 
+                                              <div class="col-md-2">
+                                                    <div class="form-group">
+                                                      <label>Proteins</label>
+                                                      <input type="text" class="form-control" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}">
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <label>Fats</label>
+                                                          <input type="text" class="form-control" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}">
+                                                        </div>
 
-						<div class="col-lg-4">
-							@if(inArray(linkedAccount, 'twitter'))
-								<p><a href="{{ route('unlink.sm', {provider: 'twitter'}) }}"
-								  		role="button" class="btn btn-outline-danger btn-block"
-									  	onclick="return confirm('Are you sure, you want to unlink your Account')">
-											<i class="fa fa-unlink"></i> Unlink your Twitter account</a></p>
-							@else
-								<p><a role="button" class="btn btn-outline-info btn-block"
-											href="{{ route('social.login', {provider: 'twitter'}) }}">
-											<i class="fa fa-link"></i> Link your Twitter account</a></p>
-							@endif
-						</div>
-					</div>
+                                                      </div>   
+                                                      <div class="col-md-8">
+                                                          <btn data-toggle="tooltip" data-placement="top" title="Add another size" class="btn btn-md btn-outline-success btn-round btn-icon add-another"><i class="nc-icon nc-simple-add"></i></btn>
+                                                          <btn class="btn btn-md btn-outline-danger btn-round btn-icon remove-size" data-toggle="tooltip" data-placement="top" title="Delete this size"><i class="nc-icon nc-simple-remove"></i></btn>
+                                                      </div> 
+                                                                     
+                                      </div>
+                          </form>
+                        </li>
+                        <div class="dropdown-divider"></div>
 
-					<div class="row">
-						<div class="col-lg-4">
-							{{-- Handles Facebook link/unlink --}}
-							@if(inArray(linkedAccount, 'facebook'))
-							<p><a href="{{ route('unlink.sm', {provider: 'facebook'}) }}"
-										role="button" class="btn btn-outline-danger btn-block"
-								  	onclick="return confirm('Are you sure, you want to unlink your Account')">
-										<i class="fa fa-unlink"></i> Unlink your Facebook account</a></p>
-							@else
-							<p><a role="button" class="btn btn-outline-info btn-block"
-										href="{{ route('social.login', {provider: 'facebook'}) }}">
-										<i class="fa fa-link"></i> Link your Facebook account</a></p>
-							@endif
-						</div>
+                      </ul>
+                    </div>
+                  </div>
+          </div> <!-- /item card-->
+        </div>
 
-						<div class="col-lg-4">
-							{{-- Handles Github link/unlink --}}
-							@if(inArray(linkedAccount, 'github'))
-							<p><a href="{{ route('unlink.sm', {provider: 'github'}) }}"
-										role="button" class="btn btn-outline-danger btn-block"
-							  		onclick="return confirm('Are you sure, you want to unlink your Account')">
-										<i class="fa fa-unlink"></i> Unlink your GitHub account</a></p>
-							@else
-							<p><a role="button" class="btn btn-outline-info btn-block"
-								 		href="{{ route('social.login', {provider: 'github'}) }}">
-										<i class="fa fa-link"></i> Link your GitHub account</a></p>
-							@endif
-						</div>
-						<div class="col-lg-4">
-							{{-- Handles LinkedIn link/unlink --}}
-							@if(inArray(linkedAccount, 'linkedin'))
-							<p><a href="{{ route('unlink.sm', {provider: 'linkedin'}) }}"
-								  	role="button" class="btn btn-outline-danger btn-block"
-									  onclick="return confirm('Are you sure, you want to unlink your Account')">
-										<i class="fa fa-unlink"></i> Unlink your LinkedIn account</a></p>
-							@else
-							<p><a role="button" class="btn btn-outline-info btn-block"
-								 		href="{{ route('social.login', {provider: 'linkedin'}) }}">
-										<i class="fa fa-link"></i> Link your LinkedIn account</a></p>
-							@endif
-						</div>
-					</div>
+        </div>
+      </div>
+<script>
+    (function() {
+      function getScript(url,success){
+        var script=document.createElement('script');
+        script.src=url;
+        var head=document.getElementsByTagName('head')[0],
+            done=false;
+        script.onload=script.onreadystatechange = function(){
+          if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
+            done=true;
+            success();
+            script.onload = script.onreadystatechange = null;
+            head.removeChild(script);
+          }
+        };
+        head.appendChild(script);
+      }
 
-					<div class="row">
-						<div class="col-lg-4">
-							{{-- Handles Foursquare link/unlink --}}
-							@if(inArray(linkedAccount, 'foursquare'))
-							<p><a href="{{ route('unlink.sm', {provider: 'foursquare'}) }}"
-										role="button" class="btn btn-outline-danger btn-block"
-									  onclick="return confirm('Are you sure, you want to unlink your Account')">
-										<i class="fa fa-unlink"></i> Unlink your Foursquare account </a></p>
-							@else
-								<p><a role="button" class="btn btn-outline-info btn-block"
-										href="{{ route('social.login', {provider: 'foursquare'}) }}">
-										<i class="fa fa-link"></i> Link your Foursquare account</a></p>
-							@endif
-						</div>
-						<div class="col-lg-4">
-							{{-- Handles Bitbucket link/unlink --}}
-							@if(inArray(linkedAccount, 'bitbucket'))
-								<p><a href="{{ route('unlink.sm', {provider: 'bitbucket'}) }}"
-										role="button" class="btn btn-outline-danger btn-block"
-								  	onclick="return confirm('Are you sure, you want to unlink your Account')">
-										<i class="fa fa-unlink"></i> Unlink your Bit-Bucket account</a></p>
-							@else
-								<p><a role="button" class="btn btn-outline-info btn-block"
-										href="{{ route('social.login', {provider: 'bitbucket'}) }}">
-										<i class="fa fa-link"></i> Link your Bit-Bucket account</a></p>
-							@endif
-						</div>
-						<div class="col-lg-4"></div>
-					</div>
-				</div>
-				<hr>
 
-				<h3 class="my-4">Delete Account</h3>
-				<div class="row">
-					<div class="col">
-						You can delete your account, but keep in mind this action is irreversible.
-					</div>
-					<div class="col">
-						<a href="{{ route('account.delete') }}" class="btn btn-danger btn-block"
-						   onclick="return confirm('Are you sure? Do you really want to delete your Account?')">
-							<i class="fa fa-trash"></i> Delete my account
-						</a>
-					</div>
-				</div>
-				<br>
-			</div>
-		</div>
-	</div>
+        getScript('/js/jquery-2.2.4.min.js',function(){
+                getScript('/js/jquery.fileupload.min.js', function(){
+                    getScript('/js/cloudinary-jquery-file-upload.min.js', function(){
+                        const configSettings = {
+    //api_key: '239559663666399',
+    cloud_name: 'themurphs',
+    upload_preset: 'z3dsbrwx',
+    // format: "jpg",
+    // callback: 'https://hookstore.io/bin/jmrrqzk',
+  }
+
+$.cloudinary.config(configSettings);
+
+$(document).on('click', '.add-another', function(){
+  var id = $('body').find('form').length
+  id = id - 1 //Get number of forms on the page and subtract 1
+  $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
+  $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
+
+})
+
+$(document).on('click', '.remove-size', function(){
+  var id = $('body').find('form').length
+  id = id - 1
+  console.log(id)
+  if (id != 2) {
+    $(this).closest('li.form-variation').remove()
+
+  }
+})
+
+
+$("select#variation").change(function(){
+    var form = $('#item-variations')
+    form.html('<form id="variation_1" ><ul id="variation-1">\
+        <input type="text" name="name" placeholder="Name" required />\
+                <input type="text" name="short_name" placeholder="Short Description" />\
+                <input type="number" name="price" placeholder="Price" />\
+                <input type="text" name="quantity" placeholder="Quantity" />\
+                <input type="text" name="category" placeholder="Category" />\
+                <textarea name="description" Placeholder="Enter item description"></textarea>\
+                <hr />\
+                <input type="text" name="'+$(this).val()+'" placeholder="'+$(this).val()+'"/>\
+                <input type="text" name="calories" placeholder="Calories" />\
+                <input type="text" name="fats" placeholder="Fats" />\
+                <input type="text" name="carbs" placeholder="Carbs" />\
+                <input type="text" name="proteins" placeholder="Proteins" />\
+                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+$(this).val()+'">Add another</a></ul></form>')
+
+});
+$(document).ready(function() {
+
+  if ($.fn.cloudinary_fileupload !== undefined) {
+      
+    
+   $("input.cloudinary-fileupload[type=file]")
+    .attr("data-form-data", JSON.stringify(configSettings));
+    
+    $("input.cloudinary-fileupload[type=file]")
+      .cloudinary_fileupload()
+    .bind('fileuploadadd', function (e, data) {
+    data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+    var ajax = data.submit();
+      $('#button').on('click',function(e){
+        ajax.abort();
+  })
+    })
+     .bind("cloudinarydone", function(e, data) {
+      $('#parent_product').append('<input type="hidden" name="primary_img" value="'+data.result.url+'" />')
+      $(".thumbnails").append(
+        $.cloudinary.image(data.result.public_id, {
+          format: "jpg",
+          width: 150,
+          height: 100,
+          crop: "thumb",
+          gravity: "face",
+          effect: "saturation:50"
+        })
+      );
+    })
+      .bind("cloudinaryprogress", function(e, data) {
+      $(".progress_bar").css(
+        "width",
+        Math.round(data.loaded * 100.0 / data.total) + "%"
+      );
+    });
+  }
+});
+
+$('.save-form').on('click', function(){
+    var master = {}
+    var forms = $('body').find('form')
+
+    for (var i = 0; i < forms.length; i++) {
+        var obj = {};
+        var formName = forms[i].id
+		var elements = forms[i].querySelectorAll( "input, select, textarea" );
+		for( var x = 0; x < elements.length; ++x ) {
+			var element = elements[x];
+			var name = element.name;
+			var value = element.value;
+
+			if( name ) {
+				obj[ name ] = value;
+			}
+        }
+        master[formName] = obj
+	}
+	
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/items/add",
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify(master),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){
+            console.log('success');
+        },
+        failure: function(errMsg) {
+            alert(JSON.stringify(errMsg));
+        }
+    });
+})
+
+
+//Function for placeholders
+$(function() {
+    var inputs = $('input, textarea')
+    inputs.each(function(){
+        var i = $(this)
+        if (i.val() == 'undefined') {i.val('')}
+        if (i.val().length) {
+            i.addClass('populated');
+        } else {
+            i.removeClass('populated');
+        }
+    })
+  $('input').on('change', function() {
+    var input = $(this);
+    if (input.val().length) {
+      input.addClass('populated');
+    } else {
+      input.removeClass('populated');
+    }
+  });
+  
+  setTimeout(function() {
+    $('#fname').trigger('focus');
+  }, 500);
+});
+                    })
+                })
+        });
+    })();
+    </script>
+
+
 @endsection

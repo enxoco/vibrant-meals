@@ -33,6 +33,7 @@ Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
 Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
 Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
+Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
 
 
 /**
@@ -102,6 +103,7 @@ Route.group(() => {
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')
   Route.get('/account/unlink/:provider', 'AccountController.unlinkSocialMediaAccount').as('unlink.sm')
   Route.get('/account/delete', 'AccountController.destroy').as('account.delete')
+  Route.post('/account/billing/update', 'AccountController.updateBilling')
 
 })
 

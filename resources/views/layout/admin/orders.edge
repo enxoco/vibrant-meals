@@ -140,7 +140,7 @@
                                     @each(p in pickups)
                                   <tr>
                                     <td>
-                                      {{p.id}}
+                                        <a href="/admin/orders/{{p.id}}">{{p.id}}</a> 
                                     </td>
                                     <td>
                                       {{p.shipping.name}}
@@ -199,7 +199,7 @@
                                       @each(p in deliveries)
                                     <tr>
                                       <td>
-                                        {{p.id}}
+                                        <a href="/admin/orders/{{p.id}}">{{p.id}}</a> 
                                       </td>
                                       <td>
                                         {{p.shipping.name}}

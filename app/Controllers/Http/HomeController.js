@@ -1,7 +1,7 @@
 'use strict'
 
 const Database = use('Database')
-var stripe = require("stripe")("sk_test_ZmWaFEiBn0H63gNmfCacBolp");
+const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 class HomeController {
   async index ({ response, view, session, auth }) {

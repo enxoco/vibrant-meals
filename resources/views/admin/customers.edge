@@ -158,7 +158,9 @@
                                         {{p.metadata.fulfillment_day}}
                                     </td>
                                     <td>
-                                      {{p.recent_order.id}}
+                                            <a href="/admin/orders/{{p.recent_order.id}}">{{p.recent_order.id}}</a> 
+
+                                      
                                     </td>
                                     <td>
                                         {{currency(p.totalSpend)}}

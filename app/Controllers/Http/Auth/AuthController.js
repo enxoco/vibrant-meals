@@ -5,7 +5,7 @@ const users = make('App/Services/UserService')
 const User = use('App/Models/User')
 const Helpers = use('Helpers')
 const zipcodes = require('zipcodes')
-const stripe = require('stripe')('sk_test_ZmWaFEiBn0H63gNmfCacBolp')
+const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const ItemCategory = use('App/Models/ItemCategory')
 const Item = use('App/Models/Item')
 const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
@@ -57,19 +57,31 @@ class AuthController {
   async viewProfile ({request, response, auth, view}) {
     if (auth.user.id) {
       var user = auth.user
+      var id = user.stripe_id
 
-      // Get user details from Stripe
-      var existing = await stripe.customers.list(
-        { limit: 1, email: user.email },
-      );
+    // Grab all customers from Stripe
+    var customer = await stripe.customers.retrieve(id)
+    // customers = customers.data
 
-      // Get orders for user from Stripe
-      console.log(existing.data[0]['id'])
-      var orders = await stripe.orders.list(
-        { customer: existing.data[0]['id'] },
-      );
+    // Initialize empty variable to hold user's lifetime spending
+    var totalSpend = 0
 
-      return view.render('auth.profile', {user: existing.data[0], orders: orders})
+    // For each customer, pull a list of their orders.
+      var order = await stripe.orders.list({
+        customer: id,
+      })
+
+      // Loop over all orders for a user and grab the total amounts
+      for (var x = 0; x < order.data.length; x++) {
+        totalSpend += order.data[x].amount
+      }
+
+      // Add the lifetime spending for the customer onto customer object
+      customer.totalSpend = totalSpend
+      // Add customers most recent order to their object
+      customer.recent_order = order.data[0]
+      customer.orders = order
+      return view.render('account.profile', {customer})
     }
   }
 

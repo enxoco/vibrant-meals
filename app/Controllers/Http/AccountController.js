@@ -2,6 +2,8 @@
 
 const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
+const stripe = require('stripe')(Env.get('STRIPE_SK'))
+
 
 class AccountController {
   async edit ({ auth, view, response }) {
@@ -14,6 +16,26 @@ class AccountController {
       console.log(e)
       response.redirect('/login')
     }
+  }
+
+  async updateBilling ({request, response, auth}) {
+    var form = request.all()
+    console.log(form.street)
+
+    var id = auth.user.stripe_id
+    var update = await stripe.customers.update(id, {
+      shipping: {
+        name: auth.user.email,
+        address: {
+          line1: form.street,
+          city: form.city,
+          state: form.state,
+          postal_code: form.postal_code
+        }
+      }
+    })
+
+    return response.send(update)
   }
 
   async update ({ request, session, response, auth }) {
