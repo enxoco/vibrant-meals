@@ -6267,6 +6267,10 @@ License - nucleoapp.com/license/
 }
 
 @media screen and (min-width: 768px) {
+  a.filter-button {
+    font-size: 20px;
+    padding: 0;
+  }
   .footer .footer-nav {
     padding-left: 21px;
   }
@@ -6450,11 +6454,11 @@ a.filters {
 h2.category-heading {
   font-size: 2em;
 }
-
-.row.categories-row {
-  padding-left: 50px;
-  padding-right: 50px;
+a.filter-button {
+  font-size: 10px;
+  padding: 0;
 }
+
 
 .card-user .image img {
   border-radius: 12px 12px 0px 0px;

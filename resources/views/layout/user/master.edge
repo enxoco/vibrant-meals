@@ -140,6 +140,24 @@ li.list-group-item.button-group {
 }
 
 
+/* styles below this line are not critical to above the fold */
+h5.heading {
+    font-size: 36px;
+    font-weight: 900;
+    margin-top: 20PX;
+    
+}
+a#delivery, a#pickup {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.card-stats .card-footer .stats {
+    display: flex;
+    color: #9A9A9A;
+    align-items: center;
+    justify-content: space-between;
+}
 /**
  * The CSS shown here will not be introduced in the Quickstart guide, but shows
  * how you can use CSS to style your Element's container.
@@ -260,99 +278,8 @@ label {
       </div>
     </div>
     <div class="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
+      @!include('layout.user.top-nav')
 
-            <a class="navbar-brand" href="/">
-                <img src="/images/logo.png" />
-            </a>
-          </div>
-          <div class="navbar-toggle">
-              
-                <button type="button" class="navbar-toggler justify-content-end">
-                  <span class="navbar-toggler-bar bar1"></span>
-                  <span class="navbar-toggler-bar bar2"></span>
-                  <span class="navbar-toggler-bar bar3"></span>
-                </button>
-                Cart
-              </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
-              
-            <form>
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control searchbox" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="nc-icon nc-zoom-split"></i>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-magnify" href="/">
-                        Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                            <a class="nav-link btn-magnify" href="#pablo">
-                            Our Stores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                                <a class="nav-link btn-magnify" href="#pablo">
-                                How it works
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                    <a class="nav-link btn-magnify" href="#pablo">
-                                    Contact
-                                    </a>
-                                  </li>
-                                  @unless(auth.user.user_level == 'customer')
-                                  <li class="nav-item">
-                                        <a class="nav-link btn-magnify" href="/admin/products">
-                                        Admin Dashboard
-                                        </a>
-                                    </li>
-                                  @endunless
-              <li class="nav-item btn-rotate dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="nc-icon nc-bell-55"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link btn-rotate" data-toggle="modal" data-target="#loginModal" href="#">
-                  <i class="nc-icon nc-settings-gear-65"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                  </p>
-                </a>
-
-
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      
-
-      <!-- End Navbar -->
       <!-- <div class="panel-header panel-header-lg">
   
   <canvas id="bigDashboardChart"></canvas>
@@ -475,10 +402,10 @@ features: [
 };
 $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', function(){
   toastr.options = {
-  "closeButton": false,
+  "closeButton": true,
   "debug": false,
   "newestOnTop": false,
-  "progressBar": false,
+  "progressBar": true,
   "positionClass": "toast-top-right",
   "preventDuplicates": true,
   "onclick": null,
@@ -632,7 +559,7 @@ $(".filter-button").click(function(){
 //   $(".card.card-user[data-category*='"+this.className+"']").show()
 // })
 
-$('.card.card-user').on('click', function(){
+$('.card.card-user, .card.card-stats').on('click', function(){
   var meta = $(this).data('meta')
   delete meta['description']
   delete meta['name']

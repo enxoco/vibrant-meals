@@ -1,0 +1,36 @@
+<div class="modal fade" id="{{item.skus.data[0].id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="card-title">{{item.name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img class="lazy" data-src="{{item.skus.data[0].image}}" />
+                <hr />
+                {{item.description}}
+                <hr />
+            <div class="row">
+    
+            </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" class="checkout-prompt-1"
+                data-id="{{item.id}}" 
+                data-sku="{{item.skus.data[0].id}}" 
+                data-name="{{item.name}}" 
+                data-price="{{item.skus.data[0].price}}" 
+                data-img_url="{{item.skus.data[0].image}}" 
+                data-quantity="1" 
+                href="#" 
+                class="is-pulled-right"
+              >
+    
+                           <img src="/images/cart-icon.png" height="40px" />
+                            </a>
+            </div>
+          </div>
+        </div>
+      </div>

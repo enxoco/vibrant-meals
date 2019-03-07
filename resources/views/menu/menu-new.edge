@@ -2,52 +2,92 @@
 
 @section('content')
 @!include('Modals.initial')
-      <div class="content">
-          <div class="row categories-row">
-              <div class="col">
-                <a class="filters" href="#filters">
-                    <i class="fa fa-filter"></i>
-                </a>
-              </div>
-              <div class="col">
-                <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
-              </div>
-
-              @each(category in categories)
-              @unless(category == '')
-              <div class="col">
-                  <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category) }}</h2></a>
-              </div>
-              @endunless
-              @endeach
+  <div class="content">
+    <div class="row categories-row">
+      <div class="col">
+        <a class="filters" href="#filters">
+          <i class="fa fa-filter"></i>
+        </a>
+      </div>
+      <div class="col">
+        <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
+      </div>
+      @each(category in categories)
+        @unless(category == '')
+          <div class="col">
+            <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category) }}</h2></a>
           </div>
-        <div class="row">
-          @each(item in items)
-          @unless(item.active === false)
-          <div class="col-6 col-lg-4 filter {{item.metadata.primary_category}}">
-          <div class="card card-user"
-          data-category="{{item.metadata.primary_category}}"
-          data-sku="{{item.skus.data[0].id}}"
-          data-meta='{{toJSON(item.skus.data[0].metadata)}}'
-          >
-                <div class="image">
-                  <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                  <div class="col-12 col-md-9 ">
-                      <h5 class="card-title">{{item.name}}</h5>
+        @endunless
+      @endeach
+    </div>
+
+    <div class="row">
+      @each(item in items)
+        @unless(item.active === false)
+          <!-- Start of individual Product card -->
+          <div class="col-12 col-lg-4 filter {{item.metadata.primary_category}}">
+              <div class="card card-stats d-none d-block d-sm-block d-md-none"
+              data-category="{{item.metadata.primary_category}}"
+              data-sku="{{item.skus.data[0].id}}"
+              data-meta='{{toJSON(item.skus.data[0].metadata)}}'
+              >
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-5 col-md-4">
+                              <div class="icon-big text-center icon-warning">
+                                  <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
+                                </div>
+                          </div>
+                          <div class="col-7 col-md-8">
+                              <div class="numbers">
+                                  <p class="card-category">{{item.name}}</p>
+                                  <p class="card-title ">{{currency(item.skus.data[0].price)}}</p><p>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-footer ">
+                  <hr>
+                      <div class="stats ">
+                          <a class="checkout-prompt-1"
+                          data-id="{{item.id}}" 
+                          data-sku="{{item.skus.data[0].id}}" 
+                          data-name="{{item.name}}" 
+                          data-price="{{item.skus.data[0].price}}" 
+                          data-img_url="{{item.skus.data[0].image}}" 
+                          data-quantity="1" 
+                          href="#" 
+                          class="is-pulled-right"
+                        >
+                          <img src="http://localhost:3333/images/cart-icon.png" style="height:20px"/>
+                          </a>
+                          <img src="http://localhost:3333/images/elippsis.png" style="height: 10px" />
+                      </div>
+                  </div>
+              </div>
+              
+              
+            <div class="card card-user d-none d-md-block d-lg-block"
+              data-category="{{item.metadata.primary_category}}"
+              data-sku="{{item.skus.data[0].id}}"
+              data-meta='{{toJSON(item.skus.data[0].metadata)}}'
+            >
+              <div class="image">
+                <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 col-md-9">
+                    <h5 class="card-title">{{item.name}}</h5>
                   </div>
                   <div class="col price">
                       <h5>{{currency(item.skus.data[0].price)}}</h5>
                   </div>
-                    </div>
-
                 </div>
-  
-                <div class="card-footer">
-  
-                  <hr class="d-none d-lg-block">
+              </div>
+              <div class="card-footer">
+                <hr class="d-none d-lg-block">
                   <div class="button-container">
                     <div class="row ">
                       <div class="col ml-auto d-none d-lg-block">
@@ -60,7 +100,6 @@
                       <div class="col ml-auto d-none d-lg-block">
                             <h5>
                              {{item.skus.data[0].metadata.fats}}
-
                               <br>
                               <small>Fats</small>
                             </h5>
@@ -96,50 +135,13 @@
                 </div>
               </div>
         </div>
-          <!-- Modal -->
-  <div class="modal fade" id="{{item.skus.data[0].id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-  
-                  <h5 class="card-title">{{item.name}}</h5>
-  
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          <img class="lazy" data-src="{{item.skus.data[0].image}}" />
-          <hr />
-          {{item.description}}
-          <hr />
-          <div class="row">
-  
-          </div>
-          </div>
-          <div class="modal-footer">
-              <a data-dismiss="modal" class="checkout-prompt-1"
-              data-id="{{item.id}}" 
-              data-sku="{{item.skus.data[0].id}}" 
-              data-name="{{item.name}}" 
-              data-price="{{item.skus.data[0].price}}" 
-              data-img_url="{{item.skus.data[0].image}}" 
-              data-quantity="1" 
-              href="#" 
-              class="is-pulled-right"
-            >
-  
-                         <img src="/images/cart-icon.png" height="40px" />
-                          </a>
-          </div>
-        </div>
-      </div>
-    </div>
+        @!include('Modals.product-card')
+        <!--/individual product card-->
         @endunless
 
         @endeach
         </div>
-      </div>
+      </div><!--/Content-->
       <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
           <div class="row">

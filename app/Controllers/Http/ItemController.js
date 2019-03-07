@@ -418,13 +418,16 @@ class ItemController {
           .select('*')
           .where('id', auth.user.pickup_location)
   
+        var stripeDetails = await stripe.customers.retrieve(auth.user.stripe_id)
+
         user.fulfillment_method = auth.user.fulfillment_method
         user.fulfillment_day = auth.user.fulfillment_day
         store[0].desc = store[0].name
         user.pickupLocation = store[0]
         user.pickupLocation.desc = user.pickupLocation.name
         
-        return view.render('menu.checkout', {user})
+        
+        return view.render('menu.checkout', {user, billing: stripeDetails})
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.

@@ -9,6 +9,7 @@
                 
               </div>
               <div class="card-body">
+                {{customer.metadata.fulfillment_method}}
                 <div class="author">
                   <a href="#">
 					<h5 class="title">{{customer.metadata.name}}</h5>
@@ -151,12 +152,33 @@
 								  <p class="description">Pickup or Delivery?</p>
 								<div class="col-md-12 col-12">
 									<div class="row">
-										<a href="/account/method/pickup" class="active">
-											<img class="cart-icon pt-2" src="/images/pickup-icon.png" />
-										</a>
-										<a href="/account/method/delivery">
-											<img class="cart-icon pt-2" src="/images/delivery-icon.png" />
-										</a>
+                    <div class="col">
+                    @if(customer.metadata.fulfillment_method == 'pickup')
+										<a href="/account/method/pickup" class="active fulfillment-radio">
+                      <img class="cart-icon pt-2" src="/images/pickup-icon.png" />
+                      <span class="fulfillment-option">Pickup</span>
+                    </a>
+                    @else
+                    <a href="/account/method/pickup" class="fulfillment-radio">
+                      <img class="cart-icon pt-2" src="/images/pickup-icon.png" />
+                      <span class="fulfillment-option">Pickup</span>
+
+                    </a>
+                    @endif
+                    </div>
+                    <div class="col">
+                    @if(customer.metadata.fulfillment_method == 'delivery')
+										<a href="/account/method/delivery" class="active fulfillment-radio">
+                      <img class="cart-icon pt-2" src="/images/delivery-icon.png" />
+                      <span class="fulfillment-option">Delivery</span>
+                    </a>
+                    @else
+                    <a href="/account/method/delivery" class="fulfillment-radio">
+                      <img class="cart-icon pt-2" src="/images/delivery-icon.png" />
+                      <span class="fulfillment-option">Delivery</span>
+                    </a>
+                    @endif
+                    </div>
 									</div>
 								</div>
 	
