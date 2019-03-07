@@ -13,7 +13,7 @@ var cartCur = []
 
 class ItemController {
 
-  async listItems ({view, response}) {
+  async listItems ({view, response, auth}) {
 
     var products = await stripe.products.list();
     var prod = products.data
@@ -23,8 +23,22 @@ class ItemController {
     }
     var uniq = [ ...new Set(categories) ];
 
+    if (auth.user) {
+      var user = {}
+      var store = await Database 
+        .table('locations')
+        .select('*')
+        .where('id', auth.user.pickup_location)
 
-    return view.render('menu.menu-new', {items: prod, categories: uniq})
+      user.fulfillment_method = auth.user.fulfillment_method
+      user.fulfillment_day = auth.user.fulfillment_day
+      store[0].desc = store[0].name
+
+      user.pickupLocation = store[0]
+      return view.render('menu.menu-new', {items: prod, categories: uniq, user: user})
+    } else {
+      return view.render('menu.menu-new', {items: prod, categories: uniq, user: null})
+    }
 
   }
 
@@ -398,12 +412,19 @@ class ItemController {
 
       if (auth.user) { // If the user already has an account, load their fulfillment preferences
 
-        var user = {
-          name: auth.user.name,
-          email: auth.user.email,
-        }
+        var user = {}
+        var store = await Database 
+          .table('locations')
+          .select('*')
+          .where('id', auth.user.pickup_location)
+  
+        user.fulfillment_method = auth.user.fulfillment_method
+        user.fulfillment_day = auth.user.fulfillment_day
+        store[0].desc = store[0].name
+        user.pickupLocation = store[0]
+        user.pickupLocation.desc = user.pickupLocation.name
         
-        return view.render('menu.checkout', {session})
+        return view.render('menu.checkout', {user})
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.

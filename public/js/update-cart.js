@@ -3,6 +3,15 @@
 // Any function that calls this function should first update localstorage.cart
 
 function updateCartDiv() {
+  if($('#user-info').data()) {
+    var user = $('#user-info').data()
+    console.log(user.user.pickupLocation)
+    localStorage.fulfillment_method = user.user.fulfillment_method
+    localStorage.fulfillment_day = user.user.fulfillment_day
+    localStorage.custEngageCompleted = 1
+    localStorage.checkoutInitiated = 1
+    localStorage.pickupLocation = JSON.stringify(user.user.pickupLocation)
+  }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
     var d = '<div class="col-10 d-flex mt-4 justify-content-start">\
@@ -23,6 +32,9 @@ function updateCartDiv() {
 
 
     if (localStorage.pickupLocation) {
+      
+      console.log(JSON.parse(localStorage.pickupLocation).name)
+      
       var pickup = JSON.parse(localStorage.pickupLocation).desc
       $('#pickupRadio').closest('.fulfillment-option').addClass('active')
       $('.cart-icon-label.pickup').html(pickup)

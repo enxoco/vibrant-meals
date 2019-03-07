@@ -2,7 +2,6 @@
 
 @section('content')
 @!include('Modals.initial')
-
       <div class="content">
           <div class="row categories-row">
               <div class="col">
@@ -13,6 +12,7 @@
               <div class="col">
                 <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
               </div>
+
               @each(category in categories)
               @unless(category == '')
               <div class="col">

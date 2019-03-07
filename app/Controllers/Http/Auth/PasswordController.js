@@ -16,29 +16,24 @@ class PasswordController {
       email: 'required|email'
     }
 
+    console.log(userInfo)
+
     const validation = await validateAll(userInfo, rules)
 
     if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-
-      return response.redirect('back')
+      return response.send(validation.messages())
     }
 
     const user = await users.getUserByEmail(userInfo.email)
     if (user === null) {
-      session.flash({ warning: `${userInfo.email} Not Found` })
-      return response.redirect('back')
+      return response.send({ warning: `${userInfo.email} Not Found` })
     } else {
       const token = await users.findOrCreateToken(user)
       try {
         await this.sendResetMail(user, token)
-        session.flash({status: 'We have e-mailed your password reset link!'})
-        return response.redirect('back')
+        return response.send({status: 'We have e-mailed your password reset link!'})
       } catch (error) {
-        session.flash({ error: 'Unable to deliver email to given email address' })
-        return response.redirect('back')
+        return response.send({ error: 'Unable to deliver email to given email address' })
       }
     }
   }
