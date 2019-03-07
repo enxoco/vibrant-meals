@@ -30,12 +30,6 @@ Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
 Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
 Route.post('/admin/items/add', 'AdminController.test')
 
-// This needs to go bye bye.  No longer storing categories in database.
-Route.get('/admin/categories', 'AdminController.showCategories')
-Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
-Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
-
-
 Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
 Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
 
@@ -49,8 +43,7 @@ Route.get('/checkout', 'CheckoutController.startCheckout')
 
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
-Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
-Route.post('/register/:reg_method', 'Auth/AuthController.updateCustomerAddress')
+
 
 Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
 Route.get('/products/hide/:itemId', 'ItemController.hideItem')

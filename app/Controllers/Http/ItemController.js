@@ -35,7 +35,6 @@ class ItemController {
 
     var products = await stripe.products.retrieve( params.sku );
     var prod = products
-    console.log('created items')
  
     // var items = []
     // for (var i = 0; i < prod.length; i++) {

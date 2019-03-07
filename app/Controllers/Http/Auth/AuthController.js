@@ -78,65 +78,6 @@ class AuthController {
     }
   }
 
-  async updateCustomerAddress ({ request, response, view, params, session }) {
-    if (params.reg_method == 'user') {// Update a users profile with address
-      // session.put('needs_registration', 1)
-      const user = session.get('adonis_auth')
-
-      const req = request.all()
-      
-      const update = await Database
-        .table('delivery_customer_metas')
-        .insert({
-          user_id: user,
-          street_addr: req.st_addr,
-          city: req.city,
-          state: req.state,
-          zip: req.zip
-        })
-      
-      return response.send(update)
-      // var location = request.only(['location'])
-      // var locationId = location.location
-
-    
-      // if (location) {
-      //   var id = session.get('adonis_auth')
-      //   await Database
-      //     .table('users')
-      //     .update({
-      //       pickup_location: locationId
-      //     })
-      //     .where('id', id)
-        
-      //   session.put('locationId', locationId)
-      // }
-      // console.log('step two')
-      // return response.redirect('/')
-
-    
-    } else {// Just show menu and continue as guest
-      session.put('needs_registration', 0)
-      console.log(`all: ${request.all()}`)
-
-      var location = request.only(['location'])
-      var locationId = location.location
-
-      if (location) {
-        var id = session.get('adonis_auth')
-        await Database
-          .table('users')
-          .update({
-            pickup_location: locationId
-          })
-          .where('id', id)
-        session.put('locationId', locationId)
-
-      }
-
-      return response.redirect('/')
-    }
-  }
 
 
   async postLogin ({request, session, auth, response}) {
@@ -169,10 +110,6 @@ class AuthController {
     }
   }
 
-  async showRegister ({ request, response, view }) {
-    const ip = "75.136.21.180"
-    return view.render('auth.register')
-  }
 
 
    async logout ({ auth, response, session }) {

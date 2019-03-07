@@ -51,13 +51,6 @@ class AdminController {
         return view.render('admin.items', {items: prod, categories})
     }
 
-    async showCategories ({ view }) {
-        const categories = await Database
-            .table('item_categories')
-            .distinct('desc', 'id')
-
-        return view.render('admin.categories.edit', {categories: categories})
-    }
 
     async test ({request, response}) {
         var form = request.all()
