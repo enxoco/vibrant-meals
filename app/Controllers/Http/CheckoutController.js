@@ -1,5 +1,6 @@
 'use strict'
 const Database = use('Database')
+const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const moment = require('moment')
 const User = use('App/Models/User')

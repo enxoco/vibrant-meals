@@ -29,9 +29,13 @@ Route.get('/admin/products', 'AdminController.showItems')
 Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
 Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
 Route.post('/admin/items/add', 'AdminController.test')
+
+// This needs to go bye bye.  No longer storing categories in database.
 Route.get('/admin/categories', 'AdminController.showCategories')
 Route.post('/admin/categories/edit/:cat_id', 'CategoryController.update')
 Route.post('/admin/categories/list/:cat_id', 'CategoryController.listItems')
+
+
 Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
 Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
 
@@ -42,15 +46,8 @@ Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
  * Now we need to capture 
  */
 Route.get('/checkout', 'CheckoutController.startCheckout')
-Route.post('/cart/addItem', 'ItemController.addToCart')
-Route.get('/cart/clear', 'ItemController.clearCart')
-Route.get('/cart/sub/:cartPos', 'ItemController.subCart')
-Route.get('/cart/remove/:cartPos', 'ItemController.removeItem')
-// Route.get('/', 'ItemController.showMenu')
 
 Route.get('/', 'HomeController.index').as('welcomePage')
-Route.get('/menu/all', 'ItemController.showMenu')
-Route.get('/items/category/:cat_id', 'ItemController.list')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 Route.get('/register', 'Auth/AuthController.showRegister').as('registerPage')
 Route.post('/register/:reg_method', 'Auth/AuthController.updateCustomerAddress')
@@ -80,7 +77,6 @@ Route.get('/manage/pickups/:zip/:radius', 'Auth/AuthController.showPickupOptions
  * We need to get their preference for pickup/delivery and save that to the session.
  * Then we need to show them a modal asking for name and zip.
  */
-Route.post('/register', 'Auth/AuthController.postGuestRegistration')
 
 Route.get('/password/reset', 'Auth/PasswordController.showResetForm').as('reset.form')
 Route.post('/password/email', 'Auth/PasswordController.sendResetLinkEmail').as('send.reset.email')

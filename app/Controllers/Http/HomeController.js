@@ -1,6 +1,7 @@
 'use strict'
 
 const Database = use('Database')
+const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 class HomeController {

@@ -2,6 +2,7 @@
 
 const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
+const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 

@@ -3,10 +3,10 @@
 const Database = use('Database')
 const Helpers = use('Helpers')
 const Drive = use('Drive')
+const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
-const nextFulfillment = use('App/Controllers/Helpers/FetchNextFulfillment')
-const showDeliveryOptions = use('App/Controllers/Helpers/FetchDeliveryOptions')
+
 
 
 var cartCur = []
@@ -208,7 +208,6 @@ class ItemController {
     
     async addItem ({ view, request, response, params, session }) {
       const obj = request.all()
-      return obj
       const profilePic = request.file('item-image')
         if (profilePic) {
           try {
@@ -393,126 +392,6 @@ class ItemController {
     
     }
 
-    async addToCart ({ request, session, response }) {
-        var form = request.all()
-        var cart = session.get('cartItem')
-        var cartCount = session.get('cartCount') 
-        if (cartCount) {
-          cartCount += 1
-          session.put('cartCount', cartCount)
-        } else {
-          session.put('cartCount', 1)
-        }
-        if (cart) { // Check to see if there are items in the cart
-          
-            cartCur = cart // If we already have items in the cart, set that the contents of the cartItem session key to the cartCur array
-            for (var i = 0; i < cartCur.length; i++) {
-                if (cartCur[i].id == form.id) {
-
-                    var quantity = parseInt(cartCur[i].quantity)
-
-                    cartCur[i].quantity = parseInt(cartCur[i].quantity) + 1 // Make sure we convert our quanity to an integer otherwise we will just add numbers onto a string
-                    session.put('cartItem', cartCur)
-                    await Database
-                    .table('items')
-                    .decrement('eightySixCount', 1)
-                    .where('id', cartCur[i].id)
-                    return cartCur
-                    return response.redirect('back', true)
-                }
-            }
-
-            cartCur.push(form)// Push our new item onto the end of the cartCur array
-
-        } else {
-            for (var i = 0; i < cartCur.length; i++) {
-                if (cartCur[i].id == form.id) {
-                    form.quantity += 1
-
-                }
-            }
-            cartCur.push(form)// Nothing previously in the cart so simply add our current item to the array
-        }
-        var totalPrice = 0
-        for (var i = 0; i < cartCur.length; i++) {
-            totalPrice += cartCur[0].price
-        }
-        // Set the cartItem session key to the contents of our cartCur array
-        session.put('cartItem', cartCur)
-        return response.send(cartCur)
-    }
-
-    async clearCart ({ response, session}) {
-        session.put('cartItem', '') // Clear the cart from the session
-        session.put('cartCount', 0)
-        cartCur = [] // Make sure to reset the cart array as it may contain old cart items
-        return response.redirect('back')
-    }
-
-    // Reduce quantity of items in cart
-    async subCart ({ session, response, params }) {
-        var cart = session.get('cartItem')
-        await Database
-        .table('items')
-        .increment('eightySixCount', 1)
-        .where('id', cart[params.cartPos].id)
-
-        cart[params.cartPos].quantity = parseInt(cart[params.cartPos].quantity) - 1 
-        return response.redirect('back')
-
-    }
-    
-    async removeItem ({ session, response, params }) {
-        var cart = session.get('cartItem')
-        cartCur = []
-        for (var i = 0; i < cart.length; i++) {
-            if (i != params.cartPos) {
-
-            } 
-        }
-
-        session.put('cartItem', cartCur)
-        return response.redirect('back')
-    }
-
-
-    async showMenu ({ view, session, response }) {
-      // Setup our cart items variable
-      var cart = session.get('cartItem')
-
-      // Get our cart count if available.  This is used for basic analytics
-      // Used mainly to track whether we should show the registration modal
-      var cartCount = session.get('cartCount')
-
-      // Fetch our menu object containing items, filters, categories, etc...
-      const menu_items = await fetchMenu()
-
-      if (session.get('adonis_auth')) { // If the user already has an account, load their fulfillment preferences
-
-        const user = await Database
-        .table('users')
-        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
-        .where('id', session.get('adonis_auth'))  
-  
-        const store = await Database
-          .select('*')
-          .from('locations')
-          .where('id', session.get('locationId'))   
-        const nextAvalDate = await nextFulfillment(user[0].fulfillment_day)
-        session.put('fulfillment_day', nextAvalDate)
-
-          const deliverable = await showDeliveryOptions(user.zip)
-
-      
-        
-        return view.render('menu.items', {cart, categories: menu_items.categories, user, items: menu_items.items, nextAvalDate, store, hasAccount: true, fulMethod: user[0].fulfillment_method, deliverable, session: session.all()})
-
-      } // If we reach this condition, it means the user is not logged in.  Just show them the menu
-        // and we will collect their details before order is placed.
-        return view.render('menu.items', {cart, categories: menu_items.categories, items: menu_items.items, cartCount, hasAccount: false, session: session.all()})
-    }
-
-
     async showCheckout ({ view, session, auth }) {
 
       // Fetch our menu object containing items, filters, categories, etc...
@@ -531,35 +410,7 @@ class ItemController {
         // and we will collect their details before order is placed.
         return view.render('menu.checkout')
     }
-    /**
-     * 
-     * This function is used to list the items in a particular category 
-     * 
-     * Route /items/category/:cat_id
-     *  |
-     * \ /
-     * 
-     */
-    async list ({ params, view, session, response }) { 
-      var cat_ids = params.cat_id
-      var cart = session.get('cartItem')
-      
-      const subquery = Database
-        .from('items_in_categories')
-        .where('category_id', cat_ids)
-        .select('item_id')
-    
-      const items = await Database
-        .from('items')
-        .select('*')
-        .whereIn('id', subquery)
 
-      const categories = await Database
-        .table('item_categories')
-        .distinct('desc', 'id')
-      
-      return view.render('menu.items', {items, categories: categories, cart})
-    }
 }
 
 module.exports = ItemController
