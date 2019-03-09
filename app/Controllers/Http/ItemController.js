@@ -37,7 +37,7 @@ class ItemController {
       user.pickupLocation = store[0]
       return view.render('menu.menu-new', {items: prod, categories: uniq, user: user})
     } else {
-      return view.render('menu.menu-new', {items: prod, categories: uniq, user: null})
+      return view.render('menu.menu-new', {items: prod, categories: uniq})
     }
 
   }

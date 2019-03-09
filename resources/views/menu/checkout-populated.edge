@@ -1,71 +1,29 @@
-@layout('layout.user.master')
-@section('content')
-@!include('Modals.initial')
-
-      <div class="content">
-
-        @if(billing)
+<div class="row">
+    <div class="col-4">
+        <h4 class="mb-3">Basic Info</h4>
+        <br />
         <div class="row">
-          <div class="col-12 col-md-3 col-lg-3">
-          </div>
-          <div class="col">
-              <div class="card card-user">
-                  <div class="card-body ">
-                    <div class="row">
-
-                      <div class="col">
-                        <div class="numbers">
-                          <p class="card-category">Express Checkout</p>
-                          <p class="card-title">Order Total</p>
-                          <span id="order-total">
-
-                          </span>
-                          <p class="card-description" id="express-checkout-details">
-                            
-                          </p>
-                            </p><p>
-                        </p></div>
-                      </div>
+            <div class="col-md-6 mb-3">   
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="{{billing.metadata.name.split(' ')[0]}}" required>
+                    <div class="invalid-feedback">
+                        Valid first name is required.
                     </div>
-                  </div>
-                  <div class="card-footer ">
-                    <hr>
-                    <div class="stats">
-                        <p class="card-title"><a class="btn btn-success btn-lg"> Pay with card ending in {{billing.sources.data[0].last4}}</a>
-                        </div>
-                  </div>
-                </div>
-          </div>
-          <div class="col-12 col-md-3 col-lg-3">
-          </div>
-        </div>
-        @else
-        <div class="row">
-        <div class="col-4">
-          <h4 class="mb-3">Basic Info</h4>
-            <br />
-            <div class="row">
-                <div class="col-md-6 mb-3">   
-                  <label for="firstName">First name</label>
-                  <input type="text" class="form-control" id="firstName" placeholder="" required>
-                  <div class="invalid-feedback">
-                    Valid first name is required.
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="lastName">Last name</label>
-                  <input type="text" class="form-control" id="lastName" placeholder="" required>
-                  <div class="invalid-feedback">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="{{billing.metadata.name.split(' ')[1]}}" required>
+                <div class="invalid-feedback">
                     Valid last name is required.
-                  </div>
                 </div>
-                <div class="mb-3 col-md-6">
-                    <label for="email">Email <span class="text-muted">(Required)</span></label>
-                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="email">Email <span class="text-muted">(Required)</span></label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" value="{{billing.email}}">
                     <div class="invalid-feedback">
                       Please enter a valid email address for shipping updates.
                     </div>
-                  </div>
+            </div>
                   <div class="mb-3 col-md-6">
                       <label for="phone">phone <span class="text-muted">(Required)</span></label>
                       <input type="tel" class="form-control" id="phone" placeholder="(423)123-1234">
@@ -99,7 +57,7 @@
         <form id="main" class="needs-validation" novalidate>
           <div class="mb-3">
             <label for="address">Address</label>
-            <input type="text" class="form-control" name="street-bill" placeholder="1234 Main St" required>
+            <input type="text" class="form-control" name="street-bill" placeholder="1234 Main St" value="{{billing.shipping.address.line1}}" required>
             <div class="invalid-feedback">
               Please enter your shipping address.
             </div>
@@ -107,17 +65,18 @@
 
           <div class="mb-3">
             <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-            <input type="text" class="form-control" name="street2-bill" placeholder="Apartment or suite">
+            <input type="text" class="form-control" name="street2-bill" placeholder="Apartment or suite" value="{{billing.shipping.address.line2}}">
           </div>
 
           <div class="row">
               <div class="col mb-3">
                   <label for="city">City</label>
-                  <input type="text" class="form-control" name="city-bill" placeholder="City">
+                  <input type="text" class="form-control" name="city-bill" placeholder="City" value="{{billing.shipping.address.city}}">
                 </div>
             <div class="col-md-4 mb-3">
               <label for="state">State</label>
               <select class="custom-select d-block w-100" id="state-bill" name="state-bill" required >
+                <option value="{{billing.shipping.address.state}}">{{billing.shipping.address.state}}</option>
                 <option value="">Choose...</option>
                 <option value="AK">Alaska</option>
                 <option value="AL">Alabama</option>
@@ -179,7 +138,7 @@
             </div>
             <div class="col-md-3 mb-3">
               <label for="zip">Zip</label>
-              <input type="text" class="form-control" name="zip-bill" placeholder="" required>
+              <input type="text" class="form-control" name="zip-bill" placeholder="" required value="{{billing.shipping.address.postal_code}}">
               <div class="invalid-feedback">
                 Zip code required.
               </div>
@@ -331,7 +290,7 @@
 
         </div>
         @endif
-      <footer class="footer footer-black  footer-white>
+      <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
           <div class="row">
             <nav class="footer-nav">
@@ -369,6 +328,13 @@ document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
 
 <script src="https://js.stripe.com/v3/"></script>
 
+<script>
+  $.ajax({
+    type: 'GET',
+
+  })
+
+</script>
 
 </html>
 @endsection

@@ -9,7 +9,6 @@
                 
               </div>
               <div class="card-body">
-                {{customer.metadata.fulfillment_method}}
                 <div class="author">
                   <a href="#">
 					<h5 class="title">{{customer.metadata.name}}</h5>
@@ -143,41 +142,59 @@
 
 				<div class="card card-profile">
 						<div class="card-header">
-						  <h4 class="card-title">Delivery Preferences</h4>
+						  <h4 class="card-title">Order Preferences</h4>
 						</div>
 						<div class="card-body">
 						  <ul class="list-unstyled team-members">
 							<li>
 							  <div class="row">
-								  <p class="description">Pickup or Delivery?</p>
-								<div class="col-md-12 col-12">
+								<div class="col-md-12 col-12 mr-10">
 									<div class="row">
-                    <div class="col">
-                    @if(customer.metadata.fulfillment_method == 'pickup')
-										<a href="/account/method/pickup" class="active fulfillment-radio">
-                      <img class="cart-icon pt-2" src="/images/pickup-icon.png" />
-                      <span class="fulfillment-option">Pickup</span>
-                    </a>
-                    @else
-                    <a href="/account/method/pickup" class="fulfillment-radio">
-                      <img class="cart-icon pt-2" src="/images/pickup-icon.png" />
-                      <span class="fulfillment-option">Pickup</span>
-
-                    </a>
-                    @endif
+                      <div class="col-md-3 col-lg-3 col"></div>
+                      <div class="col">
+  
+                        <div class="form-group" id="fulfillment-method">
+                            <span class="switch switch-lg">
+                              <input type="checkbox" class="switch" id="pickup-switch" value="pickup"
+                              @if(customer.metadata.fulfillment_method == 'pickup')
+                                checked
+                              @endif
+                              >
+                              <label for="pickup-switch" class="switch-label">Pickup</label>
+                            </span>
+                            <span class="switch switch-lg">
+                                <input type="checkbox" class="switch" id="delivery-switch" value="delivery"
+                                @if(customer.metadata.fulfillment_method == 'delivery')
+                                  checked
+                                @endif
+                                >
+                                <label for="delivery-switch" class="switch-label">Delivery</label>
+                              </span>
+                          </div>
                     </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 col-lg-3 col"></div>
                     <div class="col">
-                    @if(customer.metadata.fulfillment_method == 'delivery')
-										<a href="/account/method/delivery" class="active fulfillment-radio">
-                      <img class="cart-icon pt-2" src="/images/delivery-icon.png" />
-                      <span class="fulfillment-option">Delivery</span>
-                    </a>
-                    @else
-                    <a href="/account/method/delivery" class="fulfillment-radio">
-                      <img class="cart-icon pt-2" src="/images/delivery-icon.png" />
-                      <span class="fulfillment-option">Delivery</span>
-                    </a>
-                    @endif
+
+                          <div class="form-group" id="fulfillment-day">
+                              <span class="switch switch-lg">
+                                <input type="checkbox" class="switch" id="monday-switch" value="monday"
+                                @if(customer.metadata.fulfillment_day == 'monday')
+                                  checked
+                                @endif
+                                >
+                                <label for="monday-switch" class="switch-label">Mondays</label>
+                              </span>
+                              <span class="switch switch-lg">
+                                  <input type="checkbox" class="switch" id="wednesday-switch" value="wednesday"
+                                  @if(customer.metadata.fulfillment_day == 'wednesday')
+                                    checked
+                                  @endif
+                                  >
+                                  <label for="wednesday-switch" class="switch-label">Wednesdays</label>
+                                </span>
+                            </div>
                     </div>
 									</div>
 								</div>
@@ -186,11 +203,7 @@
 							</li>
 	
 						  </ul>
-						  <div class="row">
-							  <div class="update ml-auto mr-auto">
-								<button type="submit" class="btn btn-success update-password">Update</button>
-							  </div>
-							</div>
+
 						</div>
 					  </div>
 					  <div class="card card-profile">
@@ -560,6 +573,8 @@ $(function() {
                 })
         });
     })();
+
+
     </script>
 
 

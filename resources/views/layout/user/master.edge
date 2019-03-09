@@ -198,9 +198,46 @@ label {
     color: black;
 }
 
+
+#category-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 50px;
+    max-height: 100px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 5px #c4c4c4;
+    -webkit-box-shadow: 0 0 5px #c4c4c4;
+    box-shadow: 0 0 5px #c4c4c4;
+}
+#category-container .img-container {
+  width: 100px;
+  flex: 1;
+  cursor: pointer;
+  align-content: center;
+  text-align: center;
+  border-bottom: 3px solid white;
+  border-radius: 5px;
+}
+#category-container .img-container:hover > h2 {
+  border-radius: 0px;
+  text-decoration: underline;
+}
+#category-container .img-container .icon {
+  position: relative;
+  width: 27px;
+  /* margin-top: 15%; */
+}
+#category-container h2 {
+  font-weight: 300;
+}
+
+
 </style>
 </head>
-@if(user != null)
+
+@if(user)
 <div class="hidden" id="user-info" data-user="{{toJSON(user)}}"></div>
 @endif
 <!-- Modal -->
@@ -534,6 +571,7 @@ $(document).on('click', 'a#deliveryRadio', function(){
 
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
+  feather.replace()
 
 
 $(".filter-button").click(function(){
@@ -678,3 +716,4 @@ if (window.location.href.includes('checkout')) {
 
 
 </script>
+<script src="https://unpkg.com/feather-icons"></script>

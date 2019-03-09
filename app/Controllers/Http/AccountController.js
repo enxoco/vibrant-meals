@@ -7,6 +7,31 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 
 class AccountController {
+
+  async updateFulfillmentMethod ({request, response, auth}) {
+
+    var stripe_id = await auth.user.stripe_id
+    var method = request.all()
+    method = method.pref
+
+    if (method == 'monday' || method == 'wednesday') {
+      var update = await stripe.customers.update(stripe_id, {
+        metadata: {
+          fulfillment_day: method
+        }
+      })
+    } else if (method == 'pickup' || method == 'delivery') {
+      var update = await stripe.customers.update(stripe_id, {
+        metadata: {
+          fulfillment_method: method
+        }
+      })
+    }
+
+    return response.send(update)
+  }
+
+
   async edit ({ auth, view, response }) {
     try {
       let loginID = await auth.getUser()

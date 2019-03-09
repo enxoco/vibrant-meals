@@ -4,21 +4,27 @@
 @!include('Modals.initial')
   <div class="content">
     <div class="row categories-row">
-      <div class="col">
-        <a class="filters" href="#filters">
-          <i class="fa fa-filter"></i>
-        </a>
-      </div>
-      <div class="col">
-        <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
-      </div>
-      @each(category in categories)
-        @unless(category == '')
-          <div class="col">
-            <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category) }}</h2></a>
+
+      <section id="category-container">
+        <div class="img-container">
+            <i class='icon orange' data-feather="filter"></i>
+
+        </div>
+          <div class='img-container'>
+            
+              <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
           </div>
-        @endunless
-      @endeach
+              @each(category in categories)
+              @unless(category == '')
+                <div class="img-container">
+                  <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category) }}</h2></a>
+                </div>
+              @endunless
+            @endeach
+
+        </section>
+        
+
     </div>
 
     <div class="row">

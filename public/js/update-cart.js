@@ -3,6 +3,18 @@
 // Any function that calls this function should first update localstorage.cart
 
 function updateCartDiv() {
+
+  var orderMethod = localStorage.fulfillment_method
+  var orderDay = localStorage.fulfillment_day
+  if (orderMethod == 'pickup') {
+    var orderLocation = JSON.parse(localStorage.pickupLocation).name
+  }
+  if (orderMethod == 'delivery') {
+
+  }
+
+  $('#'+orderMethod+'Radio').closest('.fulfillment-option').addClass('active')
+
   if($('#user-info').data()) {
     var user = $('#user-info').data()
     console.log(user.user.pickupLocation)
@@ -24,14 +36,17 @@ function updateCartDiv() {
     Your order will be ready for pickup between<br /> 8am and 4pm <br>Wednesday<br>Feb 27\
     </div></a></div></div>'
     $('.row.mb-5.pl-3').append(d)
-    // var date = $('.row.mb-5.pl-3')[1]
-    // date.innerHTML = d
-    console.log('checkout')
+    if ($('#express-checkout-details').html()) {
+      $('#express-checkout-details').html('Order Type: <strong>'+orderMethod+'</strong><br /> '+ orderMethod +' Location: <strong>'+ JSON.parse(localStorage.pickupLocation).name + '</strong><br />'+ orderMethod + ' Window: <strong>Between 8am and 4pm </strong><br />Day: ' + orderDay )
+
+    }
+    
+
   }
 
 
 
-    if (localStorage.pickupLocation) {
+    if (localStorage.pickupLocation && localStorage.pickupLocation != "undefined") {
       
       console.log(JSON.parse(localStorage.pickupLocation).name)
       

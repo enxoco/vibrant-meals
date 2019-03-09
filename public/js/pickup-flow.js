@@ -146,6 +146,18 @@ $(document).on('click', 'a#pickupRadio', function() {
   })
 
 
+  $(document).on('click', '#delivery', function(){
+    localStorage.setItem("fulfillment_method", "delivery")
+    updateCartDiv()
+    $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
+    $('#deliveryRadio').closest('.fulfillment-option').addClass('active')
+    setTimeout(function() {
+      $('#modal-initial-click').modal('toggle')
+  }, 500);
+    
+  })
+
+
   $(document).on('click', '#pickup', function() {
     $('a#pickupRadio').addClass('active')
     $('a#deliveryRadio').removeClass('active')

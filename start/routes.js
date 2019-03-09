@@ -87,6 +87,7 @@ Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')
 
 Route.group(() => {
   Route.get('/account', 'Auth/AuthController.viewProfile').as('user.account')
+  Route.post('/account/fulfillmethod/update', 'AccountController.updateFulfillmentMethod')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
   Route.post('/account/photo', 'AccountController.uploadAvatar').as('account.updateAvatar')
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')
