@@ -59,8 +59,10 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       var nextMon = moment(monday).add(1, 'week').format('MMM DD')
       var thisWed = moment(wednesday).format('MMM DD')
       var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
+      
       pickupDaysModal.html('<ul class="list-group">')
-      pickupDaysModal.append('<li class="list-group-item button-group"><h4>CHOOSE A DAY</h4></li>')
+  
+      pickupDaysModal.append('<li><h4>CHOOSE A DAY</h4></li>')
       pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+thisWed+'" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+thisWed+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="'+nextMon+'"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">'+nextMon+'</div></div></div></li>')

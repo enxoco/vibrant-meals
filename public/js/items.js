@@ -404,12 +404,10 @@ $('#pickupRadio').html('<div class="cart-icon"><img src="/images/pickup-icon.png
       var nextMon = moment(monday).add(1, 'week').format('MMM DD')
       var thisWed = moment(wednesday).format('MMM DD')
       var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
-      pickupDayModal.html('')
       pickupDayModal.append('<div class="listing-item"><div class="list-item"><span-class="is-pulled-left">Monday<span><span class="store-hours is-pulled-right">'+thisMon+'</span></div></div>')
       pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+thisWed+'</span></div></div>')
       pickupDayModal.append('<div class="listing-item"><div class="list-item">Monday<span class="store-hours is-pulled-right">'+nextMon+'</span></div></div>')
       pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+nextWed+'</span></div></div>')
-
 
       
       $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))

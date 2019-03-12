@@ -3038,6 +3038,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   height: 3px;
   border-radius: 50%;
   margin: 0 auto;
+  right: 75px;
 }
 
 .navbar .button-dropdown .navbar-toggler-bar:nth-child(2) {
@@ -5861,19 +5862,19 @@ License - nucleoapp.com/license/
     transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   }
   .nav-open .main-panel {
-    right: 26;
-    -webkit-transform: translate3d(-60px, 0, 0);
+    /* -webkit-transform: translate3d(-60px, 0, 0);
     -moz-transform: translate3d(-60px, 0, 0);
     -o-transform: translate3d(-60px, 0, 0);
     -ms-transform: translate3d(-60px, 0, 0);
-    transform: translate3d(-160px, 0, 0);
+    transform: translate3d(-160px, 0, 0); */
   }
+ 
   .nav-open .sidebar {
-    -webkit-transform: translate3d(-10px, 0, 0);
-    -moz-transform: translate3d(-10px, 0, 0);
-    -o-transform: translate3d(-10px, 0, 0);
-    -ms-transform: translate3d(-10px, 0, 0);
-    transform: translate3d(-10px, 0, 0);
+    -webkit-transform: translate3d(0px, 0, 0);
+    -moz-transform: translate3d(0px, 0, 0);
+    -o-transform: translate3d(0px, 0, 0);
+    -ms-transform: translate3d(0px, 0, 0);
+    transform: translate3d(0px, 25px, 0);
   }
   .nav-open body {
     position: relative;
@@ -5895,11 +5896,11 @@ License - nucleoapp.com/license/
     transform: translate3d(0px, 0, 0);
   }
   .nav-open .menu-on-right .navbar-translate {
-    -webkit-transform: translate3d(-300px, 0, 0);
+    /* -webkit-transform: translate3d(-300px, 0, 0);
     -moz-transform: translate3d(-300px, 0, 0);
     -o-transform: translate3d(-300px, 0, 0);
     -ms-transform: translate3d(-300px, 0, 0);
-    transform: translate3d(-300px, 0, 0);
+    transform: translate3d(-300px, 0, 0); */
   }
   .nav-open .menu-on-right #bodyClick {
     right: 260px;
@@ -6213,9 +6214,9 @@ License - nucleoapp.com/license/
   .bootstrap-navbar {
     position: fixed;
     display: block;
-    top: 0;
+    top: 50px;
     height: 100%;
-    width: 260px;
+    width: 100%;
     right: 0;
     left: auto;
     z-index: 1032;
@@ -6227,11 +6228,11 @@ License - nucleoapp.com/license/
     -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -ms-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
     transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    -webkit-transform: translate3d(260px, 0, 0);
-    -moz-transform: translate3d(260px, 0, 0);
-    -o-transform: translate3d(260px, 0, 0);
-    -ms-transform: translate3d(260px, 0, 0);
-    transform: translate3d(260px, 0, 0);
+    -webkit-transform: translate3d(380px, 25px, 0);
+    -moz-transform: translate3d(380px, 25px, 0);
+    -o-transform: translate3d(380px, 25px, 0);
+    -ms-transform: translate3d(380px, 25px, 0);
+    transform: translate3d(380px, 25px, 0);
   }
   .main-panel {
     width: 100%;
@@ -6464,3 +6465,13 @@ a.filter-button {
   border-radius: 12px 12px 0px 0px;
 }
 /*# sourceMappingURL=dashboard-free.css.map */
+
+.navbar-toggle {
+  position: absolute;
+  right: 15px;
+  top: 25px;
+}
+
+button.btn.btn-link {
+  white-space: normal;
+}
