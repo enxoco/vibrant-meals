@@ -2309,7 +2309,8 @@ h6 {
 }
 
 a {
-  color: #51cbce;
+  color: #3b8f6b;
+  font-weight: 900;
 }
 
 a:hover,
@@ -5575,7 +5576,7 @@ License - nucleoapp.com/license/
 }
 
 .card label {
-  font-size: 0.8571em;
+  font-size: 1.25em;
   margin-bottom: 5px;
   color: #9A9A9A;
 }
@@ -6474,4 +6475,8 @@ a.filter-button {
 
 button.btn.btn-link {
   white-space: normal;
+}
+
+.card-footer {
+  padding: 0 !important;
 }

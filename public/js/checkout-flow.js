@@ -34,7 +34,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   var monday 
   var day = moment().format('dddd')
   var dayTwo = moment().format('dddd')
-  console.log(day)
   
     if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
       var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
@@ -54,20 +53,21 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
       var pickupDaysModal = $('#pickupDaysList')
       
+      console.log(typeof monday)
 
-      var thisMon = moment(monday).format('MMM DD')
-      var nextMon = moment(monday).add(1, 'week').format('MMM DD')
-      var thisWed = moment(wednesday).format('MMM DD')
-      var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
+      var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('MMM DD')
+      var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
+      var thisWed = moment(wednesday, 'dddd MMMM DD YYYY').format('MMM DD')
+      var nextWed = moment(wednesday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
       
       pickupDaysModal.html('<ul class="list-group">')
   
-      pickupDaysModal.append('<li><h4>CHOOSE A DAY</h4></li>')
+      pickupDaysModal.append('<h4 class="mb-3 d-flex justify-content-center">Pick a day</h4>')
       pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+thisWed+'" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+thisWed+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="'+nextMon+'"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">'+nextMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+nextWed+'"><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+nextWed+'</div></div></div></li>')
-      pickupDaysModal.append('<li class="list-group-item button-group"><h4>CHOOSE A TIME</h4>\
+      pickupDaysModal.append('<li class="list-group-item button-group"><h4 class="mb-3 d-flex justify-content-center">Pick a time</h4>\
       <div class="btn-group btn-group-toggle deliveryWindow" data-toggle="buttons">\
           <label class="btn btn-secondary btn-lg active time-slot-am">\
             <input type="radio" name="time-slot-am" id="am" autocomplete="off" checked> AM\
@@ -123,6 +123,8 @@ localStorage.checkoutInitiated = 1
         }
         $('#delivery-date-label').html('Your order will be ready for pickup between 8am and 4pm  <div class="col-md-12 linebreak">')
         $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + '</div><br />' +localStorage.fulfillment_date)
+        $('#delivery-date-label').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
+
       })
 
       if (localStorage.fulfillment_method == 'pickup') {
@@ -132,27 +134,30 @@ localStorage.checkoutInitiated = 1
             var data = $('.list-group-item.clickable.active').data()
             localStorage.fulfillment_day = data.day
             localStorage.fulfillment_date = data.date
-            $('.fulfill-details').html('<hr />Your order will be ready for pickup on <div class="col-md-12 linebreak">'+ data.day.charAt(0).toUpperCase() + data.day.slice(1) + ' ' + data.date + '</div>')
-
+            $('.fulfill-details').html('<hr />Your order will be ready for pickup <div class="col-md-12 linebreak">'+ data.day.charAt(0).toUpperCase() + data.day.slice(1) + ' ' + data.date + '</div>')
+            $('.fulfill-details').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
         if (localStorage.fulfillment_day) {
             $('#delivery-date-label').html('Your order be ready for pickup between 8am and 4pm <div class="col-md-12 linebreak">')
             $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + '</div>' +localStorage.fulfillment_date)
-    
+            $('#delivery-date-label').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
+
     
         }
 
-        var store = JSON.parse(localStorage.pickupLocation)
 
-        $('#pickup-label').html(store.desc)
+        $('#pickup-label').html(JSON.parse(localStorage.pickupLocation).desc)
 
       }
 
 
     
     $(document).ready(function(){
+      $('.shipping-form').hide()
+
 
         if(localStorage.fulfillment_method == 'pickup') {
-            $('.shipping-form').hide()
+            var store = JSON.parse(localStorage.pickupLocation)
+
         }
 
       $('#info-billing').hide()
@@ -161,26 +166,28 @@ localStorage.checkoutInitiated = 1
         $('a#pickupRadio').addClass()
         $('#fulfillment-options').html('Pickup Info')
         if (localStorage.fulfillment_day) {
-            $('#delivery-date-label').html('Your order will be ready for pickup on<div class="col-md-12 linebreak"></div>')
+            $('#delivery-date-label').html('Your order will be ready for pickup <div class="col-md-12 linebreak"></div>')
             $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' ' +localStorage.fulfillment_date)
-    
+            $('#delivery-date-label').append(' At </br><strong> ' + JSON.parse(localStorage.pickupLocation).desc)
+
         }
 
       }
     })
+    $('#same-address').on('click', function(){$('.shipping-form').toggle()})
+    // $('.same-address').on('click', function(){
+      
+    //     $('#state-ship').val($('#state-bill').val())
+    //     $('input[name="street-ship"]').val($('input[name="street-bill"]').val())
+    //     // $('input[name="street2-ship"]').val($('input[name="street2-bill"]'),val())
+    //     $('input[name="city-ship"]').val($('input[name="city-bill"]').val())
+    //     // $('input[name="state-ship"]').val($('input[name="state-bill"]').val())
+    //     $('input[name="zip-ship"]').val($('input[name="zip-bill"]').val())
 
-    $('.same-address').on('click', function(){
-        $('#state-ship').val($('#state-bill').val())
-        $('input[name="street-ship"]').val($('input[name="street-bill"]').val())
-        // $('input[name="street2-ship"]').val($('input[name="street2-bill"]'),val())
-        $('input[name="city-ship"]').val($('input[name="city-bill"]').val())
-        // $('input[name="state-ship"]').val($('input[name="state-bill"]').val())
-        $('input[name="zip-ship"]').val($('input[name="zip-bill"]').val())
 
 
 
-
-    })
+    // })
 
     $('#createToken').on('click', function(){
       stripe.createToken(card).then(function (result) {

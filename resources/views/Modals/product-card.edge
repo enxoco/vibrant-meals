@@ -13,7 +13,12 @@
                 {{item.description}}
                 <hr />
                 Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
+                @if(item.skus.data[0].metadata.fats)
                 Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
+                @else
+                Fats: <strong>0</strong>
+
+                @endif
                 Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
                 Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
 

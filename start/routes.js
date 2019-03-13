@@ -15,39 +15,16 @@
 
 const Route = use('Route')
 
-// Items by category id
-
-/*
-|---------------------------------------------------------------------------
-| Backend/Admin routes
-|---------------------------------------------------------------------------
-*/
-
 Route.get('/checkout', 'ItemController.showCheckout')
 
-Route.get('/admin/products', 'AdminController.showItems')
-Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
-Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
-Route.post('/admin/items/add', 'AdminController.test')
 
-Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
-Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
-
-
-/**
- * 
- * This route now has to trigger part two of user registration.
- * Now we need to capture 
- */
-Route.get('/checkout', 'CheckoutController.startCheckout')
+// Route.get('/checkout', 'CheckoutController.startCheckout')
 
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 
-Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
-Route.get('/products/hide/:itemId', 'ItemController.hideItem')
-Route.get('/products/show/:itemId', 'ItemController.showItem')
+
 
 Route.get('/api/stores/all', 'HomeController.showStores')
 
@@ -99,17 +76,30 @@ Route.group(() => {
 
 Route.get('/api', async ({ view }) => view.render('api'))
 
-/*Show new item form */
-Route.get('/products/add', async ({ view }) => view.render('admin.items-new'))
 
 Route.get('/menu', 'ItemController.listItems').as('menu.items')
-Route.get('/admin/dashboard', async({view}) => view.render('layout.admin.dashboard'))
+/* Admin route group.  All admin routes should go here.  They are inspected by Middleware/AdminAccess
+*  which checks to make sure that the user is logged in and that they have the appropriate permissions
+*/
+Route.group(() => {
+  Route.get('/admin/dashboard', async({view}) => view.render('layout.admin.dashboard'))
+
+  Route.get('/products/add', async ({ view }) => view.render('admin.items-new'))
+
+  
+  /* Coupon management routes */
+  Route.get('/admin/coupon', 'AdminController.listCoupons')
+  Route.post('/admin/coupon/add', 'AdminController.addCoupon')
+  Route.get('/admin/customers', 'AdminController.listCustomers')
+  Route.get('/admin/products', 'AdminController.showItems')
+  Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
+  Route.post('/admin/items/add', 'AdminController.test')
+  Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
+  Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
+  Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
+  Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
+  Route.get('/products/hide/:itemId', 'ItemController.hideItem')
+  Route.get('/products/show/:itemId', 'ItemController.showItem')
 
 
-Route.get('/admin/customers', 'AdminController.listCustomers')
-
-/* Coupon management routes */
-
-
-Route.get('/admin/coupon', 'AdminController.listCoupons')
-Route.post('/admin/coupon/add', 'AdminController.addCoupon')
+}).middleware(['admin'])

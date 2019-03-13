@@ -7,11 +7,15 @@ function updateCartDiv() {
   var orderMethod = localStorage.fulfillment_method
   var orderDay = localStorage.fulfillment_day
   if (orderMethod == 'pickup') {
+    if (!localStorage.pickupLocation) {
+      localStorage.fulfillment_method = 'delivery'
+      updateCartDiv()
+    }
     var orderLocation = JSON.parse(localStorage.pickupLocation).name
-  }
-  if (orderMethod == 'delivery') {
+  } else {
 
   }
+
 
   $('#'+orderMethod+'Radio').closest('.fulfillment-option').addClass('active')
 
@@ -26,8 +30,8 @@ function updateCartDiv() {
   }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
-    var d = '<div class="col-10 d-flex mt-4 justify-content-start">\
-    <div class="col-4 fulfillment-option">\
+    var d = '<div class="col d-flex mt-4">\
+    <div class="col-2 fulfillment-option">\
     <a id="deliveryDate">\
     <div class="cart-icon">\
     <i class="fa fa-calendar" style="font-size:4em; color:#3b8f6b;"></i>\
@@ -35,7 +39,8 @@ function updateCartDiv() {
     </div><div class="col fulfillment-option"><div class="cart-icon-label" id="delivery-date-label">\
     Your order will be ready for pickup between<br /> 8am and 4pm <br>Wednesday<br>Feb 27\
     </div></a></div></div>'
-    $('.row.mb-5.pl-3').append(d)
+    // $('.row.mb-5.pl-3').append(d)
+    $('#order-info').html(d)
     if ($('#express-checkout-details').html()) {
       $('#express-checkout-details').html('Order Type: <strong>'+orderMethod+'</strong><br /> '+ orderMethod +' Location: <strong>'+ JSON.parse(localStorage.pickupLocation).name + '</strong><br />'+ orderMethod + ' Window: <strong>Between 8am and 4pm </strong><br />Day: ' + orderDay )
 
@@ -48,7 +53,6 @@ function updateCartDiv() {
 
     if (localStorage.pickupLocation && localStorage.pickupLocation != "undefined") {
       
-      console.log(JSON.parse(localStorage.pickupLocation).name)
       
       var pickup = JSON.parse(localStorage.pickupLocation).desc
       $('#pickupRadio').closest('.fulfillment-option').addClass('active')
@@ -73,9 +77,9 @@ function updateCartDiv() {
       localStorage.setItem('cartCount', cartCount)
       if (window.location.href.includes('checkout')) {
 
-        var card = '<div class="row mb-5 pl-3 pr-3 align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
+        var card = '<div class="row mb-5 pl-3 pr-3 order-info align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
       } else {
-        var card = '<div class="row mb-5 pl-3 pr-3">\
+        var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
         <div class="col col-md-2 card-user">\
           <div class="row mr-0 ml-0 pb-3">\
             <a onclick="addCart('+i+')"><i class="nc-icon nc-simple-add"></i></a>\

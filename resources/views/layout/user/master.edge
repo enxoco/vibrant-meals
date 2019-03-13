@@ -22,6 +22,19 @@
   <link rel="stylesheet" href="/css/toastr.min.css">
   <style>
 
+
+#toast-container.toast-top-right>div, #toast-container.toast-top-center>div {
+  width: 380px;
+  min-height: 86px;
+  right: -10px;
+  background-color: #aad0ad;
+  color: white;
+  font-size: 1.5em; 
+  bottom: 1000px;
+  position: absolute;
+}
+
+
 .cart-icon {
     width:70px;
 }
@@ -113,8 +126,9 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 .col.store-hours.is-pulled-right {
     font-size: 1.5em;
     font-weight: 600;
-    position: relative;
-    left: 100px;
+
+    display: flex;
+    justify-content: flex-end;
 }
 
 
@@ -166,7 +180,7 @@ a#delivery, a#pickup {
   box-sizing: border-box;
 
   height: 40px;
-  width: 500px;
+  width: 100%;
   color: green;
 
   padding: 10px 12px;
@@ -242,32 +256,31 @@ li {
     background: #3b8f6b;
 }
 
+@media only screen 
+and (min-device-width : 350px) 
+and (max-device-width : 1024px)  {
+  .toast.toast-success {
+    top: 705px !important;
+    position: absolute;
+  }
+  .card-footer {
+    padding: 20px !important;
+  }
+}
+
+li.list-group-item.button-group {
+    background: none;
+    border: none;
+}
 </style>
 </head>
+@!include('Modals.auth')
 
 @if(user)
 <div class="hidden" id="user-info" data-user="{{toJSON(user)}}"></div>
 @endif
 <!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <body class="">
         @!include('Modals.pickupLocations')
 
@@ -288,7 +301,7 @@ li {
       <div class="sidebar-wrapper">
         <ul class="nav" id="cart">
 
-            <div class="row mb-5 pl-3">
+            <div class="row mb-5 pl-3 order-info">
                 <div class="col d-flex justify-content-start">
                     <div class="col-12 pr-0 fulfillment-option">
                         <a id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
@@ -307,6 +320,7 @@ li {
 
                     </div>
                 </div>
+                <section id="order-info"></section>
             </div>
 
             <div id="cart-rows">
@@ -348,7 +362,7 @@ li {
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-<script async src="/js/moment.min.js"></script>
+<script src="/js/moment.min.js"></script>
 
 <script>
     var stores = {
@@ -455,9 +469,9 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
   "positionClass": "toast-top-right",
   "preventDuplicates": true,
   "onclick": null,
-  "showDuration": "300",
+  "showDuration": "30000000000",
   "hideDuration": "1000",
-  "timeOut": "5000",
+  "timeOut": "0",
   "extendedTimeOut": "1000",
   "showEasing": "swing",
   "hideEasing": "linear",
@@ -509,7 +523,11 @@ $('.checkout-button').on('click', function(){
     var d = 5 - t
     toastr["error"]("Please add at least "+d+" more items to cart!")
   } else {
-    window.location.replace('/checkout')
+    if(window.location.href.includes('checkout')) {
+      $('html').removeClass('nav-open')
+    } else {
+      window.location.replace('/checkout')
+    }
   }
 })
 
@@ -569,6 +587,7 @@ updateCartDiv()
 
 
 $(document).on('click', 'a#deliveryRadio', function(){
+  console.log('ello')
   $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
     $('.cart-icon-label.pickup').html('')
 
@@ -576,11 +595,18 @@ $(document).on('click', 'a#deliveryRadio', function(){
   $('.cart-icon-label.delivery').html('Choose address at checkout')
 
   localStorage.fulfillment_method = 'delivery'
+  localStorage.removeItem('pickup_location')
+  localStorage.removeItem('pickupLocation')
+  localStorage.removeItem('myStore')
+  updateCartDiv()
 })
 
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
   feather.replace()
+  if (window.location.href.includes('checkout')) {
+    $('html').addClass('nav-open')
+  }
 
 
 $(".filter-button").click(function(){
@@ -606,21 +632,21 @@ $(".filter-button").click(function(){
 //   $(".card.card-user[data-category*='"+this.className+"']").show()
 // })
 
-$('.card.card-user, .card.card-stats').on('click', function(){
-  var meta = $(this).data('meta')
-  delete meta['description']
-  delete meta['name']
-  delete meta['category']
+// $('.card.card-user, .card.card-stats').on('click', function(){
+//   var meta = $(this).data('meta')
+//   delete meta['description']
+//   delete meta['name']
+//   delete meta['category']
 
-  const keys = Object.keys(meta)
-  $(this).find('.modal-body').find('.row').html('')
-    for (const key of keys) {
-      $(this).find('.modal-body').find('.row').append('<div class="col pb-5"><h5><strong>'+capitalize(key)+' </strong><br /> ' + meta[key] + '</h5></div>')
+//   const keys = Object.keys(meta)
+//   $(this).find('.modal-body').find('.row').html('')
+//     for (const key of keys) {
+//       $(this).find('.modal-body').find('.row').append('<div class="col pb-5"><h5><strong>'+capitalize(key)+' </strong><br /> ' + meta[key] + '</h5></div>')
 
-    }
+//     }
 
-  $('#'+$(this).data('sku')).modal('toggle')
-})
+//   $('#'+$(this).data('sku')).modal('toggle')
+// })
 $('#pickup, #pickupDay').on('mouseover', function(){
   $(this).css('background-color', '#aad0ae')
   $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
@@ -725,4 +751,60 @@ if (window.location.href.includes('checkout')) {
 
 
 </script>
+
+
+<script>
+    $('input[name="zip-ship"]').focusout(function(){
+
+      var store = {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-85.317172,35.069111]
+        }
+      }
+  
+      
+  
+      if (localStorage.userAddr) {
+        $('#address-input').text(localStorage.userAddr.street)
+      }
+  
+      var st = $('input[name="street-ship"]').val()
+      var city = $('input[name="city-ship"]').val()
+      var state = $('input[name="state-ship"]').val()
+      var post = $('input[name="zip-ship"]').val()
+
+    
+      var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
+  
+      var userAddr = {
+        street: st,
+        city: city,
+        state: state,
+        zip: post
+      }
+      localStorage.userAddr = JSON.stringify(userAddr)
+      localStorage.removeItem("pickupLocation")
+      var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
+      $.get(userSearch, function(data) {
+        var userCords = data.features[0].geometry.coordinates
+        var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
+        $.get(query, function(distance) {
+          var miles = distance.routes[0].distance*0.000621371192
+          if (miles.toFixed(0) > 5) {
+            toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store')
+          } else if (miles.toFixed(0) < 5) {
+            toastr['success']('You"re all set!')
+            }
+          localStorage.deliveryDistance = miles.toFixed(1)
+          localStorage.removeItem("myStore")
+        })
+      })
+    })
+
+
+
+  </script>
 <script src="https://unpkg.com/feather-icons"></script>

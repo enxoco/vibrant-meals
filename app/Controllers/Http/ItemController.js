@@ -13,7 +13,8 @@ var cartCur = []
 
 class ItemController {
 
-  async listItems ({view, response, auth}) {
+  async listItems ({view, response, auth, request}) {
+    console.log(request.cords)
 
     var products = await stripe.products.list();
     var prod = products.data

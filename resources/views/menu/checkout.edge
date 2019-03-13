@@ -6,7 +6,7 @@
 
         @if(billing)
         <div class="row">
-          <div class="col-12 col-md-3 col-lg-3">
+          <div class="col-6 mx-auto">
           </div>
           <div class="col">
               <div class="card card-user">
@@ -31,7 +31,9 @@
                   <div class="card-footer ">
                     <hr>
                     <div class="stats">
-                        <p class="card-title"><a class="btn btn-success btn-lg"> Pay with card ending in {{billing.sources.data[0].last4}}</a>
+                        <p class="card-title"><a class="btn btn-success btn-lg"> Pay with card ending in {{billing.sources.data[0].last4}} <i data-feather="credit-card"></i></a>
+                          <p class="card-title"><a class="btn btn-success btn-lg">Use a different card <i data-feather="credit-card"></i></a>
+
                         </div>
                   </div>
                 </div>
@@ -41,12 +43,13 @@
         </div>
         @else
         <div class="row">
-        <div class="col-5">
+        <div class="col-12 col-md-5 col-lg-5 mx-auto">
           <div class="card card-user">
-          <h4 class="mb-3">Basic Info</h4>
+          <h4 class="mb-3 d-flex justify-content-center">Basic Info</h4>
             <br />
             <div class="card-body">
             <div class="row">
+
                 <div class="col-md-6 mb-3">   
                   <label for="firstName">First name</label>
                   <input type="text" class="form-control" id="firstName" placeholder="" required>
@@ -89,6 +92,9 @@
                           Please confirm your password
                         </div>
                     </div>
+                    <div class="col d-flex justify-content-end">
+                        Already have an account? &nbsp <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a>
+                    </div>
             </div>
               </div>
           </div>
@@ -99,9 +105,9 @@
               </div>
 
       </div>
-      <div class="col-5 order-md-1">
+      <div class="col-12 col-md-5 col-lg-5 order-md-1 mx-auto">
         <div class="card card-user">
-        <h4 class="mb-3">Billing Info</h4>
+        <h4 class="mb-3 d-flex justify-content-center">Billing Info</h4>
 <div class="card-body">
         <form id="main" class="needs-validation" novalidate>
           <div class="mb-3">
@@ -118,11 +124,11 @@
           </div>
 
           <div class="row">
-              <div class="col mb-3">
+              <div class="col-4 mb-3">
                   <label for="city">City</label>
                   <input type="text" class="form-control" name="city-bill" placeholder="City">
                 </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-4 col-md-4 mb-3">
               <label for="state">State</label>
               <select class="custom-select d-block w-100" id="state-bill" name="state-bill" required >
                 <option value="">Choose...</option>
@@ -184,21 +190,21 @@
                 Please provide a valid state.
               </div>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 col-4 mb-3">
               <label for="zip">Zip</label>
               <input type="text" class="form-control" name="zip-bill" placeholder="" required>
               <div class="invalid-feedback">
                 Zip code required.
               </div>
             </div>
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label for="allergy_info">Allergy Info</label>
                 <input type="text" class="form-control" name="allergy_info" placeholder="" required>
                 <div class="invalid-feedback">
                   Allergy information
                 </div>
               </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-6 col-md-6 mb-3">
                 <label for="delivery_notes">Additional notes</label>
                 <input type="text" class="form-control" name="delivery_notes" placeholder="" required>
                 <div class="invalid-feedback">
@@ -221,9 +227,9 @@
       </div>
       <div class="card card-user">
         
-          <div class="shipping-form hidden">
+          <div class="shipping-form">
 
-          <h4 class="mb-3">Shipping Info</h4>
+          <h4 class="mb-3 d-flex justify-content-center">Delivery Info</h4>
           <div class="card-body">
             <div class="mb-3">
               <label for="address">Address</label>
@@ -318,10 +324,9 @@
       </div>
       </div>
 
-              <div class="col col-12 mb-3">
                 <div class="card card-user">
     
-                  <h4 class="mb-3">Payment Method</h4>
+                  <h4 class="mb-3 d-flex justify-content-center">Payment Method</h4>
                   <div class="card-body">
                   <form id="payment-form">
                     <div class="form-row">
@@ -337,9 +342,14 @@
                       <!-- Used to display form errors. -->
                       <div id="card-errors" role="alert"></div>
                     </div>
-                    <div class="col-12 d-flex">
+                    <div class="form-row">
+                      <div class="col-12">
                   <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
-                  <a class="btn btn-success btn-lg ml-5" id="createToken">Checkout</a>
+                      </div>
+                    </div>
+                  <div>
+                    <a class="btn btn-success btn-lg ml-5" id="createToken">Checkout</a>
+                  </div>
 
                     </div>
                   </form>
@@ -351,6 +361,7 @@
 
         </div>
         @endif
+
       <footer class="footer footer-black  footer-white">
         <div class="container-fluid">
           <div class="row">
