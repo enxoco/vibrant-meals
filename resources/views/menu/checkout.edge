@@ -83,8 +83,12 @@
                       Please confirm your password
                     </div>
                 </div>
-                <div class="col d-flex justify-content-end">
-                  Already have an account? &nbsp <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a>
+                <div class="col d-flex justify-content-around">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        <label class="custom-control-label" for="customCheck1">Subscribe to emails</label>
+                      </div>
+                  <label>Already have an account? &nbsp <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a></label>
                 </div>
               </div>
             </div>
@@ -103,7 +107,7 @@
         <form id="main" class="needs-validation" novalidate>
           <div class="mb-3">
             <label for="address">Address</label>
-            <input type="text" class="form-control" name="street-bill" placeholder="1234 Main St" required>
+            <input type="text" class="form-control" name="street-bill" required>
             <div class="invalid-feedback">
               Please enter your shipping address.
             </div>
@@ -111,13 +115,13 @@
 
           <div class="mb-3">
             <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-            <input type="text" class="form-control" name="street2-bill" placeholder="Apartment or suite">
+            <input type="text" class="form-control" name="street2-bill" >
           </div>
 
           <div class="row">
               <div class="col-4 mb-3">
                   <label for="city">City</label>
-                  <input type="text" class="form-control" name="city-bill" placeholder="City">
+                  <input type="text" class="form-control" name="city-bill">
                 </div>
             <div class="col-4 col-md-4 mb-3">
               <label for="state">State</label>
@@ -333,8 +337,8 @@
                       <div class="col-6">
                   <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
                       </div>
-                      <div class="col-6">
-                  <a class="btn btn-success-light mt-0 ml-5 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                      <div class=" col-6 d-flex justify-content-end">
+                  <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
                       </div>
                     </div>
                     <div id="delivery-fee">
