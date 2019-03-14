@@ -30,9 +30,10 @@
     <div class="row">
       @each(item in items)
         @unless(item.active === false)
+        @unless(item.id === 'shipping')
           <!-- Start of individual Product card -->
           <div class="col-12 col-lg-4 filter {{item.metadata.primary_category}}">
-              <div class="card card-stats d-none d-block d-sm-block d-md-none"
+              <div class="card card-stats d-none d-block d-sm-block d-md-none" data-toggle="modal" data-target="#{{item.skus.data[0].id}}"
               data-category="{{item.metadata.primary_category}}"
               data-sku="{{item.skus.data[0].id}}"
               data-meta='{{toJSON(item.skus.data[0].metadata)}}'
@@ -87,6 +88,7 @@
               data-category="{{item.metadata.primary_category}}"
               data-sku="{{item.skus.data[0].id}}"
               data-meta='{{toJSON(item.skus.data[0].metadata)}}'
+              data-toggle="modal" data-target="#{{item.skus.data[0].id}}"
             >
               <div class="image">
                 <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
@@ -156,6 +158,7 @@
         </div>
         @!include('Modals.product-card')
         <!--/individual product card-->
+        @endunless
         @endunless
 
         @endeach

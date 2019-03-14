@@ -11,14 +11,8 @@
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!--<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />-->
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-  <!-- CSS Files -->
   <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="/css/toastr.min.css">
   <style>
 
@@ -287,6 +281,8 @@ li.list-group-item.button-group {
 <!-- Modal -->
 
 <body class="">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" lazyload />
+
         @!include('Modals.pickupLocations')
 
         <input type="hidden" id="cords" />
@@ -358,14 +354,11 @@ li.list-group-item.button-group {
 <script src="/admin/js/core/jquery.min.js"></script>
 <script src="/admin/js/core/popper.min.js"></script>
 <script src="/admin/js/core/bootstrap.min.js"></script>
-<script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script async src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!--  Google Maps Plugin    -->
 
-<!-- Chart JS -->
-<!--  Notifications Plugin    -->
-<!--<script src="/admin/js/plugins/bootstrap-notify.js"></script>-->
-<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="/admin/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
+
+<script async src="/admin/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
@@ -828,8 +821,5 @@ if (window.location.href.includes('checkout')) {
         })
       })
     })
-
-
-
   </script>
 <script src="https://unpkg.com/feather-icons"></script>

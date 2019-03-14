@@ -6469,10 +6469,9 @@ a.filter-button {
 
 .navbar-toggle {
   position: absolute;
-  right: 15px;
+  right: 25px;
   top: 25px;
 }
-
 button.btn.btn-link {
   white-space: normal;
 }
