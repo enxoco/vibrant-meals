@@ -83,7 +83,7 @@ function updateCartDiv() {
     }
 
     var cartCount = 0
-    var total = ''
+    var total = 0
     if (localStorage.cart) {
         var cartItems = JSON.parse(localStorage.cart)
     }
@@ -102,7 +102,7 @@ function updateCartDiv() {
       }
       localStorage.setItem('cartCount', cartCount)
       if (window.location.href.includes('checkout')) {
-        total += (cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)
+        total += parseInt((cartItems[i].quantity * cartItems[i].price / 100).toFixed(2))
         var card = '<div class="row mb-5 pl-3 pr-3 order-info align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
       } else {
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\

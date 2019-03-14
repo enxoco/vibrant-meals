@@ -27,7 +27,6 @@ class CheckoutController {
     if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
     }
-   
     var cart = JSON.parse(req.cart)
     var stripeItems = []
     if (req.billing.shippingCode) {
@@ -54,7 +53,7 @@ class CheckoutController {
 
 
     if (req.user.fulfillment_method == 'pickup') {
-      user.pickup_location = location.storeId
+      user.pickup_location = location.id
     }
 
     user.password = await Hash.make(req.user.password)
@@ -111,7 +110,7 @@ class CheckoutController {
       if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
         if (req.billing.coupon) {
 
-        var order = stripe.orders.create({
+        var order = await stripe.orders.create({
           currency: 'usd',
           coupon: req.billing.coupon,
           customer: customer['id'],
@@ -130,7 +129,7 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.storeId
+            store_id: location.id
           },
           email: user.email
         }, function(err, order) {
@@ -144,7 +143,7 @@ class CheckoutController {
           });
         });
         } else {
-          var order = stripe.orders.create({
+          var order = await stripe.orders.create({
             currency: 'usd',
             customer: customer['id'],
             items: stripeItems,
@@ -162,7 +161,7 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
-              store_id: location.storeId
+              store_id: location.id
             },
             email: user.email
           }, function(err, order) {
@@ -176,10 +175,12 @@ class CheckoutController {
             });
           });
         }
+        console.log('order created')
+        console.log(await order)
 
       } else {// Default to delivery if no method selected
         console.log('delivery')
-        var order = stripe.orders.create({
+        var order = await stripe.orders.create({
           currency: 'usd',
           customer: customer['id'],
           items: stripeItems,

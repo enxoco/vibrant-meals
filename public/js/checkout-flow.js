@@ -121,7 +121,6 @@ localStorage.checkoutInitiated = 1
         $(this).addClass('active')
         if (localStorage.pickupLocation) {
           var store = JSON.parse(localStorage.pickupLocation)
-
         }
         updateCartDiv()
 
@@ -188,10 +187,10 @@ localStorage.checkoutInitiated = 1
         }
       
       var shipping = {
-          street: $('input[name="street-ship"]').val(),
-          city: $('input[name="city-ship"]').val(),
-          state: $('input[name="state-ship"]').val(),
-          zip: $('input[name="zip-ship"]').val()
+          street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
+          city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val() ,
+          state: $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val(),
+          zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
       }
       var user = {
           firstName: $('input[id="firstName"]').val(),
@@ -201,7 +200,7 @@ localStorage.checkoutInitiated = 1
           password: $('input[id="password-bill"').val(),
           fulfillment_method: localStorage.fulfillment_method,
           fulfillment_day: localStorage.fulfillment_day,
-          pickup_location: localStorage.pickupLocation
+          pickup_location: localStorage.myStore
       }
       var cart = localStorage.cart
       var obj = {

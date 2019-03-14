@@ -285,9 +285,11 @@ $(document).on('click', 'a#pickupRadio', function() {
       $(".list-group-item").on('click', function(){
         $(".list-group-item").removeClass("active")
         var st = ($(this).data())
+        console.log(st)
         var myStore = {}
         myStore.id = st.storeid
         myStore.name = st.store
+        console.log(myStore.name)
         localStorage.myStore = JSON.stringify(myStore)
         $('.modal').modal('hide')
         localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)

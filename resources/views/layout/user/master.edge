@@ -46,8 +46,9 @@ i.nc-icon.nc-simple-add, i.nc-icon.nc-simple-remove, i.nc-icon.nc-simple-delete 
   }
 
 h2.category-heading {
-  font-size: 1.5em;
+  font-size: 2em;
   color: #4e4e4e;
+  font-weight: 800 !important;
 }
 a:hover, a:focus {
   text-decoration: none;
@@ -213,11 +214,7 @@ label {
     width: 100%;
     min-height: 50px;
     max-height: 100px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    -moz-box-shadow: 0 0 5px #c4c4c4;
-    -webkit-box-shadow: 0 0 5px #c4c4c4;
-    box-shadow: 0 0 5px #c4c4c4;
+
 }
 #category-container .img-container {
   width: 100px;
@@ -225,7 +222,6 @@ label {
   cursor: pointer;
   align-content: center;
   text-align: center;
-  border-bottom: 3px solid white;
   border-radius: 5px;
 }
 #category-container .img-container:hover > h2 {
@@ -250,6 +246,19 @@ li {
     background: #3b8f6b;
 }
 
+@media only screen and (min-device-width : 400px) {
+  .sidebar {
+    right: -100px !important;
+  }
+  .nav-open .sidebar {
+    -webkit-transform: translate3d(-100px, 25px, 0);
+    -moz-transform: translate3d(-100px, 25px, 0);
+    -o-transform: translate3d(-100px, 25px, 0);
+    -ms-transform: translate3d(-100px, 25px, 0);
+    transform: translate3d(-100px, 25px, 0);
+}
+}
+
 @media only screen 
 and (min-device-width : 350px) 
 and (max-device-width : 1024px)  {
@@ -263,6 +272,11 @@ and (max-device-width : 1024px)  {
   .card-footer {
     padding: 20px !important;
   }
+  h2.category-heading {
+  font-size: 1.2em;
+  color: #4e4e4e;
+  font-weight: 800 !important;
+}
 }
 
 li.list-group-item.button-group {
@@ -804,7 +818,10 @@ if (window.location.href.includes('checkout')) {
         var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
         $.get(query, function(distance) {
           var miles = distance.routes[0].distance*0.000621371192
-          if (miles.toFixed(0) > 5) {
+          if (total >= 100) {
+            localStorage.shippingCode = 'freeshipping'
+          } else {
+            if (miles.toFixed(0) > 5) {
             if (miles.toFixed(0) <= 10) {
               localStorage.shippingCode = '5to10miles'
               var total = $('.order-total').data('total')
@@ -827,8 +844,9 @@ if (window.location.href.includes('checkout')) {
             $('.delivery-fee').html('0')
             toastr['success']('You"re all set!')
             }
+          }
+
           localStorage.deliveryDistance = miles.toFixed(1)
-          localStorage.removeItem("myStore")
         })
       })
     })
