@@ -17,16 +17,16 @@
   <style>
 
 
-#toast-container.toast-top-right>div, #toast-container.toast-top-center>div {
+/* #toast-container.toast-top-right>div, #toast-container.toast-top-center>div {
   width: 380px;
   min-height: 86px;
   right: -10px;
   background-color: #aad0ad;
   color: white;
   font-size: 1.5em; 
-  bottom: 1000px;
+  bottom: 200px;
   position: absolute;
-}
+} */
 
 
 .cart-icon {
@@ -253,6 +253,9 @@ li {
 @media only screen 
 and (min-device-width : 350px) 
 and (max-device-width : 1024px)  {
+  img.delivery-icon, img.pickup-icon {
+    max-width: 100px;
+}
   .toast.toast-success {
     top: 705px !important;
     position: absolute;
@@ -270,6 +273,13 @@ li.list-group-item.button-group {
 .btn.btn-success-light {
   background: #aad0ae;
   color: white !important;
+}
+
+button.navbar-toggler {
+    position: absolute;
+    z-index: 9999999999999999999;
+    top: 25px;
+    right: 25% !important;
 }
 </style>
 </head>
@@ -820,6 +830,10 @@ if (window.location.href.includes('checkout')) {
           localStorage.removeItem("myStore")
         })
       })
+    })
+
+    $('.navbar-toggle').on('click', function() {
+      toastr['success']('click')
     })
   </script>
 <script src="https://unpkg.com/feather-icons"></script>
