@@ -279,12 +279,15 @@ $('#applyCoupon').on('click', function(){
   $.ajax({
     type: 'GET',
     url: '/checkout/coupon/apply/' + coupon,
+    error: function(err) {
+      toastr['warning']('Sorry this coupon appears to be invalid')
+    },
     success: function(data){
-      var total = $('.order-total').data('total')
+      var total = $('.order-total').html()
       if (data.amount_off) {
         toastr['success']('Coupon for $' + (data.amount_off / 100) + ' successfully applied')
         total = total - (data.amount_off / 100)
-        console.log(data.amount_off / 100) 
+        $('.order-total').data('total', total)
         $('.order-total').html(total.toFixed(2))
         disableCoupon()
       }
@@ -292,8 +295,10 @@ $('#applyCoupon').on('click', function(){
         toastr['success']('Coupon for ' + data.percent_off + '% successfully applied')
         var percent = (data.percent_off / 100)
         var discount = (percent * total)
-        console.log(total, discount)
         total = total - discount
+        // Applying a promo code needs to affect the order total data attribute but not shipping.
+        $('.order-total').data('total', total)
+
         $('.order-total').html(total.toFixed(2))
         disableCoupon()
       }
