@@ -272,6 +272,11 @@ li.list-group-item.button-group {
     background: none;
     border: none;
 }
+
+.btn.btn-success-light {
+  background: #aad0ae;
+  color: white !important;
+}
 </style>
 </head>
 @!include('Modals.auth')
@@ -331,7 +336,9 @@ li.list-group-item.button-group {
               <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                <a class="checkout-button btn btn-lg btn-pill btn-success" disabled>Next</a>
+                  <div class="tooltip-wrapper"  data-toggle="tooltip" data-placement="top" title="Please add at least 5 items to cart to continue">
+                    <a class="checkout-button btn btn-lg btn-pill btn-success" disabled>Next</a>
+                  </div>
                 </div>
               </div>
         </ul>
@@ -587,7 +594,6 @@ updateCartDiv()
 
 
 $(document).on('click', 'a#deliveryRadio', function(){
-  console.log('ello')
   $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
     $('.cart-icon-label.pickup').html('')
 
@@ -754,7 +760,7 @@ if (window.location.href.includes('checkout')) {
 
 
 <script>
-    $('input[name="zip-ship"]').focusout(function(){
+    $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
 
       var store = {
         "type": "Feature",
@@ -771,10 +777,11 @@ if (window.location.href.includes('checkout')) {
         $('#address-input').text(localStorage.userAddr.street)
       }
   
-      var st = $('input[name="street-ship"]').val()
-      var city = $('input[name="city-ship"]').val()
-      var state = $('input[name="state-ship"]').val()
-      var post = $('input[name="zip-ship"]').val()
+      // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
+      var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
+      var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
+      var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
+      var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
 
     
       var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
@@ -794,8 +801,26 @@ if (window.location.href.includes('checkout')) {
         $.get(query, function(distance) {
           var miles = distance.routes[0].distance*0.000621371192
           if (miles.toFixed(0) > 5) {
+            if (miles.toFixed(0) <= 10) {
+              localStorage.shippingCode = '5to10miles'
+              var total = $('.order-total').data('total')
+              total += 5
+              $('.order-total').html(total)
+              $('.delivery-fee').html('5.00')
+            }
+            if (miles.toFixed(0) > 10) {
+              var total = $('.order-total').data('total')
+              total += 10
+              $('.order-total').html(total)
+              localStorage.shippingCode = '11to15miles'
+              $('.delivery-fee').html('10.00')
+
+            }
+            
             toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store')
           } else if (miles.toFixed(0) < 5) {
+            localStorage.shippingCode = 'freeshipping'
+            $('.delivery-fee').html('0')
             toastr['success']('You"re all set!')
             }
           localStorage.deliveryDistance = miles.toFixed(1)

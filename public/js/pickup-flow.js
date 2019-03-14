@@ -1,4 +1,5 @@
 $(document).on('click', 'a#pickupRadio', function() {
+  $('.shipping-form').hide()
   $('#pickupRadio').closest('.fulfillment-option').addClass('active')
   $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
   $('.cart-icon-label.delivery').html('')

@@ -76,6 +76,7 @@ Route.group(() => {
 
 Route.get('/api', async ({ view }) => view.render('api'))
 
+Route.get('/checkout/coupon/apply/:coupon', 'CheckoutController.applyCoupon')
 
 Route.get('/menu', 'ItemController.listItems').as('menu.items')
 /* Admin route group.  All admin routes should go here.  They are inspected by Middleware/AdminAccess

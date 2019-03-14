@@ -4,9 +4,11 @@
 
 function updateCartDiv() {
 
+
   var orderMethod = localStorage.fulfillment_method
   var orderDay = localStorage.fulfillment_day
   if (orderMethod == 'pickup') {
+    $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
       localStorage.fulfillment_method = 'delivery'
       updateCartDiv()
@@ -17,11 +19,17 @@ function updateCartDiv() {
   }
 
 
+
+  if (localStorage.fulfillment_date) {
+    $('.list-group-item.clickable').removeClass('active')
+    $('#pickupDaysList').find('[data-date="'+localStorage.fulfillment_date+'"]').addClass('active')
+  }
+
+
   $('#'+orderMethod+'Radio').closest('.fulfillment-option').addClass('active')
 
   if($('#user-info').data()) {
     var user = $('#user-info').data()
-    console.log(user.user.pickupLocation)
     localStorage.fulfillment_method = user.user.fulfillment_method
     localStorage.fulfillment_day = user.user.fulfillment_day
     localStorage.custEngageCompleted = 1
@@ -32,12 +40,11 @@ function updateCartDiv() {
     $('.cart-heading').html('Order Info')
     var d = '<div class="col d-flex mt-4">\
     <div class="col-2 fulfillment-option">\
-    <a id="deliveryDate">\
+    <a id="deliveryDate" data-toggle="modal" data-target="#orderDetailsModal">\
     <div class="cart-icon">\
     <i class="fa fa-calendar" style="font-size:4em; color:#3b8f6b;"></i>\
     </div>\
-    </div><div class="col fulfillment-option"><div class="cart-icon-label" id="delivery-date-label">\
-    Your order will be ready for pickup between<br /> 8am and 4pm <br>Wednesday<br>Feb 27\
+    </div><div class="col fulfillment-option"><div class="cart-icon-label" id="delivery-date-label">Click for shipping/delivery Details\
     </div></a></div></div>'
     // $('.row.mb-5.pl-3').append(d)
     $('#order-info').html(d)
@@ -45,7 +52,21 @@ function updateCartDiv() {
       $('#express-checkout-details').html('Order Type: <strong>'+orderMethod+'</strong><br /> '+ orderMethod +' Location: <strong>'+ JSON.parse(localStorage.pickupLocation).name + '</strong><br />'+ orderMethod + ' Window: <strong>Between 8am and 4pm </strong><br />Day: ' + orderDay )
 
     }
-    
+    if (localStorage.fulfillment_method == 'pickup') {
+      if (localStorage.fulfillment_day) {
+        $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
+      } else {
+
+        // localStorage.fulfillment_day = $('li.list-group-item.clickable.active').data('day')
+        // localStorage.fulfillment_date = $('li.list-group-item.clickable.active').data('date')
+        // $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
+
+      }
+    }
+    if (localStorage.fulfillment_method == 'delivery' && localStorage.fulfillment_day) {
+      $('#delivery-fee').show()
+      $('#delivery-date-label').html('Your order is scheduled for delivery <br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong>')
+    }
 
   }
 
@@ -62,6 +83,7 @@ function updateCartDiv() {
     }
 
     var cartCount = 0
+    var total = ''
     if (localStorage.cart) {
         var cartItems = JSON.parse(localStorage.cart)
     }
@@ -71,12 +93,16 @@ function updateCartDiv() {
       if (cartCount < 5) {
         $('.checkout-button').attr('disabled','disabled')
         console.log('less than 5')
+        $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
+          $('[data-toggle="tooltip"]').tooltip()
+
       } else {
         $('.checkout-button').removeAttr('disabled')
+        $('.tooltip-wrapper').removeAttr('data-toggle')
       }
       localStorage.setItem('cartCount', cartCount)
       if (window.location.href.includes('checkout')) {
-
+        total += (cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)
         var card = '<div class="row mb-5 pl-3 pr-3 order-info align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
       } else {
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
@@ -102,7 +128,10 @@ function updateCartDiv() {
       }
       // var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('.cart-row-master').append(card)
+
     }
+    $('.order-total').attr('data-total', total)
+    $('.order-total').html(total)
 
 
   }

@@ -63,7 +63,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       pickupDaysModal.html('<ul class="list-group">')
   
       pickupDaysModal.append('<h4 class="mb-3 d-flex justify-content-center">Pick a day</h4>')
-      pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
+      pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+thisWed+'" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+thisWed+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="'+nextMon+'"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">'+nextMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+nextWed+'"><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+nextWed+'</div></div></div></li>')
@@ -84,7 +84,9 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
       $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
       $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
-
+      var def = $('li.list-group-item.clickable.active').data()
+      localStorage.fulfillment_day = def.day 
+      localStorage.fulfillment_date = def.date
     }
 localStorage.checkoutInitiated = 1
       nextAvalFulfill()
@@ -121,30 +123,13 @@ localStorage.checkoutInitiated = 1
           var store = JSON.parse(localStorage.pickupLocation)
 
         }
-        $('#delivery-date-label').html('Your order will be ready for pickup between 8am and 4pm  <div class="col-md-12 linebreak">')
-        $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + '</div><br />' +localStorage.fulfillment_date)
-        $('#delivery-date-label').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
+        updateCartDiv()
 
       })
 
       if (localStorage.fulfillment_method == 'pickup') {
         $('#info-billing').hide()
         $('#copyBillingAddr').hide()
-        $('#fulfillment-options').html('Pickup Info')
-            var data = $('.list-group-item.clickable.active').data()
-            localStorage.fulfillment_day = data.day
-            localStorage.fulfillment_date = data.date
-            $('.fulfill-details').html('<hr />Your order will be ready for pickup <div class="col-md-12 linebreak">'+ data.day.charAt(0).toUpperCase() + data.day.slice(1) + ' ' + data.date + '</div>')
-            $('.fulfill-details').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
-        if (localStorage.fulfillment_day) {
-            $('#delivery-date-label').html('Your order be ready for pickup between 8am and 4pm <div class="col-md-12 linebreak">')
-            $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + '</div>' +localStorage.fulfillment_date)
-            $('#delivery-date-label').append('From ' + JSON.parse(localStorage.pickupLocation).desc)
-
-    
-        }
-
-
         $('#pickup-label').html(JSON.parse(localStorage.pickupLocation).desc)
 
       }
@@ -160,17 +145,14 @@ localStorage.checkoutInitiated = 1
 
         }
 
+        updateCartDiv()
+
       $('#info-billing').hide()
     //   $('#paypal-button-container').hide()
       if (localStorage.fulfillment_method == 'pickup') {
         $('a#pickupRadio').addClass()
         $('#fulfillment-options').html('Pickup Info')
-        if (localStorage.fulfillment_day) {
-            $('#delivery-date-label').html('Your order will be ready for pickup <div class="col-md-12 linebreak"></div>')
-            $('#delivery-date-label').append(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' ' +localStorage.fulfillment_date)
-            $('#delivery-date-label').append(' At </br><strong> ' + JSON.parse(localStorage.pickupLocation).desc)
 
-        }
 
       }
     })
@@ -200,7 +182,9 @@ localStorage.checkoutInitiated = 1
           city: $('input[name="city-bill"]').val(),
           state: $('input[name="state-bill"]').val(),
           zip: $('input[name="zip-bill"]').val(),
-          stripeToken: result.token.id
+          coupon: $('input[name="promoCode"]').val(),
+          stripeToken: result.token.id,
+          shippingCode: localStorage.shippingCode
         }
       
       var shipping = {
@@ -212,9 +196,9 @@ localStorage.checkoutInitiated = 1
       var user = {
           firstName: $('input[id="firstName"]').val(),
           lastName: $('input[id="lastName"]').val(),
-          email: $('input[id="email"]').val(),
+          email: $('input[id="email-bill"]').val(),
           phone: $('input[id="phone"]').val(),
-          password: $('input[id="password"').val(),
+          password: $('input[id="password-bill"').val(),
           fulfillment_method: localStorage.fulfillment_method,
           fulfillment_day: localStorage.fulfillment_day,
           pickup_location: localStorage.pickupLocation
@@ -290,3 +274,35 @@ localStorage.checkoutInitiated = 1
         }).render('#paypal-button-container');
     })
 
+$('#applyCoupon').on('click', function(){
+  var coupon = $('input[name="promoCode"]').val()
+  $.ajax({
+    type: 'GET',
+    url: '/checkout/coupon/apply/' + coupon,
+    success: function(data){
+      var total = $('.order-total').data('total')
+      if (data.amount_off) {
+        toastr['success']('Coupon for $' + (data.amount_off / 100) + ' successfully applied')
+        total = total - (data.amount_off / 100)
+        console.log(data.amount_off / 100) 
+        $('.order-total').html(total.toFixed(2))
+        disableCoupon()
+      }
+      if (data.percent_off) {
+        toastr['success']('Coupon for ' + data.percent_off + '% successfully applied')
+        var percent = (data.percent_off / 100)
+        var discount = (percent * total)
+        console.log(total, discount)
+        total = total - discount
+        $('.order-total').html(total.toFixed(2))
+        disableCoupon()
+      }
+    }
+  })
+})
+
+function disableCoupon() {
+  $('input[name="promoCode"]').attr('disabled', 'disabled')
+  $('#applyCoupon').attr('disabled', 'disabled')
+
+}
