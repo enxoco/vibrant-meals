@@ -59,17 +59,12 @@ class CheckoutController {
     user.password = await Hash.make(req.user.password)
 
 
-    if (req.user.fulfillment_method == 'pickup') {
+
       var address = req.billing.street
       var city = req.billing.city
       var state = req.billing.state
       var zip = req.billing.zip
-    } else {
-      var address = req.shipping.street
-      var city = req.shipping.city
-      var state = req.shipping.state
-      var zip = req.shipping.zip
-    }
+
     var existing = await stripe.customers.list(
       { limit: 1, email: user.email },
     );
@@ -185,10 +180,10 @@ class CheckoutController {
           customer: customer['id'],
           items: stripeItems,
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
-            name: user.name,
+            name: req.shipping.recipient ? req.shipping.recipient : user.name,
             address: {
               line1: req.shipping.street,
-              city: req.shipping.city,
+              city: req.shipping.city,  
               state: req.shipping.state,
               country: 'US',
               postal_code: req.shipping.zip,

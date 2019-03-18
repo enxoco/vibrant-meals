@@ -246,7 +246,10 @@ li {
     background: #3b8f6b;
 }
 
-@media only screen and (min-device-width : 400px) {
+@media only screen 
+and (min-device-width : 400px) 
+and (max-device-width: 1000px)
+{
   .sidebar {
     right: -100px !important;
   }
@@ -294,6 +297,34 @@ button.navbar-toggler {
     z-index: 9999999999999999999;
     top: 25px;
     right: 25% !important;
+}
+
+h2.category-heading {
+    width: 100px;
+    min-height: 29px;
+}
+
+h2.category-heading:hover, h2.category-heading:active {
+    border-bottom: 5px solid #aad0ad;
+    width: 100px;
+}
+input.muted {
+    background: #f2f2f2f2;
+    border: none;
+    padding: 10px;
+    font-size: .75em;
+    border-radius: 10em;
+    width: 90%;
+}
+.hidden {
+  display: none;
+}
+
+.col.border-none > .card.card-user {
+    border: none;
+}
+.large-font {
+    font-size: 2em;
 }
 </style>
 </head>
@@ -387,8 +418,18 @@ button.navbar-toggler {
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script src="/js/moment.min.js"></script>
-
+<script src="https://unpkg.com/feather-icons"></script>
 <script>
+  $('#alternate-address-bill').on('click',function(){
+  console.log('hello')
+  $('#billing-info').toggleClass('hidden')
+})
+$('#alternate-pickup-day').on('click', function() {
+  $('#pickupDaysList').toggleClass('hidden')
+})
+$('.shipping-form').hide()
+$('#same-address, #alternate-address-deliver').on('click', function(){$('.shipping-form').toggle()})
+
     var stores = {
 type: "FeatureCollection",
 features: [
@@ -818,13 +859,16 @@ if (window.location.href.includes('checkout')) {
         var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
         $.get(query, function(distance) {
           var miles = distance.routes[0].distance*0.000621371192
+          var total = $('.order-total').data('total')
+
+          console.log('total ', total)
           if (total >= 100) {
+            console.log('free shipping')
             localStorage.shippingCode = 'freeshipping'
           } else {
             if (miles.toFixed(0) > 5) {
             if (miles.toFixed(0) <= 10) {
               localStorage.shippingCode = '5to10miles'
-              var total = $('.order-total').data('total')
               total += 5
               $('.order-total').html(total)
               $('.delivery-fee').html('5.00')
@@ -855,4 +899,3 @@ if (window.location.href.includes('checkout')) {
       toastr['success']('click')
     })
   </script>
-<script src="https://unpkg.com/feather-icons"></script>

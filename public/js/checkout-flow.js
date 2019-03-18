@@ -53,7 +53,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
       var pickupDaysModal = $('#pickupDaysList')
       
-      console.log(typeof monday)
 
       var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('MMM DD')
       var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
@@ -88,7 +87,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       localStorage.fulfillment_day = def.day 
       localStorage.fulfillment_date = def.date
     }
-localStorage.checkoutInitiated = 1
+      localStorage.checkoutInitiated = 1
       nextAvalFulfill()
       if (localStorage.myStore) {
         var storeName = JSON.parse(localStorage.myStore)
@@ -137,7 +136,8 @@ localStorage.checkoutInitiated = 1
     
     $(document).ready(function(){
       $('.shipping-form').hide()
-
+      //Hide the next button on Desktop 
+      $('.checkout-button').addClass('d-md-none d-lg-none')
 
         if(localStorage.fulfillment_method == 'pickup') {
             var store = JSON.parse(localStorage.pickupLocation)
@@ -155,20 +155,7 @@ localStorage.checkoutInitiated = 1
 
       }
     })
-    $('#same-address').on('click', function(){$('.shipping-form').toggle()})
-    // $('.same-address').on('click', function(){
-      
-    //     $('#state-ship').val($('#state-bill').val())
-    //     $('input[name="street-ship"]').val($('input[name="street-bill"]').val())
-    //     // $('input[name="street2-ship"]').val($('input[name="street2-bill"]'),val())
-    //     $('input[name="city-ship"]').val($('input[name="city-bill"]').val())
-    //     // $('input[name="state-ship"]').val($('input[name="state-bill"]').val())
-    //     $('input[name="zip-ship"]').val($('input[name="zip-bill"]').val())
 
-
-
-
-    // })
 
     $('#createToken').on('click', function(){
       stripe.createToken(card).then(function (result) {
@@ -179,7 +166,7 @@ localStorage.checkoutInitiated = 1
           street: $('input[name="street-bill"]').val(),
           street_2: $('input[name="street2-bill"]').val(),
           city: $('input[name="city-bill"]').val(),
-          state: $('input[name="state-bill"]').val(),
+          state: $('select#state-bill').val(),
           zip: $('input[name="zip-bill"]').val(),
           coupon: $('input[name="promoCode"]').val(),
           stripeToken: result.token.id,
@@ -187,9 +174,10 @@ localStorage.checkoutInitiated = 1
         }
       
       var shipping = {
+          recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
           street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
           city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val() ,
-          state: $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val(),
+          state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
           zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
       }
       var user = {
@@ -310,3 +298,10 @@ function disableCoupon() {
   $('#applyCoupon').attr('disabled', 'disabled')
 
 }
+
+
+
+$('#alternate-address').on('click',function(){
+  console.log('hello')
+  $('#billing-info').removeClass('hidden')
+})

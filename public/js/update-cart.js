@@ -13,7 +13,11 @@ function updateCartDiv() {
       localStorage.fulfillment_method = 'delivery'
       updateCartDiv()
     }
-    var orderLocation = JSON.parse(localStorage.pickupLocation).name
+
+    var orderLocation = ''
+    if (localStorage.pickupLocation) {
+      orderLocation = JSON.parse(localStorage.pickupLocation).name
+    }
   } else {
 
   }
@@ -34,7 +38,9 @@ function updateCartDiv() {
     localStorage.fulfillment_day = user.user.fulfillment_day
     localStorage.custEngageCompleted = 1
     localStorage.checkoutInitiated = 1
-    localStorage.pickupLocation = JSON.stringify(user.user.pickupLocation)
+    if (user.user.pickupLocation) {
+      localStorage.pickupLocation = JSON.stringify(user.user.pickupLocation)
+    }
   }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
@@ -48,24 +54,18 @@ function updateCartDiv() {
     </div></a></div></div>'
     // $('.row.mb-5.pl-3').append(d)
     $('#order-info').html(d)
-    if ($('#express-checkout-details').html()) {
-      $('#express-checkout-details').html('Order Type: <strong>'+orderMethod+'</strong><br /> '+ orderMethod +' Location: <strong>'+ JSON.parse(localStorage.pickupLocation).name + '</strong><br />'+ orderMethod + ' Window: <strong>Between 8am and 4pm </strong><br />Day: ' + orderDay )
 
-    }
     if (localStorage.fulfillment_method == 'pickup') {
       if (localStorage.fulfillment_day) {
         $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
       } else {
 
-        // localStorage.fulfillment_day = $('li.list-group-item.clickable.active').data('day')
-        // localStorage.fulfillment_date = $('li.list-group-item.clickable.active').data('date')
-        // $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
-
       }
     }
     if (localStorage.fulfillment_method == 'delivery' && localStorage.fulfillment_day) {
       $('#delivery-fee').show()
-      $('#delivery-date-label').html('Your order is scheduled for delivery <br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong>')
+      $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
+      $('#delivery-date-label').html('Your order is scheduled for delivery <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
     }
 
   }
@@ -102,7 +102,7 @@ function updateCartDiv() {
       }
       localStorage.setItem('cartCount', cartCount)
       if (window.location.href.includes('checkout')) {
-        total += parseInt((cartItems[i].quantity * cartItems[i].price / 100).toFixed(2))
+        total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
         var card = '<div class="row mb-5 pl-3 pr-3 order-info align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
       } else {
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
@@ -130,6 +130,7 @@ function updateCartDiv() {
       $('.cart-row-master').append(card)
 
     }
+    console.log(total)
     $('.order-total').attr('data-total', total)
     $('.order-total').html(total)
 

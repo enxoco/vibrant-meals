@@ -26,16 +26,21 @@ class ItemController {
 
     if (auth.user) {
       var user = {}
-      var store = await Database 
+      if (auth.user.fulfillment_method == 'pickup') {
+        var store = await Database 
         .table('locations')
         .select('*')
         .where('id', auth.user.pickup_location)
+        store[0].desc = store[0].name
+        user.pickupLocation = store[0]
+
+
+      }
+
 
       user.fulfillment_method = auth.user.fulfillment_method
       user.fulfillment_day = auth.user.fulfillment_day
-      store[0].desc = store[0].name
 
-      user.pickupLocation = store[0]
       return view.render('menu.menu-new', {items: prod, categories: uniq, user: user})
     } else {
       return view.render('menu.menu-new', {items: prod, categories: uniq})
@@ -420,15 +425,17 @@ class ItemController {
           .where('id', auth.user.pickup_location)
   
         var stripeDetails = await stripe.customers.retrieve(auth.user.stripe_id)
+        var orders = await stripe.orders.list({limit: 1, customer: auth.user.stripe_id})
 
         user.fulfillment_method = auth.user.fulfillment_method
         user.fulfillment_day = auth.user.fulfillment_day
-        store[0].desc = store[0].name
-        user.pickupLocation = store[0]
-        user.pickupLocation.desc = user.pickupLocation.name
+        if (user.fulfillment_method == 'pickup') {
+          store[0].desc = store[0].name
+          user.pickupLocation = store[0]
+          user.pickupLocation.desc = user.pickupLocation.name
+        }
         
-        
-        return view.render('menu.checkout', {user, billing: stripeDetails})
+        return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address})
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.
