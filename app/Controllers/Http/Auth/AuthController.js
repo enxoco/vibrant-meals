@@ -10,19 +10,16 @@ class AuthController {
 
 
   async testOrder ({ request, response, session, view }) {
-    console.log(session.all())
     const user = await Database
       .table('users')
       .select('stripe_id')
       .where('id', 1)
       .limit(1)
-      console.log(`stripe id: ${user[0].stripe_id}`)
 
     const plans = await Database
       .table('items')
       .select('stripe_id')
 
-      console.log(`plans: ${plans[0].stripe_id}, ${plans[1].stripe_id}`)
     var items = []
     for (var i = 0; i < plans.length; i++) {
       items.push({plan: plans[i].stripe_id})
@@ -101,10 +98,8 @@ class AuthController {
 
     try {
       await users.login(userInfo, auth)
-      console.log('login')
       return response.redirect('/menu')
     } catch (error) {
-      console.log('error')
       session.flash({ error: 'Invalid Login Credentials' })
       return response.redirect('back')
     }

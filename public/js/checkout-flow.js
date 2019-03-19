@@ -5,16 +5,12 @@ $('#info-billing > a').on('click', function(){
     $('input[name="zip-ship"]').val($('input[name="zip-bill"]').val())
   }) 
 
-
-
-
 $('#paypal-checkout').on('click', function(){
   $('.modal').modal('hide')
   $('#card-element').hide()
   $('#info-basic').hide()
   $('#stripe-checkout').removeClass('active')
   $(this).addClass('active')
-
 })
 
 $('#stripe-checkout').on('click', function(){
@@ -91,7 +87,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       nextAvalFulfill()
       if (localStorage.myStore) {
         var storeName = JSON.parse(localStorage.myStore)
-        console.log('store',storeName)
         $('.store-desc').html(storeName.name)
       }
 
@@ -147,7 +142,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
         updateCartDiv()
 
       $('#info-billing').hide()
-    //   $('#paypal-button-container').hide()
       if (localStorage.fulfillment_method == 'pickup') {
         $('a#pickupRadio').addClass()
         $('#fulfillment-options').html('Pickup Info')
@@ -156,10 +150,69 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       }
     })
 
+    $('.express-checkout-default').on('click', function(){
+
+
+        var billing = {
+          street: $('input[name="street-bill"]').val(),
+          street_2: $('input[name="street2-bill"]').val(),
+          city: $('input[name="city-bill"]').val(),
+          state: $('select#state-bill').val(),
+          zip: $('input[name="zip-bill"]').val(),
+          // coupon: $('input[name="promoCode"]').val(),
+          shippingCode: localStorage.shippingCode
+        }
+      
+      var shipping = {
+          recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
+          street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
+          city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val() ,
+          state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
+          zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
+      }
+      
+      var user = {
+          firstName: $('input[id="firstName"]').val(),
+          lastName: $('input[id="lastName"]').val(),
+          email: $('input[id="email-bill"]').val(),
+          phone: $('input[id="phone"]').val(),
+          password: $('#password-bill').val(),
+          fulfillment_method: localStorage.fulfillment_method,
+          fulfillment_day: $('li.list-group-item.clickable.active').data('day'),
+          fulfillment_date: $('li.list-group-item.clickable.active').data('date'),
+          pickup_location: localStorage.myStore
+      }
+    var cart = localStorage.cart
+    var obj = {
+        billing,
+        shipping,
+        user,
+        cart
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: '/checkout/express',
+      data: JSON.stringify({data:obj}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        if (data.status == 'success') {
+          toastr['success']('Order completed successfully')
+        } else {
+          toastr['warning']('Something went wrong')
+        }
+
+      },
+      failure: function(errMsg) {
+        // return alert(JSON.stringify(errMsg));
+      }
+  })
+    })
+
 
     $('#createToken').on('click', function(){
       stripe.createToken(card).then(function (result) {
-        console.log('done')
         $('input[name=stripeToken]').val(result.token.id)
 
         var billing = {
@@ -180,12 +233,13 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
           zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
       }
+      
       var user = {
           firstName: $('input[id="firstName"]').val(),
           lastName: $('input[id="lastName"]').val(),
           email: $('input[id="email-bill"]').val(),
           phone: $('input[id="phone"]').val(),
-          password: $('input[id="password-bill"').val(),
+          password: $('#password-bill').val(),
           fulfillment_method: localStorage.fulfillment_method,
           fulfillment_day: localStorage.fulfillment_day,
           pickup_location: localStorage.myStore
@@ -302,6 +356,5 @@ function disableCoupon() {
 
 
 $('#alternate-address').on('click',function(){
-  console.log('hello')
   $('#billing-info').removeClass('hidden')
 })

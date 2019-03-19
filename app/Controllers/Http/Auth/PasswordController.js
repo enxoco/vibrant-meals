@@ -16,7 +16,6 @@ class PasswordController {
       email: 'required|email'
     }
 
-    console.log(userInfo)
 
     const validation = await validateAll(userInfo, rules)
 

@@ -14,7 +14,6 @@ class HomeController {
         user.stripe_id,
         function(err, customer) {
           // asynchronously called
-          console.log(customer)
         }
       );
     }

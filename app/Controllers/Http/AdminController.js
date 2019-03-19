@@ -39,15 +39,14 @@ class AdminController {
     return view.render('admin.customers', {customers})
   }
 
-    async showItems ({ view }) {
+    async showItems ({ view, response }) {
         var prod = await stripe.products.list();
         prod = prod.data
         var categories = []
-        console.log(prod.length)
         for (var i = 0; i < prod.length; i++) {
           categories.push(prod[i].metadata.primary_category)
         }
-        console.log('hello')
+        return response.send(prod[0])
         return view.render('admin.items', {items: prod, categories})
     }
 
@@ -84,7 +83,6 @@ class AdminController {
 
                   for (var i = 1; i < Object.keys(form).length; i++) {
                     var sku = form[Object.keys(form)[i]]
-                    console.log(sku)
                     var size = sku.size
                     size = size.toLowerCase()
 
@@ -118,7 +116,6 @@ class AdminController {
       const couponData = request.only(['percentage', 'coupon_name'])
       try {
         const status = await this.createCoupon(couponData)
-        console.log(status)
         return response.send(status)
       } catch (e) {
         return response.send(e.message)
@@ -154,7 +151,6 @@ class AdminController {
     //       var message = err.message
     //     }
     //   });
-    //   console.log(await coupon)
       
     //   return response.send(message)
     // }

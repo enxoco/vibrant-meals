@@ -3033,6 +3033,8 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   vertical-align: middle;
   outline: 0;
   cursor: pointer;
+  position: absolute;
+  right: 75px;
 }
 
 .navbar .navbar-toggler .navbar-toggler-bar.navbar-kebab {
@@ -6471,7 +6473,8 @@ a.filter-button {
 .navbar-toggle {
   position: absolute;
   right: 25px;
-  top: 25px;
+  top: 29px;
+  color: black;
 }
 button.btn.btn-link {
   white-space: normal;

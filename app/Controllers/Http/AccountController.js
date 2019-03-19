@@ -39,14 +39,12 @@ class AccountController {
       let linkedAccount = await users.getAllLinkedAccount(loginID)
       return view.render('account.profile', {account: loggedinUser, linkedAccount: linkedAccount})
     } catch (e) {
-      console.log(e)
       response.redirect('/login')
     }
   }
 
   async updateBilling ({request, response, auth}) {
     var form = request.all()
-    console.log(form.street)
 
     var id = auth.user.stripe_id
     var update = await stripe.customers.update(id, {
@@ -113,7 +111,6 @@ class AccountController {
       session.flash({status: 'Avatar has been updated successfully'})
       return response.redirect('back')
     } catch (e) {
-      console.log(e)
       session.flash({ error: 'Internal error while uploading' })
       return response.redirect('back')
     }

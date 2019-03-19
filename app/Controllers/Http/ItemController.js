@@ -14,7 +14,6 @@ var cartCur = []
 class ItemController {
 
   async listItems ({view, response, auth, request}) {
-    console.log(request.cords)
 
     var products = await stripe.products.list();
     var prod = products.data
@@ -142,7 +141,6 @@ class ItemController {
         })
         for (var i = 0; i < Object.keys(obj).length; i++) {
           var sku = obj[Object.keys(obj)[i]]
-          console.log(sku)
 
           stripe.skus.update(sku.id, {
             price: sku.price,
@@ -411,7 +409,7 @@ class ItemController {
     
     }
 
-    async showCheckout ({ view, session, auth }) {
+    async showCheckout ({ view, session, auth, response }) {
 
       // Fetch our menu object containing items, filters, categories, etc...
       const menu_items = await fetchMenu()
@@ -434,7 +432,7 @@ class ItemController {
           user.pickupLocation = store[0]
           user.pickupLocation.desc = user.pickupLocation.name
         }
-        
+        // return response.send(orders)
         return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address})
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu

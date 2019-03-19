@@ -56,6 +56,7 @@ Route.post('/password/reset', 'Auth/PasswordController.reset').as('reset.passwor
 Route.get('/contact', 'ContactController.index').as('contact.show')
 Route.post('/contact', 'ContactController.sendMessage').as('contact.send')
 Route.post('/checkout/stripe', 'CheckoutController.stripeCheckout')
+Route.post('/checkout/express', 'CheckoutController.expressCheckout')
 Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')
 
 /**
