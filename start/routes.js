@@ -64,6 +64,7 @@ Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')
  */
 
 Route.group(() => {
+
   Route.get('/account', 'Auth/AuthController.viewProfile').as('user.account')
   Route.post('/account/fulfillmethod/update', 'AccountController.updateFulfillmentMethod')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
@@ -72,6 +73,7 @@ Route.group(() => {
   Route.get('/account/unlink/:provider', 'AccountController.unlinkSocialMediaAccount').as('unlink.sm')
   Route.get('/account/delete', 'AccountController.destroy').as('account.delete')
   Route.post('/account/billing/update', 'AccountController.updateBilling')
+  Route.post('/account/updateFulfillPrefs', 'AccountController.updateFulfillPrefs')
 
 })
 

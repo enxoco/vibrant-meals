@@ -64,6 +64,17 @@
                   <div class="card-footer ">
                   <hr>
                       <div class="stats ">
+                          <img src="images/elippsis.png" style="height: 10px" />
+
+
+                          Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
+                          @if(item.skus.data[0].metadata.fats)
+                          Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
+                          @else
+                          Fats: <strong>0</strong>
+                          @endif
+                          Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
+
                           <a class="checkout-prompt-1"
                           data-id="{{item.id}}" 
                           data-sku="{{item.skus.data[0].id}}" 
@@ -76,16 +87,6 @@
                         >
                           <img src="images/cart-icon.png" style="height:20px"/>
                           </a>
-                          Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
-                          @if(item.skus.data[0].metadata.fats)
-                          Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                          @else
-                          Fats: <strong>0</strong>
-                          @endif
-                          Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-
-
-                          <img src="images/elippsis.png" style="height: 10px" />
                       </div>
                   </div>
               </div>

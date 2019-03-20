@@ -183,7 +183,7 @@ class AdminController {
                           fats: sku.fats,
                           carbs: sku.carbs,
                           proteins: sku.proteins,
-                          calories: sku.filters,
+                          calories: sku.calories,
                           filters: sku.filters
                       },
                     })

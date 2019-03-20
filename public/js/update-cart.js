@@ -34,6 +34,7 @@ function updateCartDiv() {
 
   if($('#user-info').data()) {
     var user = $('#user-info').data()
+    console.log(user.user.fulfillment_method)
     localStorage.fulfillment_method = user.user.fulfillment_method
     localStorage.fulfillment_day = user.user.fulfillment_day
     localStorage.custEngageCompleted = 1
@@ -62,10 +63,10 @@ function updateCartDiv() {
 
       }
     }
-    if (localStorage.fulfillment_method == 'delivery' && localStorage.fulfillment_day) {
+    if (localStorage.fulfillment_day) {
       $('#delivery-fee').show()
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
-      $('#delivery-date-label').html('Your order is scheduled for delivery <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
+      $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
     }
 
   }

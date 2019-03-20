@@ -14,6 +14,7 @@ class AccountController {
     var method = request.all()
     method = method.pref
 
+
     if (method == 'monday' || method == 'wednesday') {
       var update = await stripe.customers.update(stripe_id, {
         metadata: {

@@ -2,42 +2,39 @@
 @section('content')
 
 <div class="content">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card card-user card-profile">
-              <div class="image">
-                
-              </div>
-              <div class="card-body">
-                <div class="author">
-                  <a href="#">
-					<h5 class="title">{{customer.metadata.name}}</h5>
-					{{customer.email}}
-				  </a>
-				  <hr class="mb-5">
-				  <p class="description">Billing Info</p>
-				  <form id="billing">
-						<div class="row">
+  <div class="row pt-5">
+    <div class="col-md-5 mx-auto">
+      <div class="card card-user card-profile">
+        <div class="image">
+        </div>
+        <div class="card-body">
+          <div class="author">
+					  <h5 class="title">{{customer.metadata.name}}</h5>
+					    {{customer.email}}
+			      <hr class="mb-5">
+				    <p class="description">Billing Info</p>
+				    <form id="billing">
+						  <div class="row">
 								<div class="col">
-										<div class="form-group">
-										  <label>Street Address</label>
-										  <input type="street" name="street" required value="{{customer.shipping.address.line1}}" class="form-control">
-										</div>
-									  </div>
-						</div>
-						<div class="row">
-									  <div class="col">
-											<div class="form-group">
-											  <label>City</label>
-											  <input type="text" name="city" required value="{{customer.shipping.address.city}}" class="form-control">
-											</div>
-										  </div>
-										  <div class="col">
-												<div class="form-group">
-												  <label>State</label>
-												<input type="text" name="state" required value="{{customer.shipping.address.state}}" class="form-control">
-												</div>
-											  </div>
+									<div class="form-group">
+										<label>Street Address</label>
+										<input type="street" name="street" required value="{{customer.shipping.address.line1}}" class="form-control">
+									</div>
+								</div>
+						  </div>
+						  <div class="row">
+								<div class="col">
+								  <div class="form-group">
+										<label>City</label>
+										<input type="text" name="city" required value="{{customer.shipping.address.city}}" class="form-control">
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label>State</label>
+										<input type="text" name="state" required value="{{customer.shipping.address.state}}" class="form-control">
+									</div>
+								</div>
 											  <div class="col">
 													<div class="form-group">
 													  <label>Zip Code</label>
@@ -51,19 +48,8 @@
 									</div>
 								  </div>
 				  </form>
-
-                  <!--
-                  <p class="description">
-                    @chetfaker
-                  </p>-->
                 </div>
-                <!--
-                <p class="description text-center">
-                  "I like the way you work it
-                  <br> No diggity
-                  <br> I wanna bag it up"
-                </p>
-            -->
+
               </div>
 
               <div class="card-footer">
@@ -138,7 +124,7 @@
                   </div>
 		  </div>
 		  
-		  <div class="col-md-6">
+		  <div class="col-md-5 mx-auto">
 
 				<div class="card card-profile">
 						<div class="card-header">
@@ -150,7 +136,7 @@
 							  <div class="row">
 								<div class="col-md-12 col-12 mr-10">
 									<div class="row">
-                      <div class="col-md-3 col-lg-3 col"></div>
+                      <div class="col-md-2 col-lg-2 col"></div>
                       <div class="col">
   
                         <div class="form-group" id="fulfillment-method">
@@ -174,7 +160,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-3 col-lg-3 col"></div>
+                    <div class="col-md-2 col-lg-2 col"></div>
                     <div class="col">
 
                           <div class="form-group" id="fulfillment-day">
@@ -247,153 +233,7 @@
 						  </div>
 		
 			  </div>
-          <!-- item-card -->
-          <div class="col-md-8">
-            <div class="card card-user card-profile">
-              <div class="card-header">
-                <h5 class="card-title">Add Item</h5>
-              </div>
-              <div class="card-body">
-                <form id="parent_product">
-                  <div class="row">
-                    <div class="col-md-4 pr-1">
-                      <div class="form-group">
-                        <label>Item Name</label>
-                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}" class="form-control">
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-2">
-                      <div class="form-group">
-                        <label>Short Description</label>
-                        <input type="text" name="short_name" class="form-control" placeholder="Short Description" value="">
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-3">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Price</label>
-                        <input type="text" name="price" class="form-control" placeholder="Price" value="{{prod.skus.data[0].price}}">
-                      </div>
-                    </div>
-                    <div class="col-md-2 pr-4">
-                            <div class="form-group">
-                              <label>Quantity</label>
-                              <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="">
-                            </div>
-                          </div>
-                  </div>
-                  <div class="row">
 
-                    <div class="col-md-3 pr-2">
-                      <div class="form-group">
-                        <label>Product Category</label>
-                        <input type="text" class="form-control" placeholder="Category" size="primary_category" value="{{prod.metadata.primary_category}}">
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-2">
-                        <div class="form-group">
-                            <label>Size</label>
-                              <input type="text" class="form-control" placeholder="Size" name="size" value="{{prod.skus.data[0].attributes.size}}">
-                        </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Calories</label>
-                        <input type="text" class="form-control" name="calories" placeholder="calories" value="{{prod.skus.data[0].metadata.calories}}">
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Carbs</label>
-                              <input type="text" class="form-control" name="carbs" placeholder="carbs" value="{{prod.skus.data[0].metadata.carbs}}">
-                            </div>
-                          </div>                    <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Proteins</label>
-                                  <input type="text" class="form-control" name="proteins" placeholder="proteins" value="{{prod.skus.data[0].metadata.proteins}}">
-                                </div>
-                              </div>                    <div class="col-md-3">
-                                    <div class="form-group">
-                                      <label>Fats</label>
-                                      <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
-                                    </div>
-                                  </div>                    
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Description</label>
-                        <textarea name="description" class="form-control textarea">{{prod.description}}</textarea>
-                      </div>
-                    </div>
-                  </div>
-
-                </form>
-              </div>
-              
-            </div>
-            <div class="card card-profile">
-                    <div class="card-header">
-                      <h4 class="card-title">Size Variations</h4>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-unstyled size-variations">
-                        <li class="form-variation">
-                          <form id="variation_1">
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Label</label>
-                                  <input type="text" class="form-control" name="size" placeholder="Size Label" value="{{prod.skus.data[0].metadata.size}}">
-                              </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                  <label>Price</label>
-                                  <input type="text" class="form-control" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}">
-                                </div>
-
-                              </div>   
-                            <div class="col-md-2">
-                              <div class="form-group">
-                                <label>Calories</label>
-                                  <input type="text" class="form-control" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}">
-                              </div>
-                            </div>
-                                        <div class="col-md-2">
-                                                <div class="form-group">
-                                                  <label>Carbs</label>
-                                                  <input type="text" class="form-control" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}">
-                                                </div>
-                                              </div> 
-                                              <div class="col-md-2">
-                                                    <div class="form-group">
-                                                      <label>Proteins</label>
-                                                      <input type="text" class="form-control" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}">
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                        <div class="form-group">
-                                                          <label>Fats</label>
-                                                          <input type="text" class="form-control" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}">
-                                                        </div>
-
-                                                      </div>   
-                                                      <div class="col-md-8">
-                                                          <btn data-toggle="tooltip" data-placement="top" title="Add another size" class="btn btn-md btn-outline-success btn-round btn-icon add-another"><i class="nc-icon nc-simple-add"></i></btn>
-                                                          <btn class="btn btn-md btn-outline-danger btn-round btn-icon remove-size" data-toggle="tooltip" data-placement="top" title="Delete this size"><i class="nc-icon nc-simple-remove"></i></btn>
-                                                      </div> 
-                                                                     
-                                      </div>
-                          </form>
-                        </li>
-                        <div class="dropdown-divider"></div>
-
-                      </ul>
-                    </div>
-                  </div>
-          </div> <!-- /item card-->
         </div>
 
         </div>

@@ -23,7 +23,12 @@
                 Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
 
             <div class="row">
-    
+                @if(item.skus.data[0].metadata.filters)
+                    <div class="col">
+                            <label for="sehir">Tags</label>
+                            <input type="text" name="filters" value="{{item.skus.data[0].metadata.filters}}" data-role="tagsinput" class="form-control" />
+                        </div> 
+                        @endif    
             </div>
             </div>
             <div class="modal-footer">

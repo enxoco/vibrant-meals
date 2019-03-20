@@ -23,13 +23,22 @@ class CheckoutController {
     var req = request.all()
     req = req.data
     var user = await auth.user
+
+    var update = await Database
+      .table('users')
+      .update({
+        fulfillment_method: req.user.fulfillment_method,
+        fulfillment_day: req.user.fulfillment_day,
+        pickup_location: req.user.pickupLocation
+      })
+      .where('id', user.id)
     var customer = await stripe.customers.retrieve(auth.user.stripe_id)
     if (req.user.pickup_location) {
         var location = JSON.parse(req.user.pickup_location)
     }
     var cart = JSON.parse(req.cart)
     var stripeItems = []
-    if (req.billing.shippingCode) {
+    if (req.billing.shippingCode && req.user.fulfillment_method != 'pickup') {
       stripeItems.push({
         type: 'sku',
         parent: req.billing.shippingCode,
@@ -54,6 +63,17 @@ class CheckoutController {
     if (user) {
     
       if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
+        var store = await Database
+        .table('locations')
+        .where('id', JSON.parse(req.user.pickup_location).id)
+      var store = store[0]
+      var location = {}
+
+      location.address = store.street_addr
+      location.city = store.city
+      location.state = store.state
+      location.zip = store.zip
+      location.postalCode = store.zip
         if (req.billing.coupon) {
 
         var order = await stripe.orders.create({
@@ -122,6 +142,7 @@ class CheckoutController {
           });
         }
       } else {// Default to delivery if no method selected
+        return response.send('hell')
         var order = await stripe.orders.create({
           currency: 'usd',
           customer: customer['id'],
@@ -175,7 +196,7 @@ class CheckoutController {
     }
     var cart = JSON.parse(req.cart)
     var stripeItems = []
-    if (req.billing.shippingCode) {
+    if (req.billing.shippingCode && req.user.fulfillment_method == 'delivery') {
       stripeItems.push({
         type: 'sku',
         parent: req.billing.shippingCode,
@@ -207,6 +228,10 @@ class CheckoutController {
         .limit(1)
       loc = loc[0]
       var address = loc.street_addr
+      location.address = loc.street_addr
+      location.city = loc.city
+      location.state = loc.state
+      location.zip = loc.zip
       var city = loc.city
       var state = loc.state
       var zip = loc.zip

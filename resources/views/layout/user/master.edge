@@ -14,6 +14,8 @@
   <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
   <link rel="stylesheet" href="/css/toastr.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-tags.css" />
+
   <style>
 
 
@@ -141,7 +143,8 @@ li.list-group-item.button-group {
 }
 .card-title {
     margin-bottom: .75rem;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 800;
 }
 
 .form-control {
@@ -457,6 +460,8 @@ h2.hero {
 <script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script src="/js/moment.min.js"></script>
 <script src="https://unpkg.com/feather-icons"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
 <script>
   $('#alternate-address-bill').on('click',function(){
   $('#billing-info').toggleClass('hidden')
@@ -621,6 +626,9 @@ $(document).on('click', 'a#deliveryRadio', function(){
 
     $('#deliveryRadio').closest('.fulfillment-option').addClass('active')
   $('.cart-icon-label.delivery').html('Choose address at checkout')
+  $('.express-checkout-edit').show()
+  $('.shipping-form').show()
+
 
   localStorage.fulfillment_method = 'delivery'
   localStorage.removeItem('pickup_location')
@@ -843,7 +851,7 @@ if (window.location.href.includes('checkout')) {
             console.log('free shipping')
             localStorage.shippingCode = 'freeshipping'
           } else {
-            if (miles.toFixed(0) > 5) {
+            if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
             if (miles.toFixed(0) <= 10) {
               localStorage.shippingCode = '5to10miles'
               total += 5

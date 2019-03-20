@@ -1,5 +1,7 @@
 $(document).on('click', 'a#pickupRadio', function() {
   var stores = $('#stores').data('stores')
+  $('.express-checkout-edit').hide()
+  $('.shipping-form').hide()
 
   $('.shipping-form').hide()
   $('#pickupRadio').closest('.fulfillment-option').addClass('active')
@@ -97,15 +99,15 @@ $(document).on('click', 'a#pickupRadio', function() {
           var pickupLocation = JSON.parse(localStorage.pickupLocation)
             if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
               listing.innerHTML = '<ul class="list-group">\
-              <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+              <li class="list-group-item d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
                 '+prop.desc+'<br />'+prop.address+'\
                 <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
               </li>\
             </ul>'
           } else {
             listing.innerHTML = '<ul class="list-group">\
-            <li class="list-group-item active d-flex justify-content-between align-items-center" >\
-              '+prop.desc+'<br />'+prop.address+'\
+            <li class="list-group-item active d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
+            '+prop.desc+'<br />'+prop.address+'\
               <span class="badge badge-secondary">Open till '+prop.close+' <br /><br />'+miles.toFixed(1)+' Miles away</span>\
             </li>\
           </ul>'  
@@ -113,7 +115,7 @@ $(document).on('click', 'a#pickupRadio', function() {
         } else {
   
           listing.innerHTML = '<ul class="list-group">\
-          <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+          <li class="list-group-item d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
             '+prop.desc+'<br />'+prop.address+'\
             <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
           </li>\
@@ -126,16 +128,32 @@ $(document).on('click', 'a#pickupRadio', function() {
     $(".list-group-item").on('click', function(){
       $('.list-group-item').removeClass('active')
       $($(this)).addClass("active")
-      
       setTimeout(function() {
         $('#modal-pickup').modal('toggle')
     }, 500);
+    console.log('this is st')
+
       var st = ($(this).data())
       var myStore = {}
       myStore.id = st.storeid
       myStore.name = st.store
       localStorage.myStore = JSON.stringify(myStore)
-      localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
+      localStorage.fulfillment_method = 'pickup'
+      $('#user-info').remove()
+      var userInfo = {
+        fulfillment_method: 'pickup',
+        fulfillment_day: localStorage.fulfillment_day
+      }
+      console.log(st)
+    
+      console.log(stores)
+      localStorage.pickupLocation = JSON.stringify(stores.features[st.storerank].properties)
+
+
+      $('body').append("<div id='user-info-updated' data-user='"+JSON.stringify(userInfo)+"'></div>")
+
+
+
         if (localStorage.checkoutInitiated == 1) {
           // nextAvalFulfill()
           // $("#modal-pickup-day").addClass("is-active")
@@ -150,6 +168,9 @@ $(document).on('click', 'a#pickupRadio', function() {
 
 
   $(document).on('click', '#delivery', function(){
+ 
+
+
     localStorage.setItem("fulfillment_method", "delivery")
     updateCartDiv()
     $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
@@ -159,6 +180,7 @@ $(document).on('click', 'a#pickupRadio', function() {
   }, 500);
     
   })
+
 
 
   $(document).on('click', '#pickup', function() {
@@ -260,14 +282,14 @@ $(document).on('click', 'a#pickupRadio', function() {
             var pickupLocation = JSON.parse(localStorage.pickupLocation)
               if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
                 listing.innerHTML = '<ul class="list-group">\
-                <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
                   '+prop.desc+'<br />'+prop.address+'\
                   <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
                 </li>\
               </ul>'
                         } else {
                           listing.innerHTML = '<ul class="list-group">\
-                          <li class="list-group-item active d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+                          <li class="list-group-item active d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
                             '+prop.desc+'<br />'+prop.address+'\
                             <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
                           </li>\
@@ -276,7 +298,7 @@ $(document).on('click', 'a#pickupRadio', function() {
           } else {
     
             listing.innerHTML = '<ul class="list-group">\
-            <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
+            <li class="list-group-item d-flex justify-content-between align-items-center" data-storeRank="'+i+'" data-storeId="'+prop.storeId+'" data-store="'+prop.desc+'">\
               '+prop.desc+'<br />'+prop.address+'\
               <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
             </li>\
@@ -289,13 +311,17 @@ $(document).on('click', 'a#pickupRadio', function() {
       $(".list-group-item").on('click', function(){
         $(".list-group-item").removeClass("active")
         var st = ($(this).data())
-        console.log(st)
         var myStore = {}
         myStore.id = st.storeid
         myStore.name = st.store
-        console.log(myStore.name)
         localStorage.myStore = JSON.stringify(myStore)
         $('.modal').modal('hide')
+        localStorage.fulfillment_method = 'pickup'
+        if ($('#user-info').data()) {
+          var user = $('#user-info').data()
+          user.user.fulfillment_method = 'pickup'
+        }
+  
         localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
           if (localStorage.checkoutInitiated == 1) {
             $('.store-desc').html(JSON.parse(localStorage.myStore).name)
