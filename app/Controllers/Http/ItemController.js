@@ -18,9 +18,12 @@ class ItemController {
     var products = await stripe.products.list();
     var prod = products.data
     var categories = []
+    var filters = []
     for (var i = 0; i < prod.length; i++) {
       categories.push(prod[i].metadata.primary_category)
+    
     }
+
     var uniq = [ ...new Set(categories) ];
 
     if (auth.user) {
@@ -39,9 +42,10 @@ class ItemController {
 
       user.fulfillment_method = auth.user.fulfillment_method
       user.fulfillment_day = auth.user.fulfillment_day
-
       return view.render('menu.menu-new', {items: prod, categories: uniq, user: user})
+      
     } else {
+
       return view.render('menu.menu-new', {items: prod, categories: uniq})
     }
 
@@ -155,7 +159,8 @@ class ItemController {
               fats: sku.fats,
               carbs: sku.carbs,
               calories: sku.calories,
-              proteins: sku.proteins
+              proteins: sku.proteins,
+              filters: sku.filters
             }
           });
         }

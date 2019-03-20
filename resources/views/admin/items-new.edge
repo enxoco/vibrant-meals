@@ -2,213 +2,6 @@
 @section('content')
 
 
-<!--
-<div class="content">
-  <div class="row">
-        <div class="flex-item checkout-card">
-            <h1 class="menu-heading">Item Info</h1>
-                <div class="form-wrapper">
-                    <div class="checkout-form">
-                        <div class="checkout-form-row">
-                            <div id="passsword">
-                                <form id="this-isnt-showing">
-                                    <input type="hidden" name="id" value="{{prod.skus.data[0].id}}" />
-                                <label>
-                                    <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
-                                    <span>Name</span>
-                                </label>
-                                <label>
-                                    <input type="text" name="short_name" placeholder="Short Description" />
-                                    <span>Short Description</span>
-                                </label>
-
-                                <label>
-                                    <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}"/>
-                                    <span>Price</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="quantity" placeholder="Quantity" />
-                                    <span>Quantity</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
-                                    <span>Primary Category</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="filters" placeholder="Filters, comma separted" />
-                                    <span>Filters</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[0].attributes.protein_type}}"/>
-                                    <span>Protein Type</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[0].attributes.size}}"/>
-                                    <span>Size</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[0].attributes.flavor}}"/>
-                                    <span>Flavor</span>
-                                </label>
-
-                                <label>
-                                    <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
-                                    <span>Description</span>
-                                </label>
-                                <hr />
-                                <h1 class="menu-heading">Nutrition Info</h1>
-
-                                <label>
-                                    <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}"/>
-                                    <span>Calories</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}"/>
-                                    <span>Fats</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}"/>
-                                    <span>Carbs</span>
-                                </label>
-
-                                <label>
-                                    <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}"/>
-                                    <span>Proteins</span>
-                                </label>
-                                <a id="submit" class="button is-primary">submit</a>
-                                </form>
-                            </div>                
-                        </div>
-                    </div>
-                </div>
-        </div>
-
-        <div class="flex-item checkout-card">
-                <h1 class="menu-heading">Pictures</h1>
-                <div class="form-wrapper">
-                    <div class="checkout-form">
-                            <div class="thumbnails">
-                                    @each(sku in prod.skus.data)
-                                    <img class="thumbnail" src="{{sku.image}}" /> 
-                                    @endeach
-                                </div>
-                        <div class="checkout-form-row">
-                            <div id="passsword">
-                                <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
-                                    <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
-                                    <input id="button" type="button" value="Cancel" />
-                                    <br>
-
-                            </div>                
-                        </div>
-                    </div>
-                </div>
-                <h1 class="menu-heading">Meal Variations</h1>
-                <select id="variation">
-                    <optgroup>
-                    <option>Choose variation type</option>
-                    <option>protein_type</option>
-                    <option>size</option>
-                    <option>flavor</option>
-                    </optgroup>
-                </select>
-                <div class="checkout-form-row">
-                    <div class="form-wrapper">
-                    <div id="item-variations">
-                        @each(sku in prod.skus.data)
-                        @unless($loop.first)
-                        <form id="variation_{{$loop.index}}">
-                                <input type="hidden" name="id" id="sku_id" value="{{prod.skus.data[$loop.index].id}}" />
-
-                                <label>
-                                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}">
-                                        <span>Name</span>
-                                    </label>
-                                    <label>
-                                        <input type="text" name="short_name" placeholder="Short Description" />
-                                        <span>Short Description</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="number" name="price" placeholder="Price" value="{{prod.skus.data[$loop.index].price}}"/>
-                                        <span>Price</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="quantity" placeholder="Quantity" />
-                                        <span>Quantity</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="category" placeholder="Primary Category" value="{{prod.metadata.primary_category}}"/>
-                                        <span>Primary Category</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="filters" placeholder="Filters, comma separted" />
-                                        <span>Filters</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="protein_type" placeholder="Protein Type" value="{{prod.skus.data[$loop.index].attributes.protein_type}}"/>
-                                        <span>Protein Type</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="size" placeholder="Size" value="{{prod.skus.data[$loop.index].attributes.size}}"/>
-                                        <span>Size</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="flavor" placeholder="Flavor" value="{{prod.skus.data[$loop.index].attributes.flavor}}"/>
-                                        <span>Flavor</span>
-                                    </label>
-    
-                                    <label>
-                                        <textarea name="description" placeholder="Enter item description">{{prod.description}}</textarea>
-                                        <span>Description</span>
-                                    </label>
-                                    <hr />
-                                    <h1 class="menu-heading">Nutrition Info</h1>
-    
-                                    <label>
-                                        <input type="text" name="calories" placeholder="Calories" value="{{prod.skus.data[$loop.index].metadata.calories}}"/>
-                                        <span>Calories</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="fats" placeholder="Fats" value="{{prod.skus.data[$loop.index].metadata.fats}}"/>
-                                        <span>Fats</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="carbs" placeholder="Carbs" value="{{prod.skus.data[$loop.index].metadata.carbs}}"/>
-                                        <span>Carbs</span>
-                                    </label>
-    
-                                    <label>
-                                        <input type="text" name="proteins" placeholder="Proteins" value="{{prod.skus.data[$loop.index].metadata.proteins}}"/>
-                                        <span>Proteins</span>
-                                    </label>
-                        </form>
-                        @endunless
-                        @endeach
-                    </div>    
-                    </div>            
-                </div>
-            </div>
-
-</ul>
-</ul>-->
-
 <div class="content">
         <div class="row">
           <div class="col-md-4">
@@ -369,7 +162,12 @@
                                       <label>Fats</label>
                                       <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
                                     </div>
-                                  </div>                    
+
+                                  </div>
+                    <div class="col">
+                        <label for="sehir">Filters</label>
+                        <input type="text" name="filters" value="Whole 30, Paleo" data-role="tagsinput" class="form-control" />
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col-md-12">
@@ -411,6 +209,7 @@
                                 <label>Calories</label>
                                   <input type="text" class="form-control" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}">
                               </div>
+                              
                             </div>
                                         <div class="col-md-2">
                                                 <div class="form-group">
@@ -431,6 +230,7 @@
                                                         </div>
 
                                                       </div>   
+                                                      
                                                       <div class="col-md-8">
                                                           <btn data-toggle="tooltip" data-placement="top" title="Add another size" class="btn btn-md btn-outline-success btn-round btn-icon add-another"><i class="nc-icon nc-simple-add"></i></btn>
                                                           <btn class="btn btn-md btn-outline-danger btn-round btn-icon remove-size" data-toggle="tooltip" data-placement="top" title="Delete this size"><i class="nc-icon nc-simple-remove"></i></btn>
@@ -561,6 +361,7 @@ $('.save-form').on('click', function(){
     var master = {}
     var forms = $('.content').find('form')
 
+    
 
     for (var i = 0; i < forms.length; i++) {
         var obj = {};

@@ -156,7 +156,11 @@
                                       <label>Fats</label>
                                       <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
                                     </div>
-                                  </div>                    
+                                  </div>       
+                                  <div class="col">
+                                      <label for="sehir">Filters</label>
+                                      <input type="text" name="filters" value="{{prod.skus.data[0].metadata.filters}}" data-role="tagsinput" class="form-control" />
+                                  </div>             
                   </div>
                   <div class="row">
                     <div class="col-md-12">

@@ -34,9 +34,19 @@ hooks.after.providersBooted(() => {
     return `$${(num / 100).toFixed(2) * 1}`
   })
 
+  View.global('splitFilterTags', function(obj){
+    console.log(obj)
+    if (obj == undefined) {
+      return obj
+    } else {
+      obj =  obj.replace(' ', '_')
+      console.log(obj.replace(/,/g, ' '))
+      return obj.replace(/,/g, ' ')
+    }
+    // return obj.replace(/,/g, ' ')
+  }) 
 
   View.global('getKeys', function(obj) {
-    console.log(obj)
     // return Object.keys(obj)
   })
   View.global('parseItem', function(item){
