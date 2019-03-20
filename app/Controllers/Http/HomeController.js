@@ -46,10 +46,7 @@ class HomeController {
             type:"Feature",
             geometry: {
               type: "Point",
-              coordinates: [
-                stores[i].longitude,
-                stores[i].latitude
-              ]
+              coordinates: JSON.parse(stores[i].coordinates)
             },
             properties: {
               phoneFormatted: "(423) 555-5555",
@@ -58,7 +55,8 @@ class HomeController {
               postalCode: stores[i].zip,
               state: stores[i].state,
               city: stores[i].city,
-              closing: stores[i].closing_time,
+              close: stores[i].closes,
+              opens: stores[i].opens,
               desc: stores[i].name,
               storeId: stores[i].id
             }

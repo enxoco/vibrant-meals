@@ -2,8 +2,86 @@
 const Database = use('Database')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
+const Drive = use('Drive')
 
 class AdminController {
+
+  async listLocations({view, response}) {
+    var stores = await Database
+    .from('locations')
+    return view.render('layout.admin.locations', {stores})
+  } 
+
+  async updateLocations({view, request, params, response}) {
+
+    var obj = {}
+    for (let [key, value] of Object.entries(request.all())) {
+      obj[key] = value
+    }
+    delete obj['_csrf']
+
+    await Database
+    .table('locations')
+      .where('id', params.id)
+      .update(obj)
+    return response.redirect('back')
+  }
+
+  async importProducts({view, request, response}) {
+    var products = await Drive.get('/tmp/products.csv')
+
+    for (var i = 0; i < products.length; i++) {
+      var prod = products[i]
+      var product = await stripe.products.create({
+        name: prod.name,
+        type: 'good',
+        description: prod.description,
+        id: prod.id,
+        attributes: ['size'],
+        metadata: {
+            primary_category: prod.metadata.primary_category
+        }
+      }, function(err, product) {
+        // Now that primary product is created, we need to create skus
+        // Start with the parent item
+
+              for (var x = 1; x < products.skus.data.length; x++) {
+                var sku = products.skus.data.length[x]
+                var size = sku.size
+                size = size.toLowerCase()
+
+                stripe.skus.create({
+                    product: products[i].id,
+                    id: sku.id + '_' + size,
+                    price: parseInt(price),
+                    currency: 'usd',
+                    inventory: {type: 'finite', quantity: 500},
+                    image: sku.image,
+                    attributes: {
+                        size: size
+                    },
+                    metadata: {
+                        category: sku.category,
+                        size: size,
+                        fats: sku.metdata.fats,
+                        carbs: sku.metadata.carbs,
+                        proteins: sku.metadata.proteins,
+                        calories: sku.metadata.calories
+                    },
+                  })
+              }
+
+    });
+    }
+
+    return response.send(JSON.parse(products))
+    // var importFile = await Drive.get('/tmp/products.csv', 'utf-8')
+    // importFile = importFile.split('\n')
+    // var products = await stripe.products.list()
+    // var file = await Drive.put('/tmp/products.csv', JSON.stringify(products.data))
+
+    // return response.send(file)
+  }
 
   async listCoupons ({view, response}) {
     const coupons = await stripe.coupons.list()
@@ -46,7 +124,6 @@ class AdminController {
         for (var i = 0; i < prod.length; i++) {
           categories.push(prod[i].metadata.primary_category)
         }
-        return response.send(prod[0])
         return view.render('admin.items', {items: prod, categories})
     }
 
@@ -66,8 +143,6 @@ class AdminController {
         if(price.length == 2) {
           price += '0'
         }
-
-
         var product = await stripe.products.create({
             name: prod.name,
             type: 'good',
@@ -80,31 +155,39 @@ class AdminController {
           }, function(err, product) {
             // Now that primary product is created, we need to create skus
             // Start with the parent item
-
                   for (var i = 1; i < Object.keys(form).length; i++) {
-                    var sku = form[Object.keys(form)[i]]
-                    var size = sku.size
-                    size = size.toLowerCase()
+                    if (form['variation_1'].size == '' && form['variation_1'].calories == '' && form['variation_2'] == undefined) {
+                      var sku = form['parent_product']
+                      var size = sku.size
+                      size = size ? size.toLowerCase() : 'everyday'
+                    } else {
 
+                      var sku = form[Object.keys(form)[i]]
+                      var size = sku.size
+                      size = size ? size.toLowerCase() : 'everyday'
+
+                    }
                     stripe.skus.create({
-                        product: id,
-                        id: sku_id + '_' + size,
-                        price: parseInt(price),
-                        currency: 'usd',
-                        inventory: {type: 'finite', quantity: 500},
-                        image: prod.primary_img,
-                        attributes: {
-                            size: size
-                        },
-                        metadata: {
-                            category: sku.category,
-                            size: size,
-                            fats: sku.fats,
-                            carbs: sku.carbs,
-                            proteins: sku.proteins,
-                            calories: sku.calories
-                        },
-                      })
+                      product: id,
+                      id: sku_id + '_' + size,
+                      price: parseInt(price),
+                      currency: 'usd',
+                      inventory: {type: 'finite', quantity: 500},
+                      image: prod.primary_img,
+                      attributes: {
+                          size: size
+                      },
+                      metadata: {
+                          category: sku.category,
+                          size: size,
+                          fats: sku.fats,
+                          carbs: sku.carbs,
+                          proteins: sku.proteins,
+                          calories: sku.calories
+                      },
+                    })
+
+
                   }
 
         });
@@ -134,26 +217,6 @@ class AdminController {
         });
       })
     }
-    //  addCoupon(request, response) {
-    //   var form = request.all()
-
-    //   const coupon = await stripe.coupons.create({
-    //     percent_off: form.percentage,
-    //     duration: 'forever',
-    //     id: form.coupon_name
-    //   }, function(err, coupon) {
-    //     // asynchronously called
-    //     if (coupon) {
-    //       var message = 'Coupon created successfully'
-  
-    //     }
-    //     if (err) {
-    //       var message = err.message
-    //     }
-    //   });
-      
-    //   return response.send(message)
-    // }
 }
 
 module.exports = AdminController

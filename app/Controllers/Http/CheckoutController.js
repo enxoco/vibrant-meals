@@ -200,23 +200,40 @@ class CheckoutController {
 
     if (req.user.fulfillment_method == 'pickup') {
       user.pickup_location = location.id
-    }
 
-    user.password = await Hash.make(req.user.password)
+      var loc = await Database
+        .table('locations')
+        .where('id', location.id)
+        .limit(1)
+      loc = loc[0]
+      var address = loc.street_addr
+      var city = loc.city
+      var state = loc.state
+      var zip = loc.zip
+      console.log('address')
+      console.log(loc.street_addr)
 
 
 
+    } else {
       var address = req.billing.street
       var city = req.billing.city
       var state = req.billing.state
       var zip = req.billing.zip
 
-    var existing = await stripe.customers.list(
-      { limit: 1, email: user.email },
-    );
-    if (existing.data[0] != undefined) {
+    }
 
-    } else {
+    user.password = await Hash.make(req.user.password)
+
+    
+
+
+    // var existing = await stripe.customers.list(
+    //   { limit: 1, email: user.email },
+    // );
+    // if (existing.data[0] != undefined) {
+
+    // } else {
     var customer = await stripe.customers.create({
       description: 'Customer for ' + req.user.email,
       source: req.billing.stripeToken,
@@ -239,7 +256,7 @@ class CheckoutController {
         }
       }
     })
-    }
+    // }
     user.stripe_id = customer.id
 
     var newUser = await user.save()
@@ -260,11 +277,11 @@ class CheckoutController {
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: user.name,
             address: {
-              line1: location.address,
-              city: location.city,
-              state: location.state,
+              line1: address,
+              city: city,
+              state: state,
               country: 'US',
-              postal_code: location.postalCode,
+              postal_code: postalCode,
             },
           },  
           metadata: {
@@ -356,7 +373,7 @@ class CheckoutController {
     if (order) {
       return response.send(order)
     } else {
-      return response.send('something happened')
+      return response.send({'status':'success'})
     }
 
   }

@@ -84,7 +84,7 @@
               </div>
               
               
-            <div class="card card-user d-none d-md-block d-lg-block"
+            <div class="card card-user card-product d-none d-md-block d-lg-block"
               data-category="{{item.metadata.primary_category}}"
               data-sku="{{item.skus.data[0].id}}"
               data-meta='{{toJSON(item.skus.data[0].metadata)}}'
@@ -148,7 +148,7 @@
             class="is-pulled-right"
           >
 
-                       <img src="/images/cart-icon.png" height="40px" />
+                       <img src="/images/cart-icon.png" height="40px" onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)" onmousedown="hoverCart(this)" />
                         </a>
                       </div>
                     </div>

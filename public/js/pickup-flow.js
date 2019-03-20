@@ -1,4 +1,6 @@
 $(document).on('click', 'a#pickupRadio', function() {
+  var stores = $('#stores').data('stores')
+
   $('.shipping-form').hide()
   $('#pickupRadio').closest('.fulfillment-option').addClass('active')
   $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
@@ -97,14 +99,14 @@ $(document).on('click', 'a#pickupRadio', function() {
               listing.innerHTML = '<ul class="list-group">\
               <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
                 '+prop.desc+'<br />'+prop.address+'\
-                <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+                <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
               </li>\
             </ul>'
           } else {
             listing.innerHTML = '<ul class="list-group">\
             <li class="list-group-item active d-flex justify-content-between align-items-center" >\
               '+prop.desc+'<br />'+prop.address+'\
-              <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /><br />'+miles.toFixed(1)+' Miles away</span>\
+              <span class="badge badge-secondary">Open till '+prop.close+' <br /><br />'+miles.toFixed(1)+' Miles away</span>\
             </li>\
           </ul>'  
           }
@@ -113,7 +115,7 @@ $(document).on('click', 'a#pickupRadio', function() {
           listing.innerHTML = '<ul class="list-group">\
           <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
             '+prop.desc+'<br />'+prop.address+'\
-            <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+            <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
           </li>\
         </ul>'  
         }
@@ -160,6 +162,8 @@ $(document).on('click', 'a#pickupRadio', function() {
 
 
   $(document).on('click', '#pickup', function() {
+    var stores = $('#stores').data('stores')
+
     $('a#pickupRadio').addClass('active')
     $('a#deliveryRadio').removeClass('active')
     localStorage.setItem("fulfillment_method", "pickup")
@@ -258,14 +262,14 @@ $(document).on('click', 'a#pickupRadio', function() {
                 listing.innerHTML = '<ul class="list-group">\
                 <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
                   '+prop.desc+'<br />'+prop.address+'\
-                  <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+                  <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
                 </li>\
               </ul>'
                         } else {
                           listing.innerHTML = '<ul class="list-group">\
                           <li class="list-group-item active d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
                             '+prop.desc+'<br />'+prop.address+'\
-                            <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+                            <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
                           </li>\
                         </ul>'    
             }
@@ -274,7 +278,7 @@ $(document).on('click', 'a#pickupRadio', function() {
             listing.innerHTML = '<ul class="list-group">\
             <li class="list-group-item d-flex justify-content-between align-items-center" data-storeId="'+i+'" data-store="'+prop.desc+'">\
               '+prop.desc+'<br />'+prop.address+'\
-              <span class="badge badge-secondary">Open till '+formatDate(prop.closing)+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
+              <span class="badge badge-secondary">Open till '+prop.close+' <br /> <br />'+miles.toFixed(1)+' Miles away</span>\
             </li>\
           </ul>'    
           }

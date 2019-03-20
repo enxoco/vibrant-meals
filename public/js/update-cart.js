@@ -48,7 +48,7 @@ function updateCartDiv() {
     <div class="col-2 fulfillment-option">\
     <a id="deliveryDate" data-toggle="modal" data-target="#orderDetailsModal">\
     <div class="cart-icon">\
-    <i class="fa fa-calendar" style="font-size:4em; color:#3b8f6b;"></i>\
+    <img src="/images/calendar.png" style="font-size:4em; color:#3b8f6b;"/>\
     </div>\
     </div><div class="col fulfillment-option"><div class="cart-icon-label" id="delivery-date-label">Click for shipping/delivery Details\
     </div></a></div></div>'

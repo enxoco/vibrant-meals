@@ -262,6 +262,16 @@ and (max-device-width: 1000px)
 }
 }
 
+@media only screen and (min-device-width: 1000px) {
+  img.img-fluid {
+    width: 450px;
+    height: 300px;
+  }
+  .card.card-user.card-product{
+    width: 450px;
+  }
+}
+
 @media only screen 
 and (min-device-width : 350px) 
 and (max-device-width : 1024px)  {
@@ -342,6 +352,15 @@ input.muted {
     font-size: 2em;
 }
 
+.large-icon {
+    width: 100%;
+    height: 100%;
+    color: #3b8f6b;
+}
+h2.hero {
+    font-weight: 900;
+    text-align: center;
+}
 
 </style>
 </head>
@@ -467,101 +486,8 @@ function toggleExpressEdit(){
 
 }
 
-    var stores = {
-type: "FeatureCollection",
-features: [
-{
-  type: "Feature",
-  geometry: {
-    type: "Point",
-    coordinates: ["-85.3171557", "35.0691112"]
-  },
-  properties: {
-    phoneFormatted: "(423) 555-5555",
-    phone: "4235555555",
-    address: "601 Cherokee Blvd",
-    postalCode: 37405,
-    state: "TN",
-    city: "Chattanooga",
-    closing: "20:00",
-    desc: "Vibrant Meals Kitchen",
-    storeId: 1
-  }
-},
-{
-  type: "Feature",
-  geometry: {
-    type: "Point",
-    coordinates: ["-85.3106732", "35.0641196"]
-  },
-  properties: {
-    phoneFormatted: "(423) 555-5555",
-    phone: "4235555555",
-    address: "125 Cherokee Blvd",
-    postalCode: 37405,
-    state: "TN",
-    city: "Chattanooga",
-    closing: "20:00",
-    desc: "Chattanooga Functional Fitness",
-    storeId: 2
-  }
-},
-{
-  type: "Feature",
-  geometry: {
-    type: "Point",
-    coordinates: ["-85.31406600000003", "35.0389277"]
-  },
-  properties: {
-    phoneFormatted: "(423) 555-5555",
-    phone: "4235555555",
-    address: "525 West Main Street",
-    postalCode: 37402,
-    state: "TN",
-    city: "Chattanooga",
-    closing: "20:00",
-    desc: "Kyle House Fitness",
-    storeId: 3
-  }
-},
-{
-  type: "Feature",
-  geometry: {
-    type: "Point",
-    coordinates: ["-84.76723400000003", "35.134262"]
-  },
-  properties: {
-    phoneFormatted: "(423) 555-5555",
-    phone: "4235555555",
-    address: "5806 Waterlevel Highway",
-    postalCode: 37323,
-    state: "TN",
-    city: "Cleveland",
-    closing: "20:00",
-    desc: "Crossfit Anistemi",
-    storeId: 4
-  }
-},
-{
-  type: "Feature",
-  geometry: {
-    type: "Point",
-    coordinates: ["-84.8766215", "35.157391"]
-  },
-  properties: {
-    phoneFormatted: "(423) 555-5555",
-    phone: "4235555555",
-    address: "282 Church St SE",
-    postalCode: 37311,
-    state: "TN",
-    city: "Cleveland",
-    closing: "20:00",
-    desc: "Body By Hannah",
-    storeId: 5
-  }
-}
-]
-};
+
+
 $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', function(){
   toastr.options = {
   "closeButton": true,
@@ -703,8 +629,22 @@ $(document).on('click', 'a#deliveryRadio', function(){
   updateCartDiv()
 })
 
+
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
+  $.ajax({
+    type: 'GET',
+    url: '/api/stores/all',
+    success: function(data) {
+      if (data.features && data.features.length != 0) {
+        $('body').append("<div id='stores' data-stores='"+JSON.stringify(data)+"'></div>")
+        console.log('done')
+      } else {
+        toastr['warning']('Error loading store locations please refresh the page')
+      }
+    }
+  })
+
   feather.replace()
   if (window.location.href.includes('checkout')) {
     $('html').addClass('nav-open')
@@ -931,8 +871,17 @@ if (window.location.href.includes('checkout')) {
         })
       })
     })
+    function hoverCart(element) {
+      element.setAttribute('src', '/images/cart-icon-active.png');
+    }
 
+    function unhoverCart(element) {
+      element.setAttribute('src', '/images/cart-icon.png');
+    }
     $('.navbar-toggle').on('click', function() {
       toastr['success']('click')
+    })
+    $('#back-to-account').on('click', function(){
+      window.location.href = '/account'
     })
   </script>

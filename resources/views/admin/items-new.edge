@@ -337,7 +337,7 @@
                     <div class="col-md-3 pr-2">
                       <div class="form-group">
                         <label>Product Category</label>
-                        <input type="text" class="form-control" placeholder="Category" size="primary_category" value="{{prod.metadata.primary_category}}">
+                        <input type="text" class="form-control" placeholder="Category" name="category" value="{{prod.metadata.primary_category}}">
                       </div>
                     </div>
                     <div class="col-md-3 pr-2">
@@ -559,7 +559,8 @@ $(document).ready(function() {
 
 $('.save-form').on('click', function(){
     var master = {}
-    var forms = $('body').find('form')
+    var forms = $('.content').find('form')
+
 
     for (var i = 0; i < forms.length; i++) {
         var obj = {};

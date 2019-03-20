@@ -130,7 +130,6 @@ class ItemController {
         delete obj['']
 
         var prod = obj[Object.keys(obj)[0]]
-
         stripe.products.update(prod.id, {
           name: prod.name,
           description: prod.description,
@@ -139,11 +138,13 @@ class ItemController {
 
           }
         })
+        console.log('trying to update')
         for (var i = 0; i < Object.keys(obj).length; i++) {
           var sku = obj[Object.keys(obj)[i]]
 
           stripe.skus.update(sku.id, {
             price: sku.price,
+            image: sku.primary_img,
             metadata: {
               primary_category: sku.primary_category,
               name: sku.name,
@@ -153,6 +154,7 @@ class ItemController {
               size: sku.size,
               fats: sku.fats,
               carbs: sku.carbs,
+              calories: sku.calories,
               proteins: sku.proteins
             }
           });

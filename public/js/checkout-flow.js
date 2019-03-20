@@ -199,6 +199,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       success: function(data){
         if (data.status == 'success') {
           toastr['success']('Order completed successfully')
+          $('#orderConfirmation').modal('show')
         } else {
           toastr['warning']('Something went wrong')
         }
@@ -212,6 +213,8 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
 
     $('#createToken').on('click', function(){
+      $('#createToken').attr('disabled', 'disabled')
+
       stripe.createToken(card).then(function (result) {
         $('input[name=stripeToken]').val(result.token.id)
 
@@ -258,7 +261,11 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function(data){
+            if (data.status == 'success') {
+              console.log('goog')
+              $('#orderConfirmation').modal('show')
 
+            }
           },
           failure: function(errMsg) {
             // return alert(JSON.stringify(errMsg));

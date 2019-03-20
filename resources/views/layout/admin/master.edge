@@ -24,6 +24,13 @@
   span.mr-10 {
     margin-right: 10em;
 }
+input.muted {
+    border: none;
+    border-bottom: .5px solid gainsboro;
+    background: #f2f2f2;
+    padding: 10px;
+    border-radius: 10px;
+}
 </style>
 </head>
 
@@ -104,6 +111,12 @@
                   <p>Add Coupon</p>
                 </a>
             </li>
+            <li>
+                <a href="/admin/locations">
+                  <i class="nc-icon nc-pin-3"></i>
+                  <p>Locations</p>
+                </a>
+              </li>
           <li>
             <a href="/admin/customers">
               <i class="nc-icon nc-single-02"></i>
@@ -220,8 +233,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
 
 <script>
+  
   $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', function(){
   toastr.options = {
   "closeButton": false,
