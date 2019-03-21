@@ -1,5 +1,6 @@
 @layout('layout.admin.master')
 @section('content')
+
       <div class="content">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
@@ -106,6 +107,58 @@
               </div>
             </div>
           </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-favourite-28 text-primary"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Monday Fulfillments</p>
+                        <p class="card-title">{{mondayFulfillments.length}}
+                          <p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats">
+                    <i class="fa fa-refresh"></i> Update now
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-body ">
+                    <div class="row">
+                      <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                          <i class="nc-icon nc-favourite-28 text-primary"></i>
+                        </div>
+                      </div>
+                      <div class="col-7 col-md-8">
+                        <div class="numbers">
+                          <p class="card-category">Wednesday Fulfillments</p>
+                          <p class="card-title">{{wednesdayFulfillments.length}}
+                            <p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                      <i class="fa fa-refresh"></i> Update now
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <div class="row">
                 <div class="col-md-12">
@@ -135,6 +188,12 @@
                                   <th>
                                     Pickup Day
                                   </th>
+                                  <th>
+                                    Pickup Date
+                                  </th>
+                                  <th>
+                                    Fufillment Status
+                                  </th>
                                 </thead>
                                 <tbody>
                                     @each(p in pickups)
@@ -156,6 +215,16 @@
                                     </td>
                                     <td>
                                       {{p.metadata.fulfillment_day}}
+                                    </td>
+                                    <td>
+                                        {{p.metadata.fulfillment_date}}
+                                    </td>
+                                    <td>
+                                        @if(p.status === 'fulfilled')
+                                        Order has been fulfilled
+                                        @else 
+                                        <a class="btn btn-success" href="/admin/orders/fulfill/{{p.id}}">Mark as Fufilled</a>
+                                        @endif
                                     </td>
                                   </tr>
                                   @endeach  
@@ -194,6 +263,12 @@
                                     <th>
                                       Delivery Day
                                     </th>
+                                    <th>
+                                        Delivery Date
+                                      </th>
+                                    <th>
+                                      Fulfillment Status
+                                    </th>
                                   </thead>
                                   <tbody>
                                       @each(p in deliveries)
@@ -215,6 +290,17 @@
                                       </td>
                                       <td>
                                         {{p.metadata.fulfillment_day}}
+                                      </td>
+                                      <td>
+                                          {{p.metadata.fulfillment_date}}
+                                        </td>
+                                      <td>
+
+                                        @if(p.status === 'fulfilled')
+                                        Order has been fulfilled
+                                        @else 
+                                        <a class="btn btn-success" href="/admin/orders/fulfill/{{p.id}}">Mark as Fufilled</a>
+                                        @endif
                                       </td>
                                     </tr>
                                     @endeach  

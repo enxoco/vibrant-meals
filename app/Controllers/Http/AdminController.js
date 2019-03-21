@@ -6,6 +6,17 @@ const Drive = use('Drive')
 
 class AdminController {
 
+  async fulfillOrder ({params, response}) {
+    var orderId = params.orderId
+
+    var update = await stripe.orders.update(
+      orderId,
+      {status: 'fulfilled'},
+    );
+
+    return response.redirect('back')
+  }
+
   async listLocations({view, response}) {
     var stores = await Database
     .from('locations')

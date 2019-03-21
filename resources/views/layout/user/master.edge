@@ -253,6 +253,7 @@ li {
 and (min-device-width : 400px) 
 and (max-device-width: 1000px)
 {
+
   .sidebar {
     right: -100px !important;
   }
@@ -278,6 +279,14 @@ and (max-device-width: 1000px)
 @media only screen 
 and (min-device-width : 350px) 
 and (max-device-width : 1024px)  {
+  #category-container .img-container {
+    flex: 0;
+    cursor: pointer;
+    align-content: center;
+    text-align: center;
+    border-radius: 5px;
+    height: 20px;
+}
   .mobile-button-wrapper {
     /* background: #dcdcdc;
     opacity: .9; */
@@ -332,7 +341,7 @@ h2.category-heading {
     min-height: 29px;
 }
 
-h2.category-heading:hover, h2.category-heading:active {
+h2.category-heading:hover, h2.category-heading.active {
     border-bottom: 5px solid #aad0ad;
     width: 100px;
 }
@@ -365,6 +374,158 @@ h2.hero {
     text-align: center;
 }
 
+/*
+  Menu
+*/
+nav#filter-slide {
+  position: fixed;
+  top: 0;
+  left: -100px;
+  bottom: 0;
+  display: block;
+  float: left;
+  width: 100%;
+  max-width: 284px;
+  height: 100%;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+nav#filter-slide > ul {
+  display: block;
+  margin: 40px;
+  padding: 0;
+  list-style: none;
+  opacity: 0.5;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+nav#filter-slide > ul li {
+  color: #dfe5eb;
+  padding: 6px 0;
+  cursor: pointer;
+}
+nav#filter-slide > ul li:hover {
+  color: #59e9df;
+}
+nav#filter-slide > ul li:before {
+  font-family: "ico";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  color: #59e9df;
+  margin-right: 12px;
+  text-align: center;
+  font-variant: normal;
+  font-size: 0.75em;
+  text-transform: none;
+  line-height: 1em;
+}
+nav#filter-slide > ul li.sep {
+  margin-top: 7px;
+  padding-top: 14px;
+  border-top: 1px solid #6b7b8d;
+}
+
+body.menu-active nav#filter-slide {
+  left: 0px;
+}
+
+body.menu-active nav#filter-slide ul {
+  left: 0px;
+  opacity: 1;
+}
+
+
+
+
+
+.menu-tab {
+    /* width: 90px; */
+    /* height: 70px; */
+    /* position: fixed; */
+    z-index: 100;
+    position: relative;
+    /* top: 125px; */
+    left: 0px;
+    cursor: pointer;
+    transition: all .6s ease-in-out;
+}
+.menu-tab div {
+  width: 33px;
+  height: 4px;
+  background-color: #2d2d2d;
+  display: block;
+  margin: 5px 28px;
+  transition: all .6s ease-in-out;
+}
+.menu-tab div:nth-child(1) {
+  margin-top: 20px;
+}
+
+/*end of menu-tab*/
+.menu-tab.active {
+  left: 125px;
+  transition: all 600ms ease-in-out;
+}
+
+
+.menu-hide {
+    width: 200px;
+    left: -200px;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+    padding: 50px;
+    top: 90px;
+    transition: all .6s ease-in-out;
+}
+.menu-hide nav {
+  /*end of ul*/
+}
+.menu-hide nav ul {
+  /*end of li*/
+}
+.menu-hide nav ul li {
+  height: 70px;
+  list-style-type: none;
+  text-align: center;
+  line-height: 70px;
+  transition: all .5s ease;
+}
+.menu-hide nav ul li:hover {
+  background-color: #e74c3c;
+  transition: all .5s ease;
+}
+.menu-hide nav ul li a {
+  padding: 30px 25px;
+  text-decoration: none;
+  color: #f1f1f1;
+  font-weight: 800;
+}
+
+/*end of menu-hide*/
+.menu-hide.show {
+  left: 0px;
+  background-color: #aad0ae;
+  transition: all .6s ease-in-out;
+}
+
+.menu-hide.show > a > h2 {
+    color: white;
+}
+.menu-hide.show > a > h2:hover, .menu-hide.show > a > h2:active {
+    color: black;
+}
+
+.menu-hide.show > a > h2.category-heading.active {
+    border-bottom: 3px solid #4e4e4e;
+    width: 100px;
+}
 </style>
 </head>
 @!include('Modals.auth')
@@ -661,6 +822,8 @@ $(document).ready(function(){
 
 $(".filter-button").click(function(){
     var value = $(this).attr('data-filter');
+    $('h2').removeClass('active')
+    $(this).find('h2').addClass('active')
     
     if(value == "all")
     {
@@ -804,6 +967,17 @@ if (window.location.href.includes('checkout')) {
 
 
 <script>
+  $(document).ready(function(){
+  $('.menu-tab').click(function(){
+    $('.menu-hide').toggleClass('show');
+    $('.menu-tab').toggleClass('active');
+  });
+  $('a').click(function(){
+    $('.menu-hide').removeClass('show');
+    $('.menu-tab').removeClass('active');
+  });
+});
+
     $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
 
       var store = {
@@ -892,4 +1066,6 @@ if (window.location.href.includes('checkout')) {
     $('#back-to-account').on('click', function(){
       window.location.href = '/account'
     })
+
+
   </script>

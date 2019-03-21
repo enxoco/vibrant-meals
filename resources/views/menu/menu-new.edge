@@ -5,9 +5,13 @@
   <div class="content">
     <div class="row categories-row">
 
+
       <section id="category-container">
         <div class="img-container">
-            <i class='icon orange' data-feather="filter"></i>
+            <div class="menu-tab">
+                <i class='icon orange' data-feather="filter"></i>
+
+            </div>
 
         </div>
           <div class='img-container'>
@@ -21,11 +25,7 @@
                 </div>
               @endunless
             @endeach
-            <div class="img-container">
-                <a href="#" data-filter="Paleo" class="{{category}} filter-button"><h2 class="category-heading">Paleo</h2></a>
-                <a href="#" data-filter="Low_Carb" class="{{category}} filter-button"><h2 class="category-heading">Low Carb</h2></a>
 
-              </div>
 
         </section>
         
@@ -33,7 +33,14 @@
     </div>
 
     <div class="row">
-      
+        <div class="menu-hide">
+            <a href="#" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
+            <a href="#" data-filter="Low_Carb" class="filter-button"><h2 class="category-heading">Low Carb</h2></a>
+            <a href="#" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
+
+  
+          </div>
+          
       @each(item in items)
 
         @unless(item.active === false)
@@ -122,6 +129,17 @@
                           <small>Calories</small>
                         </h5>
                       </div>
+                      <div class="col ml-auto d-none d-lg-block">
+                          <h5>
+                              @if(item.skus.data[0].metadata.proteins)
+                              {{item.skus.data[0].metadata.proteins}}
+                              @else
+                              0
+                              @endif                            
+                              <br>
+                            <small>Protein</small>
+                          </h5>
+                        </div>
                       <div class="col ml-auto d-none d-lg-block">
                             <h5>
                              @if(item.skus.data[0].metadata.fats)

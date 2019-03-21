@@ -67,13 +67,13 @@ Route.group(() => {
 
   Route.get('/account', 'Auth/AuthController.viewProfile').as('user.account')
   Route.post('/account/fulfillmethod/update', 'AccountController.updateFulfillmentMethod')
+  Route.post('/account/updateOrderPref', 'AccountController.updateOrderPref')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
   Route.post('/account/photo', 'AccountController.uploadAvatar').as('account.updateAvatar')
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')
   Route.get('/account/unlink/:provider', 'AccountController.unlinkSocialMediaAccount').as('unlink.sm')
   Route.get('/account/delete', 'AccountController.destroy').as('account.delete')
   Route.post('/account/billing/update', 'AccountController.updateBilling')
-  Route.post('/account/updateFulfillPrefs', 'AccountController.updateFulfillPrefs')
 
 })
 
@@ -99,6 +99,7 @@ Route.group(() => {
   Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
   Route.post('/admin/items/add', 'AdminController.test')
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
+  Route.get('/admin/orders/fulfill/:orderId', 'AdminController.fulfillOrder')
   Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
   Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
   Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
