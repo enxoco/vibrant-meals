@@ -7,7 +7,7 @@
 
 
       <section id="category-container">
-        <div class="img-container">
+        <div class="img-container pl-4">
             <div class="menu-tab">
                 <i class='icon orange' data-feather="filter"></i>
 
@@ -72,8 +72,6 @@
                   <hr>
                       <div class="stats ">
                           <img src="images/elippsis.png" style="height: 10px" />
-
-
                           Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
                           @if(item.skus.data[0].metadata.fats)
                           Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
@@ -161,8 +159,6 @@
                               </div>
 
                       <div class="col mr-auto">
-
-
           <a class="checkout-prompt-1"
             data-id="{{item.id}}" 
             data-sku="{{item.skus.data[0].id}}" 
@@ -193,25 +189,13 @@
       <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
           <div class="row">
-            <nav class="footer-nav">
-              <ul>
-                <li>
-                  <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
-                </li>
-                <li>
-                  <a href="http://blog.creative-tim.com/" target="_blank">Blog</a>
-                </li>
-                <li>
-                  <a href="https://www.creative-tim.com/license" target="_blank">Licenses</a>
-                </li>
-              </ul>
-            </nav>
-            <div class="credits ml-auto">
+
+            <div class="credits ml-5">
               <span class="copyright">
                 ©
                 <script>
                   document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by enxo.co
+                </script>, made with <i data-feather="heart" style="height:10px;width:10px;"></i> by <a href="https://enxo.co">enxo.co</a>
               </span>
             </div>
           </div>

@@ -162,6 +162,7 @@ h5.heading {
 a#delivery, a#pickup {
     text-align: center;
     text-transform: uppercase;
+    padding: 50px;
 }
 
 .card-stats .card-footer .stats {
@@ -285,7 +286,7 @@ and (max-device-width : 1024px)  {
     align-content: center;
     text-align: center;
     border-radius: 5px;
-    height: 20px;
+    height: 35px;
 }
   .mobile-button-wrapper {
     /* background: #dcdcdc;
@@ -297,7 +298,7 @@ and (max-device-width : 1024px)  {
     width: 100%;
     left: 0px;
   }
-  .checkout-button {
+  .checkout-button, .tooltip-wrapper {
   position: relative;
   top: 20px;
   left: 32.5%;
@@ -477,11 +478,11 @@ body.menu-active nav#filter-slide ul {
 .menu-hide {
     width: 200px;
     left: -200px;
-    height: 100vh;
+    /* height: 100vh; */
     position: fixed;
     z-index: 10;
     padding: 50px;
-    top: 90px;
+    top: 9vh;
     transition: all .6s ease-in-out;
 }
 .menu-hide nav {
@@ -525,6 +526,43 @@ body.menu-active nav#filter-slide ul {
 .menu-hide.show > a > h2.category-heading.active {
     border-bottom: 3px solid #4e4e4e;
     width: 100px;
+}
+a.btn.btn-success.btn-lg.express-checkout-default {
+  white-space: normal;
+}
+
+
+
+#loading {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 10em;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+button#load {
+    width: 100%;
+}
+
+
+.express-checkout-status {
+    background: #3b8f6b;
+    position: absolute;
+}
+
+.tooltip-lg {
+  font-size: 20px;
 }
 </style>
 </head>
@@ -587,9 +625,9 @@ body.menu-active nav#filter-slide ul {
               <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                  <div class="tooltip-wrapper"  data-toggle="tooltip" data-placement="top" title="Please add at least 5 items to cart to continue">
+                  <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
                     <div class="mobile-button-wrapper ">
-                    <a class="checkout-button btn btn-lg btn-pill btn-success" disabled>Next</a>
+                    <a class="checkout-button btn btn-lg btn-pill btn-success" disabled><div class="checkout-button-status"></div>Next</a>
                     </div>
                   </div>
                 </div>
@@ -795,6 +833,7 @@ $(document).on('click', 'a#deliveryRadio', function(){
   localStorage.removeItem('pickup_location')
   localStorage.removeItem('pickupLocation')
   localStorage.removeItem('myStore')
+  calcShipping()
   updateCartDiv()
 })
 
@@ -862,21 +901,27 @@ $(".filter-button").click(function(){
 // })
 $('#pickup, #pickupDay').on('mouseover', function(){
   $(this).css('background-color', '#aad0ae')
+  $(this).find('h5').css('color', 'white')
   $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
   $(this).find('.modal-footing').css('color', 'white')
 })
 $('#pickup, #pickupDay').on('mouseout', function(){
   $(this).css('background-color', 'white')
+  $(this).find('h5').css('color', '#4e4e4e')
   $('.pickup-icon').attr('src', '/images/pickup-icon-inactive.png')
   $(this).find('.modal-footing').css('color', '#363636')
 })
 
 $('#delivery, #deliveryDay').on('mouseover', function(){
   $(this).css('background-color', '#aad0ae')
+  $(this).find('h5').css('color', 'white')
+
   $('.delivery-icon').attr('src', '/images/delivery-icon-active.png')
   $(this).find('.modal-footing').css('color', 'white')
 })
 $('#delivery, #deliveryDay').on('mouseout', function(){
+  $(this).find('h5').css('color', '#4e4e4e')
+
   $(this).css('background-color', 'white')
   $('.delivery-icon').attr('src', '/images/delivery-icon-inactive.png')
   $(this).find('.modal-footing').css('color', '#363636')
@@ -978,8 +1023,7 @@ if (window.location.href.includes('checkout')) {
   });
 });
 
-    $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
-
+    function calcShipping(){
       var store = {
         "type": "Feature",
         "properties": {},
@@ -1020,9 +1064,7 @@ if (window.location.href.includes('checkout')) {
           var miles = distance.routes[0].distance*0.000621371192
           var total = $('.order-total').data('total')
 
-          console.log('total ', total)
           if (total >= 100) {
-            console.log('free shipping')
             localStorage.shippingCode = 'freeshipping'
           } else {
             if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
@@ -1052,6 +1094,10 @@ if (window.location.href.includes('checkout')) {
           localStorage.deliveryDistance = miles.toFixed(1)
         })
       })
+    }
+
+    $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
+      calcShipping()
     })
     function hoverCart(element) {
       element.setAttribute('src', '/images/cart-icon-active.png');
@@ -1067,5 +1113,21 @@ if (window.location.href.includes('checkout')) {
       window.location.href = '/account'
     })
 
+$('#clearCart').on('click', function(){
+  localStorage.cart = []
+  updateCartDiv()
+})
 
+$(document).ready(function() {
+  calcShipping()
+  $('.express-checkout-default').on('click', function() {
+    var $this = $(this);
+    var loadingText = 'Processing.. <div id="loading"></div>';
+    if ($(this).html() !== loadingText) {
+      $this.data('original-text', $(this).html());
+      $this.html(loadingText);
+    }
+
+  });
+})
   </script>

@@ -1,4 +1,6 @@
 $(document).on('click', 'a#pickupRadio', function() {
+  $('.delivery-fee').html('0')
+  localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')
   $('.express-checkout-edit').hide()
   $('.shipping-form').hide()

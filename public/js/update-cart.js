@@ -34,7 +34,6 @@ function updateCartDiv() {
 
   if($('#user-info').data()) {
     var user = $('#user-info').data()
-    console.log(user.user.fulfillment_method)
     localStorage.fulfillment_method = user.user.fulfillment_method
     localStorage.fulfillment_day = user.user.fulfillment_day
     localStorage.custEngageCompleted = 1
@@ -93,19 +92,22 @@ function updateCartDiv() {
       cartCount += cartItems[i].quantity
       if (cartCount < 5) {
         $('.checkout-button').attr('disabled','disabled')
-        console.log('less than 5')
+        $('.express-checkout-default').attr('disabled', 'disabled')
+        $('#createToken').attr('disabled', 'disabled')
+        $('.express-checkout-status').html('Please add at least 5 items to cart').show()
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
-          $('[data-toggle="tooltip"]').tooltip()
+          $('[data-toggle="tooltip"]').tooltip('enable')
 
       } else {
         $('.checkout-button').removeAttr('disabled')
-        $('.tooltip-wrapper').removeAttr('data-toggle')
+        $('#createToken').removeAttr('disabled')
+        $('.express-checkout-default').removeAttr('disabled')
+        $('.express-checkout-status').hide()
+        $('[data-toggle="tooltip"]').tooltip('disable')
       }
       localStorage.setItem('cartCount', cartCount)
-      if (window.location.href.includes('checkout')) {
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
-        var card = '<div class="row mb-5 pl-3 pr-3 order-info align-items-center"><div class="col"><img src="'+cartItems[i].img_url+'"/></div><div class="col">X '+cartItems[i].quantity+'</div><div class="col">$'+(cartItems[i].quantity * cartItems[i].price / 100).toFixed(2)+'</div>'
-      } else {
+
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
         <div class="col col-md-2 card-user">\
           <div class="row mr-0 ml-0 pb-3">\
@@ -126,12 +128,10 @@ function updateCartDiv() {
         </div>\
       </div>\
     </div>'
-      }
       // var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('.cart-row-master').append(card)
 
     }
-    console.log(total)
     $('.order-total').attr('data-total', total)
     $('.order-total').html(total)
 

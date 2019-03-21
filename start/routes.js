@@ -17,14 +17,8 @@ const Route = use('Route')
 
 Route.get('/checkout', 'ItemController.showCheckout')
 
-
-// Route.get('/checkout', 'CheckoutController.startCheckout')
-
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
-
-
-
 
 Route.get('/api/stores/all', 'HomeController.showStores')
 
@@ -33,7 +27,6 @@ Route.post('/item/add/:itemId', 'ItemController.updateItem')
 
 Route.get('/item/add', 'ItemController.addItemView')
 Route.post('/item/add', 'ItemController.addItem')
-
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')

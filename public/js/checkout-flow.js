@@ -130,6 +130,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
     
     $(document).ready(function(){
+
       $('.shipping-form').hide()
       //Hide the next button on Desktop 
       $('.checkout-button').addClass('d-md-none d-lg-none')
@@ -159,7 +160,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           city: $('input[name="city-bill"]').val(),
           state: $('select#state-bill').val(),
           zip: $('input[name="zip-bill"]').val(),
-          // coupon: $('input[name="promoCode"]').val(),
+          coupon: $('input[name="promoCode"]').val(),
           shippingCode: localStorage.shippingCode
         }
       
@@ -200,13 +201,17 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
         if (data.status == 'success') {
           toastr['success']('Order completed successfully')
           $('#orderConfirmation').modal('show')
+          $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+          $('.express-checkout-default').attr('disabled', 'disabled')
+          localStorage.cart = []
+          updateCartDiv()
         } else {
           toastr['warning']('Something went wrong')
         }
 
       },
       failure: function(errMsg) {
-        // return alert(JSON.stringify(errMsg));
+        toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
       }
   })
     })
@@ -262,13 +267,15 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           dataType: "json",
           success: function(data){
             if (data.status == 'success') {
-              console.log('goog')
               $('#orderConfirmation').modal('show')
-
+              $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+              $('.express-checkout-default').attr('disabled', 'disabled')
+              localStorage.cart = []
+              updateCartDiv()
             }
           },
           failure: function(errMsg) {
-            // return alert(JSON.stringify(errMsg));
+            toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
           }
       })
       })
@@ -359,8 +366,6 @@ function disableCoupon() {
   $('#applyCoupon').attr('disabled', 'disabled')
 
 }
-
-
 
 $('#alternate-address').on('click',function(){
   $('#billing-info').removeClass('hidden')

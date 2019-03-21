@@ -3035,6 +3035,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   cursor: pointer;
   position: absolute;
   right: 75px;
+  top: 25px;
 }
 
 .navbar .navbar-toggler .navbar-toggler-bar.navbar-kebab {

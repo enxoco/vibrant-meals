@@ -294,7 +294,17 @@
                                                     </div>
 
                             </div>
-
+                            <div class="form-row">
+                                <div class="col-6">
+                            <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
+                                </div>
+                                <div class=" col-6 d-flex justify-content-end">
+                            <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                                </div>
+                              </div>
+                              <div id="delivery-fee">
+                                  <h4 class="mb-3 d-flex justify-content-center">Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong></h4>
+                              </div>
 
                           <div id="order-total">
                               <h4 class="mb-3 d-flex justify-content-center">Order Total - &nbsp<strong> $<span class="order-total">0</span></strong></h4>
@@ -315,17 +325,17 @@
             <div class="card-footer ">
               <hr>
               <div class="stats">
-                <div class="col-10 mx-auto d-flex justify-content-center">
-                <p class="card-title order-1"><a class="btn btn-success btn-lg express-checkout-default"> Pay with card ending in {{billing.sources.data[0].last4}} <i data-feather="credit-card"></i></a></p>
+                <div class="col col-md-6 col-lg-6 mx-auto">
+                <p class="card-title order-1">
+                  <button class="btn btn-success btn-lg express-checkout-default loading" type="button" id="load" data-loading-text="Loading"><div class="express-checkout-status"></div> Pay with card ending in {{billing.sources.data[0].last4}}
+
+                  </button></p>
                 {{--  <p class="card-title"><a class="btn btn-success btn-lg">Use a different card <i data-feather="credit-card"></i></a></p>  --}}
                 <div class="mr-5"></div>
-
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
 
       </div>

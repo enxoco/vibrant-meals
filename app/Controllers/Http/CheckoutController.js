@@ -142,7 +142,6 @@ class CheckoutController {
           });
         }
       } else {// Default to delivery if no method selected
-        return response.send('hell')
         var order = await stripe.orders.create({
           currency: 'usd',
           customer: customer['id'],
