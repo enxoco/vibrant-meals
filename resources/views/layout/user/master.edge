@@ -25,21 +25,7 @@
   <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
   <link rel="stylesheet" href="/css/toastr.min.css">
-  <link rel="stylesheet" href="/css/bootstrap-tags.css" />
-
   <style>
-
-
-/* #toast-container.toast-top-right>div, #toast-container.toast-top-center>div {
-  width: 380px;
-  min-height: 86px;
-  right: -10px;
-  background-color: #aad0ad;
-  color: white;
-  font-size: 1.5em; 
-  bottom: 200px;
-  position: absolute;
-} */
 
 
 .cart-icon {
@@ -221,7 +207,6 @@ label {
     font-size: 18px;
     color: black;
 }
-
 
 #category-container {
     display: flex;
@@ -593,15 +578,12 @@ button#load {
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo hidden">
-
-          <h2 class="cart-heading">
-              Cart
-          </h2>
-
+        <h2 class="cart-heading">
+          Cart
+        </h2>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav" id="cart">
-
             <div class="row mb-5 pl-3 order-info">
                 <div class="col d-flex justify-content-start">
                     <div class="col-12 pr-0 fulfillment-option">
@@ -663,9 +645,9 @@ button#load {
 <script async src="/admin/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-<script async src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
 <script src="/js/moment.min.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
+<script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
 <script>
@@ -885,27 +867,7 @@ $(".filter-button").click(function(){
 
 
 });
-// $(document).find('.row.categories-row .col > a').on('click', function(){
-//   // $(".card.card-user[data-category='"+this.className+"']").show()
 
-//   $(".card.card-user[data-category*='"+this.className+"']").show()
-// })
-
-// $('.card.card-user, .card.card-stats').on('click', function(){
-//   var meta = $(this).data('meta')
-//   delete meta['description']
-//   delete meta['name']
-//   delete meta['category']
-
-//   const keys = Object.keys(meta)
-//   $(this).find('.modal-body').find('.row').html('')
-//     for (const key of keys) {
-//       $(this).find('.modal-body').find('.row').append('<div class="col pb-5"><h5><strong>'+capitalize(key)+' </strong><br /> ' + meta[key] + '</h5></div>')
-
-//     }
-
-//   $('#'+$(this).data('sku')).modal('toggle')
-// })
 $('#pickup, #pickupDay').on('mouseover', function(){
   $(this).css('background-color', '#aad0ae')
   $(this).find('h5').css('color', 'white')
@@ -1012,13 +974,6 @@ if (window.location.href.includes('checkout')) {
 
 }
 
-
-
-
-</script>
-
-
-<script>
   $(document).ready(function(){
   $('.menu-tab').click(function(){
     $('.menu-hide').toggleClass('show');
