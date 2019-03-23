@@ -6,6 +6,10 @@ const moment = require('moment')
 const User = use('App/Models/User')
 const UsersProfile = use('App/Models/UsersProfile')
 const Hash = use('Hash')
+const Mailchimp = require('mailchimp-api-v3')
+const mailchimp = new Mailchimp(Env.get('MAILCHIMP_API_KEY'));
+
+
 class CheckoutController {
 
   async paypalCheckout({ request, response }) {
@@ -189,7 +193,19 @@ class CheckoutController {
     var req = request.all()
     req = req.data
 
-
+    // var mailchimp_subscribe = await mailchimp.request({
+    //   method : 'POST',
+    //   path : 'path for the call, see mailchimp documentation for possible calls',
+    //   path_params : {
+    //     //path parameters, see mailchimp documentation for each call
+    //   },
+    //   body : {
+    //     //body parameters, see mailchimp documentation for each call
+    //   },
+    //   query : {
+    //     //query string parameters, see mailchimp documentation for each call
+    //   }
+    // }, callback)
     if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
     }

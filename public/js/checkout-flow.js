@@ -218,6 +218,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
 
     $('#createToken').on('click', function(){
+
       $('#createToken').attr('disabled', 'disabled')
 
       stripe.createToken(card).then(function (result) {
@@ -241,6 +242,9 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
           zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
       }
+
+
+
       
       var user = {
           firstName: $('input[id="firstName"]').val(),
@@ -252,6 +256,13 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           fulfillment_day: localStorage.fulfillment_day,
           pickup_location: localStorage.myStore
       }
+
+      if ($('input[name="subscribe"]').is(':checked')) {
+        user.subscribe = true
+      } else {
+        user.subscribe = false
+      }
+
       var cart = localStorage.cart
       var obj = {
           billing,

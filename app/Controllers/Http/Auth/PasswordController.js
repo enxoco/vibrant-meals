@@ -12,6 +12,8 @@ class PasswordController {
 
   async sendResetLinkEmail ({ request, session, response }) {
     const userInfo = request.all()
+    console.log(userInfo)
+    userInfo['email-reset'] ? userInfo.email = userInfo['email-reset'] : userInfo.email
     const rules = {
       email: 'required|email'
     }
@@ -30,6 +32,7 @@ class PasswordController {
       const token = await users.findOrCreateToken(user)
       try {
         await this.sendResetMail(user, token)
+
         return response.send({status: 'We have e-mailed your password reset link!'})
       } catch (error) {
         return response.send({ error: 'Unable to deliver email to given email address' })
@@ -40,7 +43,8 @@ class PasswordController {
   async sendResetMail (user, token) {
     let link = `${Env.get('APP_URL')}/password/token/reset/${token}?email=${user.email}`
     await Mail.send('auth.email.password', {
-      link: link
+      link: link,
+      FNAME: user.name
     }, (message) => {
       message.to(user.email, user.name)
       message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))

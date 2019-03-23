@@ -99,7 +99,6 @@
           state: state,
           zip: post
         }
-        console.log('here')
         localStorage.userAddr = JSON.stringify(userAddr)
         localStorage.removeItem("pickupLocation")
         var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"

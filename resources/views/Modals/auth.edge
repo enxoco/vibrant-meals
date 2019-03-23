@@ -64,7 +64,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="password-reset">
+        <form name="password-reset" id="password-reset" action="/password/email" method="POST">
           {{ csrfField() }}
 
           <div class="mb-3 input-group">   
