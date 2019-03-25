@@ -189,7 +189,7 @@ class CheckoutController {
 
   }
 
-  async stripeCheckout({ request, response }) {
+  async stripeCheckout({ request, response, auth }) {
     var req = request.all()
     req = req.data
 
@@ -312,8 +312,7 @@ class CheckoutController {
 
     var newUser = await user.save()
 
-
-
+    await auth.attempt(user.email, req.user.password)
 
     if (newUser) {
     
