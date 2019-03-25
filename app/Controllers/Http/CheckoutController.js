@@ -193,19 +193,27 @@ class CheckoutController {
     var req = request.all()
     req = req.data
 
-    // var mailchimp_subscribe = await mailchimp.request({
+    var email = req.user.email
+    var fname = req.user.firstName
+    var lname = req.user.lastName
+
+    // var mailchimp_subscribe = mailchimp.request({
     //   method : 'POST',
-    //   path : 'path for the call, see mailchimp documentation for possible calls',
-    //   path_params : {
-    //     //path parameters, see mailchimp documentation for each call
-    //   },
+    //   path : '/lists/5273009268/members/',
     //   body : {
-    //     //body parameters, see mailchimp documentation for each call
+    //     "email_address": email,
+    //     "status": "subscribed",
+    //     "merge_fields": {
+    //         "FNAME": fname,
+    //         "LNAME": lname
+    //     }
     //   },
     //   query : {
     //     //query string parameters, see mailchimp documentation for each call
     //   }
-    // }, callback)
+    // })
+
+
     if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
     }
@@ -232,6 +240,9 @@ class CheckoutController {
     user.email = req.user.email
     user.fulfillment_day = req.user.fulfillment_day
     user.fulfillment_method = req.user.fulfillment_method
+    if (Env.get('NODE_ENV') === 'development') {
+      user.user_level = 'admin'
+    }
 
 
     if (req.user.fulfillment_method == 'pickup') {
