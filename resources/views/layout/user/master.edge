@@ -753,6 +753,7 @@ $('.checkout-button').on('click', function(){
   }
 })
 
+
 $('.checkout-prompt-1').on('click', function(e){
   toastr["success"]("Item successfully added to cart!")
   $('.modal').modal('hide')
@@ -1103,4 +1104,11 @@ document.addEventListener('click', function(event) {
   form.submit()
 })
 
+</script>
+
+<script src="/js/form-handler.js"></script>
+
+
+<script>
+$('#firstName, #lastName, input[name="city-ship"], input[name="city-bill"], input[name="name-ship"]').keyup(function(){$(this).val($(this).val().charAt(0).toUpperCase() + $(this).val().slice(1))})
 </script>

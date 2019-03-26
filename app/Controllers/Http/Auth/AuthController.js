@@ -98,9 +98,13 @@ class AuthController {
 
     try {
       await users.login(userInfo, auth)
-      return response.redirect('/menu')
-    } catch (error) {
-      session.flash({ error: 'Invalid Login Credentials' })
+      return response.send({message: 'Login Success'})
+    } catch (error) {  // This is generic and doesn't give us any clue as to what actually failed.
+      // Let's first check if the user exists.
+
+      
+      var user = await users.checkUser(userInfo)
+      return response.send(user)
       return response.redirect('back')
     }
   }

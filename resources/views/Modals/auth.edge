@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('login.store') }}">
+        <form>
           {{ csrfField() }}
           <div class="mb-3 input-group">   
               <div class="input-group-prepend">
@@ -39,7 +39,7 @@
           </div>
           </div>
           <div class="col-12 d-flex justify-content-center">
-              <button type="submit" type="submit" class="btn btn-lg btn-success btn-hero">Login</button>
+              <button type="submit" type="submit" class="btn btn-lg btn-success btn-hero login-modal-button">Login</button>
         
                 </div>
 

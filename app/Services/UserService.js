@@ -10,6 +10,20 @@ const moment = require('moment')
 const cloudinary = require('cloudinary').v2
 
 class UserService {
+
+  async checkUser (userInfo) {
+    const { email, password } = userInfo
+
+    var exists = await Database
+      .table('users')
+      .where('email', email)
+    if (exists.length == 1) { //User does exist so just assume that password is incorrect
+      return {status:1, message: 'Incorrect password'}
+    } else {
+      return {status:2, message: 'Sorry we were unable to find an account with this email'}
+
+    }
+  }
   async register (userInfo) {
     const user = new User()
 
