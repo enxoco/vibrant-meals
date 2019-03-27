@@ -1,0 +1,194 @@
+@layout('layout.user.home')
+
+
+@section('content')
+@!include('Modals.initial')
+<div class="jumbotron jumbotron-fluid vertical-center  text-white d-flex flex-column pb-0" style="background-image:url('https://static1.squarespace.com/static/572361987c65e48584ee75e7/t/5a3867d78165f5e58ad0380a/1513646120362/vegetables+background.jpg?format=1000w')">
+	<div class="empty" style="flex-grow:.5;">
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+		<div class="col d-flex justify-content-center">
+		<h2 class="hero hero-large">How It Works</h2>
+		</div>
+		</div>
+		  </div>
+	  </div>
+      <div class="content">
+		  <h1 class="section-heading mb-5">CHEF COOKED MEALS, READY-TO-EAT</h1>
+		  <h4 class="section-heading">ORDER CUTOFF TIME</h4>
+		  <div class="row">
+				<div class="col-12">
+				<form onsubmit="span1()">
+					
+				<span id="span1" name="section-description" class="section-description editable"><p>Orders must be place be <strong>Friday at 8AM</strong> in order to receive your pickup/delivery on <strong>Monday</strong>. Or <strong>Sunday 11:59PM </strong>for a <strong>Wednesday</strong> delivery.</p></span>
+					
+				</form>
+				</div>
+			</div>
+      </div>
+	  <div class="content content-secondary">
+			<h1 class="section-heading mb-5">How it works</h1>
+		  <div class="row ml-200">
+			  <hr class="mt-5"/>
+			  <div class="col-sm-12 col-md-4 col-lg-4 ml-20">
+					  <i class="nc-icon nc-bag-16 icon">
+							
+						</i>
+				  <h2 class="section-heading">Pick your meals</h2>
+				  Choose a minimum of 5 items from any of our recipes, you do not have to commit to any of the meal plans - chose any combination that suits your lifestyle and goals.
+				  Or, come visit us at our <strong>retail location</strong> to choose from any of our grab-and-go meals!  
+  
+  
+  
+			  </div>
+			  <div class="col-sm-12 col-md-4 col-lg-4">
+					  <i class="nc-icon nc-delivery-fast icon">
+
+						</i>
+					  <h2 class="section-heading">Choose delivery method</h2>
+				  Choose between one of our free pick up locations (see below) or pay a small fee for a home or office delivery, orders over $100 are delivered for free!
+  
+  
+			  </div>
+			  <div class="col-sm-12 col-md-4 col-lg-4">
+					  <i class="nc-icon nc-user-run icon">
+
+						</i>
+				  <h2 class="section-heading">Eat. Repeat. Feel Vibrant!</h2>
+				  Your meals will be delivered, or made ready for pick-up, at the location and time you selected at checkout. Pick-ups are delivered in a cooler, home or office deliveries are packed with ice blocks. Please return your bags on your next order. 
+  
+			  </div>
+			  </div>
+		</div>
+		<div class="content">
+				<h1 class="section-heading mb-5">FAQ</h1>
+				<div class="row">
+			<div class="col-lg-2 col-md-2">
+			</div>
+			<div class="col">
+				<div class="accordion" id="accordionExample">
+						  <div class="card-header" id="headingOne">
+							<h5 class="mb-0">
+							  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								Delivery VS Pickup
+							  </button>
+							</h5>
+						  </div>
+					  
+						  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+							<div class="card-body">
+									When you checkout, there are two different types of shipping to choose from. Choose delivery to home/office and pay a small fee to receive your order at a specific location. Pickup, on the other hand, is free, and you can choose between three different locations, two in the North Shore and one in the South Side. 
+
+								</div>
+						  </div>
+
+						  <div class="card-header" id="headingTwo">
+							<h5 class="mb-0">
+							  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								Online VS Grab-and-Go
+							  </button>
+							</h5>
+						  </div>
+						  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+							<div class="card-body">
+									You can pre-order your meals online (10% less than in store), or you can simply visit our store Monday-Saturday and purchase any meals available in our grab & go cooler without prior commitments.
+
+								</div>
+						  </div>
+
+						  <div class="card-header" id="headingThree">
+							<h5 class="mb-0">
+							  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								What do I do with the bags?
+							  </button>
+							</h5>
+						  </div>
+						  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+							<div class="card-body">
+									Feel free to keep one of our black tote bags, that one is on us. However, any additional bags we ask that you return them on your second delivery or pickup. We recollect the bags in order to help keep our shipping costs lower. 
+
+								</div>
+						  </div>
+						<div class="card-header" id="headingFour">
+								<h5 class="mb-0">
+								  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									Where are you located?
+								  </button>
+								</h5>
+							  </div>
+							  <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+								<div class="card-body">
+										Our retail and specialized kitchen are located at 601 Cherokee Blvd. You can purchase any of the meals available in our Grab & Go cooler. 
+
+	
+									</div>
+							  </div>
+							  <div class="card-header" id="headingFive">
+									<h5 class="mb-0">
+									  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										Our ingredients?
+									  </button>
+									</h5>
+								  </div>
+								  <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+									<div class="card-body">
+											We use as much local and organic ingredients as possible. We believe that ultimately the meals are only as good as the building blocks they are made with. All our meals are gluten-free and lactose-free.
+
+		
+										</div>
+								  </div>
+					  </div>
+			</div>
+			<div class="col-lg-2 col-md-2">
+			</div>
+				</div>
+		</div>
+
+      <footer class="footer footer-black  footer-white " style="background-color:#f2f2f2;">
+        <div class="container-fluid">
+			<h4 class="section-heading">Retail Hours</h4>
+			<h5 class="section-heading">423-301-5622</h5>
+			<h5 class="section-heading">M-F 8:00-7 PM & SAT 9:00-4:00 PM</h5>
+			<h5 class="section-heading">LOCATED @ 601 CHEROKEE BLVD, CHATTANOOGA TN</h5>
+          <div class="row">
+            <nav class="footer-nav">
+              <ul>
+                <li>
+                  <a href="https://www.creative-tim.com" target="_blank">CORPORATE & CATERING</a>
+                </li>
+                <li>
+                  <a href="http://blog.creative-tim.com/" target="_blank">CAREERS</a>
+                </li>
+                <li>
+                  <a href="https://www.creative-tim.com/license" target="_blank">PARTNER WITH US</a>
+				</li>
+				<li>
+						<a href="https://www.creative-tim.com/license" target="_blank">CONTACT US</a>
+					  </li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="fa fa-heart heart">
+									</i> by <a href="https://enxo.co">enxo.co</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+ 
+  <!--   Core JS Files   -->
+
+
+<script>
+
+document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
+</script>
+
+
+
+@endsection

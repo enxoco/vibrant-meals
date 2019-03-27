@@ -69,6 +69,10 @@ h2.hero {
     font-weight: 800;
     text-align: center;
 }
+.hero.hero-large {
+  font-size: 3rem;
+  text-transform: uppercase
+}
 /* .jumbotron {
   color: white;
   background: url('https://res.cloudinary.com/themurphs/image/upload/v1551295968/vibrant_meals/vibrant-header.jpg');
@@ -289,7 +293,11 @@ a.active.fulfillment-radio {
 
 
 </style>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" />
 
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css" />
+
+<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
 
 </head>
 @!include('Modals.auth')
@@ -357,15 +365,17 @@ $('#password_reset_button').on('click', function(e){
     url: "/password/email",
     data: {email: $('#email-reset').val()},
     success: function(data){
+      console.log(data)
       if (data.warning) {
         toastr['error'](data.warning)
       }
-      if (data[0].message) {
+      if (data.message) {
         toastr['warning'](data[0].message)
       }
       if (data.status) {
-        toastr['status'](data.status)
+        toastr['success'](data.status)
       }
+      $('.modal').modal('hide')
     }
   })
 })
@@ -422,3 +432,40 @@ $(document).ready(function(){
 <script src="/js/form-handler.js"></script>
 
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
+
+<script>
+
+function span1(e){
+  var input = $('.section-description.editable > .ql-editor').html()
+  $.ajax({
+    type: 'POST',
+    url: '/how-it-works/update',
+    data: {id: 'span1', content: input}
+  })
+  console.log(input)
+		return
+	}
+  </script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.1.39/jodit.min.js"></script>
+<!-- Include the Quill library -->
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<!-- Initialize Quill editor -->
+
+<script>
+
+  //   var quill = new Quill('#span1', {
+  //   modules: {
+  //     syntax: true,
+  //   },
+  //   placeholder: 'Compose an epic...',
+  //   theme: 'snow'
+  // });
+  // $('.section-description.editable').append('<input type="submit" class="btn btn-success" value="submit"/>')
+
+</script>

@@ -3,8 +3,32 @@ const Database = use('Database')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const Drive = use('Drive')
+const Helpers = use('Helpers')
+const cheerio = require('cheerio')
+
 
 class AdminController {
+
+
+  async updateHowItWorks({request, response}) {
+
+    const resourcesPath = Helpers.resourcesPath()
+    const {id, content} = request.all()
+
+    const template = await Drive.get(`${resourcesPath}/views/how-it-works.edge`, 'utf-8')
+    
+    const $ = cheerio.load(template, {
+      decodeEntities: false,
+      xmlMode: true,
+      recognizeSelfClosing: false
+
+    })
+
+    $('#span1').html(content)
+
+    await Drive.put(`${resourcesPath}/views/how-it-works.edge`, $.html())
+  }
+
 
   async fulfillOrder ({params, response}) {
     var orderId = params.orderId

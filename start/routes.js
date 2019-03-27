@@ -18,6 +18,9 @@ const Route = use('Route')
 Route.get('/checkout', 'ItemController.showCheckout')
 
 Route.get('/', 'HomeController.index').as('welcomePage')
+Route.get('/how-it-works', async({view}) => view.render('how-it-works'))
+
+Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 Route.get('/api/stores/all', 'HomeController.showStores')

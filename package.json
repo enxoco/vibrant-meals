@@ -46,6 +46,7 @@
     "moment": "^2.22.2",
     "moment-countdown": "0.0.3",
     "mysql": "^2.16.0",
+    "node-html-parser": "^1.1.13",
     "paypal-rest-sdk": "^1.8.1",
     "pg": "^7.5.0",
     "rand-token": "^0.4.0",
