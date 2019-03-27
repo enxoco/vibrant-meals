@@ -219,6 +219,17 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
     $('#createToken').on('click', function(){
 
+      var iframe = document.getElementById("hidden-mailchimp");
+      var email = iframe.contentWindow.document.getElementById('mce-EMAIL')
+      var fname = iframe.contentWindow.document.getElementById('mce-FNAME')
+      var lname = iframe.contentWindow.document.getElementById('mce-LNAME')
+
+      email.value = document.getElementById('email-bill').value
+      fname.value = document.getElementById('firstName').value
+      lname.value = document.getElementById('lastName').value
+      var form = iframe.contentWindow.document.getElementById('mc-embedded-subscribe-form')
+      form.submit()
+
       $('#createToken').attr('disabled', 'disabled')
 
       stripe.createToken(card).then(function (result) {
@@ -242,9 +253,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
           zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
       }
-
-
-
       
       var user = {
           firstName: $('input[id="firstName"]').val(),

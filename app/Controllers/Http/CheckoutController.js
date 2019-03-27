@@ -6,8 +6,7 @@ const moment = require('moment')
 const User = use('App/Models/User')
 const UsersProfile = use('App/Models/UsersProfile')
 const Hash = use('Hash')
-const Mailchimp = require('mailchimp-api-v3')
-const mailchimp = new Mailchimp(Env.get('MAILCHIMP_API_KEY'));
+
 
 
 class CheckoutController {
@@ -189,32 +188,14 @@ class CheckoutController {
 
   }
 
+
   async stripeCheckout({ request, response, auth }) {
     var req = request.all()
     req = req.data
 
-    var email = req.user.email
-    var fname = req.user.firstName
-    var lname = req.user.lastName
+    const {email, firstName, lastName} = req.user
 
-    // var mailchimp_subscribe = mailchimp.request({
-    //   method : 'POST',
-    //   path : '/lists/5273009268/members/',
-    //   body : {
-    //     "email_address": email,
-    //     "status": "subscribed",
-    //     "merge_fields": {
-    //         "FNAME": fname,
-    //         "LNAME": lname
-    //     }
-    //   },
-    //   query : {
-    //     //query string parameters, see mailchimp documentation for each call
-    //   }
-    // })
-
-
-    if (req.user.pickup_location) {
+  if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
     }
     var cart = JSON.parse(req.cart)
@@ -333,7 +314,7 @@ class CheckoutController {
               country: 'US',
               postal_code: postalCode,
             },
-          },  
+          },
           metadata: {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,

@@ -971,6 +971,7 @@ for (var i = 0; i < cart.length; i++) {
 // Only load these scripts if we are on the checkout page.
 if (window.location.href.includes('checkout')) {
   $.getScript('/js/checkout-flow.js')
+  $.getScript('/js/mailchimp-subscribe.js')
   $.getScript('/js/registration-form.js')
 
 }
@@ -1106,9 +1107,5 @@ document.addEventListener('click', function(event) {
 
 </script>
 
+<!-- Handle sanitation of inputs and formatting -->
 <script src="/js/form-handler.js"></script>
-
-
-<script>
-$('#firstName, #lastName, input[name="city-ship"], input[name="city-bill"], input[name="name-ship"]').keyup(function(){$(this).val($(this).val().charAt(0).toUpperCase() + $(this).val().slice(1))})
-</script>
