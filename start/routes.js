@@ -97,6 +97,8 @@ Route.group(() => {
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
   Route.get('/admin/orders/fulfill/:orderId', 'AdminController.fulfillOrder')
   Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
+  //Route to handle cancel,refund of orders
+  Route.post('/admin/orders/:orderId', 'OrderController.updateOrderById')
   Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
   Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
   Route.get('/products/hide/:itemId', 'ItemController.hideItem')

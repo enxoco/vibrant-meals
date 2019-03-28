@@ -326,5 +326,25 @@ $('.update-billing').on('click', function(){
 
     })
 
-	})
+  })
+$('.order-details-update').on('click', function(){
+  var data = $(this).data()
+
+  var req = {
+    id: data.order,
+    status: data.status
+  }
+
+  $.ajax({
+    type: 'POST',
+    url: '/admin/orders/update',
+    data: req,
+    success: function(){
+      toastr['success']('Order modified successfully')
+    },
+    error: function() {
+      toastr['warning']('Something went wrong, try again')
+    }
+  })
+})
   </script>

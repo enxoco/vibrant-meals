@@ -5,10 +5,26 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 class OrderController {
 
+    async updateOrderById ({request, response, params}) {
+        const {id, status} = request.all()
+        console.log(status)
+        if (status === 'refund') {
+            var update = await stripe.refunds.create({
+                charge: id
+            })
+        } else {
+            var update = await stripe.orders.update(id,{
+                status: status
+            })
+        }
+        return response.send(update)
+    }
+
     async viewOrderById ({request, params, response, view}) {
         var id = params.orderId
         var order = await stripe.orders.retrieve(id)
-        return order
+        var charge = await stripe.charges.retrieve(order.charge)
+        return view.render('admin.order-details', {order, charge})
     }
 
     async viewOrdersAdmin ({ request, response, session, view }) {

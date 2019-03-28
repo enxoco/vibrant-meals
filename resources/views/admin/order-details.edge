@@ -1,0 +1,44 @@
+@layout('layout.admin.master')
+@section('content')
+<div class="content">
+    <div class="row">
+        <div class="col-10 ml-auto mx-auto">
+
+            <h3>Order Details: &nbsp
+                @if(order.status_transitions.paid != null)
+                    <span class="badge badge-success">Paid</span>
+                @else
+                    <span class="badge badge-danger">Unpaid</span>
+                @endif
+                @if(order.status_transitions.fulfiled != null)
+                    <span class="badge badge-success">Fulfilled</span>
+                @else
+                    <span class="badge badge-warning">Unfulfilled</span>
+                @endif
+                @if(order.status_transitions.cancelled != null)
+                    <span class="badge badge-danger">Cancelled</span>
+                @endif
+                @if(charge.refunded == true)
+                    <span class="badge badge-danger">Refunded</span>
+                @endif
+            </h3>
+            <h4>Order id: <strong>{{order.id}}</strong></h4>
+            <h4>Order total: <strong>{{currency(order.amount)}}</strong></h4>
+            <h4>Created: <strong>{{convertTime(order.created)}}</strong></h4>
+            <h4>Customer Name: <strong>{{order.shipping.name}}</strong></h4>
+            <h4>Customer Email: <strong>{{order.email}}</strong></h4>
+            <h4>Paid on: <strong>{{convertTime(order.status_transitions.paid)}}</strong></h4>
+
+            <a class="btn btn-danger btn-lg order-details-update" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
+            <a class="btn btn-warning btn-lg order-details-update" data-order="{{order.charge}}" data-status="refund">Refund Order</a>
+            <a class="btn btn-success btn-lg order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Order as fulfilled</a>
+
+            <h4>Order metadata: <strong><pre>{{toJSON(order.metadata)}}</pre></strong></h4>
+            @if(order.metadata.fulfillment_method === 'delivery')
+                <h4>Shipping/Delivery info: <strong><pre>{{ toJSON(order.shipping) }}</pre></strong></h4>
+            @else
+            @endif
+        </div>
+    </div>
+</div>
+@endsection
