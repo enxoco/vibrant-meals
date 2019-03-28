@@ -228,6 +228,8 @@ input.muted {
 <script src="/admin/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
 <script src="/admin/js/plugins/bootstrap-notify.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/combodate.min.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="/admin/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
@@ -328,6 +330,27 @@ input.muted {
           }
         ]
     } );
+    $('#locations').DataTable( {
+          select: true,
+          dom: 'Bfrtip',
+          colReorder: true,
+          columnDefs: [
+            {'width': '10%'}
+          ],
+          buttons: [
+            'csv',
+            'pdfHtml5',
+            'selectAll',
+            'selectNone',
+            {
+              text: 'Add Location',
+              action: function () {
+                $('.add-locations-modal').modal('toggle')
+              }
+            }
+          ]
+      } );
+      $('#opens, #closes').combodate()
 } );
 $('.update-billing').on('click', function(){
 		console.log('hello')

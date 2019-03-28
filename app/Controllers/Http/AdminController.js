@@ -108,7 +108,7 @@ class AdminController {
       .delete()
       .where('id', id)
 
-      return response.send(update)
+      return redirect('/admin/locations')
 
   }
   async updateLocations({view, request, params, response}) {

@@ -1,234 +1,134 @@
 @layout('layout.admin.master')
 @section('content')
-      <div class="content">
+<style>
+  select {
+    background: #f5f5f5;
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+label {
+  font-size: 20px;
+  font-weight: 800;
+}
+.muted {
+  font-size: 20px;
+}
+</style>
+<div class="content">
 
-        <div class="row">
-                <div class="col-md-12">
-                    <h4 class="card-title"> Stores</h4>
-                          <div class="card-body">
-                            <div class="table-responsive">
-                              <table class="table" id="pickups">
-                                <thead class=" text-primary">
-                                  <th>
-                                    Name
-                                  </th>
-                                  <th>
-                                    Address
-                                  </th>
-                                  <th>
-                                    City
-                                  </th>
-                                  <th>
-                                    State
-                                  </th>
-                                  <th>
-                                    Zip
-                                  </th>
-                                  <th>
-                                    Opens
-                                  </th>
-                                  <th>
-                                      Closes
-                                  </th>
-                                  <th>
-                                      Update
-                                  </th>
-                                </thead>
-                                <tbody>
-                                    @each(store in stores)
+  <div class="row">
+    <div class="col-md-12">
+      <h4 class="card-title"> Stores</h4>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table" id="locations">
+            <thead class=" text-primary">
+              <th>
+                Name
+              </th>
+              <th>
+                Address
+              </th>
+              <th>
+                City
+              </th>
+              <th>
+                State
 
-                                  <tr>
-                                        <form action="/admin/locations/update/{{store.id}}" method="POST">
-                                            {{ csrfField() }}
-                                    <td>
-                                        <input class="muted" name="name" value="{{store.name}}"/>
-                                    </td>
-                                    <td>
-                                      <input class="muted" name="street_addr" value="{{store.street_addr}}" />
-                                    </td>
-                                    <td>
-                                    <input class="muted" name="city" value="{{store.city}}" style="width: 100px;" />
-                                    </td>
-                                    <td>
-                                      <input class="muted" name="state" value="{{store.state}}" style="width: 40px"/>
-                                    </td>
-                                    <td>
-                                        <input class="muted" name="zip" value="{{store.zip}}" style="width: 75px;" />
-                                    </td>
-                                    <td>
-                                      <input class="muted" name="opens" value="{{store.opens}}" style="width: 75px;" />
-                                    </td>
-                                    <td>
-                                        <input class="muted" name="closes" value="{{store.closes}}" style="width: 75px;" />
-                                    </td>
+              <th>
+                Opens
+              </th>
+              <th>
+                Closes
+              </th>
+              <th>
+                Update
+              </th>
+            </thead>
+            <tbody>
+              @each(store in stores)
 
-                                    <td>
-                                        <input type="submit" class="btn btn-success" value="submit" />
-                                    </form>
-                                    <form action="/admin/locations/delete/{{store.id}}" method="POST">
-                                      <input type="submit" class="btn btn-danger" value="delete" />
+              <tr>
+                <form action="/admin/locations/update/{{store.id}}" method="POST">
+                  {{ csrfField() }}
+                  <td>
+                    <input class="muted" name="name" value="{{store.name}}" />
+                  </td>
+                  <td>
+                    <input class="muted" name="street_addr" value="{{store.street_addr}}" />
+                  </td>
+                  <td>
+                    <input class="muted" name="city" value="{{store.city}}" style="width: 100px;" />
+                  </td>
+                  <td>
+                    <input class="muted" name="state" value="{{store.state}}" style="width: 40px" />
+                  </td>
+ 
+                  <td>
+                      <input type="text" id="opens" class="form-control muted" name="opens" data-format="h:mma" data-template="hh : mm a" value="{{store.opens}}"><br />
+                    </td>
+                  <td>
+                      <input type="text" id="closes" class="form-control muted" name="closes" data-format="h:mma" data-template="hh : mm a" value="{{store.closes}}"><br />
+                  </td>
 
-                                    </form>
+                  <td>
+                    <input type="submit" class="btn btn-success" value="submit" />
+                </form>
+                <form action="/admin/locations/delete/{{store.id}}" method="POST">
+                  <input type="submit" class="btn btn-danger" value="delete" />
 
-                                  </tr>
-                                  @endeach  
-                                </tbody>
-                              </table>
-                              <form name="addLocation" id="addLocation" method="POST" action="/admin/locations">
-                              <div class="row">
-                                <div class="col-3">
-                                  <input class="form-control" type="text" name="description" placeholder="Name" />
-                                </div>
-                                <div class="col-3">
-                                  <input class="form-control" type="text" name="street" placeholder="Street Address" />
-                                </div>
-                                <div class="col-1">
-                                  <input class="form-control" type="text" name="city" placeholder="City" />
-                                </div>
-                                <div class="col-1">
-                                  <input class="form-control" type="text" name="state" placeholder="State" />
-                                </div>
-                                
-                                <div class="col-2">
-                                    <input class="form-control" type="text" name="opens" placeholder="Opens" />
-                                  </div>
-                                  <div class="col-2">
-                                      <input class="form-control" type="text" name="closes" placeholder="Closing Time" />
-                                    </div>
-                              </div>
-                              <button type="submit" class="btn btn-success" value="Submit">Add Location</button>
+                </form>
 
-                              </form>
-                            </div>
-                          </div>
-                      </div>
+              </tr>
+              @endeach
+            </tbody>
+          </table>
+          <div class="modal fade add-locations-modal" tabindex="-1" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Add new location</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <form name="addLocation" id="addLocation" method="POST" action="/admin/locations">
+                        <label for="description">Name/Description</label>
+                            <input class="form-control muted" type="text" name="description" placeholder="Name" /><br />
+                            <label for="street">Street Address</label>
+                            <input class="form-control muted" type="text" name="street" placeholder="Street Address" /><br />
+                            <label for="city">City</label>
+                            <input class="form-control muted" type="text" name="city" placeholder="City" /><br />
+                            <label for="state">State</label>
+                            <input class="form-control muted" type="text" name="state" placeholder="State" /><br />
 
+                          <label for="opens">Opening Time</label>
+                            <input type="text" id="opens" class="form-control muted" name="opens" data-format="h:mma" data-template="hh : mm a" value="6:00am"><br />
+                          <hr class="mb-2">
+                            <label for="closes">Closing Time</label>
+                            <input type="text" id="closes" name="closes" data-format="h:mma" data-template="hh : mm a" value="6:00pm"><br />
+            
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </form>      
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                      <div class="col-md-12">
-                          <div class="card">
-                            <div class="card-header">
-                              <h4 class="card-title"> Scheduled Deliveries</h4>
-                            </div>
-                            <div class="card-body">
-                              <div class="table-responsive">
-                                <table class="table" id="deliveries">
-                                  <thead class=" text-primary">
-                                    <th>
-                                      Order Number
-                                    </th>
-                                    <th>
-                                      Customer Name
-                                    </th>
-                                    <th>
-                                      Customer Email
-                                    </th>
-                                    <th>
-                                      Delivery Address
-                                    </th>
-                                    <th>
-                                      Order Total
-                                    </th>
-                                    <th>
-                                      Delivery Day
-                                    </th>
-                                  </thead>
-                                  <tbody>
-                                      @each(p in deliveries)
-                                    <tr>
-                                      <td>
-                                        <a href="/admin/orders/{{p.id}}">{{p.id}}</a> 
-                                      </td>
-                                      <td>
-                                        {{p.shipping.name}}
-                                      </td>
-                                      <td>
-                                              {{p.email}}
-                                      </td>
-                                      <td>
-                                        {{p.shipping.address.line1}}
-                                      </td>
-                                      <td>
-                                          {{currency(p.amount)}}
-                                      </td>
-                                      <td>
-                                        {{p.metadata.fulfillment_day}}
-                                      </td>
-                                    </tr>
-                                    @endeach  
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="card">
-                              <div class="card-header">
-                                <h4 class="card-title"> Product needed for orders</h4>
-                              </div>
-                              <div class="card-body">
-                                <div class="table-responsive">
-                                  <table class="table" id="productNeeded">
-                                    <thead class=" text-primary">
-                                      <th>
-                                        Sku
-                                      </th>
-                                      <th>
-                                        Description
-                                      </th>
-                                      <th>
-                                        Total Quantity
-                                      </th>
-                                      <th>
-                                        Needed By
-                                      </th>
-                                    </thead>
-                                    <tbody>
-                                        @each(o in orders)
-                                      <tr>
-                                        <td>
-                                          {{o.item}}
-                                        </td>
-                                        <td>
-                                          {{o.desc}}
-                                        </td>
-                                        <td>
-                                                {{o.count}}
-                                        </td>
-                                        <td>
-                                          {{o.day}}
-                                        </td>
-                                      </tr>
-                                      @endeach  
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-   
         </div>
       </div>
-        <!--   Core JS Files   -->
-  <script src="/admin/js/core/jquery.min.js"></script>
-  <script src="/admin/js/core/popper.min.js"></script>
-  <script src="/admin/js/core/bootstrap.min.js"></script>
-  <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!-- Chart JS -->
-  <script src="/admin/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="/admin/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/admin/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
-  <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script src="/admin/demo/demo.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
-    });
-  </script>
-</body>
+    </div>
+  </div>
+</div>
 
-</html>
-      @endsection
+
+@endsection
+
+  </body>
+  
+  </html>
