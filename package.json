@@ -33,6 +33,7 @@
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/validator": "^5.0.6",
     "@octokit/rest": "^15.15.1",
+    "@sindresorhus/string-hash": "^1.1.0",
     "async": "^2.6.1",
     "blueimp-md5": "^2.10.0",
     "cheerio": "^1.0.0-rc.2",

@@ -2,13 +2,14 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="card-title">{{item.name}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" style="margin: 0 auto;">{{item.name}}</h5>
+                <i data-feather="x" data-dismiss="modal" class="feather-bold"></i>
+
             </div>
             <div class="modal-body text-md">
+                <div class="col-8 mx-auto">
                 <img class="lazy" data-src="{{item.skus.data[0].image}}" />
+                </div>
                 <hr />
                 {{item.description}}
                 <hr />

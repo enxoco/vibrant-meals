@@ -307,6 +307,7 @@ input.muted {
           'selectNone',
           {
             text: 'Batch Fulfill',
+            className: 'btn-success',
             action: function ( e, dt, node, config) {
               var rows = dt.rows('.selected').data()
               var ids = []
@@ -331,7 +332,7 @@ input.muted {
         ]
     } );
     $('#locations').DataTable( {
-          select: true,
+          select: false,
           dom: 'Bfrtip',
           colReorder: true,
           columnDefs: [
@@ -340,10 +341,10 @@ input.muted {
           buttons: [
             'csv',
             'pdfHtml5',
-            'selectAll',
-            'selectNone',
+
             {
               text: 'Add Location',
+              className: 'btn-success',
               action: function () {
                 $('.add-locations-modal').modal('toggle')
               }
