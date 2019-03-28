@@ -96,6 +96,7 @@ Route.group(() => {
   Route.post('/admin/items/add', 'AdminController.test')
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
   Route.get('/admin/orders/fulfill/:orderId', 'AdminController.fulfillOrder')
+  Route.post('/admin/orders/batch', 'OrderController.batchFulfill').as('batchFulfill')
   Route.get('/admin/orders/:orderId', 'OrderController.viewOrderById')
   //Route to handle cancel,refund of orders
   Route.post('/admin/orders/:orderId', 'OrderController.updateOrderById')

@@ -5,9 +5,20 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 class OrderController {
 
+    async batchFulfillStripe(id) {
+        await stripe.orders.update(id,{status:'fulfilled'})
+    }
+
+    async batchFulfill ({request, response}) {
+        const { ids } = request.all()
+        ids.forEach(id => {      
+            this.batchFulfillStripe(id)
+        });
+        return response.send({status: 'Success'})
+    }
+
     async updateOrderById ({request, response, params}) {
         const {id, status} = request.all()
-        console.log(status)
         if (status === 'refund') {
             var update = await stripe.refunds.create({
                 charge: id
@@ -23,7 +34,13 @@ class OrderController {
     async viewOrderById ({request, params, response, view}) {
         var id = params.orderId
         var order = await stripe.orders.retrieve(id)
-        var charge = await stripe.charges.retrieve(order.charge)
+        if (order.status_transitions.paid != null) {
+            var charge = await stripe.charges.retrieve(order.charge)
+        } else {
+            var charge = {
+                refunded: false
+            }
+        }
         return view.render('admin.order-details', {order, charge})
     }
 
