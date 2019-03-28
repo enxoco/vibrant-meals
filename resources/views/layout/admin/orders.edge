@@ -194,6 +194,8 @@
                                   <th>
                                     Fufillment Status
                                   </th>
+                                  <th style="display:none;">Orderid</th>
+
                                 </thead>
                                 <tbody>
                                     @each(p in pickups)
@@ -221,11 +223,16 @@
                                     </td>
                                     <td>
                                         @if(p.status === 'fulfilled')
-                                        Order has been fulfilled
-                                        @else 
+                                        <h4><span class="badge badge-success">Fufilled</span></h4>
+                                        @elseif(p.status === 'canceled')
+                                        <h4><span class="badge badge-danger">canceled</span></h4>
+                                        @else
                                         <a class="btn btn-success" href="/admin/orders/fulfill/{{p.id}}">Mark as Fufilled</a>
                                         @endif
-                                    </td>
+                                      </td>
+                                      <td style="display:none;">{{p.id}}</td>
+
+
                                   </tr>
                                   @endeach  
                                 </tbody>
