@@ -103,6 +103,9 @@ Route.group(() => {
   Route.get('/products/show/:itemId', 'ItemController.showItem')
   Route.get('/admin/import', 'AdminController.importProducts')
   Route.get('/admin/locations', 'AdminController.listLocations')
+  Route.post('/admin/locations', 'AdminController.addLocations')
+
   Route.post('/admin/locations/update/:id', 'AdminController.updateLocations')
+  Route.post('/admin/locations/delete/:id', 'AdminController.deleteLocations')
 
 }).middleware(['admin'])

@@ -5,7 +5,7 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const Drive = use('Drive')
 const Helpers = use('Helpers')
 const cheerio = require('cheerio')
-
+const opencage = require('opencage-api-client');
 
 class AdminController {
 
@@ -47,6 +47,70 @@ class AdminController {
     return view.render('layout.admin.locations', {stores})
   } 
 
+
+  async insertLocation (description, street, city, state, zip, opens, closes, coords) {
+    coords = JSON.stringify(coords)
+    
+    const insert = await Database
+
+      .table('locations')
+      .insert({
+        name: description,
+        description: description,
+        street_addr: street,
+        city: city,
+        state: state,
+        zip: zip,
+        opens: opens,
+        closes: closes,
+        coordinates: coords
+      })
+  }
+
+  async addLocations({request, response}) {
+    const {description, street, city, state, opens, closes} = request.all()
+    try {
+      opencage.geocode({q: `${street} ${city} ${state}`}).then(data => {
+        if (data.status.code == 200) {
+          if (data.results.length > 0) {
+            var place = data.results[0]
+            var coords = []
+            var zip = place.components.postcode.slice(0,5)
+            coords.push(JSON.stringify(place.geometry.lng))
+            coords.push(JSON.stringify(place.geometry.lat))
+            var insert = this.insertLocation(description, street, city, state,zip, opens, closes, coords)
+            return
+  
+             console.log(place.geometry);
+          }
+        } else if (data.status.code == 402) {
+          console.log('hit free-trial daily limit');
+          console.log('become a customer: https://opencagedata.com/pricing'); 
+        } else {
+          // other possible response codes:
+          // https://opencagedata.com/api#codes
+          console.log('error', data.status.message);
+        }
+      }).catch(error => {
+        console.log('error', error.message);
+      });
+      return response.redirect('back')
+    } catch(e) {
+      return response.send({'error': 'error'})
+    }
+
+  }
+
+  async deleteLocations({request, response, params}) {
+    var id = params.id
+    const update = await Database
+      .table('locations')
+      .delete()
+      .where('id', id)
+
+      return response.send(update)
+
+  }
   async updateLocations({view, request, params, response}) {
 
     var obj = {}
