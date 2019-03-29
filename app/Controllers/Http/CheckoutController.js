@@ -6,6 +6,8 @@ const moment = require('moment')
 const User = use('App/Models/User')
 const UsersProfile = use('App/Models/UsersProfile')
 const Hash = use('Hash')
+const stringHash = require('@sindresorhus/string-hash');
+
 
 
 
@@ -109,6 +111,11 @@ class CheckoutController {
           }, function(err, order) {
             if (err) return(err)
             // asynchronously called
+            stripe.orders.update(order.id, {
+              metadata: {
+                orderId: stringHash(order.id)
+              }
+            })
           });
         });
         } else {
@@ -140,6 +147,11 @@ class CheckoutController {
               source: req.billing.stripeToken // obtained with Stripe.js
             }, function(err, order) {
               if (err) return(err)
+              stripe.orders.update(order.id, {
+                metadata: {
+                  orderId: stringHash(order.id)
+                }
+              })
               // asynchronously called
             });
           });
@@ -171,6 +183,11 @@ class CheckoutController {
             source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
+            stripe.orders.update(order.id, {
+              metadata: {
+                orderId: stringHash(order.id)
+              }
+            })
             // asynchronously called
           });
         });
@@ -181,10 +198,15 @@ class CheckoutController {
 
 
     if (order) {
-      return response.send(order)
+      console.log(order)
+      return
+
     } else {
+      console.log(order)
       return response.send({'status': 'success'})
     }
+    console.log('hello')
+    return
 
   }
 
@@ -329,7 +351,11 @@ class CheckoutController {
             source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
-            // asynchronously called
+            stripe.orders.update(order.id, {
+              metadata: {
+                orderId: stringHash(order.id)
+              }
+            })
           });
         });
         } else {
@@ -361,7 +387,11 @@ class CheckoutController {
               source: req.billing.stripeToken // obtained with Stripe.js
             }, function(err, order) {
               if (err) return(err)
-              // asynchronously called
+              stripe.orders.update(order.id, {
+                metadata: {
+                  orderId: stringHash(order.id)
+                }
+              })            
             });
           });
         }
@@ -392,8 +422,12 @@ class CheckoutController {
             source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
-            // asynchronously called
-          });
+            stripe.orders.update(order.id, {
+              metadata: {
+                orderId: stringHash(order.id)
+              }
+            })
+                    });
         });
       }
 

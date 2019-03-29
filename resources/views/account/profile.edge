@@ -215,7 +215,7 @@
 									  @each(p in customer.orders.data)
 									<tr>
 									  <td>
-										{{p.id}}
+										{{p.metadata.orderId}}
 									  </td>
 									  <td>
 											{{currency(p.amount)}}

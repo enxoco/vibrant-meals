@@ -464,14 +464,11 @@ function span1(e){
 <!-- Initialize Quill editor -->
 
 <script>
-
-  //   var quill = new Quill('#span1', {
-  //   modules: {
-  //     syntax: true,
-  //   },
-  //   placeholder: 'Compose an epic...',
-  //   theme: 'snow'
-  // });
-  // $('.section-description.editable').append('<input type="submit" class="btn btn-success" value="submit"/>')
-
+$(document).ready(function(){
+    $( "a.scrollLink" ).click(function( event ) {
+        event.preventDefault();
+        // $('html, body').animate({scrollTop: $('#contact').offset().top -100 }, 'slow');
+        $("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top - 100 }, 500);
+    });
+});
 </script>

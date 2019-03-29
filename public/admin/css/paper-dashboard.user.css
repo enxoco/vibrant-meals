@@ -4610,7 +4610,8 @@ License - nucleoapp.com/license/
 .sidebar,
 .off-canvas-sidebar {
   position: fixed;
-  top: 125px;
+  top: 0px;
+  margin-top: 125px;
   height: 100%;
   bottom: 0;
   width: 20%;
@@ -6483,4 +6484,14 @@ button.btn.btn-link {
 
 .card-footer {
   padding: 0 !important;
+}
+
+div#order-details-footer {
+  position: fixed;
+  right: 0px;
+  z-index: 99999;
+  bottom: 0px;
+  border-top: 5px solid #f2f2f2;
+  width: 20%;
+  background: white;
 }
