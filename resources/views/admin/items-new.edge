@@ -130,7 +130,14 @@
                     <div class="col-md-3 pr-2">
                       <div class="form-group">
                         <label>Product Category</label>
-                        <input type="text" class="form-control" placeholder="Category" name="category" value="{{prod.metadata.primary_category}}">
+                        <select class="form-control muted" name="category">
+                          <option>Choose category...</option>
+                          <option name="lunchDinner" value="lunchDinner">Lunch & Dinner</option>
+                          <option name="breakfast" value="Breakfast">Breakfast</option>
+                          <option name="snacks" value="Snacks">Snacks</option>
+                          <option name="juices" value="Juices">Juices</option>
+                        </select>
+                          
                       </div>
                     </div>
                     <div class="col-md-3 pr-2">
@@ -166,7 +173,7 @@
                                   </div>
                     <div class="col">
                         <label for="sehir">Filters</label>
-                        <input type="text" name="filters" value="Whole 30, Paleo" data-role="tagsinput" class="form-control" />
+                        <input type="text" name="filters" value="" data-role="tagsinput" class="form-control" />
                     </div>
                   </div>
                   <div class="row">

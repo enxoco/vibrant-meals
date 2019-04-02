@@ -16,6 +16,7 @@ class ItemController {
   async listItems ({view, response, auth, request}) {
 
     var products = await stripe.products.list();
+
     var prod = products.data
     var categories = []
     var filters = []
@@ -134,7 +135,11 @@ class ItemController {
         delete obj['']
 
         var prod = obj[Object.keys(obj)[0]]
-        stripe.products.update(prod.id, {
+
+        prod.parent_id = prod.name.toLowerCase().replace(/ /g, '_')
+        // This is incorrectly trying to update the main product using the primary sku
+        // Need to correct this so that it attempts to update the parent product.
+        stripe.products.update(prod.parent_id, {
           name: prod.name,
           description: prod.description,
           metadata: {
@@ -144,8 +149,7 @@ class ItemController {
         })
         console.log('trying to update')
         for (var i = 0; i < Object.keys(obj).length; i++) {
-          var sku = obj[Object.keys(obj)[i]]
-
+          var sku = obj[Object.keys(obj)[i]]          
           stripe.skus.update(sku.id, {
             price: sku.price,
             image: sku.primary_img,
@@ -230,191 +234,7 @@ class ItemController {
 
     }
     
-    async addItem ({ view, request, response, params, session }) {
-      const obj = request.all()
-      const profilePic = request.file('item-image')
-        if (profilePic) {
-          try {
-            let name = `item-${params.itemId}_${profilePic.clientName}`
-            await profilePic.move(Helpers.publicPath('uploads'), {
-              name: name,
-              overwrite:true
-            })
-            var img_url = `uploads/${name}`
-          } catch (error) {
-            session.flash({error: `Sorry, something went wrong: ${error}`})
-            return response.redirect('back')
-          }
-        }
-      
-        var sugar = null
-        var sodium = null
-        if(obj.is_keto) {
-          var is_keto = 1
-        }
-        if(obj.is_whole30) {
-          var is_whole30 = 1
-        }
-        if(obj.is_paleo) {
-          var is_paleo = 1
-        }
-        if(obj.is_lowCarb) {
-          var is_lowCarb = 1
-        }
-        if(obj.carbs) {
-          var carbs = obj.carbs
-        }
-        if(obj.fat) {
-         var fat = obj.fat
-        }
-        if(obj.calories) {
-          var calories = obj.calories
-        }
-        if(obj.protein) {
-          var protein = obj.protein
-        }
-    
-        if(obj.sugar) {
-          var sugar = obj.sugar
-        }
-        if(obj.sodium) {
-          var sodium = obj.sodium
-        }
-    
-        var eightySixCount = null
-    
-        if(obj.eightySixCount) {
-          var eightySixCount = obj.eightySixCount
-        }
-    
-        
-        try {
-          const user = await Database
-            .table('users')
-            .select('name', 'stripe_id')
-            .where('id', session.get('adonis-auth'))
-          // Create an item in Stripe
-          // const stripeObj = await stripe.products.create({
-          //   name: obj.name,
-          //   type: 'service',
-          //   attributes: ['size', 'gender']
-          // });
-          
-          // Create a plan in Stripe
-          // Stripe expects an int for the price field so we need to convert to a string
-          // then check to see how many digits we have and add a zero to the end if we
-          // only have two.  For instance, if someone types in 9.5, the below code turns
-          // that into a string of 950 which is then converted to an int and sent to Stripe
-    
-          // I think that what we actually need to do is create a product and then create a
-          // sku associated with that product.  Then we can create an order with the skus.
-          var price = String(obj.price).replace(".", "")
-          if(price.length == 2) {
-            price += '0'
-          }
 
-      
-          // Need to first create a product, then create a sku for that product.
-          const product = await stripe.products.create({
-            name: obj.name,
-            type: 'good',
-            description: obj.description,
-          });
-          if (obj.quantity) {
-            const sku = await stripe.skus.create({
-              product: product.id,
-              price: parseInt(price),
-              currency: 'usd',
-              id: obj.sku,
-              inventory: {type: 'finite', quantity: obj.quantity}
-            });
-          } else {
-            const sku = await stripe.skus.create({
-              product: product.id,
-              price: parseInt(price),
-              currency: 'usd',
-              id: obj.sku,
-              inventory: {type: 'infinite'}
-            });
-          }
-
-
-          // Instead of creating a plan, we actually need to create a product.
-          // const plan = await stripe.plans.create({
-          //   amount: parseInt(price),
-          //   interval: "month",
-          //   product: {
-          //     name: obj.name
-          //   },
-          //   currency: "usd",
-          // });
-
-
-          // Create a subscription in Stripe
-          // stripe.subscriptions.create({
-          //   customer: user[0].stripe_id,
-          //   items: [
-          //     {
-          //       plan: plan.id,
-          //     },
-          //   ]
-          // });
-          const success = await Database
-          .table('items')
-          .insert({
-            name: obj.name,
-            price: obj.price,
-            sku: obj.sku,
-            description: obj.description,
-            img_url: img_url,
-            calories: calories,
-            fats: fat,
-            carbs: carbs,
-            protein: protein,
-            eightySixCount: eightySixCount,
-            sugar: sugar,
-            sodium: sodium,
-            stripe_id: obj.sku
-          })
-
-          const allFilters = await Database
-          .table('item_filters')
-          .select('name', 'id')
-
-        const allCategories = await Database
-          .table('item_categories')
-          .select('desc', 'id')
-
-
-        // TODO - Filter updates are working per the below code.  Still need to implement working code for category updates.
-        for ( var i = 0; i < allFilters.length; i++) {
-          var filter = allFilters[i].name
-          if (obj[filter] == 'on') {
-            const db_update = await Database
-            .raw(`INSERT IGNORE INTO items_in_filters (item_id, filter_id) VALUES(${success}, ${allFilters[i].id})`)
-          } else if (!obj[filter]) {
-            const db_update = await Database
-            .raw(`DELETE FROM items_in_filters WHERE item_id = ${parseInt(success)} AND filter_id = ${allFilters[i].id}`)
-          }
-        }
-
-        for ( var i = 0; i < allCategories.length; i++) {
-          var filter = allCategories[i].desc
-          if (obj[filter] == 'on') {
-            const db_update = await Database
-            .raw(`INSERT IGNORE INTO items_in_categories (item_id, category_id) VALUES(${success}, ${allCategories[i].id})`)
-          } else if (!obj[filter]) {
-            const db_update = await Database
-            .raw(`DELETE FROM items_in_categories WHERE item_id = ${parseInt(success)} AND category_id = ${allCategories[i].id} `)
-          }
-        }
-        return view.render('edit-item', {item: obj, categories: allCategories, all_filters: allFilters})
-    
-        } catch (error) {
-          return response.send(`Error ${error}`)
-        }
-    
-    }
 
     async showCheckout ({ view, session, auth, response }) {
 

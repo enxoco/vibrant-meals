@@ -25,11 +25,6 @@ Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 Route.get('/api/stores/all', 'HomeController.showStores')
 
-Route.get('/item/add/:itemId', 'ItemController.editItem')
-Route.post('/item/add/:itemId', 'ItemController.updateItem')
-
-Route.get('/item/add', 'ItemController.addItemView')
-Route.post('/item/add', 'ItemController.addItem')
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')
@@ -93,7 +88,7 @@ Route.group(() => {
   Route.get('/admin/customers', 'AdminController.listCustomers')
   Route.get('/admin/products', 'AdminController.showItems')
   Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
-  Route.post('/admin/items/add', 'AdminController.test')
+  Route.post('/admin/items/add', 'AdminController.addItem')
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
   Route.get('/admin/orders/fulfill/:orderId', 'AdminController.fulfillOrder')
   Route.post('/admin/orders/batch', 'OrderController.batchFulfill').as('batchFulfill')

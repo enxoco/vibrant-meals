@@ -147,7 +147,7 @@ class AdminController {
               for (var x = 1; x < products.skus.data.length; x++) {
                 var sku = products.skus.data.length[x]
                 var size = sku.size
-                size = size.toLowerCase()
+                size = size.toLowerCase().replace(/ /g, '_')
 
                 stripe.skus.create({
                     product: products[i].id,
@@ -227,7 +227,7 @@ class AdminController {
     }
 
 
-    async test ({request, response}) {
+    async addItem ({request, response}) {
         var form = request.all()
 
         var prod = form.parent_product
@@ -242,6 +242,7 @@ class AdminController {
         if(price.length == 2) {
           price += '0'
         }
+
         var product = await stripe.products.create({
             name: prod.name,
             type: 'good',
@@ -254,24 +255,19 @@ class AdminController {
           }, function(err, product) {
             // Now that primary product is created, we need to create skus
             // Start with the parent item
-                  for (var i = 1; i < Object.keys(form).length; i++) {
-                    if (form['variation_1'].size == '' && form['variation_1'].calories == '' && form['variation_2'] == undefined) {
                       var sku = form['parent_product']
                       var size = sku.size
-                      size = size ? size.toLowerCase() : 'everyday'
-                    } else {
+                      size = size ? size.toLowerCase().replace(/ /g, '_').replace(/ /g, '_') : 'everyday'
 
-                      var sku = form[Object.keys(form)[i]]
-                      var size = sku.size
-                      size = size ? size.toLowerCase() : 'everyday'
-
-                    }
                     stripe.skus.create({
                       product: id,
                       id: sku_id + '_' + size,
                       price: parseInt(price),
                       currency: 'usd',
-                      inventory: {type: 'finite', quantity: 500},
+                      inventory: {
+                        type: 'finite', 
+                        quantity: 500
+                      },
                       image: prod.primary_img,
                       attributes: {
                           size: size
@@ -285,11 +281,42 @@ class AdminController {
                           calories: sku.calories,
                           filters: sku.filters
                       },
+                    }, function(err, product) {
+                      // Create our secondary skus in this function
+                      for (var i = 1; i < Object.keys(form).length; i++) {
+                        var sku = form[`variation_${i}`]
+                        var size = sku.size
+                        var price = String(sku.price).replace(".", "")
+                        if(price.length == 2) {
+                          price += '0'
+                        }
+                        console.log(price)
+                        size = size ? size.toLowerCase().replace(/ /g, '_').replace(/ /g, '_') : 'everyday'
+                        stripe.skus.create({
+                          product: id,
+                          id: sku_id + '_' + size,
+                          price: parseInt(price),
+                          currency: 'usd',
+                          inventory: {
+                            type: 'finite', 
+                            quantity: 500
+                          },
+                          image: prod.primary_img,
+                          attributes: {
+                              size: size
+                          },
+                          metadata: {
+                              category: sku.category,
+                              size: size,
+                              fats: sku.fats,
+                              carbs: sku.carbs,
+                              proteins: sku.proteins,
+                              calories: sku.calories,
+                              filters: sku.filters
+                          },
+                        })
+                      }
                     })
-
-
-                  }
-
         });
           return response.send(product)
     }

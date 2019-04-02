@@ -68,6 +68,8 @@ function updateCartDiv() {
       $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
     }
 
+    
+
   }
 
 
@@ -166,3 +168,16 @@ function updateCartDiv() {
     updateCartDiv()
 
   }
+
+  $('.price-change').change(function(){
+    var t = $(this).find(':selected').data()
+    var id = $(this).data('id')
+
+    $(this).closest('.price').find('h5.price-label').text('$' + t.price / 100)
+    var u = $('body').find('.checkout-prompt-1[data-id="'+id+'"]')
+    u.attr('data-sku', t.sku)
+    u.attr('data-price', t.price)
+    u.attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+
+  })
+

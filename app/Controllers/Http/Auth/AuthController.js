@@ -4,6 +4,7 @@ const Env = use('Env')
 const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
+const stringHash = require('@sindresorhus/string-hash');
 
 
 class AuthController {
@@ -60,6 +61,7 @@ class AuthController {
       var order = await stripe.orders.list({
         customer: id,
       })
+
 
       // Loop over all orders for a user and grab the total amounts
       for (var x = 0; x < order.data.length; x++) {

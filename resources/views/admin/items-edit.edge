@@ -124,7 +124,13 @@
                     <div class="col-md-3 pr-2">
                       <div class="form-group">
                         <label>Product Category</label>
-                        <input type="text" class="form-control" placeholder="Category" name="primary_category" value="{{prod.metadata.primary_category}}">
+                        <select class="form-control muted" name="primary_category">
+                            <option selected value="{{prod.metadata.primary_category}}">{{prod.metadata.primary_category}}</option>
+                            <option name="lunchDinner" value="lunchDinner">Lunch & Dinner</option>
+                            <option name="breakfast" value="Breakfast">Breakfast</option>
+                            <option name="snacks" value="Snacks">Snacks</option>
+                            <option name="juices" value="Juices">Juices</option>
+                          </select>
                       </div>
                     </div>
                     <div class="col-md-3 pr-2">

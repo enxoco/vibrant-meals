@@ -211,19 +211,13 @@ label {
 #category-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     width: 100%;
     min-height: 50px;
     max-height: 100px;
+}
 
-}
-#category-container .img-container {
-  width: 100px;
-  flex: 1;
-  cursor: pointer;
-  align-content: center;
-  text-align: center;
-  border-radius: 5px;
-}
+
 #category-container .img-container:hover > h2 {
   border-radius: 0px;
   text-decoration: underline;
@@ -338,13 +332,11 @@ button.navbar-toggler {
 }
 
 h2.category-heading {
-    width: 100px;
     min-height: 29px;
 }
 
 h2.category-heading:hover, h2.category-heading.active {
     border-bottom: 5px solid #aad0ad;
-    width: 100px;
 }
 input.muted {
     background: #f2f2f2f2;
@@ -626,8 +618,7 @@ h5.modal-title {
 
               </div>
               <div class="row">
-                <div class="col-3"></div>
-                <div class="col">
+                <div class="col d-flex justify-content-center">
                   <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
                     <div class="mobile-button-wrapper ">
                     <a class="checkout-button btn btn-lg btn-pill btn-success" disabled><div class="checkout-button-status"></div>Next</a>
@@ -735,6 +726,8 @@ getLocation()
 
 
 </script>
+<script src="/js/lodash.core.min.js"></script>
+
 <script src="/js/update-cart.js"></script>
 <script>
 //Initializd our cart if one is not yet set
@@ -779,6 +772,7 @@ $('.checkout-prompt-1').on('click', function(e){
     localStorage.setItem("custEngageCompleted", 1);
     var c = JSON.parse(localStorage.cart)
     var item = $(this).data()    
+
     c.push(item)
     localStorage.setItem('cart', JSON.stringify(c))
     updateCartDiv()
@@ -809,7 +803,7 @@ else {
 
 return cartItems;
 }
-var cart = checkDuplicateInObject('id', cartItems)
+var cart = checkDuplicateInObject('sku', cartItems)
 var updatedCart = []
 for (var i = 0; i < cart.length; i++) {
 if (!cart[i].duplicate){
