@@ -778,11 +778,30 @@ $('.checkout-prompt-1').on('click', function(e){
     updateCartDiv()
     return false
   }
-var item = $(this).data()
 
-// var item = $(this).data()
-var cartItems = JSON.parse(localStorage.cart)
-cartItems.push(item)
+  // This bit of logic was added to allow user to switch between
+  // Multiple options for a single item. 
+  /*
+  * I had to switch to this approach as opposed to using var item = $(this).data()
+  * because that approach will always grab the original data attribute.  Instead
+  * I had to switch to using the attr selector.  This code relies on the event listener
+  * attached to the .price-change select box.  That code is found in update-cart.js
+  * starting at line 180
+  * 
+  */
+
+  var i = $(this)
+  var item = {}
+  item.id = i.attr('data-id')
+  item.img_url = i.attr('data-img_url')
+  item.sku = i.attr('data-sku')
+  item.quantity = 1
+  item.name = i.attr('data-name')
+  item.price = parseInt(i.attr('data-price'))
+
+
+  var cartItems = JSON.parse(localStorage.cart)
+  cartItems.push(item)
 
 function checkDuplicateInObject(propertyName, inputArray) {
 var seenDuplicate = false,

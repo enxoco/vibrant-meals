@@ -169,15 +169,46 @@ function updateCartDiv() {
 
   }
 
+    /*
+  *
+  * When a user makes a selection based on size of item
+  * we need to update all of the associated data-attributes
+  * this is needed to parse the item properly and add it
+  * to the cart ensuring that there are no duplicates.
+  *
+  */
+ 
   $('.price-change').change(function(){
     var t = $(this).find(':selected').data()
     var id = $(this).data('id')
 
     $(this).closest('.price').find('h5.price-label').text('$' + t.price / 100)
     var u = $('body').find('.checkout-prompt-1[data-id="'+id+'"]')
-    u.attr('data-sku', t.sku)
-    u.attr('data-price', t.price)
-    u.attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+    var x = $('body').find('.card[data-id="'+id+'"]')
+    var y = $('body').find('.modal[data-id="'+id+'"]')
+
+    u.each(function(){
+      $(this).attr('data-sku', t.sku)
+      $(this).attr('data-img_url', t.img_url)
+      $(this).attr('data-price', t.price)
+      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+    })
+
+    x.each(function(){
+      $(this).attr('data-sku', t.sku)
+      $(this).attr('data-img_url', t.img_url)
+      $(this).attr('data-price', t.price)
+      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+    })
+
+
+    y.each(function(){
+      $(this).attr('data-sku', t.sku)
+      $(this).attr('data-img_url', t.img_url)
+      $(this).attr('data-price', t.price)
+      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+    })
+
 
   })
 
