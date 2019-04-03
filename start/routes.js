@@ -30,6 +30,9 @@ Route.get('/locations', 'HomeController.showStoresView')
 Route.get('/about', async({view}) => view.render('about'))
 Route.get('/', 'HomeController.index').as('welcomePage')
 Route.get('/contact', async({view}) => view.render('contact'))
+Route.get('/catering', async({view}) => view.render('catering'))
+Route.get('/careers', async({view}) => view.render('careers'))
+Route.get('/partnerships', async({view}) => view.render('partnerships'))
 
 /**
  * 
@@ -38,6 +41,10 @@ Route.get('/contact', async({view}) => view.render('contact'))
  */
 
 Route.post('/contact', 'FormController.contactForm')
+Route.post('/catering', 'FormController.cateringForm')
+Route.post('/careers', 'FormController.careersForm')
+Route.post('/partnerships', 'FormController.partnershipsForm')
+
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')
@@ -116,5 +123,7 @@ Route.group(() => {
 
   Route.post('/admin/locations/update/:id', 'AdminController.updateLocations')
   Route.post('/admin/locations/delete/:id', 'AdminController.deleteLocations')
+
+  Route.get('/admin/forms/:form_id', 'AdminController.viewForms')
 
 }).middleware(['admin'])

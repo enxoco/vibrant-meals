@@ -9,6 +9,15 @@ const opencage = require('opencage-api-client');
 
 class AdminController {
 
+  async viewForms({params,response}) {
+    const form_id = params.form_id
+    const form = await Database
+      .table('contact_form')
+      .where('form_id', form_id)
+    
+    return response.send(form)
+  }
+
 
   async updateHowItWorks({request, response}) {
 

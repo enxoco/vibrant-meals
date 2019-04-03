@@ -42,6 +42,38 @@ INSERT INTO `adonis_schema` VALUES (76,'1503248427885_user',1,'2019-02-06 17:15:
 UNLOCK TABLES;
 
 --
+-- Table structure for table `contact_form`
+--
+
+DROP TABLE IF EXISTS `contact_form`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contact_form` (
+  `id` int(25) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `phone` varchar(200) DEFAULT NULL,
+  `referral` text,
+  `message` text,
+  `read_by_admin` int(1) DEFAULT '0',
+  `form_id` varchar(200) DEFAULT NULL,
+  `subject` varchar(200) DEFAULT NULL,
+  `business` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact_form`
+--
+
+LOCK TABLES `contact_form` WRITE;
+/*!40000 ALTER TABLE `contact_form` DISABLE KEYS */;
+INSERT INTO `contact_form` VALUES (1,'Mike Conrad','mkcnrd@gmail.com','(423) 314-5381','Through a friend on Facebook                                            ','This is awesome!  I love vibrant meals!                                                ',0,NULL,NULL,NULL),(2,'Mike Conrad','mkcnrd@gmail.com','(423) 314-5381','I heard about you through a friend on Facebook.                                  ','This is awesome!  Love the site!  Can\'t wait to make my first order...                                      ',0,'contact',NULL,NULL),(3,'Mike Conrad','mkcnrd@gmail.com',NULL,NULL,'I love your site!  Are you guys looking for any help at the moment?                                                  ',0,'careers','Looking for a job',NULL),(4,'Mike Conrad','mkcnrd@gmail.com',NULL,NULL,'We would love to carry vibrant meals in our gym                                                  ',0,'partnerships','Gym',NULL),(5,'Mike Conrad','mkcnrd@gmail.com',NULL,NULL,'We would love to have Vibrant cater our next event.',0,'catering','Catering','Calvary Chatt');
+/*!40000 ALTER TABLE `contact_form` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `delivery_customer_metas`
 --
 
@@ -200,7 +232,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (1,NULL,'Eggroll In A Bowl','sku_EWpDNQjafD94e8',NULL,NULL,'Do you love spring rolls? Well, imagine an inside-out spring roll that is actually healthy for you! We bring you the Eggroll in a bowl made with seasoned lean turkey on a bed of cabbage and brown rice stir fry topped with carrots, green onions, aminos and dressed in our special home-made bang bang sauce. Yum.','uploads/item-undefined_Eggroll+In+A+Bowl.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-eggro_in_a_bowl',NULL,NULL),(2,NULL,'Noogaroni','sku_EWpDNQjafD94e8',NULL,NULL,'GF Macaroni with  seasoned ground turkey, cured bacon, red onion, celery, scallions, parsley with our vegan chipotle mayo on a bed of kale.','uploads/item-undefined_noogaroni-1.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-noogaroni',NULL,NULL),(3,NULL,'Peppercorn Steak Filet','sku_EWpDNQjafD94e8',NULL,NULL,'Peppercorn steak filet, green beans, red potatoes and topped off with a hand crafted peppercorn sauce ; and somehow it\'s still dairy-free!','uploads/item-undefined_peppercorn.jpeg',NULL,NULL,11.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-peppe_steak_filet',NULL,NULL),(5,NULL,'Chicken Pot Pie','sku_EWpDNQjafD94e8',NULL,NULL,'Braised chicken with carrots, peas, parsnip, celery, onions and our creamy coconut thyme sauce and homemade gluten free leaves.\r\n\r\n','uploads/item-undefined_potpie.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'low_carb-chick_pot_pie',NULL,NULL),(6,NULL,'Turkey Chilli','sku_EWpDNQjafD94e8',NULL,NULL,'Ground lean turkey, red bell pepper, onion, sweet potatoes, black beans, tomato sauce, white rice, cilantro, lime & spices. ','uploads/item-undefined_Turkey+Chili+2.jpeg',NULL,NULL,9.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'performance-turke_chill',NULL,NULL),(7,NULL,'Paleo American Breakfast','sku_EWpDNQjafD94e8',NULL,NULL,'Gluten free paleo pancake (Cassava Flour, Organic Coconut Flour, Almond Flour, Eggs, Leavening (Monocalcium Phosphate, Sodium Bicarbonate), Salt, Monk Fruit, Spice) with a strawberry compote, scrambled eggs and 2 slices of bacon.\r\n\r\n','uploads/item-undefined_American+Breakfast.jpg',NULL,NULL,8.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'breakfast-paleo_ameri_break',NULL,NULL);
+INSERT INTO `items` VALUES (1,NULL,'Eggroll In A Bowl','perfo-eggro_in_a_bowl',NULL,NULL,'Do you love spring rolls? Well, imagine an inside-out spring roll that is actually healthy for you! We bring you the Eggroll in a bowl made with seasoned lean turkey on a bed of cabbage and brown rice stir fry topped with carrots, green onions, aminos and dressed in our special home-made bang bang sauce. Yum.','uploads/item-undefined_Eggroll+In+A+Bowl.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-eggro_in_a_bowl',NULL,NULL),(2,NULL,'Noogaroni','sku_EWpDNQjafD94e8',NULL,NULL,'GF Macaroni with  seasoned ground turkey, cured bacon, red onion, celery, scallions, parsley with our vegan chipotle mayo on a bed of kale.','uploads/item-undefined_noogaroni-1.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-noogaroni',NULL,NULL),(3,NULL,'Peppercorn Steak Filet','sku_EWpDNQjafD94e8',NULL,NULL,'Peppercorn steak filet, green beans, red potatoes and topped off with a hand crafted peppercorn sauce ; and somehow it\'s still dairy-free!','uploads/item-undefined_peppercorn.jpeg',NULL,NULL,11.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'every-peppe_steak_filet',NULL,NULL),(5,NULL,'Chicken Pot Pie','sku_EWpDNQjafD94e8',NULL,NULL,'Braised chicken with carrots, peas, parsnip, celery, onions and our creamy coconut thyme sauce and homemade gluten free leaves.\r\n\r\n','uploads/item-undefined_potpie.jpeg',NULL,NULL,9.75,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'low_carb-chick_pot_pie',NULL,NULL),(6,NULL,'Turkey Chilli','sku_EWpDNQjafD94e8',NULL,NULL,'Ground lean turkey, red bell pepper, onion, sweet potatoes, black beans, tomato sauce, white rice, cilantro, lime & spices. ','uploads/item-undefined_Turkey+Chili+2.jpeg',NULL,NULL,9.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'performance-turke_chill',NULL,NULL),(7,NULL,'Paleo American Breakfast','sku_EWpDNQjafD94e8',NULL,NULL,'Gluten free paleo pancake (Cassava Flour, Organic Coconut Flour, Almond Flour, Eggs, Leavening (Monocalcium Phosphate, Sodium Bicarbonate), Salt, Monk Fruit, Spice) with a strawberry compote, scrambled eggs and 2 slices of bacon.\r\n\r\n','uploads/item-undefined_American+Breakfast.jpg',NULL,NULL,8.50,NULL,0,0,0,0,NULL,NULL,0,0,0,0,0,1,'breakfast-paleo_ameri_break',NULL,NULL);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +263,7 @@ CREATE TABLE `items_in_categories` (
 
 LOCK TABLES `items_in_categories` WRITE;
 /*!40000 ALTER TABLE `items_in_categories` DISABLE KEYS */;
-INSERT INTO `items_in_categories` VALUES (1,1,1,NULL,NULL),(2,2,1,NULL,NULL),(3,3,1,NULL,NULL),(4,5,2,NULL,NULL),(5,6,4,NULL,NULL),(6,7,5,NULL,NULL);
+INSERT INTO `items_in_categories` VALUES (2,2,1,NULL,NULL),(3,3,1,NULL,NULL),(4,5,2,NULL,NULL),(5,6,4,NULL,NULL),(6,7,5,NULL,NULL);
 /*!40000 ALTER TABLE `items_in_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,8 +316,12 @@ CREATE TABLE `locations` (
   `is_active` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `opens` varchar(20) DEFAULT NULL,
+  `closes` varchar(20) DEFAULT NULL,
+  `coordinates` varchar(255) DEFAULT NULL,
+  `location_type` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +330,7 @@ CREATE TABLE `locations` (
 
 LOCK TABLES `locations` WRITE;
 /*!40000 ALTER TABLE `locations` DISABLE KEYS */;
-INSERT INTO `locations` VALUES (1,'Vibrant Meals Kitchen',NULL,'601 Cherokee Blvd',NULL,'Chattanooga','TN',37405,NULL,NULL,NULL),(2,'Chattanooga Functional Fitness',NULL,'125 Cherokee Blvd',NULL,'Chattanooga','TN',37405,1,NULL,NULL),(3,'Kyle House Fitness',NULL,'525 West Main Street',NULL,'Chattanooga','TN',37402,1,NULL,NULL),(4,'Crossfit Anistemi',NULL,'5806 Waterlevel Highway',NULL,'Cleveland','TN',37323,1,NULL,NULL),(5,'Body By Hannah',NULL,'282 Church St SE',NULL,'Cleveland','TN',37311,1,NULL,NULL);
+INSERT INTO `locations` VALUES (12,'Vibrant Meals Kitchen','Vibrant Meals Kitchen','601 Cherokee Blvd',NULL,'Chattanooga','TN',37405,NULL,NULL,NULL,'8:00am','6:30pm','[\"-85.317076\",\"35.068908\"]','Retail'),(13,'Downtown YMCA','Downtown YMCA','301 West 6th Street',NULL,'Chattanooga','TN',37402,NULL,NULL,NULL,'10:00am','8:00pm','[\"-85.312839\",\"35.049675\"]','Pickup'),(14,'Kyle House Fitness','Kyle House Fitness','525 West Main Street',NULL,'Chattanooga','TN',37402,NULL,NULL,NULL,'9:30am','2:30pm','[\"-85.3136527\",\"35.0385917\"]','Pickup'),(15,'Crossfit Brigade East','Crossfit Brigade East','8142 E Brainerd Rd',NULL,'Chattanooga','TN',37421,NULL,NULL,NULL,'4:00pm','7:00pm','[\"-85.1484745\",\"35.0034941\"]','Pickup'),(16,'Burn Bootcamp','Burn Bootcamp','6413 Lee Hwy #113',NULL,'Chattanooga','TN',37421,NULL,NULL,NULL,'4:00pm','7:00pm','[\"-85.1780835\",\"35.0350449\"]','Pickup'),(17,'Body By Hannah','Body By Hannah','282 Church St SE',NULL,'Cleveland','TN',37311,NULL,NULL,NULL,'4:00pm','5:00pm','[\"-84.8762426\",\"35.1575936\"]','Pickup'),(20,'Crossfit Anistemi','Crossfit Anistemi','5806 Waterlevel Hwy',NULL,'Cleveland','TN',37311,NULL,NULL,NULL,'4:00pm','5:00pm','[\"-84.8524849\",\"35.1507661\"]','Pickup');
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -434,9 +470,10 @@ CREATE TABLE `users` (
   `initial_order_completed` int(11) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `user_level` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,7 +482,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (89,'mkcnrd@gmail.com','$2a$10$Q.u7Ny/5WfDzTC5ZkKM3T.DuNzLQTAdCwuI5.mZjnV97evRLJFgPa','Mike Conrad',NULL,NULL,NULL,'2',NULL,NULL,1,'pickup','monday',0,'2019-02-15 11:53:20','2019-02-15 11:53:20');
+INSERT INTO `users` VALUES (12,'mkcnrd@gmail.com','$2a$10$sBur.jeI9irVowSb/0dOi.FMjXryjrrUYqKZwLqurtjUlAGO8xxwC','Mike Conrad',NULL,NULL,NULL,NULL,'cus_EmCqVMzjBNEO9O',NULL,1,'delivery','monday',0,'2019-03-27 12:17:07','2019-03-27 16:05:58','admin');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -489,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-15 14:18:38
+-- Dump completed on 2019-04-03 16:21:59
