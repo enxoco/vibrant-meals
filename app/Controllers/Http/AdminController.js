@@ -9,6 +9,40 @@ const opencage = require('opencage-api-client');
 
 class AdminController {
 
+
+  async importStripeProducts({request, response}) {
+
+    const path = Helpers.appRoot()
+    var obj = await Drive.get(`${path}/skus.json`, 'utf-8')
+    obj = JSON.parse(obj)
+    for (var i = 0; i < obj.data.length; i++){
+      var parent = obj.data[i]
+      var product = await stripe.products.create({
+          name: parent.name,
+          type: 'good',
+          description: parent.description,
+          id: parent.id,
+          attributes: parent.attributes,
+          metadata: parent.metadata,
+      })
+      for (var x = 0; x < obj.data[i].skus.data.length; x++) {
+        var sku = obj.data[i].skus.data[x]
+        stripe.skus.create({
+            product: sku.product,
+            id: sku.id,
+            price: sku.price,
+            currency: 'usd',
+            inventory: sku.inventory,
+            image: sku.image,
+            attributes: sku.attributes,
+            metadata: sku.metadata
+          })
+    }
+    }
+    return response.send('Success!')
+
+  }
+
   async viewForms({params,response}) {
     const form_id = params.form_id
     const form = await Database

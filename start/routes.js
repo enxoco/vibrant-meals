@@ -125,5 +125,6 @@ Route.group(() => {
   Route.post('/admin/locations/delete/:id', 'AdminController.deleteLocations')
 
   Route.get('/admin/forms/:form_id', 'AdminController.viewForms')
+  Route.get('/admin/products/import', 'AdminController.importStripeProducts')
 
 }).middleware(['admin'])

@@ -100,7 +100,10 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.id
+            store_id: location.id,
+            orderId: stringHash(order.id)
+
+            
           },
           email: user.email
         }, function(err, order) {
@@ -137,7 +140,9 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
-              store_id: location.id
+              store_id: location.id,
+              orderId: stringHash(order.id)
+
             },
             email: user.email
           }, function(err, order) {
@@ -341,7 +346,7 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.id
+            store_id: location.id,
           },
           email: user.email
         }, function(err, order) {
@@ -377,7 +382,6 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
-              store_id: location.id
             },
             email: user.email
           }, function(err, order) {

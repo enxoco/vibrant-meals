@@ -1,0 +1,610 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "jacked_protein_cold_brew",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1554141135,
+      "deactivate_on": [
+
+      ],
+      "description": "This is our jacked cold brew.",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "Drinks"
+      },
+      "name": "Jacked Protein Cold Brew",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "jacked_protein_cold_brew_4_pack",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "4_pack"
+            },
+            "created": 1554141136,
+            "currency": "usd",
+            "image": "http://res.cloudinary.com/themurphs/image/upload/v1554230317/vibrant_meals/jpcugzqypsihwwylniu5.jpg",
+            "inventory": {
+              "quantity": 500,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "size": "4_pack",
+              "fats": "0",
+              "carbs": "0",
+              "proteins": "0",
+              "calories": "0",
+              "name": "Jacked Protein Cold Brew",
+              "description": "This is our jacked cold brew."
+            },
+            "package_dimensions": null,
+            "price": 1999,
+            "product": "jacked_protein_cold_brew",
+            "updated": 1554230513
+          },
+          {
+            "id": "jacked_protein_cold_brew_single",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "single"
+            },
+            "created": 1554141135,
+            "currency": "usd",
+            "image": "http://res.cloudinary.com/themurphs/image/upload/v1554139971/vibrant_meals/auejfy41ihjr0fzkuayc.jpg",
+            "inventory": {
+              "quantity": 500,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "category": "Juices",
+              "size": "single",
+              "fats": "0",
+              "carbs": "0",
+              "proteins": "0",
+              "calories": "0",
+              "filters": "cold brew,coffee"
+            },
+            "package_dimensions": null,
+            "price": 575,
+            "product": "jacked_protein_cold_brew",
+            "updated": 1554141135
+          }
+        ],
+        "has_more": false,
+        "total_count": 2,
+        "url": "/v1/skus?product=jacked_protein_cold_brew\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1554230602,
+      "url": null
+    },
+    {
+      "id": "mission_fried_rice_with_kong_fu_sauce",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1553090627,
+      "deactivate_on": [
+
+      ],
+      "description": "The mission fried rice - proceeds from the sale of this dish will be used to help send two of our staff on missions trips to Israel and Paris this year. \n\nSeasoned shrimp with broccolini, fried rice, eggs, and our house made kung fu sauce.  ",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "lunchDinner"
+      },
+      "name": "Mission Fried Rice with Kong Fu Sauce",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "mission_fried_rice_with_kong_fu_sauce_everyday",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "everyday"
+            },
+            "created": 1553090627,
+            "currency": "usd",
+            "image": "https://res.cloudinary.com/themurphs/image/upload/v1553808314/vibrant_meals/1000w.jpg",
+            "inventory": {
+              "quantity": 496,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "category": "Everyday",
+              "size": "everyday",
+              "fats": "16",
+              "carbs": "58",
+              "proteins": "30",
+              "calories": "500",
+              "filters": "Whole 30, Paleo",
+              "name": "Mission Fried Rice with Kong Fu Sauce",
+              "description": "The mission fried rice - proceeds from the sale of this dish will be used to help send two of our staff on missions trips to Israel and Paris this year. \n\nSeasoned shrimp with broccolini, fried rice, eggs, and our house made kung fu sauce.  "
+            },
+            "package_dimensions": null,
+            "price": 1175,
+            "product": "mission_fried_rice_with_kong_fu_sauce",
+            "updated": 1553808343
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/skus?product=mission_fried_rice_with_kong_fu_sauce\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1553956821,
+      "url": null
+    },
+    {
+      "id": "chicken_salad",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1553042743,
+      "deactivate_on": [
+
+      ],
+      "description": "Homemade chicken salad (grapes, celery, vegan mayo, cranberries, walnuts, chicken, lemon juice, garlic powder, onion powder) on a bed of spinach. ",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "lunchDinner"
+      },
+      "name": "Chicken Salad",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "chicken_salad_everyday",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "everyday"
+            },
+            "created": 1553042743,
+            "currency": "usd",
+            "image": "https://images.squarespace-cdn.com/content/572361987c65e48584ee75e7/1551820328224-9HZJ742BI3MEV0FBSIT8",
+            "inventory": {
+              "quantity": 495,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "category": "Everyday",
+              "size": "everyday",
+              "fats": "17",
+              "carbs": "12",
+              "proteins": "22",
+              "calories": "30",
+              "filters": "Keto,Paleo",
+              "name": "Chicken Salad",
+              "description": "Homemade chicken salad (grapes, celery, vegan mayo, cranberries, walnuts, chicken, lemon juice, garlic powder, onion powder) on a bed of spinach. "
+            },
+            "package_dimensions": null,
+            "price": 750,
+            "product": "chicken_salad",
+            "updated": 1553808480
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/skus?product=chicken_salad\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1553955584,
+      "url": null
+    },
+    {
+      "id": "carne_asada_burrito",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1553024496,
+      "deactivate_on": [
+
+      ],
+      "description": "A delicious wrap to brighten any gloomy morning. Our Carne Asada Burrito is carefully crafted with a GF wrap, whole eggs, beef tenderloin, organic lactose-free white cheddar, red bell peppers, onion, spinach, cilantro and our homemade salsa.",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "Breakfast"
+      },
+      "name": "Carne Asada Burrito",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "carne_asada_burrito_everyday",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "everyday"
+            },
+            "created": 1553024496,
+            "currency": "usd",
+            "image": "https://res.cloudinary.com/themurphs/image/upload/c_scale,h_800,w_1000/v1553957333/vibrant_meals/burrito.jpg",
+            "inventory": {
+              "quantity": 477,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "category": "Breakfast",
+              "size": "everyday",
+              "fats": "20",
+              "carbs": "20",
+              "proteins": "20",
+              "calories": "20",
+              "name": "Carne Asada Burrito",
+              "description": "A delicious wrap to brighten any gloomy morning. Our Carne Asada Burrito is carefully crafted with a GF wrap, whole eggs, beef tenderloin, organic lactose-free white cheddar, red bell peppers, onion, spinach, cilantro and our homemade salsa.",
+              "filters": "Breakfast,Low Carb"
+            },
+            "package_dimensions": null,
+            "price": 725,
+            "product": "carne_asada_burrito",
+            "updated": 1553957580
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/skus?product=carne_asada_burrito\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1553957510,
+      "url": null
+    },
+    {
+      "id": "shipping",
+      "object": "product",
+      "active": true,
+      "attributes": [
+
+      ],
+      "caption": null,
+      "created": 1552523478,
+      "deactivate_on": [
+
+      ],
+      "description": "Shipping and Handling",
+      "livemode": false,
+      "metadata": {
+      },
+      "name": "Shipping",
+      "package_dimensions": null,
+      "shippable": false,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "5to10miles",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+            },
+            "created": 1552523514,
+            "currency": "usd",
+            "inventory": {
+              "type": "infinite"
+            },
+            "livemode": false,
+            "metadata": {
+            },
+            "package_dimensions": null,
+            "price": 500,
+            "product": "shipping",
+            "updated": 1552523514
+          },
+          {
+            "id": "11to15miles",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+            },
+            "created": 1552523535,
+            "currency": "usd",
+            "image": null,
+            "inventory": {
+              "type": "infinite"
+            },
+            "livemode": false,
+            "metadata": {
+            },
+            "package_dimensions": null,
+            "price": 1000,
+            "product": "shipping",
+            "updated": 1552523535
+          },
+          {
+            "id": "freeshipping",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+            },
+            "created": 1552573495,
+            "currency": "usd",
+            "inventory": {
+              "type": "infinite"
+            },
+            "livemode": false,
+            "metadata": {
+            },
+            "package_dimensions": null,
+            "price": 0,
+            "product": "shipping",
+            "updated": 1552573495
+          }
+        ],
+        "has_more": false,
+        "total_count": 3,
+        "url": "/v1/skus?product=shipping\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1552575636,
+      "url": null
+    },
+    {
+      "id": "verde_cold_pressed_juice",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1550872181,
+      "deactivate_on": [
+
+      ],
+      "description": "Cucumber, Green Apple, Celery, Kale, Lemon. Our DETOX!  juice is great for reducing inflammation, cholesterol and ‘cleaning’ your liver. It is rich in iron, vitamins K,A,C, and Calcium. ",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "Drinks"
+      },
+      "name": "Verde Cold Pressed Juice",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "verde_cold_pressed_juice_",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": ""
+            },
+            "created": 1550872182,
+            "currency": "usd",
+            "image": "http://res.cloudinary.com/themurphs/image/upload/v1553957748/vibrant_meals/exnyp1sfnxp9imqxbgxi.jpg",
+            "inventory": {
+              "quantity": 498,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "carbs": "27",
+              "proteins": "3",
+              "calories": "110",
+              "name": "Verde Cold Pressed Juice",
+              "description": "Cucumber, Green Apple, Celery, Kale, Lemon. Our DETOX!  juice is great for reducing inflammation, cholesterol and ‘cleaning’ your liver. It is rich in iron, vitamins K,A,C, and Calcium. "
+            },
+            "package_dimensions": null,
+            "price": 750,
+            "product": "verde_cold_pressed_juice",
+            "updated": 1553957750
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/skus?product=verde_cold_pressed_juice\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1554230625,
+      "url": null
+    },
+    {
+      "id": "southwest_chicken_bowl",
+      "object": "product",
+      "active": true,
+      "attributes": [
+        "size"
+      ],
+      "caption": null,
+      "created": 1550853099,
+      "deactivate_on": [
+
+      ],
+      "description": "Seasoned chicken, spinach, corn, black beans, cherry tomatoes, cilantro, scallions and a side of our homemade chipotle ranch. ",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "lunchDinner"
+      },
+      "name": "Southwest Chicken Bowl",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "southwest_chicken_bowl_everyday",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "everyday"
+            },
+            "created": 1550853099,
+            "currency": "usd",
+            "image": "https://res.cloudinary.com/themurphs/image/upload/v1553957821/vibrant_meals/qsq6kjlx92bbdcicqycs.jpg",
+            "inventory": {
+              "quantity": 349,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "size": "everyday",
+              "fats": "56",
+              "carbs": "17",
+              "proteins": "72",
+              "calories": "630"
+            },
+            "package_dimensions": null,
+            "price": 975,
+            "product": "southwest_chicken_bowl",
+            "updated": 1553957937
+          },
+          {
+            "id": "southwest_chicken_bowl_family",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+              "size": "family"
+            },
+            "created": 1550853099,
+            "currency": "usd",
+            "image": null,
+            "inventory": {
+              "quantity": 500,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "size": "family",
+              "fats": "134",
+              "carbs": "34",
+              "proteins": "144",
+              "calories": "1260"
+            },
+            "package_dimensions": null,
+            "price": 30,
+            "product": "southwest_chicken_bowl",
+            "updated": 1550855008
+          }
+        ],
+        "has_more": false,
+        "total_count": 2,
+        "url": "/v1/skus?product=southwest_chicken_bowl\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1553957935,
+      "url": null
+    },
+    {
+      "id": "spaghetti_squash_meatball",
+      "object": "product",
+      "active": true,
+      "attributes": [
+
+      ],
+      "caption": null,
+      "created": 1550786634,
+      "deactivate_on": [
+
+      ],
+      "description": "Roasted spaghetti squash, turkey meatballs, garlic, tomatoes, basil, spices all in our homemade marinara sauce. \n\n",
+      "images": [
+
+      ],
+      "livemode": false,
+      "metadata": {
+        "primary_category": "lunchDinner"
+      },
+      "name": "Spaghetti Squash Meatball",
+      "package_dimensions": null,
+      "shippable": true,
+      "skus": {
+        "object": "list",
+        "data": [
+          {
+            "id": "spaghetti_squash_meatball_",
+            "object": "sku",
+            "active": true,
+            "attributes": {
+            },
+            "created": 1550786634,
+            "currency": "usd",
+            "image": "https://res.cloudinary.com/themurphs/image/upload/v1550786682/vibrant_meals/Spaghetti_Squash_Meatball_mini.jpg",
+            "inventory": {
+              "quantity": 482,
+              "type": "finite",
+              "value": null
+            },
+            "livemode": false,
+            "metadata": {
+              "category": "Meals",
+              "fats": "35",
+              "carbs": "13",
+              "proteins": "15",
+              "calories": "310",
+              "name": "Spaghetti Squash Meatball",
+              "description": "Roasted spaghetti squash, turkey meatballs, garlic, tomatoes, basil, spices all in our homemade marinara sauce. \n\n"
+            },
+            "package_dimensions": null,
+            "price": 975,
+            "product": "spaghetti_squash_meatball",
+            "updated": 1553533316
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/skus?product=spaghetti_squash_meatball\u0026active=true"
+      },
+      "type": "good",
+      "updated": 1553955603,
+      "url": null
+    }
+  ],
+  "has_more": true,
+  "url": "/v1/products"
+}

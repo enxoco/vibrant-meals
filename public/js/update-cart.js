@@ -134,8 +134,8 @@ function updateCartDiv() {
       $('.cart-row-master').append(card)
 
     }
-    $('.order-total').attr('data-total', total)
-    $('.order-total').html(total)
+    $('.order-total').attr('data-total', total.toFixed(2))
+    $('.order-total').html(total.toFixed(2))
 
 
   }
