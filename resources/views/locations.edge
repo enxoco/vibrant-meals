@@ -8,14 +8,13 @@
 		  <h1 class="section-heading mb-5">Retail Locations</h1>
 		  <div class="row">
 				@each(store in stores)
-
 				@unless(store.location_type == 'Pickup')
-				<div class="col-6 mx-auto retail">
+				<div class="col-12 col-md-6 col-lg-6 col-xl-6 mx-auto retail">
 
 						<div class="card card-stats">
                 <div class="card-body ">
                   <div class="row">
-                    <div class="col-8">
+                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
                         <div id="map-store-{{store.id}}"></div>
                     </div>
                     <div class="col">
@@ -37,13 +36,17 @@
 				</div>
 				<script>
 						mapboxgl.accessToken = 'pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA';
+
 					var map = new mapboxgl.Map({
 						container: 'map-store-{{store.id}}', // container id
-						style: 'mapbox://styles/mapbox/light-v10', //hosted style id
+						style: 'mapbox://styles/mapbox/streets-v10', //hosted style id
 						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
 						// center: [-77.38, 39], // starting position
 						zoom: 15 // starting zoom
 					});
+					var marker = new mapboxgl.Marker()
+					.setLngLat('{lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} }')
+					.addTo(map);
 					</script>
 					@endunless
 					@endeach
@@ -57,19 +60,18 @@
 					@each(store in stores)
 	
 					@unless(store.location_type == 'Retail')
-					<div class="col-6 mx-auto pickup">
+					<div class="col-12 col-md-6 col-lg-6 col-xl-6 mx-auto pickup">
 	
-						<div class="card card-user card-product d-none d-md-block d-lg-block">
+						<div class="card card-user card-product">
 						<div id="map-store-{{store.id}}">
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-12 col-md-9">
+								<div class="col-8">
 									<h5 class="card-title"><strong>{{store.name}} </strong><br />{{store.street_addr}}<br />{{store.city}} {{store.state}}</h5>
 								</div>
-								<div class="col price">
-									<h5 class="price-label" style="float:right;"><strong>Opens:</strong> {{store.opens}}</h5>
-									<h5 class="price-label" style="float:right;"><strong>Closes:</strong> {{store.closes}}</h5>
+								<div class="col">
+									<h5 style="float:right;"><strong>Pickup Hours:</strong> {{store.opens}} - {{store.closes}}</h5>
 	
 								</div>
 							</div>
@@ -82,11 +84,14 @@
 					<script>
 					var map = new mapboxgl.Map({
 						container: 'map-store-{{store.id}}', // container id
-						style: 'mapbox://styles/mapbox/light-v10', //hosted style id
+						style: 'mapbox://styles/mapbox/streets-v10', //hosted style id
 						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
 						// center: [-77.38, 39], // starting position
 						zoom: 15 // starting zoom
 					});
+					var marker = new mapboxgl.Marker()
+					.setLngLat({lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} })
+					.addTo(map);
 					</script>
 						@endunless
 						@endeach
@@ -106,7 +111,7 @@
             <nav class="footer-nav">
               <ul>
 								<li>
-									<a href="#how-it-works" class="scrollLink">How It Works</a>
+									<a href="/#how-it-works">How It Works</a>
 								</li>
                 <li>
                   <a href="https://www.creative-tim.com" target="_blank">CORPORATE & CATERING</a>
