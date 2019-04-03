@@ -1,0 +1,35 @@
+@layout('layout.user.home')
+	
+@section('content')
+@!include('Modals.initial')
+
+      <div class="content mt-3 mb-0" style="background: url('https://static1.squarespace.com/static/572361987c65e48584ee75e7/t/5c48be3e70a6ad721e52be99/1548271179824/20-Minute-Meal-Prep-Chicken-and-Broccol1.jpg?format=2500w') center center no-repeat;background-size:cover;min-height:350px;">
+		  <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">What we're about</h1> 
+		  <div class="row">
+
+
+		  </div>
+ 
+	  </div>
+	  <div class="content content-secondary mt-0" id="how-it-works">
+				<div class="col-10 mx-auto mb-5">
+					<h5>
+                        At Vibrant Meals we're dedicated to one thing, to making you feel your best self by serving you with all-natural, nutritious and delicious meals. We pay attention to every ingredient that goes into each meal, we don't add any more or any less than what is necessary for optimal nutrition. Real food is our jam. 
+                        <hr class="mb-3">
+                        With experience prepping meals for UFC and other professional athletes and celebrities, the Vibrant Meals team works hard, together, to create new and exciting recipes that fit our vision of making healthy eating enjoyable, accessible and convenient. The recipes are created and inspired by our team of chefs and then tweaked to fit our standards of 'clean eating'.  					
+                    </h5>
+
+				</div>
+
+		</div>
+
+        @!include('layout.user.footer')
+
+</body>
+<script>
+document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
+</script>
+
+
+</html>
+@endsection

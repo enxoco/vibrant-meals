@@ -9,7 +9,7 @@
 		  <div class="row">
 				@each(store in stores)
 				@unless(store.location_type == 'Pickup')
-				<div class="col-12 col-md-6 col-lg-6 col-xl-6 mx-auto retail">
+				<div class="col-12 col-md-8 col-lg-8 col-xl-8 mx-auto retail">
 
 						<div class="card card-stats">
                 <div class="card-body ">
@@ -56,6 +56,13 @@
 	  </div>
 	  <div class="content content-secondary" id="how-it-works">
 				<h1 class="section-heading mb-5">Pickup Locations</h1>
+				<div class="col-8 mx-auto mb-5">
+					<p>
+						Orders must be placed before Friday, 8 AM, in order to receive your pickup/delivery on Monday. Or Sunday, 11:59 PM, for a Wednesday delivery. 
+					</p>
+
+				</div>
+
 				<div class="row">
 					@each(store in stores)
 	
@@ -101,45 +108,7 @@
 		</div>
 
 
-      <footer class="footer footer-black  footer-white " style="background-color:#f2f2f2;">
-        <div class="container-fluid">
-			<h4 class="section-heading">Retail Hours</h4>
-			<h5 class="section-heading">423-301-5622</h5>
-			<h5 class="section-heading">M-F 8:00-7 PM & SAT 9:00-4:00 PM</h5>
-			<h5 class="section-heading">LOCATED @ 601 CHEROKEE BLVD, CHATTANOOGA TN</h5>
-          <div class="row">
-            <nav class="footer-nav">
-              <ul>
-								<li>
-									<a href="/#how-it-works">How It Works</a>
-								</li>
-                <li>
-                  <a href="https://www.creative-tim.com" target="_blank">CORPORATE & CATERING</a>
-                </li>
-                <li>
-                  <a href="http://blog.creative-tim.com/" target="_blank">CAREERS</a>
-                </li>
-                <li>
-                  <a href="https://www.creative-tim.com/license" target="_blank">PARTNER WITH US</a>
-				</li>
-				<li>
-						<a href="https://www.creative-tim.com/license" target="_blank">CONTACT US</a>
-					  </li>
-              </ul>
-            </nav>
-            <div class="credits ml-auto">
-              <span class="copyright">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by <a href="https://enxo.co">enxo.co</a>
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
- 
-  <!--   Core JS Files   -->
+		@!include('layout.user.footer')
 
 </body>
 <script>

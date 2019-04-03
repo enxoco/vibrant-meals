@@ -17,14 +17,27 @@ const Route = use('Route')
 
 Route.get('/checkout', 'ItemController.showCheckout')
 
-Route.get('/', 'HomeController.index').as('welcomePage')
-Route.get('/how-it-works', async({view}) => view.render('how-it-works'))
 
 Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 Route.get('/api/stores/all', 'HomeController.showStores')
+
+/**
+ * Static page routes
+ */
 Route.get('/locations', 'HomeController.showStoresView')
+Route.get('/about', async({view}) => view.render('about'))
+Route.get('/', 'HomeController.index').as('welcomePage')
+Route.get('/contact', async({view}) => view.render('contact'))
+
+/**
+ * 
+ * Routes to handle contact and other information forms on static pages
+ * 
+ */
+
+Route.post('/contact', 'FormController.contactForm')
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')
@@ -44,8 +57,6 @@ Route.post('/password/email', 'Auth/PasswordController.sendResetLinkEmail').as('
 Route.get('/password/token/reset/:token', 'Auth/PasswordController.showResetView')
 Route.post('/password/reset', 'Auth/PasswordController.reset').as('reset.password')
 
-Route.get('/contact', 'ContactController.index').as('contact.show')
-Route.post('/contact', 'ContactController.sendMessage').as('contact.send')
 Route.post('/checkout/stripe', 'CheckoutController.stripeCheckout')
 Route.post('/checkout/express', 'CheckoutController.expressCheckout')
 Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')

@@ -1,0 +1,27 @@
+@layout('layout.user.home')
+	
+@section('content')
+@!include('Modals.initial')
+<div class="content mt-3 mb-0" style="background: url('https://static1.squarespace.com/static/572361987c65e48584ee75e7/t/5c48be3e70a6ad721e52be99/1548271179824/20-Minute-Meal-Prep-Chicken-and-Broccol1.jpg?format=2500w') center center no-repeat;background-size:cover;min-height:350px;">
+    <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">
+        Contact Us
+      </h1>
+      
+      </div>
+      <div class="content content-secondary mt-0">
+        <div class="col-8 mx-auto mb-5">
+            @!include('layout.user.contactForm')
+        </div>
+      
+      </div>
+      
+      @!include('layout.user.footer')
+      
+
+      </body>
+      <script>
+        document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
+      </script>
+      
+      </html>
+@endsection
