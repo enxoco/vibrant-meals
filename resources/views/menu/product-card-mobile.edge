@@ -15,7 +15,25 @@
                         <div class="numbers">
                             <p class="card-category">{{item.name}}</p>
                             
-                            <p class="card-title ">{{currency(item.skus.data[0].price)}}</p><p>
+                            <p class="card-title ">
+                                    <div class="price">
+                                            @if(item.skus.data.length > 1)
+                                            <p class="price-label">{{currency(item.skus.data[0].price)}}</p>
+                                      
+                                            <select class="form-control muted price-change" data-id="{{item.id}}">
+                                              @each(sku in item.skus.data)
+                                                @if(sku.price)
+                                                <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
+                                                    {{capitalize(sku.attributes.size).replace(/_/g, ' ')}}
+                                                  </option>
+                                                @endif
+                                              @endeach
+                                            </select>
+                                            @else
+                                            <p>{{currency(item.skus.data[0].price)}}</p>
+                                      
+                                            @endif
+                                          </div>
                             </p>
                         </div>
                     </div>

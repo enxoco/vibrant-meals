@@ -28,6 +28,9 @@ label {
                 Name
               </th>
               <th>
+                Location Type
+              </th>
+              <th>
                 Address
               </th>
               <th>
@@ -54,6 +57,17 @@ label {
                   {{ csrfField() }}
                   <td>
                     <input class="muted" name="name" value="{{store.name}}" />
+                  </td>
+                  <td>
+                    <select class="form-control muted" name="location_type">
+                      <option selected>{{store.location_type}}</option>
+                      @unless(store.location_type == 'Retail')
+                      <option name="location_type" value="Retail">Retail</option>
+                      @endunless
+                      @unless(store.location_type == 'Pickup')
+                      <option name="location_type" value="Pickup">Pickup</option>
+                      @endunless
+                    </select>
                   </td>
                   <td>
                     <input class="muted" name="street_addr" value="{{store.street_addr}}" />
@@ -103,7 +117,10 @@ label {
                             <input class="form-control muted" type="text" name="city" placeholder="City" /><br />
                             <label for="state">State</label>
                             <input class="form-control muted" type="text" name="state" placeholder="State" /><br />
-
+                            <select class="form-control muted" name="location_type">
+                              <option value="Pickup" name="Pickup">Pickup</option>
+                              <option value="Retail" name="Retail">Retail</option>
+                            </select>
                           <label for="opens">Opening Time</label>
                             <input type="text" id="opens" class="form-control muted" name="opens" data-format="h:mma" data-template="hhmma" value="6:00am"><br />
                           <hr class="mb-2">

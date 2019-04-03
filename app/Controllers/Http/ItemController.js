@@ -149,8 +149,12 @@ class ItemController {
         })
         console.log('trying to update')
         for (var i = 0; i < Object.keys(obj).length; i++) {
-          var sku = obj[Object.keys(obj)[i]]          
-          stripe.skus.update(sku.id, {
+          var sku = obj[Object.keys(obj)[i]]     
+
+          //Build our sku id based on parent id and size variation
+          var id = sku.parent_id + '_' + sku.size
+
+          stripe.skus.update(id, {
             price: sku.price,
             image: sku.primary_img,
             metadata: {

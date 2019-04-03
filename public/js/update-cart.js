@@ -177,12 +177,12 @@ function updateCartDiv() {
   * to the cart ensuring that there are no duplicates.
   *
   */
- 
+
   $('.price-change').change(function(){
     var t = $(this).find(':selected').data()
     var id = $(this).data('id')
 
-    $(this).closest('.price').find('h5.price-label').text('$' + t.price / 100)
+    $(this).closest('.price').find('.price-label').text('$' + t.price / 100)
     var u = $('body').find('.checkout-prompt-1[data-id="'+id+'"]')
     var x = $('body').find('.card[data-id="'+id+'"]')
     var y = $('body').find('.modal[data-id="'+id+'"]')

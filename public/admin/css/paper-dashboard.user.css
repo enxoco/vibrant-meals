@@ -4595,7 +4595,7 @@ License - nucleoapp.com/license/
   background-color: #f5f5f5;
 }
 
-.wrapper {
+/* .wrapper {
   position: relative;
   top: 0;
   height: 100vh;
@@ -4604,14 +4604,14 @@ License - nucleoapp.com/license/
 .wrapper.wrapper-full-page {
   min-height: 100vh;
   height: auto;
-}
+} */
 
 
 .sidebar,
 .off-canvas-sidebar {
   position: fixed;
   top: 0px;
-  margin-top: 125px;
+  /* margin-top: 125px; */
   height: 100%;
   bottom: 0;
   width: 20%;

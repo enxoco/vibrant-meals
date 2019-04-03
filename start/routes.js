@@ -24,7 +24,7 @@ Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')
 Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 Route.get('/api/stores/all', 'HomeController.showStores')
-
+Route.get('/locations', 'HomeController.showStoresView')
 
 Route.get('/login', 'Auth/AuthController.showLogin').as('loginPage')
 Route.post('/login', 'Auth/AuthController.postLogin').as('login.store')

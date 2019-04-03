@@ -29,6 +29,7 @@
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="/css/toastr.min.css">
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
   <style>
 
 
@@ -63,7 +64,8 @@ body {
     background-position: center;
 }
 .empty {
-  flex-grow: .75;
+  flex-grow: .6;
+
 }
 h2.hero {
     font-weight: 800;
@@ -298,6 +300,14 @@ a.active.fulfillment-radio {
 .jumbotron-mini {
   min-height: 50vh;
 }
+
+.mapboxgl-map {
+    min-height: 300px;
+    margin-bottom: 15px;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    box-shadow: 2px 2px 7px 2px gainsboro;
+}
 </style>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" />
 
@@ -432,6 +442,7 @@ $(function () {
 
 $(document).ready(function(){
   feather.replace()
+
 })
 
 </script>

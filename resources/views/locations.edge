@@ -1,0 +1,146 @@
+@layout('layout.user.home')
+	
+@section('content')
+@!include('Modals.initial')
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+
+      <div class="content">
+		  <h1 class="section-heading mb-5">Retail Locations</h1>
+		  <div class="row">
+				@each(store in stores)
+
+				@unless(store.location_type == 'Pickup')
+				<div class="col-6 mx-auto retail">
+
+						<div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-8">
+                        <div id="map-store-{{store.id}}"></div>
+                    </div>
+                    <div class="col">
+                      <div class="numbers">
+													<p class="card-title">
+														{{store.name}}</p><hr class="mb-2">
+												<p class="card-category">{{store.street_addr}}
+												<br />{{store.city}}, {{store.state}}<br /><br />
+												Opens {{store.opens}}<br />
+												Closes {{store.closes}}
+												</p>
+
+													<p>
+                      </p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+				</div>
+				<script>
+						mapboxgl.accessToken = 'pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA';
+					var map = new mapboxgl.Map({
+						container: 'map-store-{{store.id}}', // container id
+						style: 'mapbox://styles/mapbox/light-v10', //hosted style id
+						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
+						// center: [-77.38, 39], // starting position
+						zoom: 15 // starting zoom
+					});
+					</script>
+					@endunless
+					@endeach
+
+		  </div>
+ 
+	  </div>
+	  <div class="content content-secondary" id="how-it-works">
+				<h1 class="section-heading mb-5">Pickup Locations</h1>
+				<div class="row">
+					@each(store in stores)
+	
+					@unless(store.location_type == 'Retail')
+					<div class="col-6 mx-auto pickup">
+	
+						<div class="card card-user card-product d-none d-md-block d-lg-block">
+						<div id="map-store-{{store.id}}">
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-12 col-md-9">
+									<h5 class="card-title"><strong>{{store.name}} </strong><br />{{store.street_addr}}<br />{{store.city}} {{store.state}}</h5>
+								</div>
+								<div class="col price">
+									<h5 class="price-label" style="float:right;"><strong>Opens:</strong> {{store.opens}}</h5>
+									<h5 class="price-label" style="float:right;"><strong>Closes:</strong> {{store.closes}}</h5>
+	
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+	
+							</div>
+						</div>
+					</div>
+					<script>
+					var map = new mapboxgl.Map({
+						container: 'map-store-{{store.id}}', // container id
+						style: 'mapbox://styles/mapbox/light-v10', //hosted style id
+						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
+						// center: [-77.38, 39], // starting position
+						zoom: 15 // starting zoom
+					});
+					</script>
+						@endunless
+						@endeach
+
+
+				</div>
+		</div>
+
+
+      <footer class="footer footer-black  footer-white " style="background-color:#f2f2f2;">
+        <div class="container-fluid">
+			<h4 class="section-heading">Retail Hours</h4>
+			<h5 class="section-heading">423-301-5622</h5>
+			<h5 class="section-heading">M-F 8:00-7 PM & SAT 9:00-4:00 PM</h5>
+			<h5 class="section-heading">LOCATED @ 601 CHEROKEE BLVD, CHATTANOOGA TN</h5>
+          <div class="row">
+            <nav class="footer-nav">
+              <ul>
+								<li>
+									<a href="#how-it-works" class="scrollLink">How It Works</a>
+								</li>
+                <li>
+                  <a href="https://www.creative-tim.com" target="_blank">CORPORATE & CATERING</a>
+                </li>
+                <li>
+                  <a href="http://blog.creative-tim.com/" target="_blank">CAREERS</a>
+                </li>
+                <li>
+                  <a href="https://www.creative-tim.com/license" target="_blank">PARTNER WITH US</a>
+				</li>
+				<li>
+						<a href="https://www.creative-tim.com/license" target="_blank">CONTACT US</a>
+					  </li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="fa fa-heart heart"></i> by <a href="https://enxo.co">enxo.co</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+ 
+  <!--   Core JS Files   -->
+
+</body>
+<script>
+document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
+</script>
+
+
+</html>
+@endsection

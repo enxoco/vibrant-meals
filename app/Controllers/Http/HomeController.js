@@ -70,6 +70,19 @@ class HomeController {
         return geojson
       return view.render('api.stores', {stores:geojson})
   }
+
+  async showStoresView({request, response, view}) {
+      const stores = await Database
+        .table('locations')
+        .select('*')
+        for (let [key, value] of Object.entries(stores)) {
+          stores[key].coordinates = JSON.parse(stores[key].coordinates)
+        }
+        
+        // stores[0].coordinates = JSON.parse(stores[0].coordinates)
+      return view.render('locations', {stores})
+  
+  }
 }
 
 module.exports = HomeController

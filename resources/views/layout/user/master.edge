@@ -215,6 +215,7 @@ label {
     width: 100%;
     min-height: 50px;
     max-height: 100px;
+    padding: 20px;
 }
 
 
@@ -862,7 +863,6 @@ $(document).ready(function(){
     success: function(data) {
       if (data.features && data.features.length != 0) {
         $('body').append("<div id='stores' data-stores='"+JSON.stringify(data)+"'></div>")
-        console.log('done')
       } else {
         toastr['warning']('Error loading store locations please refresh the page')
       }

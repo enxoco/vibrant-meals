@@ -15,9 +15,9 @@ data-toggle="modal" data-target="#{{item.id}}"
     </div>
     <div class="col price">
       @if(item.skus.data.length > 1)
-      <h5 class="price-label">{{currency(item.skus.data[0].price)}}</h5>
+      <h5 class="price-label" style="float:right;">{{currency(item.skus.data[0].price)}}</h5>
 
-      <select class="form-control muted price-change" data-id="{{item.id}}">
+      <select class="form-control muted price-change" data-id="{{item.id}}" style="width:150px;float:left;">
         @each(sku in item.skus.data)
           @if(sku.price)
           <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
