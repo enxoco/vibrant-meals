@@ -2,6 +2,8 @@
 const Database = use('Database')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
+stripe.setApiVersion('2019-03-14');
+
 const Drive = use('Drive')
 const Helpers = use('Helpers')
 const cheerio = require('cheerio')
@@ -9,7 +11,36 @@ const opencage = require('opencage-api-client');
 
 class AdminController {
 
+  async updateItems() {
+    const path = Helpers.appRoot()
 
+    try {
+      //Beware Stripe api defaults to limit of 10 products when doing a listing.
+      var products = await stripe.products.list({limit:100000})
+      var prod = products.data
+
+      for (var i = 0; i < prod.length; i++) {
+        var sku = await stripe.skus.list(
+          {product: prod[i].id}
+        )
+        prod[i].skus = sku
+      }
+      
+      await Drive.put(`${path}/products.json`, JSON.stringify(prod))
+    } catch(error) {
+      return error
+    }
+    return 'success'
+
+
+
+  }
+
+  async publishItems({response}) {
+    var res = await this.updateItems()
+    return response.send(res)
+  }
+ 
   /**
    *  We need to check whether a user already has an account and give them some sort of feedback
    *  A get request can be made to this method to find out whether a user exists or not.
@@ -27,7 +58,7 @@ class AdminController {
   async importStripeProducts({request, response}) {
 
     const path = Helpers.appRoot()
-    var obj = await Drive.get(`${path}/skus.json`, 'utf-8')
+    var obj = await Drive.get(`${path}/products.json`, 'utf-8')
     obj = JSON.parse(obj)
     for (var i = 0; i < obj.data.length; i++){
       var parent = obj.data[i]
@@ -290,6 +321,7 @@ class AdminController {
         var prod = form.parent_product
 
         var id = prod.name.replace(/ /g, '_')
+        id = id.replace(/,|&|'|"|\*|\(|\)/g, '')
         id = id.toLowerCase()
 
         var sku = form['parent_product']
@@ -314,6 +346,7 @@ class AdminController {
             // Start with the parent item
                       var sku = form['parent_product']
                       var size = sku.size
+                      size = size.replace(/,|&|'|"|\*|\(|\)/g, '')
                       size = size ? size.toLowerCase().replace(/ /g, '_').replace(/ /g, '_') : 'everyday'
 
                     stripe.skus.create({
@@ -342,6 +375,7 @@ class AdminController {
                       // Create our secondary skus in this function
                       for (var i = 1; i < Object.keys(form).length; i++) {
                         var sku = form[`variation_${i}`]
+                        console.log(sku)
                         var size = sku.size
                         var price = String(sku.price).replace(".", "")
                         if(price.length == 2) {
@@ -375,7 +409,14 @@ class AdminController {
                       }
                     })
         });
-          return response.send(product)
+        /**
+         * 
+         * At this point product and skus have been created.  Now we want to update our list of
+         * items on the server.  This JSON file is what we will serve to users for performance
+         * reasons so we want it to be updated whenever an admin makes changes to an item.
+         */
+        var cacheUpdated = await this.updateItems()
+        return response.send(cacheUpdated)
     }
 
 

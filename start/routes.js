@@ -106,6 +106,7 @@ Route.group(() => {
   Route.post('/admin/coupon/add', 'AdminController.addCoupon')
   Route.get('/admin/customers', 'AdminController.listCustomers')
   Route.get('/admin/products', 'AdminController.showItems')
+  Route.get('/admin/products/publish', 'AdminController.publishItems')
   Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
   Route.post('/admin/items/add', 'AdminController.addItem')
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')

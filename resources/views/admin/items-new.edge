@@ -290,7 +290,7 @@ $.cloudinary.config(configSettings);
 
 $(document).on('click', '.add-another', function(){
   var id = $('body').find('form').length
-  id = id - 1 //Get number of forms on the page and subtract 1
+  id = id - 2 //Get number of forms on the page and subtract 2
   $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
   $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
 
@@ -393,7 +393,8 @@ $('.save-form').on('click', function(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-            console.log('success');
+          if (data === 'success')
+          toastr['success']('Item added successfully')
         },
         failure: function(errMsg) {
             alert(JSON.stringify(errMsg));

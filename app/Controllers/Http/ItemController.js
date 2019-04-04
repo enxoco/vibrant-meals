@@ -5,6 +5,8 @@ const Helpers = use('Helpers')
 const Drive = use('Drive')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
+stripe.setApiVersion('2019-03-14');
+
 const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
 
 
@@ -13,11 +15,52 @@ var cartCur = []
 
 class ItemController {
 
+  async updateItems() {
+    const path = Helpers.appRoot()
+
+    try {
+      //Beware Stripe api defaults to limit of 10 products when doing a listing.
+      var products = await stripe.products.list({limit:100000})
+      var prod = products.data
+
+      for (var i = 0; i < prod.length; i++) {
+        var sku = await stripe.skus.list(
+          {product: prod[i].id}
+        )
+        prod[i].skus = sku
+      }
+      
+      await Drive.put(`${path}/products.json`, JSON.stringify(prod))
+    } catch(error) {
+      return error
+    }
+    return 'success'
+
+
+
+  }
+
   async listItems ({view, response, auth, request}) {
 
-    var products = await stripe.products.list();
+    //Beware Stripe api defaults to limit of 10 products when doing a listing.
+    // var products = await stripe.products.list({limit:100000})
+    
+    // var prod = products.data
 
-    var prod = products.data
+    const path = Helpers.appRoot()
+    var prod = await Drive.get(`${path}/products.json`, 'utf-8')
+    prod = JSON.parse(prod)
+  
+    // for (var i = 0; i < prod.length; i++) {
+    //   var sku = await stripe.skus.list(
+    //     {product: prod[i].id}
+    //   )
+    //   prod[i].skus = sku
+    // }
+
+
+    // await Drive.put(`${path}/tempprods.json`, JSON.stringify(prod))
+
     var categories = []
     var filters = []
     for (var i = 0; i < prod.length; i++) {
@@ -59,8 +102,14 @@ class ItemController {
 
     var products = await stripe.products.retrieve( params.sku );
     var prod = products
+      var sku = await stripe.skus.list(
+        {product: prod.id}
+      )
+      prod.skus = sku
+    
+
  
-    // var items = []
+    // var items = []   
     // for (var i = 0; i < prod.length; i++) {
     //   var product = {'product':prod, skus:[]}
     //   for (var x = 0; x < prod[i].skus.data.length; x++){
@@ -147,7 +196,6 @@ class ItemController {
 
           }
         })
-        console.log('trying to update')
         for (var i = 0; i < Object.keys(obj).length; i++) {
           var sku = obj[Object.keys(obj)[i]]     
 
@@ -173,72 +221,14 @@ class ItemController {
           });
         }
       
-
-        return response.send({'status': 'success'})
+        await this.updateItems()
+        
+        return response.send({status: 'success'})
       } catch(e) {
         return response.send('error')
       }
 
     }
-    
-    async editItem ({ view, request, response, params }) {
-    
-          
-            const item = await Database
-            .select('*')
-            .from('items')
-            .where('id', params.itemId)
-            .limit(1)
-
-            const categories = await Database
-                .select('id', 'desc')
-                .table('item_categories')
-            const filters = await Database
-                .select('id', 'name')
-                .table('item_filters')
-
-            
-            const items_in_categories = await Database
-                .select('item_categories.desc AS name')
-                .table('items_in_categories')
-                .innerJoin('item_categories', 'items_in_categories.category_id', 'item_categories.id')
-                .where('items_in_categories.item_id', params.itemId)
-
-                const itemFilters = await Database
-                .select('item_filters.name AS name')
-                .table('items_in_filters')
-                .innerJoin('item_filters', 'items_in_filters.filter_id', 'item_filters.id')
-                .where('items_in_filters.item_id', params.itemId)
-
-                if(items_in_categories && items_in_categories.length != 0) {
-                    item[0].category = items_in_categories[0].name
-
-                }
-
-                if (itemFilters && itemFilters.length != 0) {
-                    item[0].filters = itemFilters
-                }
-                item[0].allFilters = filters
-
-                // Check to make sure that our item has filters applied to it.
-                // Because the filters are optional, we need to account for an item
-                // that does not have any filters.
-                if (item[0].filters && item[0].filters.length != 0) {
-                  for (var i = 0; i < item[0].allFilters.length; i++) {
-                    for ( var x = 0; x < item[0].filters.length; x++) {
-                      if (item[0].allFilters[i].name == item[0].filters[x].name) { // If an item does have filters, add the filters to the item object
-                        var filter = 'is_' + item[0].filters[x].name.toLowerCase().replace(/ /g, '_')
-                        item[0][filter] = 1
-                      }
-                    }
-                  }
-                }
-            return view.render('edit-item', {item: item[0], categories: categories, all_filters: filters})
-    
-
-    }
-    
-
 
     async showCheckout ({ view, session, auth, response }) {
 

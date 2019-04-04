@@ -37,6 +37,7 @@ data-toggle="modal" data-target="#{{item.id}}"
   <hr class="d-none d-lg-block">
     <div class="button-container">
       <div class="row ">
+        @if(item.skus.data[0].metadata.calories)
         <div class="col ml-auto d-none d-lg-block">
           <h5>
               {{item.skus.data[0].metadata.calories}}
@@ -44,17 +45,20 @@ data-toggle="modal" data-target="#{{item.id}}"
             <small>Calories</small>
           </h5>
         </div>
+        @endif
+        @if(item.skus.data[0].metadata.proteins)
+
         <div class="col ml-auto d-none d-lg-block">
             <h5>
-                @if(item.skus.data[0].metadata.proteins)
                 {{item.skus.data[0].metadata.proteins}}
-                @else
-                0
-                @endif                            
+                           
                 <br>
               <small>Protein</small>
             </h5>
           </div>
+
+          @endif 
+          @if(item.skus.data[0].metadata.fats)
         <div class="col ml-auto d-none d-lg-block">
               <h5>
                @if(item.skus.data[0].metadata.fats)
@@ -66,6 +70,8 @@ data-toggle="modal" data-target="#{{item.id}}"
                 <small>Fats</small>
               </h5>
             </div>
+            @endif
+            @if(item.skus.data[0].metadata.carbs)
             <div class="col ml-auto d-none d-lg-block">
                   <h5>
                       {{item.skus.data[0].metadata.carbs}}
@@ -74,6 +80,7 @@ data-toggle="modal" data-target="#{{item.id}}"
                     <small>Carbs</small>
                   </h5>
                 </div>
+                @endif
 
         <div class="col mr-auto">
 <a class="checkout-prompt-1"
