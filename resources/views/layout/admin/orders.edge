@@ -201,7 +201,7 @@
                 @each(p in pickups)
                 <tr>
                   <td>
-                    <a href="/admin/orders/{{p.id}}">{{p.id}}</a>
+                    <a href="/admin/orders/{{p.id}}">{{p.metadata.orderId}}</a>
                   </td>
                   <td>
                     {{p.shipping.name}}
@@ -230,7 +230,7 @@
                     <a class="btn btn-success" href="/admin/orders/fulfill/{{p.id}}">Mark as Fufilled</a> 
                     @endif
                   </td>
-                  <td style="display:none;">{{p.id}}</td>
+                  <td style="display:none;">{{p.metadata.orderId}}</td>
 
                 </tr>
                 @endeach
@@ -280,7 +280,7 @@
                 @each(p in deliveries)
                 <tr>
                   <td>
-                    <a href="/admin/orders/{{p.id}}" data-order="{{p.id}}">{{p.id}}</a>
+                    <a href="/admin/orders/{{p.id}}" data-order="{{p.id}}">{{p.metadata.orderId}}</a>
                   </td>
                   <td>
                     {{p.shipping.name}}
