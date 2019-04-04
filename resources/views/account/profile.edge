@@ -9,10 +9,10 @@
         </div>
         <div class="card-body">
           <div class="author">
-					  <h5 class="title">{{customer.metadata.name}}</h5>
-					    {{customer.email}}
+					  <h2 class="title d-flex justify-content-center">{{customer.metadata.name}}</h5>
+					  <h4 class="title d-flex justify-content-center">{{customer.email}}</h5>
 			      <hr class="mb-5">
-				    <p class="description">Billing Info</p>
+				    <h4 class="title d-flex justify-content-center">Billing Info</h4>
 				    <form id="billing">
 						  <div class="row">
 								<div class="col">
@@ -59,25 +59,16 @@
                   <div class="row">
                     <div class="col-lg-3 col-md-6 col-6 ml-auto">
                       <h5>
-                        @if(prod.skus)
-                        {{prod.skus.data.length - 1}}
-                        @else
-                        0
-                        @endif
+                        {{customer.orders.data.length}}
                         <br>
-                        <small>Variations</small>
+                        <small>Past Orders</small>
                       </h5>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
-                      <h5>2GB
-                        <br>
-                        <small>Images</small>
-                      </h5>
-                    </div>
+
                     <div class="col-lg-3 mr-auto">
-                      <h5>24,6$
+                      <h5>${{customer.totalSpend / 100}}
                         <br>
-                        <small>Spent</small>
+                        <small>Total Spent</small>
                       </h5>
                     </div>
                   </div>
@@ -208,7 +199,10 @@
 									</th>
 									<th>
 									  Pickup/Delivery
-									</th>
+                  </th>
+                  <th>
+                    Pickup/Delivery Date
+                  </th>
 	
 								  </thead>
 								  <tbody>
@@ -222,7 +216,10 @@
 									  </td>
 									  <td>
 										{{p.metadata.fulfillment_method}}
-									  </td>
+                    </td>
+                    <td>
+                      {{p.metadata.fulfillment_date}}
+                    </td>
 	
 									</tr>
 									@endeach  
