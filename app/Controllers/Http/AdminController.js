@@ -10,6 +10,20 @@ const opencage = require('opencage-api-client');
 class AdminController {
 
 
+  /**
+   *  We need to check whether a user already has an account and give them some sort of feedback
+   *  A get request can be made to this method to find out whether a user exists or not.
+   */
+  async checkExistingUser({request,response}) {
+    const {email} = request.all()
+
+    var existingDb = await Database
+      .table('users')
+      .where('email', email)
+      .limit(1)
+  
+    return response.send(parseInt(existingDb.length))
+  }
   async importStripeProducts({request, response}) {
 
     const path = Helpers.appRoot()

@@ -268,10 +268,6 @@ class CheckoutController {
       var city = loc.city
       var state = loc.state
       var zip = loc.zip
-      console.log('address')
-      console.log(loc.street_addr)
-
-
 
     } else {
       var address = req.billing.street
@@ -289,8 +285,6 @@ class CheckoutController {
       }
     )
 
-      console.log(existing.data.length)
-      console.log(existing.data.length == 0)
     if (existing.data.length == 0) {
     var customer = await stripe.customers.create({
       description: 'Customer for ' + req.user.email,
@@ -325,7 +319,6 @@ class CheckoutController {
       .where('email', req.user.email)
     var customer = existing.data[0]
     await auth.attempt(user.email, req.user.password)
-    console.log(existing)
 
   }
 
