@@ -149,8 +149,8 @@ $(document).on('click', 'a#pickupRadio', function() {
       console.log(st)
     
       console.log(stores)
-      localStorage.pickupLocation = JSON.stringify(stores.features[st.storerank].properties)
 
+      localStorage.pickupLocation = JSON.stringify(stores.features[st.storerank].properties)
 
       $('body').append("<div id='user-info-updated' data-user='"+JSON.stringify(userInfo)+"'></div>")
 
@@ -324,7 +324,7 @@ $(document).on('click', 'a#pickupRadio', function() {
           user.user.fulfillment_method = 'pickup'
         }
   
-        localStorage.pickupLocation = JSON.stringify(stores.features[st.storeid].properties)
+        localStorage.pickupLocation = JSON.stringify(stores.features[st.storerank].properties)
           if (localStorage.checkoutInitiated == 1) {
             $('.store-desc').html(JSON.parse(localStorage.myStore).name)
           }

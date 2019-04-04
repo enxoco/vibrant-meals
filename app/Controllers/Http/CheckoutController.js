@@ -140,8 +140,7 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
-              store_id: location.id,
-              orderId: stringHash(order.id)
+              store_id: location.id
 
             },
             email: user.email
@@ -149,7 +148,7 @@ class CheckoutController {
   
             if (err){return err}
             stripe.orders.pay(order.id, {
-              source: req.billing.stripeToken // obtained with Stripe.js
+              source: customer.source // obtained from Stripe api
             }, function(err, order) {
               if (err) return(err)
               stripe.orders.update(order.id, {
@@ -283,16 +282,16 @@ class CheckoutController {
     }
 
     user.password = await Hash.make(req.user.password)
+    var existing = await stripe.customers.list(
+      {
+        limit: 1,
+        email: req.user.email
+      }
+    )
 
-    
-
-
-    // var existing = await stripe.customers.list(
-    //   { limit: 1, email: user.email },
-    // );
-    // if (existing.data[0] != undefined) {
-
-    // } else {
+      console.log(existing.data.length)
+      console.log(existing.data.length == 0)
+    if (existing.data.length == 0) {
     var customer = await stripe.customers.create({
       description: 'Customer for ' + req.user.email,
       source: req.billing.stripeToken,
@@ -308,21 +307,29 @@ class CheckoutController {
         name: user.email,
         phone: req.user.phone,
         address: {
-          line1: address,
-          city: city,
-          state: state,
-          postal_code: zip
+          line1: req.billing.street,
+          city: req.billing.city,
+          state: req.billing.state,
+          postal_code: req.billing.zip
         }
       }
     })
-    // }
     user.stripe_id = customer.id
 
-    var newUser = await user.save()
+    var curUser = await user.save()
 
     await auth.attempt(user.email, req.user.password)
+  } else {
+    var curUser = await Database
+      .table('users')
+      .where('email', req.user.email)
+    var customer = existing.data[0]
+    await auth.attempt(user.email, req.user.password)
+    console.log(existing)
 
-    if (newUser) {
+  }
+
+    if (curUser) {
     
       if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
         if (req.billing.coupon) {
@@ -353,7 +360,7 @@ class CheckoutController {
 
           if (err){return err}
           stripe.orders.pay(order.id, {
-            source: req.billing.stripeToken // obtained with Stripe.js
+            source: customer.source // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
             stripe.orders.update(order.id, {
@@ -363,7 +370,7 @@ class CheckoutController {
             })
           });
         });
-        } else {
+        } else { //Pickup order without a coupon code
           var order = await stripe.orders.create({
             currency: 'usd',
             customer: customer['id'],
@@ -387,8 +394,10 @@ class CheckoutController {
           }, function(err, order) {
   
             if (err){return err}
+            console.log(customer.source)
+
             stripe.orders.pay(order.id, {
-              source: req.billing.stripeToken // obtained with Stripe.js
+              source: customer.source // obtained with Stripe.js
             }, function(err, order) {
               if (err) return(err)
               stripe.orders.update(order.id, {
@@ -431,7 +440,8 @@ class CheckoutController {
                 orderId: stringHash(order.id)
               }
             })
-                    });
+                    
+          });
         });
       }
 

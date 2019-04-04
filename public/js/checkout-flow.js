@@ -115,17 +115,18 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
         $(this).addClass('active')
         if (localStorage.pickupLocation) {
           var store = JSON.parse(localStorage.pickupLocation)
+          if (localStorage.fulfillment_method == 'pickup') {
+            $('#info-billing').hide()
+            $('#copyBillingAddr').hide()
+            $('#pickup-label').html(JSON.parse(localStorage.pickupLocation).desc)
+    
+          }
         }
         updateCartDiv()
 
       })
 
-      if (localStorage.fulfillment_method == 'pickup') {
-        $('#info-billing').hide()
-        $('#copyBillingAddr').hide()
-        $('#pickup-label').html(JSON.parse(localStorage.pickupLocation).desc)
 
-      }
 
 
     
@@ -233,7 +234,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       $('#createToken').attr('disabled', 'disabled')
 
       stripe.createToken(card).then(function (result) {
-        $('input[name=stripeToken]').val(result.token.id)
 
         var billing = {
           street: $('input[name="street-bill"]').val(),
