@@ -294,6 +294,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           password: $('#password-bill').val(),
           fulfillment_method: localStorage.fulfillment_method,
           fulfillment_day: localStorage.fulfillment_day,
+          fulfillment_date: localStorage.fulfillment_date,
           pickup_location: localStorage.myStore
       }
 

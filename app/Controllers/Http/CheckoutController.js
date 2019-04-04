@@ -425,7 +425,7 @@ class CheckoutController {
         }, function(err, order) {
           if (err){return err}
           stripe.orders.pay(order.id, {
-            source: req.billing.stripeToken // obtained with Stripe.js
+            source: customer.source // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
             stripe.orders.update(order.id, {
