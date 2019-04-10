@@ -42,15 +42,16 @@
             <div class="card-footer ">
             <hr>
                 <div class="stats ">
-                    <img src="images/elippsis.png" style="height: 10px" />
+                  @if(item.skus.data[0].metadata.calories)
                     Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
-                    @if(item.skus.data[0].metadata.fats)
+                  @endif
+                  @if(item.skus.data[0].metadata.fats)
                     Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                    @else
-                    Fats: <strong>0</strong>
                     @endif
+                    @if(item.skus.data[0].metadata.fats)
                     Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-<!--mobile-->
+                    @endif
+<!--mobile-->     
                     <a class="checkout-prompt-1"
                     data-id="{{item.id}}" 
                     data-sku="{{item.skus.data[0].id}}" 

@@ -165,7 +165,11 @@
                                   </div>       
                                   <div class="col">
                                       <label for="sehir">Filters</label>
+                                      @if(prod.skus.data[0].metadata.filters.length != 0)
                                       <input type="text" name="filters" value="{{prod.skus.data[0].metadata.filters}}" data-role="tagsinput" class="form-control" />
+                                      @else
+                                      <input type="text" name="filters" value="Everyday" data-role="tagsinput" class="form-control" />
+                                      @endif
                                   </div>             
                   </div>
                   <div class="row">
@@ -378,6 +382,8 @@ $(document).ready(function() {
 });
 
 $('.save-form').on('click', function(){
+  $(this).html('Saving changes... <div id="loading"></div>')
+  $(this).attr('disabled', 'disabled')
   var master = {}
     var forms = $('.content').find('form')
 
@@ -408,6 +414,9 @@ $('.save-form').on('click', function(){
         dataType: "json",
         success: function(data){
             console.log('success');
+            toastr['success']('Item updated successfully')
+            $('.save-form').removeAttr('disabled')
+            $('.save-form').html('SAVE ITEM')
         },
         failure: function(errMsg) {
             alert(JSON.stringify(errMsg));
@@ -445,6 +454,9 @@ $(function() {
                 })
         });
     })();
+
+
+
     </script>
 
 

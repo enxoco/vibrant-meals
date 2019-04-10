@@ -221,7 +221,7 @@ class ItemController {
           });
         }
       
-        await this.updateItems()
+        this.updateItems()
         
         return response.send({status: 'success'})
       } catch(e) {

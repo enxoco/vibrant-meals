@@ -5,7 +5,7 @@ data-sku="{{item.skus.data[0].id}}"
 data-meta='{{toJSON(item.skus.data[0].metadata)}}'
 data-toggle="modal" data-target="#{{item.id}}"
 >
-<div class="image">
+<div class="image {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
   <img class="img-fluid lazy" data-src="{{item.skus.data[0].image}}" />
 </div>
 <div class="card-body">
