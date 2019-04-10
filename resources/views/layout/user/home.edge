@@ -60,10 +60,30 @@ body {
 
 .jumbotron {
   min-height: 100vh;
-   background: url('/images/hero-background.jpeg');
-  /* background: url('https://res.cloudinary.com/themurphs/image/upload/v1551295968/vibrant_meals/vibrant-header.jpg'); */
+  background-image:url('https://res.cloudinary.com/themurphs/image/upload/c_scale,w_1500/v1551296378/vibrant_meals/vibrant-header-background.jpg');
+
     background-size: cover;
     background-position: center;
+}
+@media(max-width:1200px) {
+  .jumbotron {
+    background-image:url('https://res.cloudinary.com/themurphs/image/upload/c_scale,w_1200/v1551296378/vibrant_meals/vibrant-header-background.jpg');
+  }
+}
+@media(max-width:1000px) {
+  .jumbotron {
+    background-image:url('https://res.cloudinary.com/themurphs/image/upload/c_scale,w_1000/v1551296378/vibrant_meals/vibrant-header-background.jpg');
+  }
+}
+@media(max-width:800px) {
+  .jumbotron {
+    background-image:url('https://res.cloudinary.com/themurphs/image/upload/c_scale,w_800/v1551296378/vibrant_meals/vibrant-header-background.jpg');
+  }
+}
+@media(max-width:500px) {
+  .jumbotron {
+    background-image:url('https://res.cloudinary.com/themurphs/image/upload/c_scale,w_500/v1551296378/vibrant_meals/vibrant-header-background.jpg');
+  }
 }
 .empty {
   flex-grow: .6;
