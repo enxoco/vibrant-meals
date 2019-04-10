@@ -16,6 +16,8 @@
 const Route = use('Route')
 
 Route.get('/checkout', 'ItemController.showCheckout')
+Route.get('/sw.js', 'PwaController.serviceWorker')
+Route.get('/manifest.json', 'PwaController.manifest')
 
 
 Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')

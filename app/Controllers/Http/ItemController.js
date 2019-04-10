@@ -42,30 +42,13 @@ class ItemController {
 
   async listItems ({view, response, auth, request}) {
 
-    //Beware Stripe api defaults to limit of 10 products when doing a listing.
-    // var products = await stripe.products.list({limit:100000})
-    
-    // var prod = products.data
-
     const path = Helpers.appRoot()
     var prod = await Drive.get(`${path}/products.json`, 'utf-8')
     prod = JSON.parse(prod)
-  
-    // for (var i = 0; i < prod.length; i++) {
-    //   var sku = await stripe.skus.list(
-    //     {product: prod[i].id}
-    //   )
-    //   prod[i].skus = sku
-    // }
-
-
-    // await Drive.put(`${path}/tempprods.json`, JSON.stringify(prod))
-
     var categories = []
     var filters = []
     for (var i = 0; i < prod.length; i++) {
       categories.push(prod[i].metadata.primary_category)
-    
     }
 
     var uniq = [ ...new Set(categories) ];
@@ -79,8 +62,6 @@ class ItemController {
         .where('id', auth.user.pickup_location)
         store[0].desc = store[0].name
         user.pickupLocation = store[0]
-
-
       }
 
 
@@ -107,22 +88,6 @@ class ItemController {
       )
       prod.skus = sku
     
-
- 
-    // var items = []   
-    // for (var i = 0; i < prod.length; i++) {
-    //   var product = {'product':prod, skus:[]}
-    //   for (var x = 0; x < prod[i].skus.data.length; x++){
-    //     var sku = prod[i].skus.data[x]
-    //     product.skus.push(sku)
-
-    //   }
-    //   items.push(product)
-    // }
-    // return items
-    // // var prod = products.data
-    // // // return prod
-    // return response.send({items: prod, categories})
     return view.render('admin.items-edit', {prod})
 
   }
@@ -166,18 +131,6 @@ class ItemController {
       await Drive.delete('/uploads/' + imgUrl[0].alt_img_url)
     }
 
-    async addItemView ({ view }) {
-      const categories = await Database
-        .from('item_categories')
-        .select('id', 'desc')
-
-      const allFilters = await Database
-        .table('item_filters')
-        .select('name', 'id')
-            
-      return view.render('add-item', {categories, all_filters: allFilters})
-    }
-    
     async updateItem ({ view, request, response }) {
       try {
         const obj = request.all()

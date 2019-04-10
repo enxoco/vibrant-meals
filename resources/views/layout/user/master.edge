@@ -1150,6 +1150,11 @@ document.addEventListener('click', function(event) {
   form.submit()
 })
 
+if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+               .register('/sw.js')
+               .then(function() { console.log("Service Worker Registered"); });
+    }
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->
