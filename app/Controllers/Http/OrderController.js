@@ -52,20 +52,23 @@ class OrderController {
         var itemList = []
         const orderCount = orders.data.length
         
-        var deliveries = []
+        var deliveries = 0
         var wednesdayFulfillments = []
         var mondayFulfillments = []
-        var pickups = []
+        var fulfillments = []
+        var pickups = 0
         var revenue = 0
         // Iterate over our open/pending orders and grab each menu item
         for (var i = 0; i < order.length; i++) {
             revenue += order[i].amount
 
             if (order[i].metadata.fulfillment_method && order[i].metadata.fulfillment_method == 'pickup') {
-                pickups.push(order[i])
+                fulfillments.push(order[i])
+                pickups++
             }
             if (order[i].metadata.fulfillment_method && order[i].metadata.fulfillment_method == 'delivery') {
-                deliveries.push(order[i])
+                fulfillments.push(order[i])
+                deliveries++
             }
             if (order[i].metadata.fulfillment_day && order[i].metadata.fulfillment_day == 'wednesday') {
                 wednesdayFulfillments.push(order[i])
@@ -97,7 +100,7 @@ class OrderController {
         var sorted = byDate.sort(function (a, b) {
             return b.count - a.count
         })
-        return view.render('layout.admin.orders', {orders: sorted, pagetype: 'Pending orders', orderCount, deliveries, pickups, wednesdayFulfillments, mondayFulfillments, revenue})
+        return view.render('layout.admin.orders', {orders: sorted, pagetype: 'Pending orders', orderCount, deliveries, pickups, wednesdayFulfillments, mondayFulfillments, revenue, fulfillments})
     }
 }
 

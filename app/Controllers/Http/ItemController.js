@@ -139,9 +139,12 @@ class ItemController {
         var prod = obj[Object.keys(obj)[0]]
 
         prod.parent_id = prod.name.toLowerCase().replace(/ /g, '_')
+        var parent = prod.parent_id.replace(/ /g, '_')
+        parent = parent.replace(/,|&|'|"|\*|\(|\)/g, '')
+        parent = parent.toLowerCase()
         // This is incorrectly trying to update the main product using the primary sku
         // Need to correct this so that it attempts to update the parent product.
-        stripe.products.update(prod.parent_id, {
+        stripe.products.update(parent, {
           name: prod.name,
           description: prod.description,
           metadata: {
@@ -153,7 +156,7 @@ class ItemController {
           var sku = obj[Object.keys(obj)[i]]     
 
           //Build our sku id based on parent id and size variation
-          var id = sku.parent_id + '_' + sku.size
+          var id = sku.parent + '_' + sku.size.replace(/,|&|'|"|\*|\(|\)/g, '')
 
           stripe.skus.update(id, {
             price: sku.price,
@@ -174,7 +177,7 @@ class ItemController {
           });
         }
       
-        this.updateItems()
+        await this.updateItems()
         
         return response.send({status: 'success'})
       } catch(e) {

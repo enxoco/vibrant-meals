@@ -341,7 +341,7 @@ input.muted {
   
 
   $(document).ready(function() {
-    $('#pickups, #deliveries, #productNeeded, #customers').DataTable( {
+    $('#pickups, #productNeeded, #customers').DataTable( {
         select: true,
         dom: 'Bfrtip',
         colReorder: true,
@@ -373,9 +373,22 @@ input.muted {
               })
 
             }
+          },
+          {
+            text: 'Pickups',
+            className: 'btn-info',
+            action: function ( e, dt, node, config) {
+              var rows = dt.rows('.selected').data()
+              var ids = []
+              for (var i = 0; i < rows.length; i++) {
+                console.log(rows[i])
+              }
+
+            }
           }
         ]
     } );
+
     $('#locations').DataTable( {
           select: false,
           dom: 'Bfrtip',

@@ -93,8 +93,8 @@ body {
     border-color: #aad0ad;
 }
 li.list-group-item.d-flex.justify-content-between.align-items-center {
-    font-size: 1.5em;
-    border: none;
+  border: none;
+    border-bottom: 1px solid gainsboro;
 }
 .badge-secondary {
     color: #fff;
@@ -712,10 +712,10 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
   "positionClass": "toast-top-right",
   "preventDuplicates": true,
   "onclick": null,
-  "showDuration": "30000000000",
+  "showDuration": "5000",
   "hideDuration": "1000",
-  "timeOut": "0",
-  "extendedTimeOut": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "5000",
   "showEasing": "swing",
   "hideEasing": "linear",
   "showMethod": "fadeIn",
@@ -1092,7 +1092,7 @@ if (window.location.href.includes('checkout')) {
 
             }
             
-            toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store')
+            toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
           } else if (miles.toFixed(0) < 5) {
             localStorage.shippingCode = 'freeshipping'
             $('.delivery-fee').html('0')
@@ -1150,11 +1150,11 @@ document.addEventListener('click', function(event) {
   form.submit()
 })
 
-if('serviceWorker' in navigator) {
-      navigator.serviceWorker
-               .register('/sw.js')
-               .then(function() { console.log("Service Worker Registered"); });
-    }
+// if('serviceWorker' in navigator) {
+//       navigator.serviceWorker
+//                .register('/sw.js')
+//                .then(function() { console.log("Service Worker Registered"); });
+//     }
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

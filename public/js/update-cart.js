@@ -137,6 +137,10 @@ function updateCartDiv() {
     $('.order-total').attr('data-total', total.toFixed(2))
     $('.order-total').html(total.toFixed(2))
 
+    if (total >= 100) {
+      localStorage.shippingCode = 'freeshipping'
+      $('.delivery-fee').html('0')
+    }
 
   }
 

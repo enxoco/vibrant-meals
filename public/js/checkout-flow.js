@@ -262,8 +262,8 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       lname.value = document.getElementById('lastName').value
       var form = iframe.contentWindow.document.getElementById('mc-embedded-subscribe-form')
       form.submit()
-
-      $('#createToken').attr('disabled', 'disabled')
+      $(this).html('Processing order... <div id="loading"></div>')
+      $(this).attr('disabled', 'disabled')
 
       stripe.createToken(card).then(function (result) {
 
@@ -322,6 +322,8 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
               $('#orderConfirmation').modal('show')
               $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
               $('.express-checkout-default').attr('disabled', 'disabled')
+              $('form').attr('disabled', 'disabled')
+              $('#createToken').html('Order Complete!')
               localStorage.cart = []
               updateCartDiv()
             }
@@ -404,7 +406,7 @@ $('#applyCoupon').on('click', function(){
         var discount = (percent * total)
         total = total - discount
         // Applying a promo code needs to affect the order total data attribute but not shipping.
-        $('.order-total').data('total', total)
+        $('.order-total').data('total', total.toFixed(2))
 
         $('.order-total').html(total.toFixed(2))
         disableCoupon()
