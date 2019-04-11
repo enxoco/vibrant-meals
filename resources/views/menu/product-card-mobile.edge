@@ -41,18 +41,27 @@
                 </div>
             </div>
             <div class="card-footer ">
-            <hr>
-                <div class="stats ">
+              @if(item.skus.data[0].metadata.filters)
+                <hr class="image {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
+              @else
+              <hr class="image Everyday">
+              @endif
+
+                <div class="stats">
+                  <div class="col-10 d-flex justify-content-between">
                   @if(item.skus.data[0].metadata.calories)
                     Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
                   @endif
+
                   @if(item.skus.data[0].metadata.fats)
                     Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                    @endif
-                    @if(item.skus.data[0].metadata.fats)
+                  @endif
+
+                  @if(item.skus.data[0].metadata.fats)
                     Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-                    @endif
-<!--mobile-->     
+                  @endif
+                  </div>
+<!--mobile-->     <div class="col">
                     <a class="checkout-prompt-1"
                     data-id="{{item.id}}" 
                     data-sku="{{item.skus.data[0].id}}" 
@@ -63,8 +72,9 @@
                     href="#" 
                     class="is-pulled-right"
                   >
-                    <img src="images/cart-icon.png" style="height:20px"/>
+                    <img src="images/cart-icon.png" style="height:20px;max-width:1000px !important;"/>
                     </a>
+                    </div>
                 </div>
             </div>
         </div>
