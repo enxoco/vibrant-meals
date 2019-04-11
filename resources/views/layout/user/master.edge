@@ -1118,9 +1118,7 @@ if (window.location.href.includes('checkout')) {
     function unhoverCart(element) {
       element.setAttribute('src', '/images/cart-icon.png');
     }
-    $('.navbar-toggle').on('click', function() {
-      toastr['success']('click')
-    })
+
     $('#back-to-account').on('click', function(){
       window.location.href = '/account'
     })

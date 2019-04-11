@@ -107,6 +107,7 @@ function updateCartDiv() {
         $('.express-checkout-status').hide()
         $('[data-toggle="tooltip"]').tooltip('disable')
       }
+
       localStorage.setItem('cartCount', cartCount)
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
 
@@ -132,6 +133,15 @@ function updateCartDiv() {
     </div>'
       // var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('.cart-row-master').append(card)
+
+    }
+    console.log(cartCount == 0)
+    if(cartCount == 0){
+      $('.order-count').closest('div').css('background', 'none')
+      $('.order-count').html('')
+    } else {
+      $('.order-count').closest('div').css('background', '#3b8d6a')
+      $('.order-count').html(cartCount)
 
     }
     $('.order-total').attr('data-total', total.toFixed(2))
