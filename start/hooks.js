@@ -73,5 +73,9 @@ hooks.after.providersBooted(() => {
     return day
   })
 
+  View.global('secure', function(url){
+    return url.replace('http:', 'https:')
+  })
+
   
 })

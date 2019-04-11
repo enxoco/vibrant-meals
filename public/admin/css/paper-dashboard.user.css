@@ -6191,9 +6191,9 @@ License - nucleoapp.com/license/
     opacity: 1;
     top: 0;
     right: 0;
-    left: 260px;
+    left: 0px;
     content: "";
-    z-index: 9999;
+    z-index: 0;
     overflow-x: hidden;
     background-color: transparent;
     -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
@@ -6486,12 +6486,17 @@ button.btn.btn-link {
   padding: 0 !important;
 }
 
-div#order-details-footer {
+/* div#order-details-footer {
   position: fixed;
   right: 0px;
   z-index: 99999;
   bottom: 0px;
   border-top: 5px solid #f2f2f2;
   width: 20%;
+  background: white;
+} */
+
+#order-details-footer {
+  border-top: 5px solid #f2f2f2;
   background: white;
 }

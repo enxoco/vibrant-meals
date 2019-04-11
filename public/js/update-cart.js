@@ -123,7 +123,7 @@ function updateCartDiv() {
           </div>\
         </div>\
         <div class="col col-md-5 pt-2">\
-          <img class="avatar" src="'+cartItems[i].img_url+'">\
+          <img class="avatar" src="'+cartItems[i].img_url.replace('http', 'https')+'">\
         </div>\
         <div class="col col-md-4 pt-2">\
           <span class="cart-item-label">'+cartItems[i].name+'</span>\
