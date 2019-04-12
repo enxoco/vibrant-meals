@@ -203,7 +203,12 @@ $(document).on('click', 'a#pickupRadio', function() {
     
       $("#modal-pickup").modal('toggle')
       var cords = document.getElementById("cords").value;
-      var cord = cords.split(",");
+      if (cords.length === 0) {
+        var cord = ['-85.3171557','35.0691112']
+      } else {
+        var cord = cords.split(",");
+
+      }
     
       // Using mapbox to sort and order our list of locations based on how far they are from main store.
       mapboxgl.accessToken =

@@ -727,19 +727,34 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
 })
 
 function getLocation() {
-  console.log('get location')
-if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition(showPosition);
-} else {
-console.log('error')
-x.innerHTML = "Geolocation is not supported by this browser.";
-}
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+
+  x.innerHTML = "Geolocation is not supported by this browser.";
+  }
 }
 function showPosition(position) {
-var cord = [];
-cord.push(position.coords.longitude);
-cord.push(position.coords.latitude);
-$("#cords").val(cord);
+  var cord = [];
+  cord.push(position.coords.longitude);
+  cord.push(position.coords.latitude);
+  $("#cords").val(cord);
+}
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      toastr['warning']("User denied the request for Geolocation.")
+      break;
+    case error.POSITION_UNAVAILABLE:
+      toastr['warning']("Location information is unavailable.")
+      break;
+    case error.TIMEOUT:
+      toastr['warning']("The request to get user location timed out.")
+      break;
+    case error.UNKNOWN_ERROR:
+      toastr['warning']("An unknown error occurred.")
+      break;
+  }
 }
 
   $.getScript('/js/pickup-flow.js')
@@ -1164,7 +1179,6 @@ function getLocationByIp(){
       }
     })
 }
-getLocationByIp()
 
 getLocation()
 
