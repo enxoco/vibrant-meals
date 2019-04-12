@@ -484,9 +484,14 @@ function span1(e){
 		return
 	}
   </script>
-
+ <script src='/js/update-cart.js'>
+ </script>
 <script>
 $(document).ready(function(){
+  //Only here to show the cart count preview in topnav on mobile.
+  updateCartDiv()
+  feather.replace()
+
     $( "a.scrollLink" ).click(function( event ) {
         event.preventDefault();
         // $('html, body').animate({scrollTop: $('#contact').offset().top -100 }, 'slow');
@@ -499,4 +504,5 @@ $(document).ready(function(){
 //                .register('/sw.js')
 //                .then(function() { console.log("Service Worker Registered"); });
 //     }
-</script>
+   </script>
+  

@@ -1,4 +1,8 @@
+
 $(document).on('click', 'a#pickupRadio', function() {
+
+
+
   $('.delivery-fee').html('0')
   localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')
@@ -12,9 +16,11 @@ $(document).on('click', 'a#pickupRadio', function() {
 
   localStorage.setItem("fulfillment_method", "pickup")
     $("#modal-pickup").addClass("is-active")
-    var cords = document.getElementById("cords").value;
-    var cord = cords.split(",");
 
+    var cords = $('#cords').val()
+    var cord = cords.split(',')
+
+    console.log('cord', cords)
     // Using mapbox to sort and order our list of locations based on how far they are from main store.
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";

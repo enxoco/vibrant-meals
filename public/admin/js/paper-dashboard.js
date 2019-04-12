@@ -76,7 +76,6 @@ $(document).ready(function() {
 
 
 $(document).on('click', '.navbar-toggle', function() {
-  console.log('click')
   $toggle = $(this);
 
   if (paperDashboard.misc.navbar_menu_visible == 1) {
@@ -109,7 +108,6 @@ $(document).on('click', '.navbar-toggle', function() {
 
 
 $(document).on('click', '.navbar-toggle', function() {
-  console.log('click')
   $toggle = $(this);
 
   if (paperDashboard.misc.navbar_menu_visible == 1) {

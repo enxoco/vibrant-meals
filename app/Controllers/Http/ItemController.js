@@ -6,6 +6,7 @@ const Drive = use('Drive')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 stripe.setApiVersion('2019-03-14');
+var req = require('request')
 
 const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
 
@@ -43,6 +44,7 @@ class ItemController {
   async listItems ({view, response, auth, request}) {
 
     const path = Helpers.appRoot()
+
     var prod = await Drive.get(`${path}/products.json`, 'utf-8')
     prod = JSON.parse(prod)
     var categories = []

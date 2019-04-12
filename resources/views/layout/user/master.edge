@@ -742,7 +742,6 @@ cord.push(position.coords.latitude);
 $("#cords").val(cord);
 }
 
-getLocation()
   $.getScript('/js/pickup-flow.js')
 
 
@@ -1025,17 +1024,6 @@ if (window.location.href.includes('checkout')) {
 
 }
 
-  $(document).ready(function(){
-  $('.menu-tab').click(function(){
-    $('.menu-hide').toggleClass('show');
-    $('.menu-tab').toggleClass('active');
-  });
-  $('a').click(function(){
-    $('.menu-hide').removeClass('show');
-    $('.menu-tab').removeClass('active');
-  });
-});
-
     function calcShipping(){
       var store = {
         "type": "Feature",
@@ -1129,6 +1117,8 @@ $('#clearCart').on('click', function(){
 })
 
 $(document).ready(function() {
+
+
   calcShipping()
   $('.express-checkout-default').on('click', function() {
     var $this = $(this);
@@ -1146,19 +1136,37 @@ document.addEventListener('click', function(event) {
 
   event.preventDefault()
   var form = document.getElementById("password-reset")
-  console.log(form)
   return
   form.submit()
 })
+
+//Prevent select box from opening product card modal.
+$('select').on('click', function(e){e.preventDefault();e.stopPropagation()})
 
 // if('serviceWorker' in navigator) {
 //       navigator.serviceWorker
 //                .register('/sw.js')
 //                .then(function() { console.log("Service Worker Registered"); });
 //     }
-$('#testMe').on('click', function(){
-  console.log('click')
-})
+function getLocationByIp(){
+    $.ajax({
+      type: 'GET',
+      url: 'https://icanhazip.com',
+      success: function(res) {
+        $.ajax({
+          type: 'GET',
+          url: 'http://api.ipstack.com/'+res+'?access_key=a30e90d0c810992415e2eb14c1e5e9bb&fields=longitude,latitude,zip',
+          success: function(res) {
+            var test = res.longitude + ',' + res.latitude
+            $('#cords').val(test)
+          }
+        })
+      }
+    })
+}
+getLocation()
+
+getLocationByIp()
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->
