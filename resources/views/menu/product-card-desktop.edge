@@ -39,7 +39,7 @@ data-toggle="modal" data-target="#{{item.id}}"
     <div class="button-container">
       <div class="row ">
         @if(item.skus.data[0].metadata.calories)
-        <div class="col ml-auto d-none d-lg-block">
+        <div class="col ml-auto d-none d-lg-block pl-5">
           <h5>
               {{item.skus.data[0].metadata.calories}}
             <br>
@@ -83,7 +83,7 @@ data-toggle="modal" data-target="#{{item.id}}"
                 </div>
                 @endif
 
-        <div class="col mr-auto">
+        <div class="col mr-auto d-flex justify-content-end pr-5">
 <a class="checkout-prompt-1"
 data-id="{{item.id}}"
 data-sku="{{item.skus.data[0].id}}" 
