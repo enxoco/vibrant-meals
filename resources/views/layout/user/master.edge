@@ -741,20 +741,8 @@ function showPosition(position) {
   $("#cords").val(cord);
 }
 function showError(error) {
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      toastr['warning']("User denied the request for Geolocation.")
-      break;
-    case error.POSITION_UNAVAILABLE:
-      toastr['warning']("Location information is unavailable.")
-      break;
-    case error.TIMEOUT:
-      toastr['warning']("The request to get user location timed out.")
-      break;
-    case error.UNKNOWN_ERROR:
-      toastr['warning']("An unknown error occurred.")
-      break;
-  }
+  toastr['warning'](error)
+  getLocationByIp()
 }
 
   $.getScript('/js/pickup-flow.js')

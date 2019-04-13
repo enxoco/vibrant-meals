@@ -209,6 +209,7 @@ $(document).on('click', 'a#pickupRadio', function() {
         var cord = cords.split(",");
 
       }
+
     
       // Using mapbox to sort and order our list of locations based on how far they are from main store.
       mapboxgl.accessToken =
