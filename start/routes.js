@@ -132,3 +132,5 @@ Route.group(() => {
   Route.get('/admin/products/import', 'AdminController.importStripeProducts')
 
 }).middleware(['admin'])
+Route.post('/hooks/orders/created', 'StripeController.orderCreatedHook')
+Route.get('/hooks/orders/created', 'StripeController.orderCreatedHook')

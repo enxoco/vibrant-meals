@@ -60,8 +60,8 @@ class AdminController {
     const path = Helpers.appRoot()
     var obj = await Drive.get(`${path}/products.json`, 'utf-8')
     obj = JSON.parse(obj)
-    for (var i = 0; i < obj.data.length; i++){
-      var parent = obj.data[i]
+    for (var i = 0; i < obj.length; i++){
+      var parent = obj[i]
       var product = await stripe.products.create({
           name: parent.name,
           type: 'good',
@@ -70,8 +70,8 @@ class AdminController {
           attributes: parent.attributes,
           metadata: parent.metadata,
       })
-      for (var x = 0; x < obj.data[i].skus.data.length; x++) {
-        var sku = obj.data[i].skus.data[x]
+      for (var x = 0; x < obj[i].skus.data.length; x++) {
+        var sku = obj[i].skus.data[x]
         stripe.skus.create({
             product: sku.product,
             id: sku.id,

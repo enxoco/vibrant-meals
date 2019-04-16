@@ -114,11 +114,7 @@ class CheckoutController {
           }, function(err, order) {
             if (err) return(err)
             // asynchronously called
-            stripe.orders.update(order.id, {
-              metadata: {
-                orderId: stringHash(order.id)
-              }
-            })
+
           });
         });
         } else {
@@ -151,11 +147,7 @@ class CheckoutController {
               source: customer.source // obtained from Stripe api
             }, function(err, order) {
               if (err) return(err)
-              stripe.orders.update(order.id, {
-                metadata: {
-                  orderId: stringHash(order.id)
-                }
-              })
+
               // asynchronously called
             });
           });
@@ -187,11 +179,7 @@ class CheckoutController {
             source: req.billing.stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
-            stripe.orders.update(order.id, {
-              metadata: {
-                orderId: stringHash(order.id)
-              }
-            })
+
             // asynchronously called
           });
         });
@@ -356,11 +344,7 @@ class CheckoutController {
             source: customer.source // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
-            stripe.orders.update(order.id, {
-              metadata: {
-                orderId: stringHash(order.id)
-              }
-            })
+
           });
         });
         } else { //Pickup order without a coupon code
@@ -393,11 +377,7 @@ class CheckoutController {
               source: customer.source // obtained with Stripe.js
             }, function(err, order) {
               if (err) return(err)
-              stripe.orders.update(order.id, {
-                metadata: {
-                  orderId: stringHash(order.id)
-                }
-              })            
+         
             });
           });
         }
@@ -428,11 +408,7 @@ class CheckoutController {
             source: customer.source // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
-            stripe.orders.update(order.id, {
-              metadata: {
-                orderId: stringHash(order.id)
-              }
-            })
+
                     
           });
         });
