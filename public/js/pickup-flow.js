@@ -20,7 +20,6 @@ $(document).on('click', 'a#pickupRadio', function() {
     var cords = $('#cords').val()
     var cord = cords.split(',')
 
-    console.log('cord', cords)
     // Using mapbox to sort and order our list of locations based on how far they are from main store.
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA";
@@ -139,7 +138,6 @@ $(document).on('click', 'a#pickupRadio', function() {
       setTimeout(function() {
         $('#modal-pickup').modal('toggle')
     }, 500);
-    console.log('this is st')
 
       var st = ($(this).data())
       var myStore = {}
@@ -152,9 +150,7 @@ $(document).on('click', 'a#pickupRadio', function() {
         fulfillment_method: 'pickup',
         fulfillment_day: localStorage.fulfillment_day
       }
-      console.log(st)
-    
-      console.log(stores)
+
 
       localStorage.pickupLocation = JSON.stringify(stores.features[st.storerank].properties)
 

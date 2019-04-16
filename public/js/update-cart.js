@@ -7,18 +7,32 @@ function updateCartDiv() {
 
   var orderMethod = localStorage.fulfillment_method
   var orderDay = localStorage.fulfillment_day
+  if (localStorage.myStore) {
+    $.ajax({
+      type: 'POST',
+      url: '/account/fulfillmethod/update',
+      data: {storeId: JSON.parse(localStorage.myStore).id},
+      success: console.log('Options updated')
+    })
+  }
+  $.ajax({
+    type: 'POST',
+    url: '/account/fulfillmethod/update',
+    data: {pref: orderMethod},
+    success: console.log('Options updated')
+  })
   if (orderMethod == 'pickup') {
     $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
-      localStorage.fulfillment_method = 'delivery'
+      localStorage.setItem('fulfillment_method', 'delivery')
       updateCartDiv()
     }
 
-    var orderLocation = ''
-    if (localStorage.pickupLocation) {
-      orderLocation = JSON.parse(localStorage.pickupLocation).name
-    }
-  } else {
+      var orderLocation = ''
+      if (localStorage.pickupLocation) {
+        orderLocation = JSON.parse(localStorage.pickupLocation).name
+      }
+    } else {
 
   }
 
@@ -135,7 +149,6 @@ function updateCartDiv() {
       $('.cart-row-master').append(card)
 
     }
-    console.log(cartCount == 0)
     if(cartCount == 0){
       $('.order-count').closest('div').css('background', 'none')
       $('.order-count').html('')

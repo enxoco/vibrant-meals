@@ -1,6 +1,7 @@
 const { hooks } = require('@adonisjs/ignitor')
 const moment = require('moment')
 require('moment-countdown');
+const _ = require('lodash')
 
 hooks.after.providersBooted(() => {
   const View = use('View')
@@ -77,5 +78,59 @@ hooks.after.providersBooted(() => {
     return url.replace('http:', 'https:')
   })
 
+  View.global('nutritionFooterDesktop', function(obj){
+    delete obj.category
+    delete obj.size
+    delete obj.filters
+    delete obj.name
+    delete obj.description
+    var count = Object.keys(obj)
+    if (count.length == 0) {
+      return this.safe('<div class="col-9 pb-2"></div>')
+    }
+    var div = ``
+    if (count.length >= 3) {
+      for (var i = 0; i < Object.keys(obj).length; i++) {
+        if (i == 3) {break}
+        var name = Object.keys(obj)[i]
+        var value = obj[name]
+        div += `<div class="col-3 ml-auto d-none d-lg-block">
+        <h5>
+         ${value}
+          <br>
+          <small>${_.capitalize(name)}</small>
+        </h5>
+      </div>`
+      }
+    }
+
+      return this.safe(div)
+  })
+
+  View.global('nutritionFooterMobile', function(obj){
+    delete obj.category
+    delete obj.size
+    delete obj.filters
+    delete obj.name
+    delete obj.description
+    var count = Object.keys(obj)
+    if (count.length == 0) {
+      return this.safe('<div class="col-9 pb-2"></div>')
+    }
+    var div = ``
+    if (count.length >= 3) {
+      div = '<div class="col-10 d-flex justify-content-between">'
+
+      for (var i = 0; i < Object.keys(obj).length; i++) {
+        if (i == 3) {break}
+        var name = Object.keys(obj)[i]
+        var value = obj[name]
+        div += `${_.capitalize(name)}:<strong>${value}</strong>`
+      }
+      div += '</div>'
+    }
+
+      return this.safe(div)
+  })
   
 })

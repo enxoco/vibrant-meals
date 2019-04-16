@@ -216,7 +216,13 @@ class ItemController {
           user.pickupLocation.desc = user.pickupLocation.name
         }
         // return response.send(orders)
-        return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address})
+        if (orders.data.length != 0) {
+          return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address})
+
+        } else {
+          return view.render('menu.checkout', {user, billing: stripeDetails, shipping: ''})
+
+        }
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.

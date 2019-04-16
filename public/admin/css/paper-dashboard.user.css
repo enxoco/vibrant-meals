@@ -6486,7 +6486,7 @@ button.btn.btn-link {
   padding: 0 !important;
 }
 
-/* div#order-details-footer {
+div#order-details-footer {
   position: fixed;
   right: 0px;
   z-index: 99999;
@@ -6494,9 +6494,9 @@ button.btn.btn-link {
   border-top: 5px solid #f2f2f2;
   width: 20%;
   background: white;
-} */
+}
 
-#order-details-footer {
+/* #order-details-footer {
   border-top: 5px solid #f2f2f2;
   background: white;
-}
+} */

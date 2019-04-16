@@ -28,20 +28,41 @@ $('#stripe-checkout').on('click', function(){
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
   var wednesday
   var monday 
-  var day = moment().format('dddd')
-  var dayTwo = moment().format('dddd')
-  
-    if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
-      var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
-    } else {// We have passed the cut off for this week, need to schedule for next week.
-      var wednesday = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
-    }
-      
-    if (dayTwo == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
-      var monday = moment().add(0, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')    
-    } else {
+  console.log(moment().format('HH:mm'))
+
+  var monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+  var wednesday = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+  switch(moment().format('dddd')) {
+    case 'Monday':
+    var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+    break;
+
+    case 'Tuesday':
+    var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+    break;
+  }
+
+  if (moment().format('dddd') == 'Friday') { 
+    var format = 'HH:mm:ss'
+
+    var t = moment().format(format)
+    var time = moment(t, format)
+      beforeTime = moment('00:00:00', format),
+      afterTime = moment('08:00:00', format);
+    
+    if (time.isBetween(beforeTime, afterTime)) {
+    
       var monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+      console.log('is between')
+    } else {
+      console.log('is not between')
+      console.log(typeof time, typeof beforeTime, typeof afterTime, typeof t)
+      var monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+    
     }
+  }
+
+
       var result = {
         monday: monday,
         wednesday: wednesday
@@ -55,9 +76,15 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       var thisWed = moment(wednesday, 'dddd MMMM DD YYYY').format('MMM DD')
       var nextWed = moment(wednesday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
       
+      var dates = [thisMon, nextMon, thisWed, nextWed]
+      let _sortedDates = dates.sort(function(a, b){
+        return moment(a).format('X')-moment(b).format('X')
+      });
+      console.log(_sortedDates)
       pickupDaysModal.html('<ul class="list-group">')
   
       pickupDaysModal.append('<h4 class="mb-3 d-flex justify-content-center">Pick a day</h4>')
+
       pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+thisWed+'" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+thisWed+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="'+nextMon+'"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">'+nextMon+'</div></div></div></li>')
@@ -138,6 +165,10 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
         if(localStorage.fulfillment_method == 'pickup') {
             var store = JSON.parse(localStorage.pickupLocation)
+            $('.custom-checkbox').hide() //Hide ship to different address button on Pickup orders
+
+        } else {
+          $('.custom-checkbox').show() //Hide ship to different address button on Pickup orders
 
         }
 
@@ -396,8 +427,9 @@ $('#applyCoupon').on('click', function(){
       if (data.amount_off) {
         toastr['success']('Coupon for $' + (data.amount_off / 100) + ' successfully applied')
         total = total - (data.amount_off / 100)
+        total = total.toFixed(2)
         $('.order-total').data('total', total)
-        $('.order-total').html(total.toFixed(2))
+        $('.order-total').html(total)
         disableCoupon()
       }
       if (data.percent_off) {

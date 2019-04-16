@@ -543,6 +543,7 @@ a.btn.btn-success.btn-lg.express-checkout-default {
 
 button#load {
     width: 100%;
+    white-space: normal;
 }
 
 
@@ -660,6 +661,7 @@ h5.modal-title {
   
 </div> -->
 @!section('content')
+
 
 <script src="/admin/js/core/jquery.min.js"></script>
 <script src="/admin/js/core/popper.min.js"></script>
@@ -860,6 +862,8 @@ updateCartDiv()
 
 $(document).on('click', 'a#deliveryRadio', function(){
   $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
+
+
     $('.cart-icon-label.pickup').html('')
 
     $('#deliveryRadio').closest('.fulfillment-option').addClass('active')
@@ -867,12 +871,13 @@ $(document).on('click', 'a#deliveryRadio', function(){
   $('.express-checkout-edit').show()
   $('.shipping-form').show()
 
+  localStorage.setItem('fulfillment_method', 'delivery')
 
-  localStorage.fulfillment_method = 'delivery'
   localStorage.removeItem('pickup_location')
   localStorage.removeItem('pickupLocation')
   localStorage.removeItem('myStore')
   calcShipping()
+  console.log('hello')
   updateCartDiv()
 })
 
@@ -1118,7 +1123,11 @@ $('#clearCart').on('click', function(){
   localStorage.cart = []
   updateCartDiv()
 })
-
+$('.menu-tab').on('click',function(){
+    $(this).toggleClass('active')
+    $('.menu-hide').toggleClass('show')
+    
+  })
 $(document).ready(function() {
 
 
