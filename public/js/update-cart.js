@@ -33,7 +33,11 @@ function updateCartDiv() {
         orderLocation = JSON.parse(localStorage.pickupLocation).name
       }
     } else {
+      localStorage.setItem('fulfillment_method', 'delivery')
 
+      localStorage.removeItem('pickup_location')
+      localStorage.removeItem('pickupLocation')
+      localStorage.removeItem('myStore')
   }
 
 
@@ -96,6 +100,7 @@ function updateCartDiv() {
       $('.cart-icon-label.pickup').html(pickup)
     } else {
       $('.cart-icon-label.delivery').html()
+      
     }
 
     var cartCount = 0

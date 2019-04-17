@@ -1,45 +1,44 @@
 <div class="row">
-    <div class="col col-md-8 col-lg-8 mx-auto">
-        <div class="card card-user">
-            <div class="card-body ">
-                <div class="col">
+  <div class="col col-md-8 col-lg-8 mx-auto">
+    <div class="card card-user">
+      <div class="card-body ">
+        <div class="col">
+          <div class="row">
+            <p class="card-description" id="express-checkout-details"></p>
+            <div class="col mx-auto">
+              <div id="accordion">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">Billing: &nbsp</span>
+                  </div>
+                  <input type="text" class="form-control" name="express-bill" value="{{billing.shipping.address.line1}},{{billing.shipping.address.city}},{{billing.shipping.address.state}},{{billing.shipping.address.postal_code}}" disabled/>
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"></i></span>
+                  </div>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <form id="main" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                      <label for="address">Address</label>
+                      <input type="text" class="form-control" name="street-bill" value="{{billing.shipping.address.line1}}" required>
+                      <div class="invalid-feedback">
+                        Please enter your billing.shipping.address address.
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                      <input type="text" class="form-control" name="street2-bill">
+                    </div>
+
                     <div class="row">
-                        <p class="card-description" id="express-checkout-details"></p>
-                        <div class="col mx-auto">
-                            <div id="accordion">
-                              <hr class="mb-0"> 
-                              <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon3">Billing: &nbsp</span>
-                                    </div>
-                                    <input type="text" class="form-control" name="express-bill" value="{{billing.shipping.address.line1}},{{billing.shipping.address.city}},{{billing.shipping.address.state}},{{billing.shipping.address.postal_code}}" disabled/>
-                                    <div class="input-group-append">
-                                      <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"></i></span>
-                                    </div>
-                                  </div>
-                                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                                    <form id="main" class="needs-validation" novalidate>
-                                      <div class="mb-3">
-                                        <label for="address">Address</label>
-                                        <input type="text" class="form-control" name="street-bill" value="{{billing.shipping.address.line1}}" required>
-                                        <div class="invalid-feedback">
-                                          Please enter your billing.shipping.address address.
-                                        </div>
-                                      </div>
-                                
-                                      <div class="mb-3">
-                                        <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                                        <input type="text" class="form-control" name="street2-bill">
-                                      </div>
-                                
-                                      <div class="row">
-                                        <div class="col-4 mb-3">
-                                          <label for="city">City</label>
-                                          <input type="text" class="form-control" name="city-bill" value="{{billing.shipping.address.city}}">
-                                        </div>
-                                        <div class="col-4 col-md-4 mb-3">
-                                          <label for="state">State</label>
-                                          <select class="custom-select d-block w-100" id="state-bill" name="state-bill" required>
+                      <div class="col-4 mb-3">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" name="city-bill" value="{{billing.shipping.address.city}}">
+                      </div>
+                      <div class="col-4 col-md-4 mb-3">
+                        <label for="state">State</label>
+                        <select class="custom-select d-block w-100" id="state-bill" name="state-bill" required>
                                                                                           <option value="{{billing.shipping.address.state}}" selected>{{billing.shipping.address.state}}</option>
                                                                                           <option value="AK">Alaska</option>
                                                                                           <option value="AL">Alabama</option>
@@ -95,96 +94,135 @@
                                                                                           <option value="WY">Wyoming</option>
                                                                                     
                                                                                         </select>
-                                          <div class="invalid-feedback">
-                                            Please provide a valid state.
-                                          </div>
-                                        </div>
-                                        <div class="col-md-4 col-4 mb-3">
-                                          <label for="zip">Zip</label>
-                                          <input type="text" class="form-control" name="zip-bill" placeholder="" value="{{billing.shipping.address.postal_code}}" required>
-                                          <div class="invalid-feedback">
-                                            Zip code required.
-                                          </div>
-                                        </div>
-                                        <div class="col-6 mb-3">
-                                          <label for="allergy_info">Allergy Info</label>
-                                          <input type="text" class="form-control" name="allergy_info" placeholder="" required>
-                                          <div class="invalid-feedback">
-                                            Allergy information
-                                          </div>
-                                        </div>
-                                        <div class="col-6 col-md-6 mb-3">
-                                          <label for="delivery_notes">Additional notes</label>
-                                          <input type="text" class="form-control" name="delivery_notes" placeholder="" required>
-                                          <div class="invalid-feedback">
-                                            Notes for order
-                                          </div>
-                                        </div>
-                                
-                                      </div>
-                                
-                                  </div>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon3">Order availability: &nbsp</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="fulfillment-date" disabled/>
-                                    <div class="input-group-append">
-                                      <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"></i></span>
-                                    </div>
-                                  </div>
-                                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                                    <div id="pickupDaysList">
-                                      <div class="card card-user border-none">
-                                      </div>
-                                    </div>
-                                  </div>
-                                
-                                  <div class="form-row">
-                                    <div class="col-6">
-                                      <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
-                                    </div>
-                                    <div class=" col-6 d-flex justify-content-end">
-                                      <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
-                                    </div>
-                                  </div>
-                                  <div id="order-details-footer">
-                                    <div id="delivery-fee">
-                                      <p class="mb-3 d-flex justify-content-center order-details">Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong></p>
-                                    </div>
-                                
-                                    <div id="order-total">
-                                      <p class="mb-3 d-flex justify-content-center order-details">Order Total - &nbsp<strong> $<span class="order-total">0</span></strong></p>
-                                    </div>
-                                  </div>
-
-                                  <!--/content-->
-                                
-                                  <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                      <div class="col col-md-6 col-lg-6 mx-auto">
-                                        <p class="card-title order-1">
-                                
-                                          <button class="btn btn-success btn-lg express-checkout-default loading" type="button" id="load" data-loading-text="Loading"><div class="express-checkout-status"></div> Pay with card ending in {{billing.sources.data[0].last4}}
-                                
-                                                  </button></p>
-                                        {{--
-                                        <p class="card-title"><a class="btn btn-success btn-lg">Use a different card <i data-feather="credit-card"></i></a></p> --}}
-                                        <div class="mr-5"></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
+                        <div class="invalid-feedback">
+                          Please provide a valid state.
                         </div>
+                      </div>
+                      <div class="col-md-4 col-4 mb-3">
+                        <label for="zip">Zip</label>
+                        <input type="text" class="form-control" name="zip-bill" placeholder="" value="{{billing.shipping.address.postal_code}}" required>
+                        <div class="invalid-feedback">
+                          Zip code required.
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label for="allergy_info">Allergy Info</label>
+                        <input type="text" class="form-control" name="allergy_info" placeholder="" required>
+                        <div class="invalid-feedback">
+                          Allergy information
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 mb-3">
+                        <label for="delivery_notes">Additional notes</label>
+                        <input type="text" class="form-control" name="delivery_notes" placeholder="" required>
+                        <div class="invalid-feedback">
+                          Notes for order
+                        </div>
+                      </div>
+
                     </div>
+
                 </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">Order availability: &nbsp</span>
+                  </div>
+                  <input type="text" class="form-control" id="fulfillment-date" disabled/>
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"></i></span>
+                  </div>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                  <div id="pickupDaysList">
+                    <div class="card card-user border-none">
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="order-details-footer">
+                  <div id="delivery-fee">
+                    <p class="mb-3 d-flex justify-content-center order-details">Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong></p>
+                  </div>
+
+                  <div id="order-total">
+                    <p class="mb-3 d-flex justify-content-center order-details">Order Total - &nbsp<strong> $<span class="order-total">0</span></strong></p>
+                  </div>
+                </div>
+
+                <!--/content-->
+
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats billing-source" style="text-align:center;">
+
+                    <div class="col mx-auto">
+                        <div class="card-header">
+                            <h4>Choose existing card</h4>
+                          </div>
+                          <div class="col mx-auto">
+                      @each(card in billing.sources.data)
+                      <div class="radio">
+                        <input id="card-{{card.last4}}" name="radio" type="radio" value="{{card.id}}"
+                        @if($loop.first)
+                          checked
+                        @endif
+                        >
+                        <label for="card-{{card.last4}}" class="radio-label">**** **** **** {{card.last4}} 
+                          <img src="/images/{{(card.brand.toLowerCase())}}.png" width="25px" height="25px"/>
+                        </label> 
+                      </div>
+                    @endeach
+                    <div class="radio">
+                      <input id="addCard" name="radio" type="radio" value="addCard">
+                      <label for="addCard" class="radio-label">Pay with new card</label>
+                    </div>
+                    <div class="mb-5"></div>
+                          </div>
+                          <div class="form-row addCardForm hidden">
+
+                              <div class="mb-3 col-12">
+                                <div id="card-element">
+                                  <!-- A Stripe Element will be inserted here. -->
+                                </div>
+                              </div>
+                      
+                              <!-- Used to display form errors. -->
+                              <div id="card-errors" role="alert"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-6">
+                                  <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
+                                </div>
+                                <div class=" col-6 d-flex justify-content-end">
+                                  <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                                </div>
+                              </div>
+                            <div id="order-details-footer">
+                              <div id="delivery-fee">
+                                <p class="mb-3 d-flex justify-content-center">Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong></p>
+                              </div>
+                              <div id="order-total">
+                                <p class="mb-3 d-flex justify-content-center">Order Total - &nbsp<strong> $<span class="order-total">0</span></strong></p>
+                              </div>
+                              <h4 class="mb-3 d-flex justify-content-center"><a class="btn btn-success btn-lg" id="addCardToCust">Checkout</a></h4>
+                            </div><!--/order-details-footer-->
+                          </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>   
-    <div class="col col-md-8 col-lg-8 mx-auto express-checkout-edit hidden">
-        <div class="hidden" id="billing-info"></div>
-            @!include('Checkout.shipping-info')
-    </div> 
-    
+      </div>
+    </div>
+  </div>
+  <div class="col col-md-8 col-lg-8 mx-auto express-checkout-edit hidden">
+    <div class="hidden" id="billing-info"></div>
+    @!include('Checkout.shipping-info')
+  </div>
+
 </div>
+
+<input name="stripeToken" type="hidden" />

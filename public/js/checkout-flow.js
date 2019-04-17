@@ -196,6 +196,102 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           shippingCode: localStorage.shippingCode
         }
       
+        var shipping = {
+            recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
+            street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
+            city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val() ,
+            state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
+            zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
+        }
+        
+        var user = {
+            firstName: $('input[id="firstName"]').val(),
+            lastName: $('input[id="lastName"]').val(),
+            email: $('input[id="email-bill"]').val(),
+            phone: $('input[id="phone"]').val(),
+            password: $('#password-bill').val(),
+            fulfillment_method: localStorage.fulfillment_method,
+            fulfillment_day: $('li.list-group-item.clickable.active').data('day'),
+            fulfillment_date: $('li.list-group-item.clickable.active').data('date'),
+            pickup_location: localStorage.myStore
+        }
+        var cart = localStorage.cart
+        var obj = {
+            billing,
+            shipping,
+            user,
+            cart
+        }
+
+        $.ajax({
+          type: 'POST',
+          url: '/checkout/express',
+          data: JSON.stringify({data:obj}),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function(data){
+            if (data.status == 'success') {
+              toastr['success']('Order completed successfully')
+              $('#orderConfirmation').modal('show')
+              $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+              $('.express-checkout-default').attr('disabled', 'disabled')
+              localStorage.cart = []
+              updateCartDiv()
+            } else {
+              toastr['warning']('Something went wrong')
+            }
+
+          },
+          failure: function(errMsg) {
+            toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
+          }
+      })
+    })
+
+
+
+    $('#password_confirmation').on('focusout', function(){
+      var pass = $('#password-bill').val()
+      var confirm = $(this).val()
+
+      if (pass != confirm) {
+        $('.invalid-password-feedback').html('<p style="color:red;font-weight:500;text-align:center;">Sorry the passwords do not match.  Try again</p>')
+        $('#main :input, #createToken').attr('disabled', 'disabled')
+      } else {
+        $('.invalid-password-feedback').html('')
+        $('#main :input, #createToken').removeAttr('disabled')
+      }
+    })
+
+    $('#addCardToCust').on('click', function(){
+      $(this).html('Processing order... <div id="loading"></div>')
+      $(this).attr('disabled', 'disabled')
+      var source = $('.billing-source').find('input[type=radio]:checked').val()
+      if (source === 'addCard') {
+        stripe.createToken(card).then(function (result) {
+          processOrder({type: 'new'}, result.token.id)
+        })
+      } else {
+        processOrder({type: 'existing'}, source )
+      }
+
+    })
+
+    function processOrder(card, id){
+
+      var billing = {
+        street: $('input[name="street-bill"]').val(),
+        street_2: $('input[name="street2-bill"]').val(),
+        city: $('input[name="city-bill"]').val(),
+        state: $('select#state-bill').val(),
+        zip: $('input[name="zip-bill"]').val(),
+        coupon: $('input[name="promoCode"]').val(),
+        shippingCode: localStorage.shippingCode,
+        type: card.type,
+        paymentId: id
+
+      }
+    
       var shipping = {
           recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
           street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
@@ -215,54 +311,39 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           fulfillment_date: $('li.list-group-item.clickable.active').data('date'),
           pickup_location: localStorage.myStore
       }
-    var cart = localStorage.cart
-    var obj = {
-        billing,
-        shipping,
-        user,
-        cart
-    }
+      var cart = localStorage.cart
+      var obj = {
+          billing,
+          shipping,
+          user,
+          cart
+      }
 
-    $.ajax({
-      type: 'POST',
-      url: '/checkout/express',
-      data: JSON.stringify({data:obj}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(data){
-        if (data.status == 'success') {
-          toastr['success']('Order completed successfully')
-          $('#orderConfirmation').modal('show')
-          $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
-          $('.express-checkout-default').attr('disabled', 'disabled')
-          localStorage.cart = []
-          updateCartDiv()
-        } else {
-          toastr['warning']('Something went wrong')
+      $.ajax({
+        type: 'POST',
+        url: '/checkout/express',
+        data: JSON.stringify({data:obj}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){
+          if (data.status == 'success') {
+            toastr['success']('Order completed successfully')
+            $('#orderConfirmation').modal('show')
+            $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+            $('.express-checkout-default').attr('disabled', 'disabled')
+            localStorage.cart = []
+            updateCartDiv()
+          } else {
+            toastr['warning']('Something went wrong')
+          }
+
+        },
+        failure: function(errMsg) {
+          toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
         }
-
-      },
-      failure: function(errMsg) {
-        toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-      }
-  })
     })
-
-
-
-    $('#password_confirmation').on('focusout', function(){
-      var pass = $('#password-bill').val()
-      var confirm = $(this).val()
-
-      if (pass != confirm) {
-        $('.invalid-password-feedback').html('<p style="color:red;font-weight:500;text-align:center;">Sorry the passwords do not match.  Try again</p>')
-        $('#main :input, #createToken').attr('disabled', 'disabled')
-      } else {
-        $('.invalid-password-feedback').html('')
-        $('#main :input, #createToken').removeAttr('disabled')
-      }
-    })
-
+    }
+    
 
     $('#createToken').on('click', function(){
 
@@ -350,53 +431,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
     })
 
-    $('.checkout-paypal').on('click', function(){
-        paypal.Buttons({
-            style: {
-              layout:  'horizontal',
-              color:   'blue',
-              shape:   'pill',
-              label:   'pay',
-              tagline: true
-            },
-            createOrder: function(data, actions) {
-            // Set up the transaction
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: $('#total').val().split('$')[1]
-                }
-              }]
-            })
-          },
-          onApprove: function(data, actions) {
-            return actions.order.get().then(function (orderDetails) {
-
-                $.ajax({
-
-                })
-               $.ajax({
-                  type: "POST",
-                  url: "/checkout/paypal",
-                  // The key needs to match your method's input parameter (case-sensitive).
-                  data: JSON.stringify({data:orderDetails}),
-                  contentType: "application/json; charset=utf-8",
-                  dataType: "json",
-                  success: function(data){
-                    $('#paypal-button-container').hide()
-                    $('#modal-paypal-confirmation').addClass('is-active')
-                    $('.paypal-order-details').append(JSON.stringify(data))
-                    // return alert(JSON.stringify(data))
-                  },
-                  failure: function(errMsg) {
-                    // return alert(JSON.stringify(errMsg));
-                  }
-              });
-            })
-          }
-        }).render('#paypal-button-container');
-    })
-
 $('#applyCoupon').on('click', function(){
   var coupon = $('input[name="promoCode"]').val()
   $.ajax({
@@ -438,4 +472,15 @@ function disableCoupon() {
 
 $('#alternate-address').on('click',function(){
   $('#billing-info').removeClass('hidden')
+})
+
+$('input[type=radio]').on('change',function(){
+  var val = $(this).val()
+  if (val == 'addCard') {
+    $('.addCardForm').removeClass('hidden').fadeIn()
+  } else {
+    
+
+    $('.addCardForm').addClass('hidden').fadeOut()
+  }
 })

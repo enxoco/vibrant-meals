@@ -37,12 +37,17 @@ class CheckoutController {
         pickup_location: req.user.pickupLocation
       })
       .where('id', user.id)
+
     var customer = await stripe.customers.retrieve(auth.user.stripe_id)
+
     if (req.user.pickup_location) {
         var location = JSON.parse(req.user.pickup_location)
     }
+
     var cart = JSON.parse(req.cart)
+
     var stripeItems = []
+    
     if (req.billing.shippingCode && req.user.fulfillment_method != 'pickup') {
       stripeItems.push({
         type: 'sku',
@@ -50,12 +55,21 @@ class CheckoutController {
         quantity: 1
       })
     }
+    
     for (var i = 0; i < cart.length; i++) {
       stripeItems.push({
         type: 'sku',
         parent: cart[i].sku,
         quantity: parseInt(cart[i].quantity)
       })
+    }
+
+    if (req.billing.type == 'new') {
+      var source = await stripe.customers.createSource(customer.id, {
+        source: req.billing.paymentId
+      })  
+    } else {
+      var source = {id: req.billing.paymentId}
     }
 
 
@@ -71,14 +85,16 @@ class CheckoutController {
         var store = await Database
         .table('locations')
         .where('id', JSON.parse(req.user.pickup_location).id)
-      var store = store[0]
-      var location = {}
+        
+        var store = store[0]
+        var location = {}
 
-      location.address = store.street_addr
-      location.city = store.city
-      location.state = store.state
-      location.zip = store.zip
-      location.postalCode = store.zip
+        location.address = store.street_addr
+        location.city = store.city
+        location.state = store.state
+        location.zip = store.zip
+        location.postalCode = store.zip
+
         if (req.billing.coupon) {
 
         var order = await stripe.orders.create({
@@ -108,9 +124,10 @@ class CheckoutController {
           email: user.email
         }, function(err, order) {
 
-          if (err){return err}
+          if (err){console.log(err);return err}
           stripe.orders.pay(order.id, {
-            source: req.billing.stripeToken // obtained with Stripe.js
+            customer: customer.id,
+            source: source.id // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
             // asynchronously called
@@ -144,7 +161,8 @@ class CheckoutController {
   
             if (err){return err}
             stripe.orders.pay(order.id, {
-              source: customer.source // obtained from Stripe api
+              customer: customer.id,
+              source: source.id // obtained from Stripe api
             }, function(err, order) {
               if (err) return(err)
 
@@ -176,7 +194,8 @@ class CheckoutController {
         }, function(err, order) {
           if (err){return err}
           stripe.orders.pay(order.id, {
-            source: req.billing.stripeToken // obtained with Stripe.js
+            customer: customer.id,
+            source: source.id // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
 
@@ -341,6 +360,7 @@ class CheckoutController {
 
           if (err){return err}
           stripe.orders.pay(order.id, {
+            
             source: customer.source // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
