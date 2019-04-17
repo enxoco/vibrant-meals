@@ -55,3 +55,28 @@ $('.login-modal-button').on('click', function(e){
       }
     })
   })
+
+    // Simple custom form validation script to prevent user from going through
+  // checkout process if they already have an account.
+  function checkExistingEmail(email) {
+    var email = email.toLowerCase()
+    $.ajax({
+      type: 'GET',
+      url: '/api/user/check',
+      data: {email: email},
+      success: function(res){
+        if (res === "1") {
+          $('.email-billing-feedback').html('<p style="color:red;font-weight:500;text-align:center;">Looks like we already have an account associated with this email. <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a> or <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#passwordResetModal">Reset</a> your password to continue </p>')
+          $('#main :input, #createToken').attr('disabled', 'disabled')
+        } else {
+          $('.email-billing-feedback').html('')
+          $('#main :input, #createToken').removeAttr('disabled')
+        }
+      }
+    })
+  }
+
+  $('#email-bill').on('input', function(){checkExistingEmail($(this).val())})
+
+
+

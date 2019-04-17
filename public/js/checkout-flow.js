@@ -248,24 +248,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   })
     })
 
-    // Simple custom form validation script to prevent user from going through
-    // checkout process if they already have an account.
-    $('#email-bill').on('keyup', function(){
-      $.ajax({
-        type: 'GET',
-        url: '/api/user/check',
-        data: {email: $(this).val()},
-        success: function(res){
-          if (res === "1") {
-            $('.email-billing-feedback').html('<p style="color:red;font-weight:500;text-align:center;">Looks like we already have an account associated with this email. <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a> or <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#passwordResetModal">Reset</a> your password to continue </p>')
-            $('#main :input, #createToken').attr('disabled', 'disabled')
-          } else {
-            $('.email-billing-feedback').html('')
-            $('#main :input, #createToken').removeAttr('disabled')
-          }
-        }
-      })
-    })
+
 
     $('#password_confirmation').on('focusout', function(){
       var pass = $('#password-bill').val()
