@@ -634,17 +634,11 @@ h5.modal-title {
 <!-- Modal -->
 
 <body class="">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" lazyload />
-
-        @!include('Modals.pickupLocations')
-
-        <input type="hidden" id="cords" />
-
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" lazyload />
+  @!include('Modals.pickupLocations')
+  <input type="hidden" id="cords" />
   <div class="wrapper ">
     <div class="sidebar" data-color="white" data-active-color="danger">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
-    -->
       <div class="logo hidden">
         <h2 class="cart-heading">
           Cart
@@ -694,12 +688,6 @@ h5.modal-title {
     <div class="main-panel">
       @!include('layout.user.top-nav')
 
-      <!-- <div class="panel-header panel-header-lg">
-  
-  <canvas id="bigDashboardChart"></canvas>
-  
-  
-</div> -->
 @!section('content')
 
 
@@ -768,26 +756,7 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
 }
 })
 
-function getLocation() {
-  if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-  } else {
-
-  x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
-function showPosition(position) {
-  var cord = [];
-  cord.push(position.coords.longitude);
-  cord.push(position.coords.latitude);
-  $("#cords").val(cord);
-}
-function showError(error) {
-  toastr['warning'](error)
-  getLocationByIp()
-}
-
-  $.getScript('/js/pickup-flow.js')
+$.getScript('/js/pickup-flow.js')
 
 
 </script>
@@ -1199,24 +1168,8 @@ $('select').on('click', function(e){e.preventDefault();e.stopPropagation()})
 //                .register('/sw.js')
 //                .then(function() { console.log("Service Worker Registered"); });
 //     }
-function getLocationByIp(){
-    $.ajax({
-      type: 'GET',
-      url: 'https://icanhazip.com',
-      success: function(res) {
-        $.ajax({
-          type: 'GET',
-          url: 'http://api.ipstack.com/'+res+'?access_key=a30e90d0c810992415e2eb14c1e5e9bb&fields=longitude,latitude,zip',
-          success: function(res) {
-            var test = res.longitude + ',' + res.latitude
-            $('#cords').val(test)
-          }
-        })
-      }
-    })
-}
 
-getLocation()
+
 
 </script>
 

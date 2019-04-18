@@ -334,15 +334,103 @@ a.active.fulfillment-radio {
     position: relative;
     top: 75px;
 }
+.radio {
+  margin: 0.5rem;
+}
+.radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+.radio input[type="radio"] + .radio-label:before {
+  content: '';
+  background: #f4f4f4;
+  border-radius: 100%;
+  border: 1px solid #b4b4b4;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  position: relative;
+  top: -0.2em;
+  margin-right: 1em;
+  vertical-align: top;
+  cursor: pointer;
+  text-align: center;
+  transition: all 250ms ease;
+}
+.radio input[type="radio"]:checked + .radio-label:before {
+  background-color: #3197EE;
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+}
+.radio input[type="radio"]:focus + .radio-label:before {
+  outline: none;
+  border-color: #3197EE;
+}
+.radio input[type="radio"]:disabled + .radio-label:before {
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+  border-color: #b4b4b4;
+  background: #b4b4b4;
+}
+.radio input[type="radio"] + .radio-label:empty:before {
+  margin-right: 0;
+}
+
+.list-item {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 22px;
+  letter-spacing: 1.83333px;
+  text-transform: uppercase;
+
+  color: #444749;
+
+  mix-blend-mode: normal;
+  opacity: 0.87;
+}
+.list-item.active {
+    background: #aad0ae;
+    color: white;
+}
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #aad0ad;
+    border-color: #aad0ad;
+}
+li.list-group-item.d-flex.justify-content-between.align-items-center {
+  border: none;
+    border-bottom: 1px solid gainsboro;
+}
+.col.store-hours.is-pulled-right {
+    font-size: 1.5em;
+    font-weight: 600;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #aad0ac;
+}
+
+.col.date-list-item {
+    font-size: 1.5em;
+    font-weight: 900;
+}
+li.list-group-item.button-group {
+    text-align: center;
+}
+
 </style>
 
 </head>
-@!include('Modals.auth')
+
 <body class="">
-
-        <input type="hidden" id="cords" />
-
+  <input type="hidden" id="cords" />
   <div class="wrapper ">
+
     @!include('layout.user.top-nav')
 
 @!section('content')
@@ -367,7 +455,7 @@ toastr.options = {
   "closeButton": true,
   "debug": false,
   "newestOnTop": false,
-  "progressBar": true,
+  "progressBar": false,
   "positionClass": "toast-top-right",
   "preventDuplicates": true,
   "onclick": null,
@@ -421,7 +509,7 @@ $('#password_reset_button').on('click', function(e){
 // Logic for handling fulfillment preferences on user profile page.
 
 $(function () {
-   $('input[type=checkbox]').change(function(e) {
+   $('input[type=radio]').change(function(e) {
        e.preventDefault();
        if ($(this).val() == 'monday') {
         localStorage.fulfillment_day = $(this).val()
@@ -435,13 +523,15 @@ $(function () {
        }
        if ($(this).val() == 'pickup') {
         localStorage.fulfillment_method = $(this).val()
+        //This needs to trigger pickup-flow.js in order to set users pickup location
 
-         $('#delivery-switch').prop('checked', false)
        }
        if ($(this).val() == 'delivery') {
         localStorage.fulfillment_method = $(this).val()
+        localStorage.removeItem('pickupLocation')
+        localStorage.removeItem('myStore')
+        localStorage.removeItem('pickup_location')
 
-         $('#pickup-switch').prop('checked', false)
        }
        $(this).prop('checked', true);
        $.ajax({
@@ -471,19 +561,6 @@ $(document).ready(function(){
 
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 
-<script>
-
-function span1(e){
-  var input = $('.section-description.editable > .ql-editor').html()
-  $.ajax({
-    type: 'POST',
-    url: '/how-it-works/update',
-    data: {id: 'span1', content: input}
-  })
-  console.log(input)
-		return
-	}
-  </script>
  <script src='/js/update-cart.js'>
  </script>
 <script>
@@ -505,4 +582,20 @@ $(document).ready(function(){
 //                .then(function() { console.log("Service Worker Registered"); });
 //     }
    </script>
-  
+<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
+   <script src="/js/pickup-flow.js"></script>
+  <script>
+      $.ajax({
+    type: 'GET',
+    url: '/api/stores/all',
+    success: function(data) {
+      if (data.features && data.features.length != 0) {
+        $('body').append("<div id='stores' data-stores='"+JSON.stringify(data)+"'></div>")
+      } else {
+        toastr['warning']('Error loading store locations please refresh the page')
+      }
+    }
+  })
+
+  </script>

@@ -3,233 +3,114 @@
 
 <div class="content">
   <div class="row pt-5">
-    <div class="col-md-5 mx-auto">
-      <div class="card card-user card-profile">
-        <div class="image">
-        </div>
-        <div class="card-body">
-          <div class="author">
-					  <h2 class="title d-flex justify-content-center">{{customer.metadata.name}}</h5>
-					  <h4 class="title d-flex justify-content-center">{{customer.email}}</h5>
-			      <hr class="mb-5">
-				    <h4 class="title d-flex justify-content-center">Billing Info</h4>
-				    <form id="billing">
-						  <div class="row">
-								<div class="col">
-									<div class="form-group">
-										<label>Street Address</label>
-										<input type="street" name="street" required value="{{customer.shipping.address.line1}}" class="form-control">
-									</div>
-								</div>
-						  </div>
-						  <div class="row">
-								<div class="col">
-								  <div class="form-group">
-										<label>City</label>
-										<input type="text" name="city" required value="{{customer.shipping.address.city}}" class="form-control">
-									</div>
-								</div>
-								<div class="col">
-									<div class="form-group">
-										<label>State</label>
-										<input type="text" name="state" required value="{{customer.shipping.address.state}}" class="form-control">
-									</div>
-								</div>
-											  <div class="col">
-													<div class="form-group">
-													  <label>Zip Code</label>
-													<input type="text" name="postal_code" required value="{{customer.shipping.address.postal_code}}" class="form-control">
-													</div>
-												  </div>
-							  </div>
-							  <div class="row">
-									<div class="update ml-auto mr-auto">
-									  <a class="btn btn-success update-billing">Update</a>
-									</div>
-								  </div>
-				  </form>
-                </div>
-
-              </div>
-
-              <div class="card-footer">
-
-                <hr>
-                <div class="button-container">
-                  <div class="row">
-                    <div class="col-lg-3 col-md-6 col-6 ml-auto">
-                      <h5>
-                        {{customer.orders.data.length}}
-                        <br>
-                        <small>Past Orders</small>
-                      </h5>
-                    </div>
-
-                    <div class="col-lg-3 mr-auto">
-                      <h5>${{customer.totalSpend / 100}}
-                        <br>
-                        <small>Total Spent</small>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card card-profile">
-                    <div class="card-header">
-                      <h4 class="card-title">Update Password</h4>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-unstyled team-members">
-                        <li>
-                          <div class="row">
-                            <div class="col-md-12 col-12">
-									<div class="row">
-											<div class="col">
-													<div class="form-group">
-													  <label>New Password</label>
-													  <input type="password" name="password" required class="form-control">
-													</div>
-												  </div>
-												  <div class="col">
-														<div class="form-group">
-														  <label>Confirm password</label>
-														  <input type="password" name="password_confirmation" required class="form-control">
-														</div>
-													  </div>
-										  </div>
-
-                            </div>
-
-                          </div>
-                        </li>
-
-                      </ul>
-                      <div class="row">
-                          <div class="update ml-auto mr-auto">
-                            <button type="submit" class="btn btn-success update-password">Update</button>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-		  </div>
+    <div class="col mx-auto">
+      @!include('layout.user.profile.billing')
+      @!include('layout.user.profile.password')
+      @!include('Modals.pickupLocations')
+		  </div><!--/col-->
 		  
-		  <div class="col-md-5 mx-auto">
+		  <div class="col mx-auto">
 
 				<div class="card card-profile">
 						<div class="card-header">
 						  <h4 class="card-title">Order Preferences</h4>
 						</div>
 						<div class="card-body">
-						  <ul class="list-unstyled team-members">
-							<li>
-							  <div class="row">
-								<div class="col-md-12 col-12 mr-10">
-									<div class="row">
-                      <div class="col-md-2 col-lg-2 col"></div>
-                      <div class="col">
-  
-                        <div class="form-group" id="fulfillment-method">
-                            <span class="switch switch-lg">
-                              <input type="checkbox" class="switch" id="pickup-switch" value="pickup"
-                              @if(customer.metadata.fulfillment_method == 'pickup')
-                                checked
-                              @endif
-                              >
-                              <label for="pickup-switch" class="switch-label">Pickup</label>
-                            </span>
-                            <span class="switch switch-lg">
-                                <input type="checkbox" class="switch" id="delivery-switch" value="delivery"
-                                @if(customer.metadata.fulfillment_method == 'delivery')
-                                  checked
-                                @endif
-                                >
-                                <label for="delivery-switch" class="switch-label">Delivery</label>
-                              </span>
-                          </div>
-                    </div>
+              <div class="row">
+                <div class="col col-md-6 col-lg-6 mx-auto">
+                  <div class="radio">
+                    <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal" data-target="#modal-pickup"
+                      @if(customer.metadata.fulfillment_method == 'pickup')
+                        checked
+                      @endif
+                    >
+                    <label for="pickupRadio" class="radio-label">Pickup</label>
                   </div>
-                  <div class="row">
-                    <div class="col-md-2 col-lg-2 col"></div>
-                    <div class="col">
+                </div>
+                <div class="col col-md-6 col-lg-6 mx-auto">
+                  <div class="radio">
+                    <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery" 
+                      @if(customer.metadata.fulfillment_method == 'delivery')
+                        checked
+                      @endif
+                    >
+                    <label for="deliveryRadio" class="radio-label">Delivery</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6 col-lg-6 mx-auto">
+                  <div class="radio">
+                    <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
+                      @if(customer.metadata.fulfillment_day == 'monday')
+                        checked
+                      @endif
+                    >
+                    <label for="monday-switch" class="radio-label">Monday</label>
+                  </div>
+                </div>
+                <div class="col col-md-6 col-lg-6 mx-auto">
+                  <div class="radio">
+                    <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday" 
+                      @if(customer.metadata.fulfillment_day == 'wednesday')
+                        checked
+                      @endif
+                    >
+                    <label for="wednesday-switch" class="radio-label">Wednesday</label>
+                  </div>
+                </div>
+              </div>
 
-                          <div class="form-group" id="fulfillment-day">
-                              <span class="switch switch-lg">
-                                <input type="checkbox" class="switch" id="monday-switch" value="monday"
-                                @if(customer.metadata.fulfillment_day == 'monday')
-                                  checked
-                                @endif
-                                >
-                                <label for="monday-switch" class="switch-label">Mondays</label>
-                              </span>
-                              <span class="switch switch-lg">
-                                  <input type="checkbox" class="switch" id="wednesday-switch" value="wednesday"
-                                  @if(customer.metadata.fulfillment_day == 'wednesday')
-                                    checked
-                                  @endif
-                                  >
-                                  <label for="wednesday-switch" class="switch-label">Wednesdays</label>
-                                </span>
-                            </div>
-                    </div>
-									</div>
-								</div>
-	
-							  </div>
-							</li>
-	
-						  </ul>
+            </div>
 
-						</div>
-					  </div>
-					  <div class="card card-profile">
-							<div class="card-header">
-							  <h4 class="card-title"> Recent Orders</h4>
-							</div>
-							<div class="card-body">
-							  <div class="table-responsive">
-								<table class="table" id="recent_orders">
-								  <thead class=" text-primary">
-									<th>
-									  Order Number
-									</th>
-									<th>
-									  Order Total
-									</th>
-									<th>
-									  Pickup/Delivery
-                  </th>
-                  <th>
-                    Pickup/Delivery Date
-                  </th>
-	
-								  </thead>
-								  <tbody>
-									  @each(p in customer.orders.data)
-									<tr>
-									  <td>
-										{{p.metadata.orderId}}
-									  </td>
-									  <td>
-											{{currency(p.amount)}}
-									  </td>
-									  <td>
-										{{p.metadata.fulfillment_method}}
-                    </td>
-                    <td>
-                      {{p.metadata.fulfillment_date}}
-                    </td>
-	
-									</tr>
-									@endeach  
-								  </tbody>
-								</table>
-							  </div>
-							</div>
-						  </div>
-		
-			  </div>
+            </div>
+            <div class="card card-profile">
+                <div class="card-header">
+                  <h4 class="card-title"> Recent Orders</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                  <table class="table" id="recent_orders">
+                    <thead class=" text-primary">
+                    <th>
+                      Order Number
+                    </th>
+                    <th>
+                      Order Total
+                    </th>
+                    <th>
+                      Pickup/Delivery
+                    </th>
+                    <th>
+                      Pickup/Delivery Date
+                    </th>
+    
+                    </thead>
+                    <tbody>
+                      @each(p in customer.orders.data)
+                    <tr>
+                      <td>
+                      {{p.metadata.orderId}}
+                      </td>
+                      <td>
+                        {{currency(p.amount)}}
+                      </td>
+                      <td>
+                      {{p.metadata.fulfillment_method}}
+                      </td>
+                      <td>
+                        {{p.metadata.fulfillment_date}}
+                      </td>
+    
+                    </tr>
+                    @endeach  
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+                </div>
+            </div>
+ 
 
         </div>
 
@@ -254,7 +135,6 @@
       }
 
 
-        getScript('/js/jquery-2.2.4.min.js',function(){
                 getScript('/js/jquery.fileupload.min.js', function(){
                     getScript('/js/cloudinary-jquery-file-upload.min.js', function(){
                         const configSettings = {
@@ -408,7 +288,6 @@ $(function() {
 });
                     })
                 })
-        });
     })();
 
 
