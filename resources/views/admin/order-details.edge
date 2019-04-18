@@ -30,7 +30,14 @@
             <h4>Paid on: <strong>{{convertTime(order.status_transitions.paid)}}</strong></h4>
 
             <a class="btn btn-danger btn-lg order-details-update" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
-            <a class="btn btn-warning btn-lg order-details-update" data-order="{{order.charge}}" data-status="refund">Refund Order</a>
+            <div class="input-group mb-3 col-3">
+                    <input type="text" class="form-control" name='refund-amount' placeholder="{{order.amount}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <a class="btn btn-outline-secondary order-details-update" data-order="{{order.charge}}" data-status="refund">Refund</a>
+                    </div>
+                  </div>
+                  
+            <a class="btn btn-warning btn-lg order-details-update" data-order="{{order.charge}}" data-status="refund">Refund Order</a><br />
             <a class="btn btn-success btn-lg order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Order as fulfilled</a>
 
             <h4>Order metadata: <strong><pre>{{toJSON(order.metadata)}}</pre></strong></h4>

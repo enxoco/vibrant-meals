@@ -3509,6 +3509,9 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
     padding-left: 5px;
     padding-right: 5px;
   }
+  .card {
+    min-height: 97%;
+  }
   .navbar-search-form {
     display: none;
   }
@@ -5031,7 +5034,7 @@ License - nucleoapp.com/license/
   position: relative;
   float: left;
   width: calc(100% - 20%);
-  background-color: #f2f2f2;
+  background-color: #f9f9f9;
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);

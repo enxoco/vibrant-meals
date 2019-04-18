@@ -88,15 +88,23 @@ hooks.after.providersBooted(() => {
     if (count.length == 0) {
       return this.safe('<div class="col-9 pb-2"></div>')
     }
+
+    function addGrams(name, value){
+      if (name.toLowerCase() == 'fats' || name.toLowerCase() == 'carbs' || name.toLowerCase() == 'proteins') {
+        return `${value}g`
+      } else {
+        return '0'
+      }
+    }
     var div = ``
-    if (count.length >= 3) {
+    if (count.length >= 4) {
       for (var i = 0; i < Object.keys(obj).length; i++) {
-        if (i == 3) {break}
+        if (i == 4) {break}
         var name = Object.keys(obj)[i]
         var value = obj[name]
-        div += `<div class="col-3 ml-auto d-none d-lg-block">
+        div += `<div class="col-2 ml-auto d-none d-lg-block">
         <h5>
-         ${value}
+         ${addGrams(name, value)}
           <br>
           <small>${_.capitalize(name)}</small>
         </h5>

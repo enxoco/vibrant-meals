@@ -26,7 +26,6 @@
       </section>
       <!--/Filters-->
     </div>
-    <div class="row">
       
       <div class="menu-hide">
         <a href="#" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
@@ -34,23 +33,27 @@
         <a href="#" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
         <a href="#" data-filter="Performance" class="filter-button"><h2 class="category-heading">Performance</h2></a>
       </div>    
+      <div class="row row-eq-height">
 
       @each(item in items)
 
         @unless(item.active === false)
         @unless(item.id === 'shipping')
           <!-- Start of individual Product card -->
+          <div class="col-12 col-lg-4 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
+
           @!include('menu.product-card-mobile')
 
           @!include('menu.product-card-desktop')
           @!include('Modals.product-card')
-
-        </div>
+          </div>
         <!--/individual product card-->
         @endunless
         @endunless
 
         @endeach
+      </div>
+
         </div>
       <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
@@ -67,8 +70,7 @@
           </div>
         </div>
       </footer>
-    </div>
-  </div>
+
   <!--   Core JS Files   -->
 
 </body>

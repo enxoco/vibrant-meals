@@ -471,17 +471,17 @@ toastr.options = {
 
 
 
-$(window).scroll(function () {
-  var height = $(window).scrollTop();
-  console.log(height)
-  if (height > 40) {
-    $('.navbar').removeClass('navbar-transparent')
+// $(window).scroll(function () {
+//   var height = $(window).scrollTop();
+//   console.log(height)
+//   if (height > 40) {
+//     $('.navbar').removeClass('navbar-transparent')
 
-  } else {
-    $('.navbar').addClass('navbar-transparent')
+//   } else {
+//     $('.navbar').addClass('navbar-transparent')
 
-  }
-});
+//   }
+// });
 
 $('#password_reset_button').on('click', function(e){
   e.preventDefault()
@@ -571,8 +571,13 @@ $(document).ready(function(){
 
     $( "a.scrollLink" ).click(function( event ) {
         event.preventDefault();
-        // $('html, body').animate({scrollTop: $('#contact').offset().top -100 }, 'slow');
-        $("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top - 100 }, 500);
+        console.log(window.location.href)
+        if (window.location.href === 'http://localhost:3333/') {
+          $("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top - 200 }, 500);
+        } else {
+          window.location.href = 'http://localhost:3333/#how-it-works'
+
+        }
     });
 });
 
