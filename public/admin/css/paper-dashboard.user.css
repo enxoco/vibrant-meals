@@ -6371,6 +6371,9 @@ License - nucleoapp.com/license/
 }
 
 @media screen and (max-width: 767px) {
+  .sidebar .nav, .off-canvas-sidebar .nav {
+    margin-top: 0px !important;
+  }
   .nav-tabs-navigation.verical-navs {
     padding: 0 28px;
   }
