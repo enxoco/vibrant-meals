@@ -31,9 +31,6 @@ class AdminController {
       return error
     }
     return 'success'
-
-
-
   }
 
   async publishItems({response}) {
@@ -62,6 +59,7 @@ class AdminController {
     obj = JSON.parse(obj)
     for (var i = 0; i < obj.length; i++){
       var parent = obj[i]
+
       var product = await stripe.products.create({
           name: parent.name,
           type: 'good',

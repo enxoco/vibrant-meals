@@ -3509,7 +3509,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
     padding-left: 5px;
     padding-right: 5px;
   }
-  .card {
+  .card-product {
     min-height: 97%;
   }
   .navbar-search-form {
@@ -4454,6 +4454,10 @@ License - nucleoapp.com/license/
   margin-bottom: 0;
 }
 
+.card-product > .card-body {
+  height: 100px;
+}
+
 .card-tasks .card-body .table>thead>tr>th,
 .card-tasks .card-body .table>tbody>tr>th,
 .card-tasks .card-body .table>tfoot>tr>th,
@@ -4631,6 +4635,7 @@ License - nucleoapp.com/license/
   overflow: auto;
   z-index: 4;
   padding-bottom: 100px;
+  overflow-x: hidden;
 }
 
 .sidebar .sidebar-wrapper .dropdown .dropdown-backdrop,
@@ -5486,6 +5491,7 @@ License - nucleoapp.com/license/
 }
 
 .card {
+  cursor: pointer;
   border-radius: 12px;
   box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
   background-color: #FFFFFF;

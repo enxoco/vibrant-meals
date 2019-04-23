@@ -35,18 +35,18 @@
     @!include('Checkout.express')
   @else
     <div class="row">
-      <div class="col-12 col-md-5 col-lg-5 mx-auto">
+      <div class="col-12 col-md-6 col-lg-6 mx-auto">
         @!include('Checkout.basic-info')
 
-        <div id="pickupDaysList" class="card card-user">
-          <div class="card card-user">
+        <div id="pickupDaysList" class="card card-user card-checkout">
+          <div class="card card-user card-checkout">
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-5 col-lg-5 order-md-1 mx-auto">
+      <div class="col-12 col-md-6 col-lg-6 order-md-1 mx-auto">
         @!include('Checkout.billing-info') 
         @!include('Checkout.shipping-info')
-        <div class="card card-user">
+        <div class="card card-user card-checkout">
           <h4 class="mb-3 d-flex justify-content-center">Payment Method</h4>
           <div class="card-body">
             <form id="payment-form">

@@ -10,7 +10,6 @@ hooks.after.providersBooted(() => {
     
     label = label.replace(' ', '_')
     label = label.toLowerCase()
-    console.log(label)
     return label
   })
 
@@ -20,7 +19,6 @@ hooks.after.providersBooted(() => {
     var year = moment().format("YYYY-MM-DD")
     var dateString = year + " " + time
     var timeToClosing = moment(dateString.toString()).countdown()
-    console.log(dateString.toString())
     if (timeToClosing.hours == 0) {
       return this.safe('<a style="color:red;">'+ timeToClosing +'</a>')
     } else {
@@ -30,18 +28,15 @@ hooks.after.providersBooted(() => {
   })
 
   View.global('currency', function(num) {
-    console.log(num)
 
     return `$${(num / 100).toFixed(2) * 1}`
   })
 
   View.global('splitFilterTags', function(obj){
-    console.log(obj)
     if (obj == undefined) {
       return obj
     } else {
       obj =  obj.replace(' ', '_')
-      console.log(obj.replace(/,/g, ' '))
       return obj.replace(/,/g, ' ')
     }
     // return obj.replace(/,/g, ' ')
@@ -79,13 +74,19 @@ hooks.after.providersBooted(() => {
   })
 
   View.global('nutritionFooterDesktop', function(obj){
-    delete obj.category
-    delete obj.size
-    delete obj.filters
-    delete obj.name
-    delete obj.description
-    var count = Object.keys(obj)
-    if (count.length == 0) {
+    console.log('hello')
+    var newObj = Object.assign({}, obj);
+
+
+    delete newObj.category
+    delete newObj.size
+    delete newObj.filters
+    delete newObj.name
+    delete newObj.description
+    var count = Object.keys(newObj)
+    console.log(count)
+  
+    if (count.length < 4) {
       return this.safe('<div class="col-9 pb-2"></div>')
     }
 
@@ -98,10 +99,10 @@ hooks.after.providersBooted(() => {
     }
     var div = ``
     if (count.length >= 4) {
-      for (var i = 0; i < Object.keys(obj).length; i++) {
+      for (var i = 0; i < Object.keys(newObj).length; i++) {
         if (i == 4) {break}
-        var name = Object.keys(obj)[i]
-        var value = obj[name]
+        var name = Object.keys(newObj)[i]
+        var value = newObj[name]
         div += `<div class="col-2 ml-auto d-none d-lg-block">
         <h5>
          ${addGrams(name, value)}
@@ -115,13 +116,24 @@ hooks.after.providersBooted(() => {
       return this.safe(div)
   })
 
+  View.global('menuPage', function(){
+    if (window.location.href.includes('menu')) {
+      return true
+    } else {
+      return false
+    }
+  })
   View.global('nutritionFooterMobile', function(obj){
-    delete obj.category
-    delete obj.size
-    delete obj.filters
-    delete obj.name
-    delete obj.description
-    var count = Object.keys(obj)
+    var newObj = Object.assign({}, obj);
+
+
+    delete newObj.category
+    delete newObj.size
+    delete newObj.filters
+    delete newObj.name
+    delete newObj.description
+    var count = Object.keys(newObj)
+
     if (count.length == 0) {
       return this.safe('<div class="col-9 pb-2"></div>')
     }
@@ -129,10 +141,10 @@ hooks.after.providersBooted(() => {
     if (count.length >= 3) {
       div = '<div class="col-10 d-flex justify-content-between">'
 
-      for (var i = 0; i < Object.keys(obj).length; i++) {
+      for (var i = 0; i < Object.keys(newObj).length; i++) {
         if (i == 3) {break}
-        var name = Object.keys(obj)[i]
-        var value = obj[name]
+        var name = Object.keys(newObj)[i]
+        var value = newObj[name]
         div += `${_.capitalize(name)}:<strong>${value}</strong>`
       }
       div += '</div>'

@@ -1,6 +1,7 @@
 
 $(document).on('click', '#pickupRadio', function () {
-
+  getLocation()
+  $('.delivery-desc').html('')
   $('.delivery-fee').html('0')
   localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')
@@ -8,9 +9,7 @@ $(document).on('click', '#pickupRadio', function () {
   $('.shipping-form').hide()
 
   $('.shipping-form').hide()
-  $('#pickupRadio').closest('.fulfillment-option').addClass('active')
-  $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
-  $('.cart-icon-label.delivery').html('')
+
 
   localStorage.setItem("fulfillment_method", "pickup")
 
@@ -162,8 +161,7 @@ $(document).on('click', '#pickupRadio', function () {
       $('.store-desc').html(JSON.parse(localStorage.myStore).name)
     }
     updateCartDiv()
-    $('#pickupRadio').closest('.fulfillment-option').addClass('active')
-    $('#deliveryRadio').closest('.fulfillment-option').removeClass('active')
+
   })
 })
 
@@ -174,8 +172,6 @@ $(document).on('click', '#delivery', function () {
 
   localStorage.setItem("fulfillment_method", "delivery")
   updateCartDiv()
-  $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
-  $('#deliveryRadio').closest('.fulfillment-option').addClass('active')
   setTimeout(function () {
     $('#modal-initial-click').modal('toggle')
   }, 500);
@@ -187,8 +183,7 @@ $(document).on('click', '#delivery', function () {
 $(document).on('click', '#pickup', function () {
   var stores = $('#stores').data('stores')
 
-  $('a#pickupRadio').addClass('active')
-  $('a#deliveryRadio').removeClass('active')
+
   localStorage.setItem("fulfillment_method", "pickup")
   setTimeout(function () {
     $('#modal-initial-click').modal('toggle')
@@ -334,8 +329,7 @@ $(document).on('click', '#pickup', function () {
       $('.store-desc').html(JSON.parse(localStorage.myStore).name)
     }
     updateCartDiv()
-    $('#pickupRadio').addClass('active')
-    $('#deliveryRadio').removeClass('active')
+
   })
 })
 
@@ -361,11 +355,13 @@ function formatDate(date) {
 }
 
 function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
-  } else {
-
-    x.innerHTML = "Geolocation is not supported by this browser.";
+  if ($('.coords').val() != "") {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+  
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
   }
 }
 function showPosition(position) {
@@ -375,7 +371,6 @@ function showPosition(position) {
   $("#cords").val(cord);
 }
 function showError(error) {
-  toastr['warning'](error)
   getLocationByIp()
 }
 function getLocationByIp() {

@@ -104,11 +104,14 @@ class ItemController {
    * 
    */
     async hideItem ({ params, response }) {
-      stripe.products.update(params.itemId, {active: false,})
+      stripe.products.update(params.itemId, {active: false})
+      await this.updateItems()
       return response.redirect('back')
     }
     async showItem ({ params, response }) {
-      stripe.products.update(params.itemId, {active: true,})
+      stripe.products.update(params.itemId, {active: true})
+      await this.updateItems()
+
       return response.redirect('back')
     }
 
@@ -153,8 +156,10 @@ class ItemController {
         stripe.products.update(parent, {
           name: prod.name,
           description: prod.description,
+          active: prod.status,
           metadata: {
             primary_category: prod.primary_category,
+            active: prod.status
 
           }
         })

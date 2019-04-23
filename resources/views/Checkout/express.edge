@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col col-md-8 col-lg-8 mx-auto">
-    <div class="card card-user">
+    <div class="card card-user card-checkout">
       <div class="card-body ">
         <div class="col">
           <div class="row">
@@ -11,7 +11,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Billing: &nbsp</span>
                   </div>
-                  <input type="text" class="form-control" name="express-bill" value="{{billing.shipping.address.line1}},{{billing.shipping.address.city}},{{billing.shipping.address.state}},{{billing.shipping.address.postal_code}}" disabled/>
+                  <input type="text" class="form-control muted" name="express-bill" value="{{billing.shipping.address.line1}},{{billing.shipping.address.city}},{{billing.shipping.address.state}},{{billing.shipping.address.postal_code}}" disabled/>
                   <div class="input-group-append">
                     <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"></i></span>
                   </div>
@@ -20,7 +20,7 @@
                   <form id="main" class="needs-validation" novalidate>
                     <div class="mb-3">
                       <label for="address">Address</label>
-                      <input type="text" class="form-control" name="street-bill" value="{{billing.shipping.address.line1}}" required>
+                      <input type="text" class="form-control muted" name="street-bill" value="{{billing.shipping.address.line1}}" required>
                       <div class="invalid-feedback">
                         Please enter your billing.shipping.address address.
                       </div>
@@ -28,13 +28,13 @@
 
                     <div class="mb-3">
                       <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                      <input type="text" class="form-control" name="street2-bill">
+                      <input type="text" class="form-control muted" name="street2-bill">
                     </div>
 
                     <div class="row">
                       <div class="col-4 mb-3">
                         <label for="city">City</label>
-                        <input type="text" class="form-control" name="city-bill" value="{{billing.shipping.address.city}}">
+                        <input type="text" class="form-control muted" name="city-bill" value="{{billing.shipping.address.city}}">
                       </div>
                       <div class="col-4 col-md-4 mb-3">
                         <label for="state">State</label>
@@ -100,21 +100,21 @@
                       </div>
                       <div class="col-md-4 col-4 mb-3">
                         <label for="zip">Zip</label>
-                        <input type="text" class="form-control" name="zip-bill" placeholder="" value="{{billing.shipping.address.postal_code}}" required>
+                        <input type="text" class="form-control muted" name="zip-bill" placeholder="" value="{{billing.shipping.address.postal_code}}" required>
                         <div class="invalid-feedback">
                           Zip code required.
                         </div>
                       </div>
                       <div class="col-6 mb-3">
                         <label for="allergy_info">Allergy Info</label>
-                        <input type="text" class="form-control" name="allergy_info" placeholder="" required>
+                        <input type="text" class="form-control muted" name="allergy_info" placeholder="" required>
                         <div class="invalid-feedback">
                           Allergy information
                         </div>
                       </div>
                       <div class="col-6 col-md-6 mb-3">
                         <label for="delivery_notes">Additional notes</label>
-                        <input type="text" class="form-control" name="delivery_notes" placeholder="" required>
+                        <input type="text" class="form-control muted" name="delivery_notes" placeholder="" required>
                         <div class="invalid-feedback">
                           Notes for order
                         </div>
@@ -127,14 +127,14 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Order availability: &nbsp</span>
                   </div>
-                  <input type="text" class="form-control" id="fulfillment-date" disabled/>
+                  <input type="text" class="form-control muted" id="fulfillment-date" disabled/>
                   <div class="input-group-append">
                     <span class="input-group-text"><i data-feather="edit-3" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"></i></span>
                   </div>
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                   <div id="pickupDaysList">
-                    <div class="card card-user border-none">
+                    <div class="card card-user card-checkout border-none">
                     </div>
                   </div>
                 </div>
@@ -192,7 +192,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-6">
-                                  <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
+                                  <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control muted" />
                                 </div>
                                 <div class=" col-6 d-flex justify-content-end">
                                   <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>

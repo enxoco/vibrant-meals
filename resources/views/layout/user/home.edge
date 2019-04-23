@@ -587,8 +587,8 @@ $(document).ready(function(){
 //                .then(function() { console.log("Service Worker Registered"); });
 //     }
    </script>
-<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
+  <script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+  <script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
    <script src="/js/pickup-flow.js"></script>
   <script>
       $.ajax({
@@ -601,6 +601,40 @@ $(document).ready(function(){
         toastr['warning']('Error loading store locations please refresh the page')
       }
     }
+  })
+
+  $('.update-billing').on('click', function(){
+    console.log('hello')
+    var form = $('#billing')
+    $.ajax({
+      type: 'POST',
+      url: '/account/billing/update',
+      data: form.serialize(),
+      success: function(res){
+        toastr['success']('Address updated successfully')
+      }
+    })
+  })
+
+  $('.update-password').on('click', function(){
+    if ($('input[name=password]').val() === $('input[name=password_confirmation]').val()) {
+      var data = {
+        password: $('input[name=password]').val(),
+        password_confirmation: $('input[name=password_confirmation]').val(),
+        email: $('#email').val()
+      }
+      $.ajax({
+      type: 'POST',
+      url: '/account/password',
+      data: data,
+      success: function(res){
+        toastr['success']('Password updated successfully')
+        $('input[name=password]').val('')
+        $('input[name=password_confirmation]').val('')
+      }
+    })
+    }
+
   })
 
   </script>

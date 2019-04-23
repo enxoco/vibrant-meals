@@ -22,6 +22,8 @@ function updateCartDiv() {
     success: console.log('Options updated')
   })
   if (orderMethod == 'pickup') {
+    $('.delivery-desc').html('&nbsp')
+
     $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
       localStorage.setItem('fulfillment_method', 'delivery')
@@ -34,10 +36,13 @@ function updateCartDiv() {
       }
     } else {
       localStorage.setItem('fulfillment_method', 'delivery')
-
       localStorage.removeItem('pickup_location')
       localStorage.removeItem('pickupLocation')
       localStorage.removeItem('myStore')
+      $('.store-desc').html('&nbsp')
+
+      $('.delivery-desc').html('Select delivery address at checkout')
+
   }
 
 

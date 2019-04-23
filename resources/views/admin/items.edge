@@ -1,6 +1,43 @@
 @layout('layout.admin.master')
 @section('content')
       <div class="content">
+        <div class="row mb-5">
+
+          <div class="col-2 pl-5">
+              <div class="switch white">
+
+                <input type="radio" name="switch" id="switch-off">
+                <input type="radio" name="switch" id="switch-on" checked>
+          
+                <label for="switch-off"><i data-feather="eye-off"></i></label>
+                <label for="switch-on"><i data-feather="eye"></i></label>
+          
+                <span class="toggle"></span>
+              </div>
+        
+            </div> <!-- end switch -->
+          <div class="col">
+              <section id="category-container">
+
+                  <div class="img-container">
+                      <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
+                  </div>
+                        <div class="img-container">
+                        <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button"><h2 class="category-heading">Lunch &amp; Dinner</h2></a>
+                      </div>
+                      <div class="img-container">
+                        <a href="#" data-filter="Drinks" class="Drinks filter-button"><h2 class="category-heading">Drinks</h2></a>
+                      </div>
+                      <div class="img-container">
+                        <a href="#" data-filter="Snacks" class="Snacks filter-button"><h2 class="category-heading">Snacks</h2></a>
+                      </div>
+                      <div class="img-container">
+                        <a href="#" data-filter="Breakfast" class="Breakfast filter-button"><h2 class="category-heading">Breakfast</h2></a>
+                      </div>
+        
+                </section>
+          </div>
+        </div>
         <div class="row">
 
           @each(item in items)

@@ -35,12 +35,11 @@ data-toggle="modal" data-target="#{{item.id}}"
   </div>
 </div>
 <div class="card-footer">
-  <hr class="d-none d-lg-block">
     <div class="button-container">
       <div class="row ">
         {{nutritionFooterDesktop(item.skus.data[0].metadata)}}
         
-        <div class="col-2 mx-auto">
+        <div class="col-2 mx-auto d-flex justify-content-end">
           <a class="checkout-prompt-1"
             data-id="{{item.id}}"
             data-sku="{{item.skus.data[0].id}}" 
@@ -51,7 +50,7 @@ data-toggle="modal" data-target="#{{item.id}}"
             href="#" 
             class="is-pulled-right"
           >
-          <img src="/images/cart-icon.png" height="40px" onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)" onmousedown="hoverCart(this)" />
+          <img src="/images/shopping-cart-add-button-inactive.png" height="40px" onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)" onmousedown="hoverCart(this)" />
           </a>
         </div>
       </div>

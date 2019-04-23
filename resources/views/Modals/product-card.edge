@@ -1,53 +1,66 @@
 <div class="modal fade" id="{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="{{item.skus.data[0].id}}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="border:none;">
                 <h5 class="modal-title" style="margin: 0 auto;">{{item.name}}</h5>
                 <i data-feather="x" data-dismiss="modal" class="feather-bold"></i>
 
             </div>
             <div class="modal-body text-md">
-                <div class="col-8 mx-auto">
-                <img class="lazy" data-src="{{secure(item.skus.data[0].image)}}" />
+                <div class="col-12 mx-auto">
+                    <img class="lazy mb-5" data-src="{{secure(item.skus.data[0].image)}}" />
+
+                    {{item.description}}
+                    <hr class="mb-5">
+                    <div class="row" style="text-align:center;">
+                        <div class="col mx-auto">
+                            @if(item.skus.data[0].metadata.calories)
+                                Calories: <strong>{{item.skus.data[0].metadata.calories}}</strong>
+                            @else
+                                Calories: <strong>0</strong>
+                            @endif
+                        </div>
+                        <div class="col mx-auto">
+                            @if(item.skus.data[0].metadata.fats)
+                                Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
+                            @else
+                                Fats: <strong>0</strong>
+                            @endif
+                        </div>
+                        <div class="col mx-auto">
+                            @if(item.skus.data[0].metadata.proteins)
+                                Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
+                            @else
+                                Protein: <strong>0</strong>
+                            @endif                        
+                        </div>
+                        <div class="col mx-auto">
+                            @if(item.skus.data[0].metadata.carbs)
+                                Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
+                            @else
+                                Carbs: <strong>0</strong>
+                            @endif                        
+                        </div>
+                    </div>
                 </div>
-                <hr />
-                {{item.description}}
-                <hr />
-                Cal: <strong>{{item.skus.data[0].metadata.calories}}</strong>
-                @if(item.skus.data[0].metadata.fats)
-                Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                @else
-                Fats: <strong>0</strong>
 
-                @endif
-                Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-                Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
-
-            <div class="row">
-                @if(item.skus.data[0].metadata.filters)
-                    <div class="col">
-                        @each(f in item.skus.data[0].metadata.filters.split(','))
-                        <span class="badge badge-success nutrition-badge">{{f}}</span>
-                        @endeach
-                        </div> 
-                        @endif    
             </div>
+            <div class="modal-footer" style="border:none;">
+                <div class="col d-flex justify-content-end">
+                    <a data-dismiss="modal" class="checkout-prompt-1"
+                    data-id="{{item.id}}" 
+                    data-sku="{{item.skus.data[0].id}}" 
+                    data-name="{{item.name}}" 
+                    data-price="{{item.skus.data[0].price}}" 
+                    data-img_url="{{item.skus.data[0].image}}" 
+                    data-quantity="1" 
+                    href="#" 
+                    class=""
+                >
+                <img src="/images/shopping-cart-add-button-inactive.png" height="75px" width="75px" onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)" onmousedown="hoverCart(this)" />
+            </a>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a data-dismiss="modal" class="checkout-prompt-1"
-                data-id="{{item.id}}" 
-                data-sku="{{item.skus.data[0].id}}" 
-                data-name="{{item.name}}" 
-                data-price="{{item.skus.data[0].price}}" 
-                data-img_url="{{item.skus.data[0].image}}" 
-                data-quantity="1" 
-                href="#" 
-                class="is-pulled-right"
-              >
-    
-                           <img src="/images/cart-icon.png" height="40px" />
-                            </a>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>

@@ -26,11 +26,11 @@
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
   <link rel="stylesheet" href="/css/toastr.min.css">
   <style>
+  
+  body {
+    padding-right: 0px !important;
+  }
 
-
-.cart-icon {
-    width:70px;
-}
 span.quantity {
     position: relative;
     font-weight: bold;
@@ -58,12 +58,7 @@ h2.category-heading:focus, h2.category-heading:hover {
   color: black;
 }
 
-.cart-icon-label.pickup.active, .cart-icon-label.delivery.active {
-  background: gainsboro;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  font-weight: 900;
-}
+
 .list-item {
   font-family: Montserrat;
   font-style: normal;
@@ -260,6 +255,10 @@ and (max-device-width: 1000px)
 }
 
 @media only screen and (min-device-width: 1000px) {
+  label.label-item {
+    width: 300px;
+    height: 300px;
+  }
   /* img.img-fluid {
     width: 450px;
     height: 300px;
@@ -560,7 +559,10 @@ button#load {
     font-weight: 900;
     width: 50px;
     height: auto;
-    color: #ff5a00;
+    color: #575353;
+}
+.feather-bold:hover {
+  color: #ff5a00;
 }
 h5.modal-title {
     font-weight: 800;
@@ -629,7 +631,74 @@ h5.modal-title {
   font-size: 12px !important;
 }
 
+
+.col.checkout-button {
+    position: fixed;
+    bottom: 0px;
+    left: 85%;
+}
+
+label.pickup {
+  position: absolute;
+  top: 0px;
+}
+
+h5.price-label {
+    position: relative;
+    bottom: 35px;
+}
+
+label.label_item.pickup:hover {
+    background: url(https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-active_yadcmi.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+label.label_item.delivery:hover {
+    background: url(https://res.cloudinary.com/themurphs/image/upload/v1555779995/delivery-truck-active_hsfssa.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+p.desc {
+    position: relative;
+    top: 103%;
+    left: 0px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 400;
+}
+
+.muted {
+  background:#f9f9f9;
+}
+
+
+
+.card.card-user.card-checkout {
+    padding: 20px;
+}
+
+.fulfill-option {
+  flex-direction: column;
+  align-items: center;
+}
+
+.store-desc {
+  position: absolute;
+  bottom: 0px;
+  padding-left: 35px;
+}
 </style>
+
+<script>
+    if (window.location.href.includes('menu'))
+        document.write('<link rel="stylesheet" href="/css/shopping-buttons.css" />');
+    </script>
+<link rel="stylesheet" href="/css/shopping-buttons.css" />
 </head>
 @!include('Modals.auth')
 
@@ -651,25 +720,19 @@ h5.modal-title {
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav" id="cart">
-            <div class="row mb-5 pl-3 order-info">
-                <div class="col d-flex justify-content-start">
-                    <div class="col-12 pr-0 fulfillment-option">
-                        <a id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
-                            <img class="cart-icon pt-2" src="/images/pickup-icon.png" />
-                        </a>
-                        <div class="cart-icon-label pickup"></div>
+            <div class="row mb-5 order-info d-flex justify-content-center">
+              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+                <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
+                <label class="label_item pickup" for="pickupRadio" style="height:100px;width:100px;">
+                </label>
+                <p class="store-desc">&nbsp</p>
 
-                    </div><br />
-                </div>
-                <div class="col d-flex justify-content-start">
-                    <div class="col pr-0 fulfillment-option">
-                        <a id="deliveryRadio" href="#">
-                            <img class="cart-icon pt-2" src="/images/delivery-icon.png" />
-                        </a>
-                        <div class="cart-icon-label delivery"></div>
-
-                    </div>
-                </div>
+              </div>
+              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+                  <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio" id="deliveryRadio">
+                <label class="label_item delivery" for="deliveryRadio" style="height:100px;width:100px;"></label>
+                <p class="delivery-desc">&nbsp</p>
+              </div>
                 <section id="order-info"></section>
             </div>
 
@@ -678,17 +741,20 @@ h5.modal-title {
               <div class="row mb-5 cart-row-master pl-3">
 
               </div>
-              <div class="row">
-                <div class="col d-flex justify-content-center">
-                  <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
-                    <div class="mobile-button-wrapper ">
-                    <a class="checkout-button btn btn-lg btn-pill btn-success" disabled><div class="checkout-button-status"></div>Next</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+            </div>
         </ul>
       </div>
+    </div>
+
+    <div class="d-none d-sm-none d-md-block d-lg-block">
+    <div id="order-details-footer" class="d-flex justify-content-center align-items-center">
+                    <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
+                  <div class="mobile-button-wrapper ">
+      <a class="checkout-button btn btn-lg btn-pill btn-success" disabled><div class="checkout-button-status"></div>Next</a>
+                  </div>
+                </div>
+    </div><!--/order-details-footer-->
     </div>
     <div class="main-panel">
       @!include('layout.user.top-nav')
@@ -705,8 +771,8 @@ h5.modal-title {
 
 <script async src="/admin/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-<script async src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-<script async src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<script src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
 <script src="/js/moment.min.js"></script>
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
@@ -874,14 +940,9 @@ updateCartDiv()
 })
 
 
-$(document).on('click', 'a#deliveryRadio', function(){
-  $('#pickupRadio').closest('.fulfillment-option').removeClass('active')
+$(document).on('click', '#deliveryRadio', function(){
+  $('.store-desc').html('&nbsp')
 
-
-    $('.cart-icon-label.pickup').html('')
-
-    $('#deliveryRadio').closest('.fulfillment-option').addClass('active')
-  $('.cart-icon-label.delivery').html('Choose address at checkout')
   $('.express-checkout-edit').show()
   $('.shipping-form').show()
 
@@ -940,10 +1001,7 @@ $(".filter-button").click(function(){
 });
 
 $('#pickup, #pickupDay').on('mouseover', function(){
-  $(this).css('background-color', '#aad0ae')
-  $(this).find('h5').css('color', 'white')
-  $('.pickup-icon').attr('src', '/images/pickup-icon-active.png')
-  $(this).find('.modal-footing').css('color', 'white')
+  $(this).find('label').css('background-image', 'url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-active_yadcmi.png")')
 })
 $('#pickup, #pickupDay').on('mouseout', function(){
   $(this).css('background-color', 'white')
@@ -1121,11 +1179,11 @@ if (window.location.href.includes('checkout')) {
       calcShipping()
     })
     function hoverCart(element) {
-      element.setAttribute('src', '/images/cart-icon-active.png');
+      element.setAttribute('src', '/images/shopping-cart-add-button-active.png');
     }
 
     function unhoverCart(element) {
-      element.setAttribute('src', '/images/cart-icon.png');
+      element.setAttribute('src', '/images/shopping-cart-add-button-inactive.png');
     }
 
     $('#back-to-account').on('click', function(){
@@ -1143,6 +1201,20 @@ $('.menu-tab').on('click',function(){
   })
 $(document).ready(function() {
 
+  if (localStorage.fulfillment_method === 'pickup') {
+      $('#pickupRadio').attr('checked', 'checked')
+      $('#deliveryRadio').removeAttr('checked')
+      if (localStorage.myStore) {
+        $('.store-desc').html(JSON.parse(localStorage.myStore)['name'])
+      }
+  } else {
+    $('#deliveryRadio').attr('checked', 'checked')
+      $('#pickupRadio').removeAttr('checked')
+      localStorage.removeItem('myStore')
+      localStorage.removeItem('pickupLocation')
+      localStorage.removeItem('pickup_location')
+      localStorage.fulfillment_method = 'delivery'
+  }
 
   calcShipping()
   $('.express-checkout-default').on('click', function() {

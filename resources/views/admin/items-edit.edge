@@ -13,12 +13,35 @@
                 <div class="author">
                   <a href="#">
                     <h5 class="title">{{prod.name}}</h5>
+
                   </a>
+                  <div class="col-3 mx-auto">
+                  <div class="switch inverted">
+
+                      <input type="radio" name="switch" id="false"
+                      @if(prod.metadata.status === 'false')
+                        checked
+                      @endif
+                      >
+                      <input type="radio" name="switch" id="true" 
+                      @if(prod.metadata.status === 'true')
+                        checked
+                      @endif
+                      >
+                
+                      <label for="switch-off"><i data-feather="eye-off"></i></label>
+                      <label for="switch-on"><i data-feather="eye"></i></label>
+                
+                      <span class="toggle"></span>
+                    </div>
+                  </div>
                   <div class="thumbnails"></div>
                   <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
                   <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
                   <input id="button" type="button" value="Cancel" />
+                  
                 </div>
+
 
               </div>
 
@@ -180,7 +203,11 @@
                       </div>
                     </div>
                   </div>
-
+                  <input type="hidden" name="status" 
+                  @if(prod.metadata.status)
+                    value="{{prod.metadata.status}}"
+                  @endif
+                  />
                 </form>
               </div>
               
@@ -278,6 +305,9 @@
         getScript('/js/jquery-2.2.4.min.js',function(){
                 getScript('/js/jquery.fileupload.min.js', function(){
                     getScript('/js/cloudinary-jquery-file-upload.min.js', function(){
+                      $('input[name=switch]').on('change', function(){
+                        $('input[name=status]').val($(this).attr('id'))
+                      })
                         const configSettings = {
     //api_key: '239559663666399',
     cloud_name: 'themurphs',
@@ -453,7 +483,10 @@ $(function() {
                     })
                 })
         });
+
     })();
+
+
 
 
 

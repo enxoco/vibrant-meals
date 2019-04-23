@@ -75,6 +75,7 @@ class PasswordController {
         .withErrors(validation.messages())
         .flashAll()
 
+      response.send({status: 'success'})
       return response.redirect('back')
     }
 

@@ -163,15 +163,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       //Hide the next button on Desktop 
       $('.checkout-button').addClass('d-md-none d-lg-none')
 
-        if(localStorage.fulfillment_method == 'pickup') {
-            var store = JSON.parse(localStorage.pickupLocation)
-            $('.custom-checkbox').hide() //Hide ship to different address button on Pickup orders
-
-        } else {
-          $('.custom-checkbox').show() //Hide ship to different address button on Pickup orders
-
-        }
-
         updateCartDiv()
 
       $('#info-billing').hide()
@@ -480,7 +471,6 @@ $('input[type=radio]').on('change',function(){
     $('.addCardForm').removeClass('hidden').fadeIn()
   } else {
     
-
     $('.addCardForm').addClass('hidden').fadeOut()
   }
 })
