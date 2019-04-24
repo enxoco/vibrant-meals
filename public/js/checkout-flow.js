@@ -474,3 +474,80 @@ $('input[type=radio]').on('change',function(){
     $('.addCardForm').addClass('hidden').fadeOut()
   }
 })
+
+/**
+ * 
+ * Function to calculate shipping charges based on zip code
+ */
+
+function calcShipping(){
+  var store = {
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-85.317172,35.069111]
+    }
+  }
+
+  
+
+  if (localStorage.userAddr) {
+    $('#address-input').text(localStorage.userAddr.street)
+  }
+
+  // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
+  var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
+  var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
+  var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
+  var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
+
+
+  var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
+
+  var userAddr = {
+    street: st,
+    city: city,
+    state: state,
+    zip: post
+  }
+  localStorage.userAddr = JSON.stringify(userAddr)
+  var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
+  $.get(userSearch, function(data) {
+    var userCords = data.features[0].geometry.coordinates
+    var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
+    $.get(query, function(distance) {
+      var miles = distance.routes[0].distance*0.000621371192
+      var total = $('.order-total').data('total')
+
+      if (total >= 100) {
+        localStorage.shippingCode = 'freeshipping'
+      } else {
+        if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
+        if (miles.toFixed(0) <= 10) {
+          localStorage.shippingCode = '5to10miles'
+          total += 5
+          $('.order-total').html(total)
+          $('.delivery-fee').html('5.00')
+        }
+        if (miles.toFixed(0) > 10) {
+          var total = $('.order-total').data('total')
+          total += 10
+          $('.order-total').html(total)
+          localStorage.shippingCode = '11to15miles'
+          $('.delivery-fee').html('10.00')
+
+        }
+        
+        toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
+      } else if (miles.toFixed(0) < 5) {
+        localStorage.shippingCode = 'freeshipping'
+        $('.delivery-fee').html('0')
+        toastr['success']('You"re all set!')
+        }
+      }
+
+      localStorage.deliveryDistance = miles.toFixed(1)
+    })
+  })
+}

@@ -695,7 +695,10 @@ p.desc {
 }
 @media screen and (max-width: 576px) {
   #order-total, #delivery-fee {
-      bottom: 110px !important;
+      bottom: 50px !important;
+  }
+  div#order-details-wrapper {
+    margin-top: 100px;
   }
 }
 </style>
@@ -749,24 +752,10 @@ p.desc {
               </div>
 
             </div>
-            <div id="order-details-wrapper">
-                <div id="order-details-footer" class="d-flex justify-content-center align-items-center">
-                    <div id="delivery-fee">
-                        Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
-                      </div>
-                      <div id="order-total">
-                        Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
-                      </div>
-                  <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
-                    <div class="mobile-button-wrapper ">
-                      <a class="checkout-button btn btn-lg btn-pill btn-success" disabled><div class="checkout-button-status"></div>Next</a>
-                      
-                    </div>
-                  </div>
-                </div><!--/order-details-footer-->
-              </div>
+
         </ul>
       </div>
+
     </div>
 
     <div class="main-panel">
@@ -825,7 +814,7 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
   "closeButton": true,
   "debug": false,
   "newestOnTop": false,
-  "progressBar": true,
+  "progressBar": false,
   "positionClass": "toast-top-right",
   "preventDuplicates": true,
   "onclick": null,
@@ -956,7 +945,7 @@ updateCartDiv()
 
 
 $(document).on('click', '#deliveryRadio', function(){
-  $('.store-desc').html('&nbsp')
+  $('.store-desc').html('')
 
   $('.express-checkout-edit').show()
   $('.shipping-form').show()
@@ -973,9 +962,7 @@ $(document).on('click', '#deliveryRadio', function(){
 
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
-  if (window.location.href.includes('checkout')){
-    $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken" disabled>Checkout</a>')
-  }
+
 
 
   $.ajax({
@@ -991,30 +978,6 @@ $(document).ready(function(){
   })
 
   feather.replace()
-
-
-// This is filtering logic based on category name
-$(".filter-button").click(function(){
-    var value = $(this).attr('data-filter');
-    $('h2').removeClass('active')
-    $(this).find('h2').addClass('active')
-    
-    if(value == "all")
-    {
-        $('.filter').show('1000');
-    }
-    else
-    {
-        $(".filter").not('.'+value).hide('3000');
-        $('.filter').filter('.'+value).show('3000'); 
-    }
-});
-
-
-
-
-
-
 
 });
 
@@ -1063,146 +1026,17 @@ for (var i = 0; i < cart.length; i++) {
           <span class="text-muted">$'+total+'</span>\
         </li>')
       }
-      document.addEventListener("DOMContentLoaded", function() {
-  var lazyloadImages;    
-
-  if ("IntersectionObserver" in window) {
-    lazyloadImages = document.querySelectorAll(".lazy");
-    var imageObserver = new IntersectionObserver(function(entries, observer) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          var image = entry.target;
-          image.src = image.dataset.src;
-          image.classList.remove("lazy");
-          imageObserver.unobserve(image);
-        }
-      });
-    });
-
-    lazyloadImages.forEach(function(image) {
-      imageObserver.observe(image);
-    });
-  } else {  
-    var lazyloadThrottleTimeout;
-    lazyloadImages = document.querySelectorAll(".lazy");
-    
-    function lazyload () {
-      if(lazyloadThrottleTimeout) {
-        clearTimeout(lazyloadThrottleTimeout);
-      }    
-
-      lazyloadThrottleTimeout = setTimeout(function() {
-        var scrollTop = window.pageYOffset;
-        lazyloadImages.forEach(function(img) {
-            if(img.offsetTop < (window.innerHeight + scrollTop)) {
-              img.src = img.dataset.src;
-              img.classList.remove('lazy');
-            }
-        });
-        if(lazyloadImages.length == 0) { 
-          document.removeEventListener("scroll", lazyload);
-          window.removeEventListener("resize", lazyload);
-          window.removeEventListener("orientationChange", lazyload);
-        }
-      }, 20);
-    }
-
-    document.addEventListener("scroll", lazyload);
-    window.addEventListener("resize", lazyload);
-    window.addEventListener("orientationChange", lazyload);
-  }
-})
 
 
-// Only load these scripts if we are on the checkout page.
-if (window.location.href.includes('checkout')) {
+
   $.getScript('/js/checkout-flow.js')
   $.getScript('/js/registration-form.js')
 
-}
 
-    function calcShipping(){
-      var store = {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-85.317172,35.069111]
-        }
-      }
-  
-      
-  
-      if (localStorage.userAddr) {
-        $('#address-input').text(localStorage.userAddr.street)
-      }
-  
-      // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
-      var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
-      var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
-      var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
-      var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-
-    
-      var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
-  
-      var userAddr = {
-        street: st,
-        city: city,
-        state: state,
-        zip: post
-      }
-      localStorage.userAddr = JSON.stringify(userAddr)
-      var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
-      $.get(userSearch, function(data) {
-        var userCords = data.features[0].geometry.coordinates
-        var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
-        $.get(query, function(distance) {
-          var miles = distance.routes[0].distance*0.000621371192
-          var total = $('.order-total').data('total')
-
-          if (total >= 100) {
-            localStorage.shippingCode = 'freeshipping'
-          } else {
-            if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
-            if (miles.toFixed(0) <= 10) {
-              localStorage.shippingCode = '5to10miles'
-              total += 5
-              $('.order-total').html(total)
-              $('.delivery-fee').html('5.00')
-            }
-            if (miles.toFixed(0) > 10) {
-              var total = $('.order-total').data('total')
-              total += 10
-              $('.order-total').html(total)
-              localStorage.shippingCode = '11to15miles'
-              $('.delivery-fee').html('10.00')
-
-            }
-            
-            toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
-          } else if (miles.toFixed(0) < 5) {
-            localStorage.shippingCode = 'freeshipping'
-            $('.delivery-fee').html('0')
-            toastr['success']('You"re all set!')
-            }
-          }
-
-          localStorage.deliveryDistance = miles.toFixed(1)
-        })
-      })
-    }
 
     $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
       calcShipping()
     })
-    function hoverCart(element) {
-      element.setAttribute('src', '/images/shopping-cart-add-button-active.png');
-    }
-
-    function unhoverCart(element) {
-      element.setAttribute('src', '/images/shopping-cart-add-button-inactive.png');
-    }
 
     $('#back-to-account').on('click', function(){
       window.location.href = '/account'
@@ -1255,22 +1089,36 @@ document.addEventListener('click', function(event) {
   form.submit()
 })
 
-//Prevent select box from opening product card modal.
-$('select').on('click', function(e){e.preventDefault();e.stopPropagation()})
+var isInViewport = function (elem) {
+	var distance = elem.getBoundingClientRect();
+	return (
+		distance.top >= 0 &&
+		distance.left >= 0 &&
+		distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+		distance.right <= (window.innerWidth || document.documentElement.clientWidth)
+	);
+};
+var findMe = document.querySelector('#payment');
+var divs = ['#basic-info', '#fulfillment', '#billing', '#payment']
 
-// if('serviceWorker' in navigator) {
-//       navigator.serviceWorker
-//                .register('/sw.js')
-//                .then(function() { console.log("Service Worker Registered"); });
-//     }
+window.addEventListener('scroll', function (event) {
+  for (var i = 0; i < divs.length; i++) {
+    var div = document.querySelector(divs[i])
+    var nextDiv = document.querySelector(divs[i + 1])
+    if (isInViewport(div)) {
+      if (i === divs.length - 1) {
+        $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
+      } else {
+        $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg next-section" href="'+divs[i + 1]+'">Next</a>')
+      }
+	  } 
+  }
 
-
-if ($('#firstName').val != "" && $('#lastName').val != "" && $('#email') !="" ) {
-  $('#createToken').removeAttr('disabled')
-} else {
-  $('#createToken').attr('disabled', 'disabled')
-
-}
+}, false);
+$(document).on('click', '.next-section', function(e) {
+  e.preventDefault()
+  $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
+})
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

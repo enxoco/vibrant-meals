@@ -42,7 +42,10 @@ seq2 = 0, delays2 = 80, durations2 = 500;
 
 $(document).ready(function() {
 
+  if (window.location.href.includes('checkout')) {
+    $('#order-details-wrapper').removeClass('d-none d-sm-none d-md-block d-lg-block')
 
+  }
 
   paperDashboard.initMinimizeSidebar();
 
@@ -79,18 +82,18 @@ $(document).on('click', '.navbar-toggle', function() {
   $toggle = $(this);
 
   if (paperDashboard.misc.navbar_menu_visible == 1) {
-    console.log('closed')
     $('html').removeClass('nav-open');
     paperDashboard.misc.navbar_menu_visible = 0;
+
+
     setTimeout(function() {
-      $('#order-details-hider').addClass('d-none d-sm-none d-md-block d-lg-block')
 
       $toggle.removeClass('toggled');
       $('#bodyClick').remove();
     }, 550);
 
   } else {
-    $('#order-details-hider').removeClass('d-none d-sm-none d-md-block d-lg-block')
+
 
     setTimeout(function() {
       $toggle.addClass('toggled');
@@ -107,9 +110,11 @@ $(document).on('click', '.navbar-toggle', function() {
     });
 
     $('html').addClass('nav-open');
+
     paperDashboard.misc.navbar_menu_visible = 1;
   }
 });
+
 
 
 $(document).on('click', '.navbar-toggle', function() {

@@ -571,7 +571,6 @@ $(document).ready(function(){
 
     $( "a.scrollLink" ).click(function( event ) {
         event.preventDefault();
-        console.log(window.location.href)
         if (window.location.href === 'http://localhost:3333/') {
           $("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top - 200 }, 500);
         } else {

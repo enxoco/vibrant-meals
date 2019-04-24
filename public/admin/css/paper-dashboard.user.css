@@ -6371,6 +6371,16 @@ License - nucleoapp.com/license/
 }
 
 @media screen and (max-width: 767px) {
+
+  div#order-details-footer {
+    position: fixed !important;
+    width: 100% !important;
+    right: 0px !important;
+    z-index: 99999;
+    bottom: 0px;
+    border-top: 5px solid #f2f2f2;
+    background: white;
+}
   .sidebar .nav, .off-canvas-sidebar .nav {
     margin-top: 0px !important;
   }
@@ -6425,7 +6435,9 @@ License - nucleoapp.com/license/
   }
 }
 
+
 @media screen and (max-width: 576px) {
+
   .navbar[class*='navbar-toggleable-'] .container {
     margin-left: 0;
     margin-right: 0;
@@ -6500,12 +6512,22 @@ button.btn.btn-link {
 
 div#order-details-footer {
   position: fixed;
-  right: 0px;
   z-index: 99999;
-  bottom: 0px;
-  border-top: 5px solid #f2f2f2;
-  width: 20%;
+  bottom: 36px;
+  flex-direction: column;
+  border-top: -1px solid #f2f2f2;
   background: white;
+  right: 7%;
+}
+div#delivery-fee, #order-total {
+  position: relative;
+  z-index: 9;
+  background: white;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 /* #order-details-footer {

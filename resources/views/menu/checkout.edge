@@ -1,4 +1,4 @@
-@layout('layout.user.master') 
+@layout('layout.user.master-checkout-page') 
 @section('content')
 <div class="modal fade" id="orderConfirmation" tabindex="-1" role="dialog" aria-labelledby="orderConfirmationTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -37,16 +37,18 @@
     <div class="row">
       <div class="col-12 col-md-6 col-lg-6 mx-auto">
         @!include('Checkout.basic-info')
-
+        <section id="fulfillment">
         <div id="pickupDaysList" class="card card-user card-checkout">
           <div class="card card-user card-checkout">
           </div>
         </div>
+        </section>
       </div>
       <div class="col-12 col-md-6 col-lg-6 order-md-1 mx-auto">
         @!include('Checkout.billing-info') 
         @!include('Checkout.shipping-info')
-        <div class="card card-user card-checkout">
+        <section id="payment">
+        <div class="card card-user card-checkout" style="padding-bottom: 100px;">
           <h4 class="mb-3 d-flex justify-content-center">Payment Method</h4>
           <div class="card-body">
             <form id="payment-form">
@@ -71,22 +73,29 @@
                   <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
                 </div>
               </div>
-              <div id="order-details-footer">
-                <div id="delivery-fee">
-                  <p class="mb-3 d-flex justify-content-center">Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong></p>
-                </div>
-                <div id="order-total">
-                  <p class="mb-3 d-flex justify-content-center">Order Total - &nbsp<strong> $<span class="order-total">0</span></strong></p>
-                </div>
-                <h4 class="mb-3 d-flex justify-content-center"><a class="btn btn-success btn-lg" id="createToken">Checkout</a></h4>
-              </div><!--/order-details-footer-->
             </form>
           </div><!--/card body-->
         </div><!--/card-->
+      </section>
         <input name="stripeToken" type="hidden" />
       </div><!--/col-->
     </div><!--/row-->
+    <div id="order-details-wrapper">
+        <div id="order-details-footer" class="d-flex justify-content-center align-items-center">
+            <div id="delivery-fee">
+                Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
+              </div>
+              <div id="order-total">
+                Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
+              </div>
+          <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
+            <div class="mobile-button-wrapper ">
+            <a class="btn btn-success btn-lg next-section">Next</a>
 
+            </div>
+          </div>
+        </div><!--/order-details-footer-->
+      </div>
   @endif
 </div><!--/content-->
 <script src="https://js.stripe.com/v3/"></script>
