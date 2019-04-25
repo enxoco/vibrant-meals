@@ -4631,10 +4631,10 @@ License - nucleoapp.com/license/
 .sidebar .sidebar-wrapper,
 .off-canvas-sidebar .sidebar-wrapper {
   position: relative;
-  height: calc(100vh - 75px);
+  height: 100%;
   overflow: auto;
   z-index: 4;
-  padding-bottom: 100px;
+  /* padding-bottom: 100px; */
   overflow-x: hidden;
 }
 
@@ -6510,15 +6510,18 @@ button.btn.btn-link {
   padding: 0 !important;
 }
 
-div#order-details-footer {
+/* div#order-details-footer {
   position: fixed;
   z-index: 99999;
-  bottom: 36px;
+  width: 20%;
+  bottom: 0px;
   flex-direction: column;
   border-top: -1px solid #f2f2f2;
   background: white;
-  right: 7%;
+  right: 0px;
+  padding-bottom: 10px;
 }
+
 div#delivery-fee, #order-total {
   position: relative;
   z-index: 9;
@@ -6528,7 +6531,7 @@ div#delivery-fee, #order-total {
   text-align: center;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
-}
+} */
 
 /* #order-details-footer {
   border-top: 5px solid #f2f2f2;

@@ -280,6 +280,21 @@ and (max-device-width : 1024px)  {
     border-radius: 5px;
     height: 35px;
 }
+.next-section {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.row.order-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    background: white;
+    z-index: 9999;
+}
+/* }
   .mobile-button-wrapper {
     background: white;
     position: fixed;
@@ -290,7 +305,7 @@ and (max-device-width : 1024px)  {
     left: 0px;
     align-items: center;
     display: flex;
-  }
+  } */
   .checkout-button, .tooltip-wrapper {
   position: relative;
   bottom: 65px;
@@ -693,14 +708,50 @@ p.desc {
   bottom: 0px;
   padding-left: 35px;
 }
+
+@media screen and (min-width: 600px) {
+  .row.order-footer {
+    position: fixed;
+    bottom: 0px;
+    right: 1%;
+    z-index: 9999;
+    width: 20%;
+    background: white;
+    text-align: center;
+}
+}
+
 @media screen and (max-width: 576px) {
-  #order-total, #delivery-fee {
+  /* #order-total, #delivery-fee {
       bottom: 50px !important;
   }
   div#order-details-wrapper {
     margin-top: 100px;
-  }
+  } */
 }
+
+
+
+  .row::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  .row::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  /* Handle */
+  .row::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+
+  /* Handle on hover */
+  .row::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+
 </style>
 
 <script>
@@ -747,7 +798,7 @@ p.desc {
 
             <div id="cart-rows">
 
-              <div class="row mb-5 cart-row-master pl-3">
+              <div class="row cart-row-master pl-3" style="padding-bottom:150px;">
 
               </div>
 
@@ -1099,26 +1150,51 @@ var isInViewport = function (elem) {
 	);
 };
 var findMe = document.querySelector('#payment');
-var divs = ['#basic-info', '#fulfillment', '#billing', '#payment']
+var divs = ['#fulfillment', '#billing', '#payment']
 
-window.addEventListener('scroll', function (event) {
-  for (var i = 0; i < divs.length; i++) {
-    var div = document.querySelector(divs[i])
-    var nextDiv = document.querySelector(divs[i + 1])
-    if (isInViewport(div)) {
-      if (i === divs.length - 1) {
-        $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
-      } else {
-        $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg next-section" href="'+divs[i + 1]+'">Next</a>')
-      }
-	  } 
+if (window.innerWidth > 600) {
+  $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
+  console.log()
+}
+// window.addEventListener('scroll', function (event) {
+//   for (var i = 0; i < divs.length; i++) {
+//     var div = document.querySelector(divs[i])
+//     $('.mobile-button-wrapper').html('<a class="btn btn-success next-section d-flex justify-content-center align-items-center" href="'+divs[i + 1]+'"><i data-feather="chevron-down"></i></a>')
+//   }
+
+// }, false);
+var sectionCount = 0
+function nextSection() {
+  var button = $('.next-section')
+  if (button.attr('href') === undefined) {
+    button.attr('href', '#fulfillment')
+    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
+    return false
+  }
+  
+  if (button.attr('href') === '#fulfillment') {
+    button.attr('href', '#billing')
+    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
+    return false
   }
 
-}, false);
-$(document).on('click', '.next-section', function(e) {
-  e.preventDefault()
-  $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
-})
+  if (button.attr('href') === '#billing') {
+    button.attr('href', '#payment')
+    $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
+
+    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
+    return false
+  }
+
+
+
+  
+
+}
+// $(document).on('click', '.next-section', function(e) {
+//   e.preventDefault()
+//   $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
+// })
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

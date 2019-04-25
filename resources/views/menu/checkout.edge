@@ -80,22 +80,24 @@
         <input name="stripeToken" type="hidden" />
       </div><!--/col-->
     </div><!--/row-->
-    <div id="order-details-wrapper">
-        <div id="order-details-footer" class="d-flex justify-content-center align-items-center">
-            <div id="delivery-fee">
-                Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
-              </div>
-              <div id="order-total">
-                Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
-              </div>
-          <div class="tooltip-wrapper" data-html="true" data-toggle="tooltip" data-placement="auto" title="<span class='tooltip-lg'>Please add at <strong>least 5 items</strong> to cart to continue</span>">
-            <div class="mobile-button-wrapper ">
-            <a class="btn btn-success btn-lg next-section">Next</a>
 
+            <div class="row order-footer">
+              <div class="col col-md-12 col-lg-12">
+                  <div id="delivery-fee">
+                      Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
+                    </div>
+                    <div id="order-total">
+                      Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
+                    </div>
+              </div>
+              <div class="col col-md-12 col-lg-12">
+            <div class="mobile-button-wrapper ">
+              
+                <a class="btn btn-success next-section d-flex justify-content-center align-items-center" onclick="nextSection()"><i data-feather="chevron-down"></i></a>
             </div>
-          </div>
-        </div><!--/order-details-footer-->
-      </div>
+              </div>
+            </div>
+            
   @endif
 </div><!--/content-->
 <script src="https://js.stripe.com/v3/"></script>
