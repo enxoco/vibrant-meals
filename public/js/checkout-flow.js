@@ -159,7 +159,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
     
     $(document).ready(function(){
 
-      $('.shipping-form').hide()
+      $('.shipping-form').closest('.card').hide()
       //Hide the next button on Desktop 
       $('.checkout-button').addClass('d-md-none d-lg-none')
 

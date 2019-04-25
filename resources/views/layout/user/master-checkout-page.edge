@@ -829,6 +829,9 @@ p.desc {
 <script src="/js/moment.min.js"></script>
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="/js/checkout-flow.js"></script>
+<script src="/js/registration-form.js"></script>
+
 <script>
   $('#alternate-address-bill').on('click',function(){
   $('#billing-info').toggleClass('hidden')
@@ -840,9 +843,9 @@ $('#alternate-pickup-day').on('click', function() {
 
 
 })
-$('.shipping-form').hide()
+$('.shipping-form').closest('.card').hide()
 $('#same-address, #alternate-address-deliver').on('click', function(){
-  $('.shipping-form').toggle()
+  $('.shipping-form').closest('.card').toggle()
   toggleExpressEdit()
 
 
@@ -999,7 +1002,7 @@ $(document).on('click', '#deliveryRadio', function(){
   $('.store-desc').html('')
 
   $('.express-checkout-edit').show()
-  $('.shipping-form').show()
+  // $('.shipping-form').closest('.card').show()
 
   localStorage.setItem('fulfillment_method', 'delivery')
 
@@ -1080,8 +1083,6 @@ for (var i = 0; i < cart.length; i++) {
 
 
 
-  $.getScript('/js/checkout-flow.js')
-  $.getScript('/js/registration-form.js')
 
 
 

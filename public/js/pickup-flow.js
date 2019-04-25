@@ -6,9 +6,9 @@ $(document).on('click', '#pickupRadio', function () {
   localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')
   $('.express-checkout-edit').hide()
-  $('.shipping-form').hide()
+  $('.shipping-form').closest('.card').hide()
 
-  $('.shipping-form').hide()
+
 
 
   localStorage.setItem("fulfillment_method", "pickup")
