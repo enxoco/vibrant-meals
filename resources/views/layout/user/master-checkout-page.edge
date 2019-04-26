@@ -113,7 +113,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
     padding: 5px;
 }
 .col.store-hours.is-pulled-right {
-    font-size: 1.5em;
+    font-size: 14px;
     font-weight: 600;
 
     display: flex;
@@ -122,8 +122,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 
 
 .col.date-list-item {
-    font-size: 1.5em;
-    font-weight: 900;
+  font-size: 14px;
 }
 li.list-group-item.button-group {
     text-align: center;
@@ -653,11 +652,11 @@ h5.modal-title {
     bottom: 0px;
     left: 85%;
 }
-
+/* 
 label.pickup {
   position: absolute;
   top: 0px;
-}
+} */
 
 h5.price-label {
     position: relative;
@@ -751,7 +750,20 @@ p.desc {
     background: #555; 
   }
 
+.nc-icon {
+  font-size: 24px;
+    float: right;
+    margin-right: 12px;
+    line-height: 30px;
+    width: 34px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+}
 
+.card-header {
+  text-align: center;
+}
 </style>
 
 <script>
@@ -781,20 +793,20 @@ p.desc {
       <div class="sidebar-wrapper">
         <ul class="nav" id="cart">
             <div class="row mb-5 order-info d-flex justify-content-center">
-              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+              <div class="col col-md-6 col-lg-6 d-flex justify-content-center mx-auto fulfill-option">
                 <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
                 <label class="label_item pickup" for="pickupRadio" style="height:100px;width:100px;">
                 </label>
-                <p class="store-desc">&nbsp</p>
 
               </div>
-              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+              <div class="col col-md-6 col-lg-6 d-flex justify-content-center mx-auto fulfill-option">
                   <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio" id="deliveryRadio">
                 <label class="label_item delivery" for="deliveryRadio" style="height:100px;width:100px;"></label>
-                <p class="delivery-desc">&nbsp</p>
               </div>
                 <section id="order-info"></section>
+
             </div>
+            
 
             <div id="cart-rows">
 
@@ -999,6 +1011,8 @@ updateCartDiv()
 
 
 $(document).on('click', '#deliveryRadio', function(){
+  $('.same-address').show()
+
   $('.store-desc').html('')
 
   $('.express-checkout-edit').show()
@@ -1013,10 +1027,26 @@ $(document).on('click', '#deliveryRadio', function(){
   updateCartDiv()
 })
 
+$(document).on('click', '#deliveryRadioMobile', function(){
+  $('.same-address').show()
+
+$('.store-desc').html('')
+
+$('.express-checkout-edit').show()
+// $('.shipping-form').closest('.card').show()
+
+localStorage.setItem('fulfillment_method', 'delivery')
+
+localStorage.removeItem('pickup_location')
+localStorage.removeItem('pickupLocation')
+localStorage.removeItem('myStore')
+calcShipping()
+updateCartDiv()
+})
+
 
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
-
 
 
   $.ajax({
@@ -1107,13 +1137,22 @@ $(document).ready(function() {
 
   if (localStorage.fulfillment_method === 'pickup') {
       $('#pickupRadio').attr('checked', 'checked')
+      $('#pickupRadioMobile').attr('checked', 'checked')
+      $('.same-address').hide()
+      
       $('#deliveryRadio').removeAttr('checked')
+      $('#deliveryRadioMobile').removeAttr('checked')
       if (localStorage.myStore) {
         $('.store-desc').html(JSON.parse(localStorage.myStore)['name'])
       }
   } else {
+    $('.same-address').show()
+
     $('#deliveryRadio').attr('checked', 'checked')
+    $('#deliveryRadioMobile').attr('checked','checked')
       $('#pickupRadio').removeAttr('checked')
+      $('#pickupRadioMobile').removeAttr('checked')
+
       localStorage.removeItem('myStore')
       localStorage.removeItem('pickupLocation')
       localStorage.removeItem('pickup_location')
@@ -1141,61 +1180,10 @@ document.addEventListener('click', function(event) {
   form.submit()
 })
 
-var isInViewport = function (elem) {
-	var distance = elem.getBoundingClientRect();
-	return (
-		distance.top >= 0 &&
-		distance.left >= 0 &&
-		distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-		distance.right <= (window.innerWidth || document.documentElement.clientWidth)
-	);
-};
-var findMe = document.querySelector('#payment');
-var divs = ['#fulfillment', '#billing', '#payment']
 
-if (window.innerWidth > 600) {
-  $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
-  console.log()
+function navbarToggle() {
+  $('.navbar-toggle').click()
 }
-// window.addEventListener('scroll', function (event) {
-//   for (var i = 0; i < divs.length; i++) {
-//     var div = document.querySelector(divs[i])
-//     $('.mobile-button-wrapper').html('<a class="btn btn-success next-section d-flex justify-content-center align-items-center" href="'+divs[i + 1]+'"><i data-feather="chevron-down"></i></a>')
-//   }
-
-// }, false);
-var sectionCount = 0
-function nextSection() {
-  var button = $('.next-section')
-  if (button.attr('href') === undefined) {
-    button.attr('href', '#fulfillment')
-    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
-    return false
-  }
-  
-  if (button.attr('href') === '#fulfillment') {
-    button.attr('href', '#billing')
-    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
-    return false
-  }
-
-  if (button.attr('href') === '#billing') {
-    button.attr('href', '#payment')
-    $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken">Checkout</a>')
-
-    $('html, body').animate({ scrollTop: $($('.next-section').attr('href')).offset().top}, 500, 'linear');
-    return false
-  }
-
-
-
-  
-
-}
-// $(document).on('click', '.next-section', function(e) {
-//   e.preventDefault()
-//   $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
-// })
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

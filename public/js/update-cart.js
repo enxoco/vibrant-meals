@@ -3,6 +3,7 @@
 // Any function that calls this function should first update localstorage.cart
 
 function updateCartDiv() {
+  if($('#pickupRadioMobile').is(':checked')){$('.same-address').hide()}
 
 
   var orderMethod = localStorage.fulfillment_method
@@ -22,7 +23,7 @@ function updateCartDiv() {
     success: console.log('Options updated')
   })
   if (orderMethod == 'pickup') {
-    $('.delivery-desc').html('&nbsp')
+    $('.delivery-desc').html('')
 
     $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
@@ -88,7 +89,9 @@ function updateCartDiv() {
     if (localStorage.fulfillment_day) {
       $('#delivery-fee').show()
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
-      $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
+      // $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
+      $('#delivery-date-label').html('<a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
+
     }
 
     
@@ -101,7 +104,6 @@ function updateCartDiv() {
       
       
       var pickup = JSON.parse(localStorage.pickupLocation).desc
-      $('#pickupRadio').closest('.fulfillment-option').addClass('active')
       $('.cart-icon-label.pickup').html(pickup)
     } else {
       $('.cart-icon-label.delivery').html()

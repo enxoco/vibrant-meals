@@ -103,7 +103,7 @@ hooks.after.providersBooted(() => {
         if (i == 4) {break}
         var name = Object.keys(newObj)[i]
         var value = newObj[name]
-        div += `<div class="col-2 ml-auto pr-0 d-none d-lg-block">
+        div += `<div class="col ml-auto pr-0 d-none d-lg-block">
         <h5>
          ${addGrams(name, value)}
           <br>

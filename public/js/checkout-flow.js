@@ -83,7 +83,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       console.log(_sortedDates)
       pickupDaysModal.html('<ul class="list-group">')
   
-      pickupDaysModal.append('<h4 class="mb-3 d-flex justify-content-center">Pick a day</h4>')
 
       pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="'+thisMon+'"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">'+thisMon+'</div></div></div></li>')
       pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="'+thisWed+'" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">'+thisWed+'</div></div></div></li>')
@@ -166,12 +165,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
         updateCartDiv()
 
       $('#info-billing').hide()
-      if (localStorage.fulfillment_method == 'pickup') {
-        $('a#pickupRadio').addClass()
-        $('#fulfillment-options').html('Pickup Info')
 
-
-      }
     })
 
     $('.express-checkout-default').on('click', function(){

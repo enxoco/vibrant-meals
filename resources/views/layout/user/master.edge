@@ -756,8 +756,15 @@ p.desc {
     margin-bottom: 150px;
   }
 
-</style>
+  h4.item-name {
+    font-size: 18px;
+  }
 
+</style>
+<script>
+
+
+</script>
 <script>
     if (window.location.href.includes('menu'))
         document.write('<link rel="stylesheet" href="/css/shopping-buttons.css" />');
@@ -900,8 +907,14 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
 })
 
 $.getScript('/js/pickup-flow.js')
-
-
+function showNutritionFacts(){
+  $('.nutritionFacts').show()
+  $('.itemDescription').hide()
+}
+function showItemDescription() {
+  $('.nutritionFacts').hide()
+  $('.itemDescription').show()
+}
 </script>
 <script src="/js/lodash.core.min.js"></script>
 
@@ -1280,6 +1293,8 @@ $(document).ready(function() {
 
   if (localStorage.fulfillment_method === 'pickup') {
       $('#pickupRadio').attr('checked', 'checked')
+      $('#pickupRadioMobile').attr('checked', 'checked')
+
       $('#deliveryRadio').removeAttr('checked')
       if (localStorage.myStore) {
         $('.store-desc').html(JSON.parse(localStorage.myStore)['name'])

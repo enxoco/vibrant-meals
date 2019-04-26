@@ -1,7 +1,6 @@
 
 $(document).on('click', '#pickupRadio', function () {
   getLocation()
-  $('.delivery-desc').html('')
   $('.delivery-fee').html('0')
   localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')

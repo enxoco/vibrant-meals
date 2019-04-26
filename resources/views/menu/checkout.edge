@@ -1,105 +1,145 @@
 @layout('layout.user.master-checkout-page') 
 @section('content')
-<div class="modal fade" id="orderConfirmation" tabindex="-1" role="dialog" aria-labelledby="orderConfirmationTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="hero" id="orderConfirmationTitle">Order Successful</h2>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col mx-auto">
-            <h2 class="hero">Your order is complete. Thanks for living Vibrant!</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6 mx-auto">
-            <i data-feather="award" class="large-icon"></i>
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" id="back-to-account">Take me to my account</button>
-      </div>
-    </div>
-  </div>
-</div>
+@!include('Modals.order-confirmation')
 @!include('Modals.initial')
 <div class="content">
   <iframe style="display:none;" src="/mailchimpForm.html" id="hidden-mailchimp"></iframe> 
   @if(billing)
+  <div class="col col-lg-8 col-md-8 mx-auto">
     @!include('Checkout.express')
+  </div>
   @else
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-6 mx-auto">
-        @!include('Checkout.basic-info')
-        <section id="fulfillment">
-        <div id="pickupDaysList" class="card card-user card-checkout">
-          <div class="card card-user card-checkout">
-          </div>
-        </div>
-        </section>
-      </div>
-      <div class="col-12 col-md-6 col-lg-6 order-md-1 mx-auto">
-        @!include('Checkout.billing-info') 
-        @!include('Checkout.shipping-info')
-        <section id="payment">
-        <div class="card card-user card-checkout" style="padding-bottom: 100px;">
-          <h4 class="mb-3 d-flex justify-content-center">Payment Method</h4>
-          <div class="card-body">
-            <form id="payment-form">
-              <div class="form-row">
-                <label for="card-element">
-                  Credit or debit card
-                </label>
-                <div class="mb-3 col-12">
-                  <div id="card-element">
-                    <!-- A Stripe Element will be inserted here. -->
+  <div class="col col-lg-8 col-md-8 mx-auto">
+    <div class="accordion" id="accordionExample">
+      <div class="card-header" id="headingOne" style="background:1px solid rgba(0,0,0,.125) !important;">
+        <h5 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Order Summary
+          </button>
+        </h5>
+      </div> 
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            
+            <div class="card-body" style="background:white;">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 mx-auto">
+                <div class="row">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <div class="col">
+                      <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio-mobile" id="pickupRadioMobile" data-toggle="modal" data-target="#modal-pickup">
+                        <label class="label_item pickup mr-0 ml-0" for="pickupRadioMobile" style="height:100px;width:100px;"></label>
+                    </div>
+                  </div>
+                  
+                  <div class="col-6 d-flex justify-content-center align-items-center">
+                      <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio-mobile" id="deliveryRadioMobile">
+                      <label class="label_item delivery mr-0 ml-0" for="deliveryRadioMobile" style="height:100px;width:100px;"></label>
                   </div>
                 </div>
-
-                <!-- Used to display form errors. -->
-                <div id="card-errors" role="alert"></div>
               </div>
-              <div class="form-row">
-                <div class="col-6">
-                  <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
-                </div>
-                <div class=" col-6 d-flex justify-content-end">
-                  <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
-                </div>
-              </div>
-            </form>
-          </div><!--/card body-->
-        </div><!--/card-->
-      </section>
-        <input name="stripeToken" type="hidden" />
-      </div><!--/col-->
-    </div><!--/row-->
-
-            <div class="row order-footer">
-              <div class="col col-md-12 col-lg-12">
-                  <div id="delivery-fee">
-                      Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
-                    </div>
-                    <div id="order-total">
-                      Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
-                    </div>
-              </div>
-              <div class="col col-md-12 col-lg-12">
-            <div class="mobile-button-wrapper ">
               
-                <a class="btn btn-success next-section d-flex justify-content-center align-items-center" onclick="nextSection()"><i data-feather="chevron-down"></i></a>
-            </div>
+              <div class="col-5 mx-auto order-summary pt-1" style="text-align:center;">
+                <span class="store-desc pl-0" style="position:relative;"></span><br />
+                  <div class="col-12 " style="border-bottom:1px solid black;">
+                    <span>Monday - Apr 29</span>
+                  </div>
+                  <div id="delivery-fee" style="">
+                    Delivery Fee - <strong> $<span class="delivery-fee">0</span></strong>
+                  </div>
+                  <div id="order-total">
+                    Order Total - <strong> $<span class="order-total"></span></strong>
+                  </div>
               </div>
+              
+              <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
+                <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
+              </a>
             </div>
-            
+          </div>
+
+          <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingTwo">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Create account
+            </button>
+          </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              @!include('Checkout.basic-info')
+
+          </div>
+
+          <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Billing Info
+            </button>
+          </h5>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              @!include('Checkout.billing-info') 
+              @!include('Checkout.shipping-info')
+
+          </div>
+        <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFour">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Confirm your day
+              </button>
+            </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                <div id="pickupDaysList" class="card card-user card-checkout">
+
+                  </div>
+
+            </div>
+            <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFive">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Payment Method
+                </button>
+              </h5>
+              </div>
+              <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+              <div class="card card-user card-checkout">
+                  <form id="payment-form">
+                      <div class="form-row">
+                        <label for="card-element">
+                          Credit or debit card
+                        </label>
+                        <div class="mb-3 col-12">
+                          <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                          </div>
+                        </div>
+        
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" role="alert"></div>
+                      </div>
+                      <div class="form-row">
+
+                        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+                          <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
+                        </div>
+                        <div class=" col-12 col-sm-12 col-md-4 col-lg-4" style="text-align:center;">
+                          <hr class="mb-1 d-block d-sm-block d-lg-none d-md-none">
+                          <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                        </div>
+                      </div>
+                    </form>
+                    <input name="stripeToken" type="hidden" />
+
+                </div>
+              </div>
+
+              <a class="btn btn-success mobile-checkout d-flex justify-content-center align-items-center">Checkout</a>
+
+        </div>
+
+    </div>            
   @endif
 </div><!--/content-->
 <script src="https://js.stripe.com/v3/"></script>
-
+<script>
+  </script>
 @endsection
