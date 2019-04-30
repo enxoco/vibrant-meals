@@ -6538,3 +6538,8 @@ div#delivery-fee, #order-total {
   border-top: 5px solid #f2f2f2;
   background: white;
 } */
+
+.center-center {
+  justify-content: center;
+  align-items: center;
+}

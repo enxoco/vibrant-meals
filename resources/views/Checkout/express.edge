@@ -10,7 +10,7 @@
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       
       <div class="card-body" style="background:white;">
-        <div class="col-12 col-sm-12 col-md-10 col-lg-10 mx-auto d-block d-sm-block d-md-none d-lg-none">
+        <!--<div class="col-12 col-sm-12 col-md-10 col-lg-10 mx-auto d-block d-sm-block d-md-none d-lg-none">
           <div class="row">
             <div class="col-6">
               <div class="col">
@@ -24,8 +24,12 @@
                 <label class="label_item delivery mr-0 ml-0" for="deliveryRadioMobile" style="height:100px;width:100px;"></label>
             </div>
           </div>
-        </div>
-        
+        </div>-->
+        <div class="col d-flex justify-content-end">
+            <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
+                <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
+              </a>
+            </div>
         <div class="col-12 mx-auto order-summary pt-1" style="text-align:center;">
           <div class="row">
           <div class="col col-md-6 col-lg-6">
@@ -44,10 +48,8 @@
           <div class="col col-md-6 col-lg-6">
               <ul style="text-align:left;">
                   <strong>Pickup/Delivery Date</strong>
-                  <li>
-                    <span class="store-desc pl-0" style="position:relative;"></span>
-                  </li>
-                  <li>Monday - Apr 29</li>
+
+                  <li><span class="delivery-date-label"></span></li>
                 </ul>
               <ul style="text-align:left;">
                 <strong>Order Total</strong>
@@ -60,6 +62,7 @@
                   <div id="order-total">
                       Order Total - <strong> $<span class="order-total"></span></strong>
                     </div>
+
               </li>
               </ul>
 
@@ -68,13 +71,12 @@
           </div>
           <div class="col">
               <h4><a class="btn btn-success btn-lg" id="addCardToCust">Checkout</a></h4>
+              
           </div>
         </div>
+
         </div>
-        
-        <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
-          <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
-        </a>
+
       </div>
     </div>
 
@@ -114,8 +116,9 @@
         </h5>
         </div>
         <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
-          <div class="card card-user" style="text-align:center;">
+            <div class="row d-flex center-center">
             @each(card in billing.sources.data)
+              <div class="col-12">
             <div class="radio">
               <input id="card-{{card.last4}}" name="radio" type="radio" value="{{card.id}}"
               @if($loop.first)
@@ -126,38 +129,41 @@
                 <img src="/images/{{(card.brand.toLowerCase())}}.png" width="25px" height="25px"/>
               </label> 
             </div>
+              </div>
           @endeach
+          <div class="col-12">
           <div class="radio">
             <input id="addCard" name="radio" type="radio" value="addCard">
             <label for="addCard" class="radio-label">Pay with new card</label>
           </div>
-          <div class="col-8 mx-auto form-row addCardForm hidden">
+          </div>
+        </div>
+        <div class="row d-flex center-center">
+          <div class="col-12 form-row addCardForm hidden">
 
               <div class="mb-3 col-12">
                 <div id="card-element">
                   <!-- A Stripe Element will be inserted here. -->
                 </div>
               </div>
-      
+    
               <!-- Used to display form errors. -->
               <div id="card-errors" role="alert"></div>
             </div>
             <hr class="mb-1">
-            <div class="form-row">
-                <div class="col-12 col-md-8 col-lg-8">
+                <div class="col-8">
                   <input type="text" name="promoCode" placeholder="Coupon Code" class="form-control" />
                 </div>
-                <div class=" col-12 col-md-4 col-lg-4">
-                  <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                <div class=" col-4">
+                  <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" style="white-space:normal;" id="applyCoupon">Apply</a>
                 </div>
-              </div>
-          </div>
+        </div>
         </div>
 
         <div class="col col-md-8 col-lg-8 mx-auto express-checkout-edit hidden">
             <div class="hidden" id="billing-info"></div>
           </div>
-          <div class="col">
+          <div class="col d-flex center-center">
               <h4><a class="btn btn-success btn-lg" id="addCardToCust">Checkout</a></h4>
           </div>
   </div>

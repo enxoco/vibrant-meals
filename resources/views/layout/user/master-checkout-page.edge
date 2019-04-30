@@ -764,6 +764,11 @@ p.desc {
 .card-header {
   text-align: center;
 }
+
+input[name=promoCode]::placeholder {
+  font-weight: 300;
+  text-align: center;
+}
 </style>
 
 <script>
@@ -791,18 +796,24 @@ p.desc {
         </h2>
       </div>
       <div class="sidebar-wrapper">
-        <ul class="nav" id="cart">
+        <ul class="nav pl-4" id="cart">
             <div class="row mb-5 order-info d-flex justify-content-center">
-              <div class="col col-md-6 col-lg-6 d-flex justify-content-center mx-auto fulfill-option">
-                <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
-                <label class="label_item pickup" for="pickupRadio" style="height:100px;width:100px;">
-                </label>
-
-              </div>
-              <div class="col col-md-6 col-lg-6 d-flex justify-content-center mx-auto fulfill-option">
-                  <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio" id="deliveryRadio">
-                <label class="label_item delivery" for="deliveryRadio" style="height:100px;width:100px;"></label>
-              </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-6 d-flex center-center">
+                            <div class="col">
+                          <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio-mobile" id="pickupRadioMobile" data-toggle="modal" data-target="#modal-pickup">
+                            <label class="label_item pickup mr-0 ml-0" for="pickupRadioMobile" style="height:100px;width:100px;"></label>
+                        </div>
+                      </div>
+                      
+                      <div class="col-6 d-flex center-center">
+                          <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio-mobile" id="deliveryRadioMobile">
+                          <label class="label_item delivery mr-0 ml-0" for="deliveryRadioMobile" style="height:100px;width:100px;"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="store-desc"></span>
                 <section id="order-info"></section>
 
             </div>

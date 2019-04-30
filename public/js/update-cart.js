@@ -81,6 +81,8 @@ function updateCartDiv() {
 
     if (localStorage.fulfillment_method == 'pickup') {
       if (localStorage.fulfillment_day) {
+        $('.delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
+
         $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
       } else {
 
@@ -90,7 +92,9 @@ function updateCartDiv() {
       $('#delivery-fee').show()
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
       // $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
-      $('#delivery-date-label').html('<a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
+      $('.delivery-date-label').html('<a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong></a>')
+
+      $('#delivery-date-label').html('<a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong></a>')
 
     }
 
@@ -106,7 +110,7 @@ function updateCartDiv() {
       var pickup = JSON.parse(localStorage.pickupLocation).desc
       $('.cart-icon-label.pickup').html(pickup)
     } else {
-      $('.cart-icon-label.delivery').html()
+      $('.cart-icon-label.ls').html()
       
     }
 
@@ -138,7 +142,7 @@ function updateCartDiv() {
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
 
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
-        <div class="col col-md-2 card-user">\
+        <div class="col-4 pt-2 card-user">\
           <div class="row mr-0 ml-0 pb-3">\
             <a onclick="addCart('+i+')"><i class="nc-icon nc-simple-add"></i></a>\
           </div>\
@@ -149,10 +153,8 @@ function updateCartDiv() {
             <a data-id="'+i+'" onclick="subCart('+i+')"><i class="nc-icon nc-simple-delete"></i></a>\
           </div>\
         </div>\
-        <div class="col col-md-5 pt-2">\
+        <div class="col-6 pt-2">\
           <img class="avatar" src="'+cartItems[i].img_url.replace('http://', 'https://')+'">\
-        </div>\
-        <div class="col col-md-4 pt-2">\
           <span class="cart-item-label">'+cartItems[i].name+'</span>\
         </div>\
       </div>\

@@ -74,7 +74,6 @@ hooks.after.providersBooted(() => {
   })
 
   View.global('nutritionFooterDesktop', function(obj){
-    console.log('hello')
     var newObj = Object.assign({}, obj);
 
 
@@ -84,7 +83,6 @@ hooks.after.providersBooted(() => {
     delete newObj.name
     delete newObj.description
     var count = Object.keys(newObj)
-    console.log(count)
   
     if (count.length < 4) {
       return this.safe('<div class="col-9 pb-2"></div>')

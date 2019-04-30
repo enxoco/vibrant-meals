@@ -23,24 +23,24 @@
             <div class="card-body" style="background:white;">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 mx-auto">
                 <div class="row">
-                    <div class="col-6 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex center-center">
                         <div class="col">
                       <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio-mobile" id="pickupRadioMobile" data-toggle="modal" data-target="#modal-pickup">
                         <label class="label_item pickup mr-0 ml-0" for="pickupRadioMobile" style="height:100px;width:100px;"></label>
                     </div>
                   </div>
                   
-                  <div class="col-6 d-flex justify-content-center align-items-center">
+                  <div class="col-6 d-flex center-center">
                       <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio-mobile" id="deliveryRadioMobile">
                       <label class="label_item delivery mr-0 ml-0" for="deliveryRadioMobile" style="height:100px;width:100px;"></label>
                   </div>
                 </div>
               </div>
               
-              <div class="col-5 mx-auto order-summary pt-1" style="text-align:center;">
-                <span class="store-desc pl-0" style="position:relative;"></span><br />
+              <div class="col-12 col-md-5 col-lg-5 mx-auto order-summary pt-1" style="text-align:center;">
+                  <span class="store-desc pl-0" style="position:relative;"></span><br />
                   <div class="col-12 " style="border-bottom:1px solid black;">
-                    <span>Monday - Apr 29</span>
+                    <span id="delivery-date-label">Monday - Apr 29</span>
                   </div>
                   <div id="delivery-fee" style="">
                     Delivery Fee - <strong> $<span class="delivery-fee">0</span></strong>
@@ -123,7 +123,7 @@
                         </div>
                         <div class=" col-12 col-sm-12 col-md-4 col-lg-4" style="text-align:center;">
                           <hr class="mb-1 d-block d-sm-block d-lg-none d-md-none">
-                          <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply Coupon</a>
+                          <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply</a>
                         </div>
                       </div>
                     </form>
@@ -132,7 +132,7 @@
                 </div>
               </div>
 
-              <a class="btn btn-success mobile-checkout d-flex justify-content-center align-items-center">Checkout</a>
+              <a class="btn btn-success mobile-checkout d-flex center-center">Checkout</a>
 
         </div>
 
@@ -143,3 +143,10 @@
 <script>
   </script>
 @endsection
+
+
+#*/15 * * * * rsync -avzh -e 'ssh -i /home/murph/.ssh/2.chattvpn.pem -p 2202' /home/murph murph@2.chattvpn.com:/home
+#*/15 * * * * rsync -avzh -e 'ssh -i /home/murph/.ssh/2.chattvpn.pem -p 2202' /var/log murph@2.chattvpn.com:/mnt/backups/backup
+#*/15 * * * * rsync -avzh -e 'ssh -i /home/murph/.ssh/2.chattvpn.pem -p 2202' /etc/nginx murph@2.chattvpn.com:/etc
+#*/15 * * * * rsync -avzh -e 'ssh -i /home/murph/.ssh/2.chattvpn.pem -p 2202' /etc/letsencrypt murph@2.chattvpn.com:/etc
+#*/15 * * * * rsync -avzh -e 'ssh -i /home/murph/.ssh/2.chattvpn.pem -p 2202' /var/www murph@2.chattvpn.com:/var

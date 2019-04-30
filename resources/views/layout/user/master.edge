@@ -704,11 +704,11 @@ p.desc {
   align-items: center;
 }
 
-.store-desc {
+/* .store-desc {
   position: absolute;
   bottom: 0px;
   padding-left: 35px;
-}
+} */
 
 @media screen and (min-width: 600px) {
   .row.order-footer {
@@ -753,12 +753,17 @@ p.desc {
   }
 
   #cart-rows {
-    margin-bottom: 150px;
+    margin-bottom: 100px;
   }
 
   h4.item-name {
     font-size: 18px;
   }
+
+  input[name=promoCode]::placeholder {
+  font-weight: 300;
+  text-align: center;
+}
 
 </style>
 <script>
@@ -790,20 +795,29 @@ p.desc {
         </h2>
       </div>
       <div class="sidebar-wrapper">
-        <ul class="nav" id="cart">
+        <ul class="nav pl-4" id="cart">
             <div class="row mb-5 order-info d-flex justify-content-center">
-              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+              <div class="col mx-auto">
                 <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickupRadio" data-toggle="modal" data-target="#modal-pickup">
                 <label class="label_item pickup" for="pickupRadio" style="height:100px;width:100px;">
                 </label>
-                <p class="store-desc">&nbsp</p>
 
               </div>
-              <div class="col d-flex justify-content-center mx-auto fulfill-option">
+              <div class="col mx-auto">
                   <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio" id="deliveryRadio">
                 <label class="label_item delivery" for="deliveryRadio" style="height:100px;width:100px;"></label>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <p class="store-desc">&nbsp</p>
                 <p class="delivery-desc">&nbsp</p>
               </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div id="order-total">
+                    Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
+                  </div>
+              </div>
+
+
                 <section id="order-info"></section>
             </div>
 
@@ -814,20 +828,10 @@ p.desc {
               </div>
 
             </div>
-            <div class="row order-footer mx-auto">
-                <div class="col col-md-12 col-lg-12">
-                    <div id="delivery-fee">
-                        Delivery Fee - &nbsp<strong> $<span class="delivery-fee">0</span></strong>
-                      </div>
-                      <div id="order-total">
-                        Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
-                      </div>
-                </div>
-
-                <div class="col col-md-12 col-lg-12">
-                    <div class="mobile-button-wrapper ">
-                
-                  <a class="btn btn-success btn-lg" href="/checkout">Next<i data-feather="chevron-right"></i></a>
+            <div class="row order-footer">
+                <div class="col mx-auto d-flex center-center">
+              <div class="mobile-button-wrapper">  
+                <a class="btn btn-success" style="font-size:20px;text-transform:uppercase" href="/checkout">Next</a>
               </div>
                 </div>
             </div>
@@ -839,7 +843,17 @@ p.desc {
       @!include('layout.user.top-nav')
 
 @!section('content')
-
+<script type="text/javascript"> 
+  var mobile = (/iphone|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
+  // if (mobile) { 
+  //     alert("MOBILE DEVICE!!");
+  //     $('.navWrap').css('display', 'none'); // OR you can use $('.navWrap').hide();
+  // } 
+  // else 
+  // { 
+  //    alert("NOT A MOBILE DEVICE!!"); 
+  // }
+</script> 
 
 <script src="/admin/js/core/jquery.min.js"></script>
 <script src="/admin/js/core/popper.min.js"></script>

@@ -6429,6 +6429,9 @@ License - nucleoapp.com/license/
   }
 }
 
-
+.center-center {
+  justify-content: center;
+  align-items: center;
+}
 
 /*# sourceMappingURL=dashboard-free.css.map */
