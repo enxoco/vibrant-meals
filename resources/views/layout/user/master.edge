@@ -122,8 +122,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 
 
 .col.date-list-item {
-    font-size: 1.5em;
-    font-weight: 900;
+  font-size: 14px;
 }
 li.list-group-item.button-group {
     text-align: center;
@@ -808,7 +807,7 @@ p.desc {
                 <label class="label_item delivery" for="deliveryRadio" style="height:100px;width:100px;"></label>
               </div>
               <div class="col-12 d-flex justify-content-center">
-                <p class="store-desc">&nbsp</p>
+                <p class="store-desc mb-3">&nbsp</p>
                 <p class="delivery-desc">&nbsp</p>
               </div>
               <div class="col-12 d-flex justify-content-center">
@@ -1311,7 +1310,7 @@ $(document).ready(function() {
 
       $('#deliveryRadio').removeAttr('checked')
       if (localStorage.myStore) {
-        $('.store-desc').html(JSON.parse(localStorage.myStore)['name'])
+        $('.store-desc').html('<strong>Pickup Location </strong><br />' + JSON.parse(localStorage.myStore)['name'])
       }
   } else {
     $('#deliveryRadio').attr('checked', 'checked')
@@ -1358,6 +1357,9 @@ if ($('#firstName').val != "" && $('#lastName').val != "" && $('#email') !="" ) 
 } else {
   $('#createToken').attr('disabled', 'disabled')
 
+}
+function navbarToggle() {
+  $('.navbar-toggle').click()
 }
 </script>
 

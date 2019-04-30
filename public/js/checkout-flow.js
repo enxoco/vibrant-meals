@@ -113,7 +113,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       nextAvalFulfill()
       if (localStorage.myStore) {
         var storeName = JSON.parse(localStorage.myStore)
-        $('.store-desc').html(storeName.name)
+        $('.store-desc').html('<strong>Pickup Location</strong><br />' + storeName.name)
       }
 
 

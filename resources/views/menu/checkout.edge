@@ -1,4 +1,4 @@
-@layout('layout.user.master-checkout-page') 
+@layout('layout.user.master') 
 @section('content')
 @!include('Modals.order-confirmation')
 @!include('Modals.initial')
@@ -21,26 +21,17 @@
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             
             <div class="card-body" style="background:white;">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6 mx-auto">
-                <div class="row">
-                    <div class="col-6 d-flex center-center">
-                        <div class="col">
-                      <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio-mobile" id="pickupRadioMobile" data-toggle="modal" data-target="#modal-pickup">
-                        <label class="label_item pickup mr-0 ml-0" for="pickupRadioMobile" style="height:100px;width:100px;"></label>
+
+                <div class="col d-flex justify-content-end">
+                    <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
+                        <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
+                      </a>
                     </div>
-                  </div>
-                  
-                  <div class="col-6 d-flex center-center">
-                      <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio-mobile" id="deliveryRadioMobile">
-                      <label class="label_item delivery mr-0 ml-0" for="deliveryRadioMobile" style="height:100px;width:100px;"></label>
-                  </div>
-                </div>
-              </div>
-              
               <div class="col-12 col-md-5 col-lg-5 mx-auto order-summary pt-1" style="text-align:center;">
-                  <span class="store-desc pl-0" style="position:relative;"></span><br />
-                  <div class="col-12 " style="border-bottom:1px solid black;">
-                    <span id="delivery-date-label">Monday - Apr 29</span>
+                  <span class="store-desc pl-0 mb-3" style="position:relative;"></span><br /><br />
+                  <div class="col-12 mb-3">
+                    <span class="delivery-date-label"></span>
+                    <br />
                   </div>
                   <div id="delivery-fee" style="">
                     Delivery Fee - <strong> $<span class="delivery-fee">0</span></strong>
@@ -50,9 +41,6 @@
                   </div>
               </div>
               
-              <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
-                <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
-              </a>
             </div>
           </div>
 
