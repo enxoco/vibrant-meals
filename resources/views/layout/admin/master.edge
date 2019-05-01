@@ -364,8 +364,46 @@ input.muted {
 
   })
   
+  $('input[name=switch]').on('change', function(){
+    var active = $('#switch-on').is(':checked')
+    var inactive = $('#switch-off').is(':checked')
+    if (active) {
+      $('.false').hide()
+      $('.true').show()
+    }
+
+    if (inactive) {
+      $('.true').hide()
+      $('.false').show()
+
+    }
+
+  })
 
   $(document).ready(function() {
+    $('.false').hide()
+    $(".filter-button").click(function(){
+    var value = $(this).attr('data-filter');
+    $('h2').removeClass('active')
+    $(this).find('h2').addClass('active')
+    
+    if(value == "all")
+    {
+        $('.filter').show('1000');
+    }
+    else
+    {
+        $(".filter").not('.'+value).hide('3000');
+        $('.filter').filter('.'+value).show('3000'); 
+        if ($('#switch-on').is(':checked')) {
+          $('.false').hide()
+          
+        }
+    }
+});
+
+
+
     $('#pickups, #productNeeded, #customers').DataTable( {
         select: true,
         dom: 'Bfrtip',

@@ -16,23 +16,23 @@
               </div>
         
             </div> <!-- end switch -->
-          <div class="col">
+          <div class="col-8 mx-auto">
               <section id="category-container">
 
                   <div class="img-container">
-                      <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
+                      <a href="#" class="filter-button" data-filter="all"><p class="category-heading">All</p></a>
                   </div>
                         <div class="img-container">
-                        <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button"><h2 class="category-heading">Lunch &amp; Dinner</h2></a>
+                        <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button"><p class="category-heading">Lunch &amp; Dinner</p></a>
                       </div>
                       <div class="img-container">
-                        <a href="#" data-filter="Drinks" class="Drinks filter-button"><h2 class="category-heading">Drinks</h2></a>
+                        <a href="#" data-filter="Drinks" class="Drinks filter-button"><p class="category-heading">Drinks</p></a>
                       </div>
                       <div class="img-container">
-                        <a href="#" data-filter="Snacks" class="Snacks filter-button"><h2 class="category-heading">Snacks</h2></a>
+                        <a href="#" data-filter="Snacks" class="Snacks filter-button"><p class="category-heading">Snacks</p></a>
                       </div>
                       <div class="img-container">
-                        <a href="#" data-filter="Breakfast" class="Breakfast filter-button"><h2 class="category-heading">Breakfast</h2></a>
+                        <a href="#" data-filter="Breakfast" class="Breakfast filter-button"><p class="category-heading">Breakfast</p></a>
                       </div>
         
                 </section>
@@ -41,8 +41,7 @@
         <div class="row">
 
           @each(item in items)
-
-          <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="col-lg-3 col-md-3 col-sm-6 filter {{item.active}} {{item.metadata.primary_category}}">
             <div class="card card-stats">
               <div class="card-body ">
                 <div class="row">
@@ -57,27 +56,17 @@
                       <p class="card-title">{{currency(item.skus.data[0].price)}}
                         <p>
                     </div>
+                    <a href="/products/edit/{{item.id}}"><i data-feather="edit"></i></a>
+                    <a href="/products/remove/{{item.id}}"><i data-feather="trash-2" style="color:red;"></i></a>
+                    @if(item.active === true)
+                      <a href="#" id="hideItem" data-item="{{item.id}}"><i data-feather="eye"></i></a>
+                    @else 
+                      <a href="#" id="showItem" data-item="{{item.id}}"><i data-feather="eye-off"></i></a>
+                    @endif
                   </div>
                 </div>
               </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                    <btn data-toggle="tooltip" data-placement="top" title="Edit Item" class="btn btn-md btn-outline-success btn-round btn-icon add-another">
-                      <a href="/products/edit/{{item.id}}"><i class="nc-icon nc-ruler-pencil"></i></a>
-                    </btn>
-                    <btn data-toggle="tooltip" data-placement="top" title="Delete Item" class="btn btn-md btn-outline-danger btn-round btn-icon add-another">
-                    <a href="/products/remove/{{item.id}}"><i class="nc-icon nc-simple-remove"></i></a>
-                      </btn>
-                      @if(item.active === true)
-                      <btn data-toggle="tooltip" data-placement="top" title="Disable Item" class="btn btn-md btn-outline-warning btn-round btn-icon add-another">
-                          <a href="/products/hide/{{item.id}}"><i class="nc-icon nc-button-pause"></i></a>
-                            </btn>
-                            @else 
-                            <btn data-toggle="tooltip" data-placement="top" title="Enable Item" class="btn btn-md btn-outline-success btn-round btn-icon add-another">
-                                <a href="/products/show/{{item.id}}"><i class="nc-icon nc-button-play"></i></a>
-                                @endif
-                                    </div>
+              <div class="card-footer">
               </div>
             </div>
           </div>
@@ -130,10 +119,61 @@
   <script src="/admin/demo/demo.js"></script>
   <script>
     $(document).ready(function() {
+    //   var settings = {
+    //   "async": true,
+    //   "crossDomain": true,
+    //   "url": "https://api.stripe.com/v1/products?limit=999999",
+    //   "method": "GET",
+    //   "headers": {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //     "Authorization": "Bearer sk_test_ZmWaFEiBn0H63gNmfCacBolp",
+    //     "cache-control": "no-cache",
+    //     "Postman-Token": "b6913294-3133-46cb-a1b9-2f06cded6849"
+    //   },
+    //   "data": ""
+    // }
+
+
       // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
       demo.initChartsPages();
     });
   </script>
+  <script>
+
+    $('#hideItem').on('click', function(e){
+      e.preventDefault()
+      var item = $(this).data('item')
+      $(this).closest('.filter').addClass('false')
+      $(this).closest('.filter').removeClass('true')
+      $(this).closest('.filter').hide()
+      $.ajax({
+        type: 'GET',
+        url: '/products/hide/' + item,
+        success: function(res) {
+          $.get('/admin/products/publish')
+          location.reload()
+        }
+      })
+    })
+    $('#showItem').on('click', function(e){
+      e.preventDefault()
+
+      var item = $(this).data('item')
+      $(this).closest('.filter').addClass('true')
+      $(this).closest('.filter').removeClass('false')
+
+      $(this).closest('.filter').show()
+      $.ajax({
+        type: 'GET',
+        url: '/products/show/' + item,
+        success: function(res) {
+          $.get('/admin/products/publish')
+
+          location.reload()
+        }
+      })
+    })
+    </script>
 </body>
 
 </html>

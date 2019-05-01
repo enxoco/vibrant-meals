@@ -303,9 +303,17 @@ class AdminController {
   }
 
     async showItems ({ view, response }) {
-      const path = Helpers.appRoot()
-      var prod = await Drive.get(`${path}/products.json`, 'utf-8')
-      prod = JSON.parse(prod)
+      var products = await stripe.products.list({limit:100000})
+      var prod = products.data
+
+      for (var i = 0; i < prod.length; i++) {
+        var sku = await stripe.skus.list(
+          {product: prod[i].id}
+        )
+        prod[i].skus = sku
+      }
+      // var prod = await Drive.get(`${path}/products.json`, 'utf-8')
+      // prod = JSON.parse(prod)
     
         var categories = []
         for (var i = 0; i < prod.length; i++) {
