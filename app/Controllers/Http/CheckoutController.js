@@ -105,7 +105,8 @@ class CheckoutController {
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: user.name,
             address: {
-              line1: location.address,
+              line1: store.name,
+              line2: location.address,
               city: location.city,
               state: location.state,
               country: 'US',
@@ -142,7 +143,8 @@ class CheckoutController {
             shipping: { // shipping address could be either customers address for delivery or store address for pickup
               name: user.name,
               address: {
-                line1: location.address,
+                line1: store.name,
+                line2: location.address,
                 city: location.city,
                 state: location.state,
                 country: 'US',
@@ -203,21 +205,14 @@ class CheckoutController {
           });
         });
       }
-
+      
+      var order = await stripe.orders.list({
+        limit: 1,
+        customer: customer.id
+      })
       
     }
-
-
-    if (order) {
-      console.log(order)
-      return
-
-    } else {
-      console.log(order)
-      return response.send({'status': 'success'})
-    }
-    console.log('hello')
-    return
+    return response.send(order)
 
   }
 
@@ -297,6 +292,12 @@ class CheckoutController {
       description: 'Customer for ' + req.user.email,
       source: req.billing.stripeToken,
       email: user.email,
+      address: {
+        line1: req.billing.street,
+        city: req.billing.city,
+        state: req.billing.state,
+        postal_code: req.billing.zip
+      },
       metadata: {
         name: user.name,
         fulfillment_method: req.user.fulfillment_method,
@@ -342,7 +343,7 @@ class CheckoutController {
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: user.name,
             address: {
-              line1: address,
+              line1: loc.name,
               city: city,
               state: state,
               country: 'US',
@@ -353,7 +354,7 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.id,
+            store_id: loc.id,
           },
           email: user.email
         }, function(err, order) {
@@ -375,7 +376,7 @@ class CheckoutController {
             shipping: { // shipping address could be either customers address for delivery or store address for pickup
               name: user.name,
               address: {
-                line1: location.address,
+                line1: location.name,
                 city: location.city,
                 state: location.state,
                 country: 'US',
@@ -386,6 +387,7 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
+              pickup_location: location.name
             },
             email: user.email
           }, function(err, order) {
@@ -436,13 +438,13 @@ class CheckoutController {
 
       
     }
-
-
-    if (order) {
-      return response.send(order)
-    } else {
-      return response.send({'status':'success'})
-    }
+    var order = await stripe.orders.list({
+      limit: 1,
+      customer: customer.id
+    })
+    
+  
+  return response.send(order)
 
   }
 

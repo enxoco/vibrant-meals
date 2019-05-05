@@ -105,33 +105,11 @@ class ItemController {
    * 
    */
     async hideItem ({ params, response }) {
-      // var productList = await Drive.get(`${path}/products.json`)
-      // for (var i = 0; i < productList.length; i++) {
-      //   if (productList[i].id === params.itemId) {
-      //     productList[i].active = false
-      //     await Drive.put(`${path}/products.json`, JSON.stringify(productList))
-      //   }
-      // }
       await stripe.products.update(params.itemId, {active: false})
-      // await this.updateItems()
-            //Beware Stripe api defaults to limit of 10 products when doing a listing.
-            var products = await stripe.products.list({limit:100000})
-            var prod = products.data
-      
-            for (var i = 0; i < prod.length; i++) {
-              var sku = await stripe.skus.list(
-                {product: prod[i].id}
-              )
-              prod[i].skus = sku
-            }
-            
-            await Drive.put(`${path}/products.json`, JSON.stringify(prod))
       return response.send({status: 'success'})
     }
     async showItem ({ params, response }) {
       await stripe.products.update(params.itemId, {active: true})
-      // await this.updateItems()
-
       return response.send({status: 'success'})
     }
 

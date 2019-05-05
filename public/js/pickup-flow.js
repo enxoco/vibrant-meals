@@ -1,5 +1,10 @@
 
 $(document).on('click', '#pickupRadio', function () {
+
+  if (window.location.href.includes('checkout')) {
+    $('#collapseTwo').removeClass('show')
+    $('#collapseOne').addClass('show')
+  }
   $('#pickupRadioMobile').click()
   getLocation()
   $('.delivery-fee').html('0')

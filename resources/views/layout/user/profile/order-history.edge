@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-10 mx-auto">
+<div class="accordian" style="background:none;" id="orderHistory">
+@each(order in customer.orders.data)
+<div class="card-header" style="background:none !important;" id="heading-{{$loop.index}}">
+        <h5 class="mb-0">
+          <button style="font-weight:500; font-size:14px;" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#order-{{$loop.index}}" aria-expanded="false" aria-controls="order-{{$loop.index}}">
+          Order #{{order.metadata.orderId}}, {{convertTime(order.updated)}}
+          </button>
+        </h5>
+        </div>
+        <div id="order-{{$loop.index}}" class="collapse" style="background-color:#f7f7f7;" aria-labelledby="heading-{{$loop.index}}" data-parent="#orderHistory">
+                <div class="row">
+                        <div class="col-10 mx-auto">
+
+                            <ul class="order-summary-items" style="padding:0px;">
+                                @each(item in order.items)    
+                                @unless(item.quantity == null)
+                                    <li style="text-align:left;margin-bottom:1em;">
+                                        <!-- Item Description-->
+                                        {{item.description}}
+                                        <span class="order-summary-quantity" style="position:absolute;right:0px;font-weight:700;">
+                                        x{{item.quantity}}
+                                        </span>
+                                    </li>
+                                @endunless
+                                @endeach
+                    
+                                    <li style="text-align:right;">
+                                        <strong>Total: {{currency(order.amount)}} </strong>
+                            </ul>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 mx-auto">
+                
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 mx-auto">
+                                        @if(order.metadata.fulfillment_method == 'pickup')
+                                        <span style="font-weight:600">Pickup Location: </span><br />
+                                        @else
+                                        Delivered to:<br />
+                                        {{order.shipping.address.line1}}<br />
+                                        {{order.shipping.address.line2}}
+                                        {{order.shipping.address.city}}, {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}
+                                        @endif
+                                        <br />
+                                    </div>
+                                </div>
+                        </div>
+                    </div>        </div>  
+
+@endeach
+
+</div>
+    </div>

@@ -1,0 +1,160 @@
+.nutrition-label-container {
+    background-color: white;
+    border-left: 40px solid $color-everyday;
+    height: auto;
+    min-height: 100%;
+    
+    overflow: hidden;
+    z-index: -8;
+  }
+  
+  .sideways-product-label {
+    color: $color-everyday;
+    font-weight: 700;
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+    position: relative;
+    left: 30px;
+    top: 30px;
+    font-size: 32px;
+  }
+  
+  .label-top-right {
+    border-left: 1px solid black;
+    position: relative;
+    left: 0px;
+  }
+  
+  .label-category {
+      color: $color-everyday;
+    font-size: 28px;
+    right: 60px;
+    position: relative;
+    letter-spacing: 5px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+  
+  }
+  .label-category-border {
+    border-top: 5px solid $color-everyday;
+    left: 100px;
+    position: relative;
+    top: -10px;
+  }
+  
+  .label-description {
+    position: relative;
+    left: 30%;
+    word-wrap: break-word;
+    width: 65%;
+  }
+  
+  .label-middle {
+    height: 200px;
+    background-color: $color-everyday;
+    color: white;
+  }
+  
+  .label-inverted {
+    font-size: 30px;
+    text-align: center;
+    padding-top: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  
+  .nutrition-heading {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  
+  .table-bordered {
+    border: 1px solid black;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    padding-left: 10px;
+  }
+  
+  
+  .nutrition-break {
+    height: 20px;
+    border-top: 15px solid black;
+    width: 95%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .line-break {
+    border-top: 1px solid black;
+    margin-top: -3px;
+    width: 225px;
+    left: -5px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .nutrition-table {
+    font-size: 12px !important;
+  }
+  
+  .nutrition-label {
+      font-family: Arial, Helvetica, sans-serif ;
+      width: 250px;
+      border: solid black 1px;
+      padding: 5px;
+  }
+  
+  .nutrition-title {
+      font-weight: bold;
+      font-size: 1.5em;
+  }
+  
+  .nutrition-recipe {
+      font-size: .8em
+  }
+  
+  .nutrition-line {
+      background-color: black;
+      height: 5px;
+      margin-top: 2px
+  }
+  
+  .nutrition-line-big {
+      height: 10px;
+  }
+  
+  .nutrition-item {
+      border-top: 1px solid black;
+      font-size: .8em;
+      display: flex;
+      width: 100%;
+  }
+  
+  .nutrition-sub-item {
+      border-top: 1px solid black;
+      font-size: .8em;
+      margin-left: 5%;
+      width: 95%;
+  }
+  
+  .nutrition-main {
+      width: 50%;
+      text-align: left;
+  }
+  
+  .nutrition-percentage {
+      width: 50%;
+      text-align: right;
+  }
+  
+  .nutrition-warning {
+      color: #aaaaaa;
+      font-size: .59em;
+  }
+  
+  .ingredients-list {
+    text-transform: capitalize;
+    font-size: 14px;
+  }

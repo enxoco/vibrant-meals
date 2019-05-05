@@ -31,6 +31,11 @@ class AccountController {
         .table('users')
         .update({'fulfillment_method': 'delivery'})
         .where('id', auth.user.id)
+        var update = await stripe.customers.update(stripe_id, {
+          metadata: {
+            fulfillment_method: 'delivery'
+          }
+        })
     }
     if (method == 'monday' || method == 'wednesday') {
       await Database
@@ -73,6 +78,7 @@ class AccountController {
     var form = request.all()
 
     var id = auth.user.stripe_id
+
     var update = await stripe.customers.update(id, {
       shipping: {
         name: auth.user.email,

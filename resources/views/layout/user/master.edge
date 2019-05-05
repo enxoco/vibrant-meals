@@ -24,7 +24,7 @@
 
   <link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/toastr.min.css">
+  <link rel="stylesheet" href="/css/toastr.min.css" />
   <style>
   
   body {
@@ -308,8 +308,8 @@ and (max-device-width : 1024px)  {
     display: flex;
   } */
   .checkout-button, .tooltip-wrapper {
-  position: relative;
-  bottom: 65px;
+  /* position: relative;
+  bottom: 65px; */
   /* left: 32.5%; */
 }
   img.delivery-icon, img.pickup-icon {
@@ -765,11 +765,21 @@ p.desc {
   text-align: center;
 }
 
+.sidebar-toggle-helper {
+  position: absolute;
+    left: 5px;
+    bottom: -5px;
+}
+
+.sidebar-toggle-helper svg {
+  height: 75px;
+    width: 75px;
+}
+ 
 </style>
-<script>
 
+<link rel="stylesheet" href="/css/nutrition-label.css" />
 
-</script>
 <script>
     if (window.location.href.includes('menu'))
         document.write('<link rel="stylesheet" href="/css/shopping-buttons.css" />');
@@ -795,6 +805,7 @@ p.desc {
         </h2>
       </div>
       <div class="sidebar-wrapper">
+
         <ul class="nav pl-4" id="cart">
             <div class="row mb-5 order-info d-flex justify-content-center">
               <div class="col mx-auto">
@@ -830,8 +841,11 @@ p.desc {
             </div>
             <div class="row order-footer">
                 <div class="col mx-auto d-flex center-center">
-              <div class="mobile-button-wrapper">  
-                <a class="btn btn-success" style="font-size:20px;text-transform:uppercase" href="/checkout">Next</a>
+              <div class="mobile-button-wrapper"> 
+                  <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none sidebar-toggle-helper">
+                      <i data-feather="chevron-left" class="navbar-toggler"></i>
+                    </a> 
+                <a class="btn btn-success checkout-button" style="font-size:20px;text-transform:uppercase" href="/checkout" disabled>Next</a>
               </div>
                 </div>
             </div>
@@ -906,7 +920,7 @@ $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', f
   "debug": false,
   "newestOnTop": false,
   "progressBar": false,
-  "positionClass": "toast-top-right",
+  "positionClass": "toast-bottom-center",
   "preventDuplicates": true,
   "onclick": null,
   "showDuration": "5000",
@@ -1043,7 +1057,10 @@ updateCartDiv()
 
 $(document).on('click', '#deliveryRadio', function(){
   $('.store-desc').html('&nbsp')
-
+  if (window.location.href.includes('checkout')) {
+    $('#collapseTwo').removeClass('show')
+    $('#collapseOne').addClass('show')
+  }
   $('.express-checkout-edit').show()
   $('.shipping-form').show()
 
@@ -1060,9 +1077,13 @@ $(document).on('click', '#deliveryRadio', function(){
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
   if (window.location.href.includes('checkout')){
-    $('.mobile-button-wrapper').html('<a class="btn btn-success btn-lg" id="createToken" disabled>Checkout</a>')
+    $('.mobile-button-wrapper').html('<a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none sidebar-toggle-helper"><i data-feather="chevron-left" class="navbar-toggler"></i></a> <a class="btn btn-success btn-lg d-md-none d-lg-none" id="createToken" disabled>Checkout</a>')
   }
 
+  $('#secondaryCheckout').on('click', function(){
+    $('#createToken').click()
+    $(this).attr('disabled', 'disabled')
+  })
 
   $.ajax({
     type: 'GET',
@@ -1095,6 +1116,8 @@ $(".filter-button").click(function(){
         $('.filter').filter('.'+value).show('3000'); 
     }
 });
+
+
 
 
 
@@ -1359,6 +1382,8 @@ if ($('#firstName').val != "" && $('#lastName').val != "" && $('#email') !="" ) 
   $('#createToken').attr('disabled', 'disabled')
 
 }
+
+
 function navbarToggle() {
   $('.navbar-toggle').click()
 }

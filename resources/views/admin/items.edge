@@ -1,48 +1,11 @@
 @layout('layout.admin.master')
 @section('content')
       <div class="content">
-        <div class="row mb-5">
 
-          <div class="col-2 pl-5">
-              <div class="switch white">
-
-                <input type="radio" name="switch" id="switch-off">
-                <input type="radio" name="switch" id="switch-on" checked>
-          
-                <label for="switch-off"><i data-feather="eye-off"></i></label>
-                <label for="switch-on"><i data-feather="eye"></i></label>
-          
-                <span class="toggle"></span>
-              </div>
-        
-            </div> <!-- end switch -->
-          <div class="col-8 mx-auto">
-              <section id="category-container">
-
-                  <div class="img-container">
-                      <a href="#" class="filter-button" data-filter="all"><p class="category-heading">All</p></a>
-                  </div>
-                        <div class="img-container">
-                        <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button"><p class="category-heading">Lunch &amp; Dinner</p></a>
-                      </div>
-                      <div class="img-container">
-                        <a href="#" data-filter="Drinks" class="Drinks filter-button"><p class="category-heading">Drinks</p></a>
-                      </div>
-                      <div class="img-container">
-                        <a href="#" data-filter="Snacks" class="Snacks filter-button"><p class="category-heading">Snacks</p></a>
-                      </div>
-                      <div class="img-container">
-                        <a href="#" data-filter="Breakfast" class="Breakfast filter-button"><p class="category-heading">Breakfast</p></a>
-                      </div>
-        
-                </section>
-          </div>
-        </div>
-        <div class="row">
-
+        <div class="row item-cards row-eq-height">
           @each(item in items)
-          <div class="col-lg-3 col-md-3 col-sm-6 filter {{item.active}} {{item.metadata.primary_category}}">
-            <div class="card card-stats">
+          <div class="col-lg-4 col-md-4 col-sm-6 filter {{item.active}} {{item.metadata.primary_category}}">
+            <div class="card card-stats" style="min-height:130px">
               <div class="card-body ">
                 <div class="row">
                   <div class="col-5 col-md-4">
@@ -53,16 +16,18 @@
                   <div class="col-7 col-md-8">
                     <div class="numbers">
                       <p class="card-category">{{item.name}}</p>
-                      <p class="card-title">{{currency(item.skus.data[0].price)}}
-                        <p>
+                      <p class="card-title">{{currency(item.skus.data[0].price)}}</p>
+                      <div class="controls mt-4">
+                      <a href="/products/edit/{{item.id}}"><i data-feather="edit"></i></a>
+                      <a href="/products/remove/{{item.id}}"><i data-feather="trash-2" style="color:red;"></i></a>
+                      @if(item.active === true)
+                        <a href="#" id="hideItem" data-item="{{item.id}}"><i data-feather="eye"></i></a>
+                      @else 
+                        <a href="#" id="showItem" data-item="{{item.id}}"><i data-feather="eye-off"></i></a>
+                      @endif
+                      </div>
                     </div>
-                    <a href="/products/edit/{{item.id}}"><i data-feather="edit"></i></a>
-                    <a href="/products/remove/{{item.id}}"><i data-feather="trash-2" style="color:red;"></i></a>
-                    @if(item.active === true)
-                      <a href="#" id="hideItem" data-item="{{item.id}}"><i data-feather="eye"></i></a>
-                    @else 
-                      <a href="#" id="showItem" data-item="{{item.id}}"><i data-feather="eye-off"></i></a>
-                    @endif
+
                   </div>
                 </div>
               </div>
@@ -107,8 +72,7 @@
   <script src="/admin/js/core/popper.min.js"></script>
   <script src="/admin/js/core/bootstrap.min.js"></script>
   <script src="/admin/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+ 
   <!-- Chart JS -->
   <script src="/admin/js/plugins/chartjs.min.js"></script>
   <!--  Notifications Plugin    -->
@@ -119,28 +83,64 @@
   <script src="/admin/demo/demo.js"></script>
   <script>
     $(document).ready(function() {
-    //   var settings = {
-    //   "async": true,
-    //   "crossDomain": true,
-    //   "url": "https://api.stripe.com/v1/products?limit=999999",
-    //   "method": "GET",
-    //   "headers": {
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //     "Authorization": "Bearer sk_test_ZmWaFEiBn0H63gNmfCacBolp",
-    //     "cache-control": "no-cache",
-    //     "Postman-Token": "b6913294-3133-46cb-a1b9-2f06cded6849"
-    //   },
-    //   "data": ""
-    // }
 
+      $("#searchBar").on("keyup", function() {
+        $('.card').removeClass('d-none');
+        var filter = $(this).val(); // get the value of the input, which we filter on
+        $('.item-cards').find('.card .card-body .card-category:not(:contains("'+filter+'"))').closest('.card').parent().addClass('d-none');
+      });
 
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
+      var h = '<div class="row">\
+    <div class="col-12">\
+        <section id="category-container">\
+            <div class="img-container">\
+                <a href="#" class="filter-button active" data-filter="all">\
+                    All\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" class="filter-button-visibility active" data-filter="true">\
+                    Active\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" class="filter-button-visibility" data-filter="false">\
+                    Inactive\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button">\
+                    <p class="category-heading">Lunch &amp; Dinner</p>\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" data-filter="Drinks" class="Drinks filter-button">\
+                    <p class="category-heading">Drinks</p>\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" data-filter="Snacks" class="Snacks filter-button">\
+                    <p class="category-heading">Snacks</p>\
+                </a>\
+            </div>\
+            <div class="img-container">\
+                <a href="#" data-filter="Breakfast" class="Breakfast filter-button">\
+                    <p class="category-heading">Breakfast</p>\
+                </a>\
+            </div>\
+            <a href="#" id="publish"><i data-feather="save"></i></a>\
+        </section>\
+    </div>\
+</div>'
+  $('#admin-bar').html(h)
+  feather.replace()
+
+      // demo.initChartsPages();
     });
   </script>
   <script>
 
-    $('#hideItem').on('click', function(e){
+    $(document).on('click', '#hideItem', function(e) {
       e.preventDefault()
       var item = $(this).data('item')
       $(this).closest('.filter').addClass('false')
@@ -149,30 +149,36 @@
       $.ajax({
         type: 'GET',
         url: '/products/hide/' + item,
-        success: function(res) {
-          $.get('/admin/products/publish')
-          location.reload()
-        }
       })
     })
-    $('#showItem').on('click', function(e){
+
+    $(document).on('click', '#showItem', function(e){
       e.preventDefault()
 
       var item = $(this).data('item')
       $(this).closest('.filter').addClass('true')
       $(this).closest('.filter').removeClass('false')
-
-      $(this).closest('.filter').show()
+      $(this).closest('.filter').hide()
       $.ajax({
         type: 'GET',
         url: '/products/show/' + item,
-        success: function(res) {
-          $.get('/admin/products/publish')
-
-          location.reload()
-        }
       })
     })
+
+    $(document).on('click', '#publish', function(e) {
+      e.preventDefault()
+      $(this).attr('disabled', 'disabled')
+      $.ajax({
+        type: 'GET',
+        url: '/admin/products/publish',
+        success: function(){
+          toastr['success']('Products published successfully')
+          $('#publish').removeAttr('disabled')
+        }
+
+      })
+    })
+
     </script>
 </body>
 

@@ -160,7 +160,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" id="#">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
@@ -169,40 +169,45 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table" id="pickups">
+                <button class="btn" id="fulfilled">Filled</button>
+                <button class="btn" id="paid">Pending</button>
+                <button class="btn" id="cancelled">Cancelled</button>
+                <button class="btn btn-primary" id="pickupOrders">Pickups</button>
+                <button class="btn btn-primary" id="deliveryOrders">Deliveries</button>
               <thead class=" text-primary">
                 <th>
-                  Order Number
+                  ID
                 </th>
                 <th>
-                  Customer Name
+                 Name
                 </th>
                 <th>
-                  Customer Email
+                 Email
+                </th>
+                <th id="locationHeader">
+                  Location
                 </th>
                 <th>
-                  Pickup Location
+                   Total
                 </th>
                 <th>
-                  Order Total
+                   Day
                 </th>
                 <th>
-                  Pickup Day
+                   Date
                 </th>
                 <th>
-                  Pickup Date
+                 Type
                 </th>
                 <th>
-                  Fulfillment Method
-                </th>
-                <th>
-                  Fufillment Status
+                 Status
                 </th>
                 <th style="display:none;">Orderid</th>
 
               </thead>
               <tbody>
                 @each(p in fulfillments)
-                <tr>
+                <tr class="filter {{p.status}}" data-status="{{p.status}}" data-method="{{p.metadata.fulfillment_method}}">
                   <td>
                     <a href="/admin/orders/{{p.id}}">{{p.metadata.orderId}}</a>
                   </td>
@@ -214,6 +219,7 @@
                   </td>
                   <td>
                     {{p.shipping.address.line1}}
+
                   </td>
                   <td>
                     {{currency(p.amount)}}
@@ -228,13 +234,8 @@
                     {{p.metadata.fulfillment_method}}
                   </td>
                   <td>
-                    @if(p.status === 'fulfilled')
-                    <h4><span class="badge badge-success">Fufilled</span></h4>
-                    @elseif(p.status === 'canceled')
-                    <h4><span class="badge badge-danger">canceled</span></h4>
-                    @else
-                    <a class="btn btn-success" href="/admin/orders/fulfill/{{p.id}}">Mark as Fufilled</a> 
-                    @endif
+                    {{p.status}}
+
                   </td>
                   <td style="display:none;">{{p.metadata.orderId}}</td>
 

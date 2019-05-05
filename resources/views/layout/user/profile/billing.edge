@@ -1,16 +1,13 @@
 <div class="card card-user card-profile">
     <div class="card-body">
         <div class="author">
-		    <h2 class="title d-flex justify-content-center">{{customer.metadata.name}}</h2>
-			<h4 class="title d-flex justify-content-center">{{customer.email}}</h4>
-			<hr class="mb-5">
-		    <h4 class="title d-flex justify-content-center">Billing Info</h4>
+
 			<form id="billing">
 			    <div class="row">
 					<div class="col">
 						<div class="form-group">
 							<label>Street Address</label>
-							<input type="street" name="street" required value="{{customer.shipping.address.line1}}" class="form-control">
+							<input type="street" name="street" required value="{{customer.address.line1}}" class="form-control">
 						</div>
 					</div>
 				</div>
@@ -18,19 +15,19 @@
 				    <div class="col">
 						<div class="form-group">
 						    <label>City</label>
-							<input type="text" name="city" required value="{{customer.shipping.address.city}}" class="form-control">
+							<input type="text" name="city" required value="{{customer.address.city}}" class="form-control">
 						</div>
 					</div>
 					<div class="col">
 						<div class="form-group">
 							<label>State</label>
-							<input type="text" name="state" required value="{{customer.shipping.address.state}}" class="form-control">
+							<input type="text" name="state" required value="{{customer.address.state}}" class="form-control">
 						</div>
 					</div>
 					<div class="col">
 						<div class="form-group">
 							<label>Zip Code</label>
-							<input type="text" name="postal_code" required value="{{customer.shipping.address.postal_code}}" class="form-control">
+							<input type="text" name="postal_code" required value="{{customer.address.postal_code}}" class="form-control">
 						</div>
 					</div>
 				</div>

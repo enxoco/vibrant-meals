@@ -4,6 +4,7 @@ const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 stripe.setApiVersion('2019-03-14');
 
+
 const Drive = use('Drive')
 const Helpers = use('Helpers')
 const cheerio = require('cheerio')
@@ -303,15 +304,17 @@ class AdminController {
   }
 
     async showItems ({ view, response }) {
+
+      stripe.setApiVersion('2018-02-28')
       var products = await stripe.products.list({limit:100000})
       var prod = products.data
 
-      for (var i = 0; i < prod.length; i++) {
-        var sku = await stripe.skus.list(
-          {product: prod[i].id}
-        )
-        prod[i].skus = sku
-      }
+      // for (var i = 0; i < prod.length; i++) {
+      //   var sku = await stripe.skus.list(
+      //     {product: prod[i].id}
+      //   )
+      //   prod[i].skus = sku
+      // }
       // var prod = await Drive.get(`${path}/products.json`, 'utf-8')
       // prod = JSON.parse(prod)
     

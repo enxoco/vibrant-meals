@@ -11,11 +11,8 @@
               </div>
               <div class="card-body">
                 <div class="author">
-                  <a href="#">
                     <h5 class="title">{{prod.name}}</h5>
-
-                  </a>
-                  <div class="col-3 mx-auto">
+                  <!--<div class="col-3 mx-auto">
                   <div class="switch inverted">
 
                       <input type="radio" name="switch" id="false"
@@ -34,7 +31,7 @@
                 
                       <span class="toggle"></span>
                     </div>
-                  </div>
+                  </div>-->
                   <div class="thumbnails"></div>
                   <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
                   <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
@@ -61,7 +58,7 @@
                         <small>Variations</small>
                       </h5>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                    <!--<div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
                       <h5>2GB
                         <br>
                         <small>Images</small>
@@ -72,43 +69,22 @@
                         <br>
                         <small>Spent</small>
                       </h5>
+                    </div>-->
+
+                      <div class="update ml-auto mr-auto">
+                        <button type="submit" class="btn btn-success save-form">Save Item</button>
+                      </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title">Variations</h4>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-unstyled team-members">
-                        <li>
-                          <div class="row">
-                            <div class="col-md-12 col-12">
-                              Use the form to the right to create additional sizes for this product.  Once you are done adding sizes, click the save button below to create the item in Stripe.
-                              <br />
-
-                            </div>
-
-                          </div>
-                        </li>
-
-                      </ul>
-                      <div class="row">
-                          <div class="update ml-auto mr-auto">
-                            <button type="submit" class="btn btn-success save-form">Save Item</button>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
           </div>
           <!-- item-card -->
           <div class="col-md-8">
             <div class="card card-user">
               <div class="card-header">
-                <h5 class="card-title">Add Item</h5>
+                <h5 class="card-title">Edit Item</h5>
               </div>
               <div class="card-body">
                 <form id="parent_product">

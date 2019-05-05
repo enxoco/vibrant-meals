@@ -22,25 +22,9 @@
             
             <div class="card-body" style="background:white;">
 
-                <div class="col d-flex justify-content-end">
-                    <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
-                        <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
-                      </a>
-                    </div>
-              <div class="col-12 col-md-5 col-lg-5 mx-auto order-summary pt-1" style="text-align:center;">
-                  <span class="store-desc pl-0 mb-3" style="position:relative;"></span><br /><br />
-                  <div class="col-12 mb-3">
-                    <span class="delivery-date-label"></span>
-                    <br />
-                  </div>
-                  <div id="delivery-fee" style="">
-                    Delivery Fee - <strong> $<span class="delivery-fee">0</span></strong>
-                  </div>
-                  <div id="order-total">
-                    Order Total - <strong> $<span class="order-total"></span></strong>
-                  </div>
-              </div>
-              
+              <pre>
+                {{ toJSON(order) }}
+              </pre>
             </div>
           </div>
 

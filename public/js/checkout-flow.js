@@ -215,13 +215,15 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function(data){
+            document.write(data)
+
             if (data.status == 'success') {
-              toastr['success']('Order completed successfully')
-              $('#orderConfirmation').modal('show')
-              $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
-              $('.express-checkout-default').attr('disabled', 'disabled')
-              localStorage.cart = []
-              updateCartDiv()
+              // toastr['success']('Order completed successfully')
+              // $('#orderConfirmation').modal('show')
+              // $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+              // $('.express-checkout-default').attr('disabled', 'disabled')
+              // localStorage.cart = []
+              // updateCartDiv()
             } else {
               toastr['warning']('Something went wrong')
             }
@@ -248,10 +250,13 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
       }
     })
 
+    
+
     $('#addCardToCust').on('click', function(){
       $(this).html('Processing order... <div id="loading"></div>')
       $(this).attr('disabled', 'disabled')
       var source = $('.billing-source').find('input[type=radio]:checked').val()
+      console.log('source')
       if (source === 'addCard') {
         stripe.createToken(card).then(function (result) {
           processOrder({type: 'new'}, result.token.id)
@@ -311,16 +316,50 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-          if (data.status == 'success') {
-            toastr['success']('Order completed successfully')
-            $('#orderConfirmation').modal('show')
-            $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
-            $('.express-checkout-default').attr('disabled', 'disabled')
-            localStorage.cart = []
-            updateCartDiv()
-          } else {
-            toastr['warning']('Something went wrong')
+          var order = data.data[0]
+          $('.card-header:not(#headingOne)').hide()
+          $('#addCardToCust').hide()
+          $('.sidebar').hide()
+          $('.main-panel').css('width', '100%')
+          toastr['success']('Order Completed!')
+
+          var s = $('.order-summary')
+          s.html('')
+          var h = '<div class="row"><div class="col-10 mx-auto">'
+          h += '<ul class="order-summary-items" style="padding:0px;">'
+          for (var i = 0; i < order.items.length; i++) {
+            var item = order.items[i]
+            if (item.quantity === null){} else {
+              h += '<li style="text-align:left;margin-bottom:1em;">' + item.description + '<span class="order-summary-quantity" style="position:absolute;right:0px;font-weight:700;">x ' + item.quantity + '</span></li>'
+            }
           }
+
+          h += '<li style="text-align:right;"><strong>Total: $' + (order.amount / 100).toFixed(2) +'</strong>'
+          h += '</ul>'
+          if (order.metadata.fulfillment_method == 'pickup') {
+            h += '<div style="text-align:left;min-height:100px;cless">'
+            h += '<span style="margin-bottom:20px;">Here is the information for your pickup order. <br />'
+            h += '<div class="row"><div class="col-12 col-md-6 col-lg-6 mx-auto"><span style="font-weight:600">Date: </span><br />' + capitalize(order.metadata.fulfillment_day) + ' ' + order.metadata.fulfillment_date
+            h += '</div><div class="col-12 col-md-6 col-lg-6 mx-auto"><span style="font-weight:600">Location: </span><br />' + order.shipping.address.line1 + '<br />' + order.shipping.address.line2
+            h += '<br />' + order.shipping.address.city + ' ' + order.shipping.address.state + ' , ' + order.shipping.address.postal_code
+            h += '</div>'
+            h += '<span style="margin-bottom:20px;">You may pick your order anytime between 9am and 5pm. <br />'
+            h += '<a class="btn btn-success" href="/account" style="white-space:normal;">Take Me To My Account</a>'
+
+          }
+                    //   localStorage.cart = []
+
+          s.html(h)
+          // if (data.status == 'success') {
+          //   toastr['success']('Order completed successfully')
+          //   $('#orderConfirmation').modal('show')
+          //   $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
+          //   $('.express-checkout-default').attr('disabled', 'disabled')
+          //   localStorage.cart = []
+          //   updateCartDiv()
+          // } else {
+          //   toastr['warning']('Something went wrong')
+          // }
 
         },
         failure: function(errMsg) {
@@ -399,13 +438,8 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
           dataType: "json",
           success: function(data){
             if (data.status == 'success') {
-              $('#orderConfirmation').modal('show')
-              $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
-              $('.express-checkout-default').attr('disabled', 'disabled')
-              $('form').attr('disabled', 'disabled')
-              $('#createToken').html('Order Complete!')
-              localStorage.cart = []
-              updateCartDiv()
+              document.write(data)
+
             }
           },
           failure: function(errMsg) {

@@ -63,11 +63,10 @@ input.muted {
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    min-height: 50px;
-    max-height: 100px;
-    padding: 20px;
+    /* min-height: 50px; */
+    /* max-height: 100px; */
+    /* padding: 20px; */
 }
-
 
 #category-container .img-container:hover > h2 {
   border-radius: 0px;
@@ -80,6 +79,23 @@ input.muted {
 }
 #category-container h2 {
   font-weight: 300;
+}
+.card-stats .card-body .numbers {
+  font-size: 14px;
+}
+div#admin-bar {
+    flex-basis: 70%;
+}
+
+.navbar.navbar-transparent a:not(.dropdown-item):not(.btn).active {
+    color: green;
+}
+.navbar.navbar-transparent a:not(.dropdown-item):not(.btn):hover {
+    color: green;
+}
+
+.dt-buttons {
+  flex-wrap: wrap;
 }
 </style>
 </head>
@@ -228,17 +244,18 @@ input.muted {
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Vibrant Meals Admin Panel</a>
           </div>
+          <div id="admin-bar"></div>
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
+<!--            <form>
               <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
+                <input type="text" value="" class="form-control" id="searchBar" placeholder="Search...">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <i class="nc-icon nc-zoom-split"></i>
@@ -246,6 +263,7 @@ input.muted {
                 </div>
               </div>
             </form>
+          -->
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link btn-magnify" href="/menu">
@@ -311,6 +329,7 @@ input.muted {
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/r-2.2.2/rr-1.2.4/sc-2.0.0/sl-1.3.0/datatables.min.js"></script>
+<script type="text/javascript" src="/admin/js/scheduled-orders-table.js"></script>
 <script>
   
   $.getScript('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', function(){
@@ -383,28 +402,48 @@ input.muted {
   $(document).ready(function() {
     $('.false').hide()
     $(".filter-button").click(function(){
-    var value = $(this).attr('data-filter');
-    $('h2').removeClass('active')
-    $(this).find('h2').addClass('active')
-    
-    if(value == "all")
-    {
-        $('.filter').show('1000');
-    }
-    else
-    {
-        $(".filter").not('.'+value).hide('3000');
-        $('.filter').filter('.'+value).show('3000'); 
-        if ($('#switch-on').is(':checked')) {
-          $('.false').hide()
-          
-        }
-    }
-});
+      var value = $(this).attr('data-filter');
+      $('.filter-button').removeClass('active')
+      $(this).addClass('active')
+      
+      if(value == "all")
+      {
+          $('.filter').show('1000');
+      }
+      else
+      {
+          $(".filter").not('.'+value).hide('3000');
+          $('.filter').filter('.'+value).show('3000'); 
+          if ($('#switch-on').is(':checked')) {
+            $('.false').hide()
+            
+          }
+      }
+  });
+
+  $(".filter-button-visibility").click(function(){
+      var value = $(this).attr('data-filter');
+      $('.filter-button-visibility').removeClass('active')
+      $(this).addClass('active')
+      
+      if(value == "all")
+      {
+          $('.filter').show('1000');
+      }
+      else
+      {
+          $(".filter").not('.'+value).hide('3000');
+          $('.filter').filter('.'+value).show('3000'); 
+          if ($('#switch-on').is(':checked')) {
+            $('.false').hide()
+            
+          }
+      }
+  });
 
 
 
-    $('#pickups, #productNeeded, #customers').DataTable( {
+    $('#productNeeded, #customers').DataTable( {
         select: true,
         dom: 'Bfrtip',
         colReorder: true,
@@ -412,43 +451,7 @@ input.muted {
           'csv',
           'pdfHtml5',
           'selectAll',
-          'selectNone',
-          {
-            text: 'Batch Fulfill',
-            className: 'btn-success',
-            action: function ( e, dt, node, config) {
-              var rows = dt.rows('.selected').data()
-              var ids = []
-              for (var i = 0; i < rows.length; i++) {
-                ids.push(rows[i][rows[i].length - 1])
-              }
-              $.ajax({
-                type: 'POST',
-                url: '/admin/orders/batch',
-                data: {ids: ids},
-                success: function(res) {
-                  toastr['success']('Orders fulfilled')
-                  
-                },
-                error: function(){
-                  toastr['warning']('Something went wrong')
-                }
-              })
-
-            }
-          },
-          {
-            text: 'Pickups',
-            className: 'btn-info',
-            action: function ( e, dt, node, config) {
-              var rows = dt.rows('.selected').data()
-              var ids = []
-              for (var i = 0; i < rows.length; i++) {
-                console.log(rows[i])
-              }
-
-            }
-          }
+          'selectNone'
         ]
     } );
 
