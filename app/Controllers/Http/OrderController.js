@@ -19,10 +19,11 @@ class OrderController {
     }
 
     async updateOrderById ({request, response, params}) {
-        const {id, status} = request.all()
+        const {id, status, amount} = request.all()
         if (status === 'refund') {
             var update = await stripe.refunds.create({
-                charge: id
+                charge: id,
+                amount: amount
             })
         } else {
             var update = await stripe.orders.update(id,{
@@ -30,6 +31,17 @@ class OrderController {
             })
         }
         return response.send(update)
+    }
+
+    async postRefund ({request, response}) {
+        const {charge, amount} = request.all()
+
+        var refund = await stripe.refunds.create({
+            charge: charge,
+            amount: amount
+        })
+
+        return response.send(refund)
     }
 
     async viewOrderById ({request, params, response, view}) {

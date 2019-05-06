@@ -2,7 +2,7 @@
 @section('content')
 <div class="content">
     <div class="row">
-        <div class="col-10 ml-auto mx-auto">
+        <div class="col-6 mx-auto">
 
             <h3>Order Details: &nbsp
                 @if(order.status_transitions.paid != null)
@@ -22,29 +22,44 @@
                     <span class="badge badge-danger">Refunded</span>
                 @endif
             </h3>
-            <h4>Order id: <strong>{{order.id}}</strong></h4>
+            <h4>Stripe id: <strong>{{order.id}}</strong></h4>
             <h4>Order total: <strong>{{currency(order.amount)}}</strong></h4>
+            <h4>Amount Refunded: <strong>{{currency(charge.amount_refunded)}}</strong></h4>
             <h4>Created: <strong>{{convertTime(order.created)}}</strong></h4>
             <h4>Customer Name: <strong>{{order.shipping.name}}</strong></h4>
             <h4>Customer Email: <strong>{{order.email}}</strong></h4>
             <h4>Paid on: <strong>{{convertTime(order.status_transitions.paid)}}</strong></h4>
 
-            <a class="btn btn-danger btn-lg order-details-update" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
-            <div class="input-group mb-3 col-3">
-                    <input type="text" class="form-control" name='refund-amount' placeholder="{{order.amount}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <a class="btn btn-outline-secondary order-details-update" data-order="{{order.charge}}" data-status="refund">Refund</a>
-                    </div>
-                  </div>
-                  
-            <a class="btn btn-warning btn-lg order-details-update" data-order="{{order.charge}}" data-status="refund">Refund Order</a><br />
-            <a class="btn btn-success btn-lg order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Order as fulfilled</a>
 
-            <h4>Order metadata: <strong><pre>{{toJSON(order.metadata)}}</pre></strong></h4>
-            @if(order.metadata.fulfillment_method === 'delivery')
-                <h4>Shipping/Delivery info: <strong><pre>{{ toJSON(order.shipping) }}</pre></strong></h4>
-            @else
-            @endif
+
+
+        </div>
+        <div class="col-md-6 col-lg-6 col-12 mx-auto">
+            <h4><strong>Order ID: </strong> {{order.metadata.orderId}}
+        <h4><strong>Fulfillment Day:</strong> {{capitalize(order.metadata.fulfillment_day)}}</h4>
+        <h4><strong>Fulfillment Date:</strong> {{order.metadata.fulfillment_date}}</h4>
+        <h4><strong>{{capitalize(order.metadata.fulfillment_method)}}</strong></h4>
+
+        @if(order.metadata.fulfillment_method === 'delivery')
+        <h4>Shipping/Delivery info: <strong><pre>{{ toJSON(order.shipping) }}</pre></strong></h4>
+        @else
+        <h4><strong>Store Location: </strong>{{order.shipping.address.line1}}</h4>
+        @endif
+        </div>
+        <div class="btn-group">
+                <a class="btn btn-danger btn-lg order-details-update mr-3" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
+
+
+                <div class="input-group mr-3 pt-2">
+
+                        <input type="text" class="form-control" id="demo1" placeholder="{{currency(order.amount - charge.amount_refunded)}}">
+                        <div class="input-group-append">
+                                <div class="input-group-text" id="btnGroupAddon2" style="background:#fcc557;"><a class="btn btn-warning issue-custom-refund" data-charge="{{order.charge}}" data-amount="{{order.amount}}" data-status="refund">Refund</a></div>
+                              </div>
+                      </div>
+
+                      
+                <a class="btn btn-success btn-lg order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Order as fulfilled</a>
         </div>
     </div>
 </div>
