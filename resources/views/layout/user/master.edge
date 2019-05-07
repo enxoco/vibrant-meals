@@ -894,9 +894,9 @@ $('#alternate-pickup-day').on('click', function() {
 
 
 })
-$('.shipping-form').hide()
+$('.shipping-form').closest('.card').hide()
 $('#same-address, #alternate-address-deliver').on('click', function(){
-  $('.shipping-form').toggle()
+  $('.shipping-form').closest('.card').toggle()
   toggleExpressEdit()
 
 
@@ -1328,22 +1328,6 @@ $('.menu-tab').on('click',function(){
   })
 $(document).ready(function() {
 
-  if (localStorage.fulfillment_method === 'pickup') {
-      $('#pickupRadio').attr('checked', 'checked')
-      $('#pickupRadioMobile').attr('checked', 'checked')
-
-      $('#deliveryRadio').removeAttr('checked')
-      if (localStorage.myStore) {
-        $('.store-desc').html('<strong>Pickup Location </strong><br />' + JSON.parse(localStorage.myStore)['name'])
-      }
-  } else {
-    $('#deliveryRadio').attr('checked', 'checked')
-      $('#pickupRadio').removeAttr('checked')
-      localStorage.removeItem('myStore')
-      localStorage.removeItem('pickupLocation')
-      localStorage.removeItem('pickup_location')
-      localStorage.fulfillment_method = 'delivery'
-  }
 
   calcShipping()
   $('.express-checkout-default').on('click', function() {

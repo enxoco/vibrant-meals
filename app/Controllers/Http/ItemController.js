@@ -62,17 +62,21 @@ class ItemController {
 
     if (auth.user) {
       var user = {}
-      if (auth.user.fulfillment_method == 'pickup') {
+      if (auth.user.fulfillment_method == 'pickup' && auth.user.pickup_location != null) {
         var store = await Database 
         .table('locations')
         .select('*')
         .where('id', auth.user.pickup_location)
         store[0].desc = store[0].name
         user.pickupLocation = store[0]
+        user.fulfillment_method = 'pickup'
+
+      } else {
+        user.fulfillment_method = 'delivery'
+
       }
 
 
-      user.fulfillment_method = auth.user.fulfillment_method
       user.fulfillment_day = auth.user.fulfillment_day
       return view.render('menu.menu-new', {items: prod, categories: uniq, user: user})
       
@@ -213,11 +217,14 @@ class ItemController {
 
         user.fulfillment_method = auth.user.fulfillment_method
         user.fulfillment_day = auth.user.fulfillment_day
-        if (user.fulfillment_method == 'pickup') {
+        if (user.fulfillment_method == 'pickup' && auth.user.pickup_location != null) {
           store[0].desc = store[0].name
           user.pickupLocation = store[0]
           user.pickupLocation.desc = user.pickupLocation.name
+        } else {
+          user.fulfillment_method = 'delivery'
         }
+        
         // return response.send(orders)
         if (orders.data.length != 0) {
           return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address})

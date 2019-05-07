@@ -54,7 +54,10 @@
 
                         <input type="text" class="form-control" id="demo1" placeholder="{{currency(order.amount - charge.amount_refunded)}}">
                         <div class="input-group-append">
-                                <div class="input-group-text" id="btnGroupAddon2" style="background:#fcc557;"><a class="btn btn-warning issue-custom-refund" data-charge="{{order.charge}}" data-amount="{{order.amount}}" data-status="refund">Refund</a></div>
+
+                                <div class="input-group-text" id="btnGroupAddon2" style="background:#fcc557;">
+                                    
+                                    <a class="btn btn-warning issue-custom-refund" data-charge="{{order.charge}}" data-amount="{{order.amount}}" data-status="refund">Refund</a></div>
                               </div>
                       </div>
 

@@ -23,10 +23,12 @@ function updateCartDiv() {
     success: console.log('Options updated')
   })
   if (orderMethod == 'pickup') {
-    $('.delivery-desc').html('')
+    $('.store-desc').html(JSON.parse(localStorage.myStore).name)
+    $('#pickupRadio').attr('checked', 'checked')
 
     $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
+      console.log('problem')
       localStorage.setItem('fulfillment_method', 'delivery')
       updateCartDiv()
     }
@@ -36,6 +38,9 @@ function updateCartDiv() {
         orderLocation = JSON.parse(localStorage.pickupLocation).name
       }
     } else {
+      console.log('something went wrong')
+      $('#deliveryRadio').attr('checked', 'checked')
+      $('#pickupRadio').removeAttr('checked')
       localStorage.setItem('fulfillment_method', 'delivery')
       localStorage.removeItem('pickup_location')
       localStorage.removeItem('pickupLocation')
@@ -62,8 +67,8 @@ function updateCartDiv() {
     localStorage.fulfillment_day = user.user.fulfillment_day
     localStorage.custEngageCompleted = 1
     localStorage.checkoutInitiated = 1
-    if (user.user.pickupLocation) {
-      localStorage.pickupLocation = JSON.stringify(user.user.pickupLocation)
+    if (user.user.pickup_location) {
+      localStorage.pickupLocation = JSON.stringify(user.user.pickup_location)
     }
   }
   if (window.location.href.includes('checkout')) {
