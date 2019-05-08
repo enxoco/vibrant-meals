@@ -212,7 +212,7 @@ class CheckoutController {
       })
       
     }
-    return response.send(order)
+    return response.send({status: 'success'})
 
   }
 

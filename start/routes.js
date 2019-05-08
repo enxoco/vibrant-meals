@@ -16,6 +16,7 @@
 const Route = use('Route')
 
 Route.get('/checkout', 'ItemController.showCheckout')
+Route.get('/checkout/confirmation', 'OrderController.showConfirmation')
 Route.get('/sw.js', 'PwaController.serviceWorker')
 Route.get('/manifest.json', 'PwaController.manifest')
 

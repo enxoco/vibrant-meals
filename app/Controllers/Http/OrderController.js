@@ -6,6 +6,15 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 
 class OrderController {
 
+    async showConfirmation({ request, response, view, auth }) {
+        var cust = await stripe.customers.retrieve(auth.user.stripe_id)
+        var order = await stripe.orders.list({
+            customer: auth.user.stripe_id,
+            limit: 1
+        })
+        return view.render('Checkout.confirmation', {order})
+    }
+
     async batchFulfillStripe(id) {
         await stripe.orders.update(id,{status:'fulfilled'})
     }
@@ -60,7 +69,7 @@ class OrderController {
     async viewOrdersAdmin ({ request, response, session, view }) {
 
         // Grab our open orders from stripe and massage into an array of skus
-        const orders = await stripe.orders.list({})
+        const orders = await stripe.orders.list({limit: 10000})
         var order = orders.data
         var itemList = []
         const orderCount = orders.data.length

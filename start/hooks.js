@@ -64,8 +64,11 @@ hooks.after.providersBooted(() => {
 
   })
 
-  View.global('convertTime', function(unix){
+  View.global('convertTime', function(unix, format){
     var day = moment.unix(unix).format('LLL')
+    if (format) {
+      var day = moment.unix(unix).format(format)
+    }
     return day
   })
 

@@ -6,6 +6,7 @@ const Drive = use('Drive')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const path = Helpers.appRoot()
+const _ = require('lodash')
 
 stripe.setApiVersion('2019-03-14');
 
@@ -22,7 +23,7 @@ class ItemController {
 
     try {
       //Beware Stripe api defaults to limit of 10 products when doing a listing.
-      var products = await stripe.products.list({limit:100000})
+      var products = await stripe.products.list({limit:100})
       var prod = products.data
 
       for (var i = 0; i < prod.length; i++) {
@@ -58,7 +59,8 @@ class ItemController {
       categories.push(prod[i].metadata.primary_category)
     }
 
-    var uniq = [ ...new Set(categories) ];
+    var uniq = _.uniq(categories)
+    // var uniq = [ ...new Set(categories) ];
 
     if (auth.user) {
       var user = {}
@@ -75,6 +77,9 @@ class ItemController {
         user.fulfillment_method = 'delivery'
 
       }
+
+      prod = _.orderBy(prod, ['metadata.primary_category', 'updated'], ['desc', 'desc']);
+
 
 
       user.fulfillment_day = auth.user.fulfillment_day

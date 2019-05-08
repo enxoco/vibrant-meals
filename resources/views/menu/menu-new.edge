@@ -5,7 +5,7 @@
     <div class="row categories-row">
       <section id="category-container">
         <div class="img-container">
-            <div class="menu-tab">
+            <div class="menu-tab" id="macroFilters">
                 <i class='icon orange' data-feather="filter"></i>
             </div>
         </div>
@@ -28,10 +28,10 @@
     </div>
       
       <div class="menu-hide">
-        <a href="#" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
-        <a href="#" data-filter="Low_Carb" class="filter-button"><h2 class="category-heading">Low Carb</h2></a>
-        <a href="#" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
-        <a href="#" data-filter="Performance" class="filter-button"><h2 class="category-heading">Performance</h2></a>
+        <a href="#" onclick="closeMenu()" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
+        <a href="#" onclick="closeMenu()" data-filter="Low_Carb" class="filter-button"><h2 class="category-heading">Low Carb</h2></a>
+        <a href="#" onclick="closeMenu()" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
+        <a href="#" onclick="closeMenu()" data-filter="Performance" class="filter-button"><h2 class="category-heading">Performance</h2></a>
       </div>    
       <div class="row row-eq-height">
 
@@ -75,6 +75,10 @@
 </body>
 <script>
 
+function closeMenu() {
+  document.getElementById('macroFilters').classList.remove('show')
+
+}
 </script>
 
 

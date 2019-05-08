@@ -1,138 +1,105 @@
 @layout('layout.user.home')
 @section('content')
 @!include('Modals.pickupLocations')
-<div class="row">
-  <div class="col-8 mx-auto">
-      <div class="accordion" id="accordionExample">
-          <div class="card-header" id="headingOne" style="background:1px solid rgba(0,0,0,.125) !important;">
-            <h5 class="mb-0">
-              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                My Account
-              </button>
+<div class="row pt-5">
+  <div class="col-12 col-md-4 col-lg-4 mx-auto">
+    <div class="comSection comSection--light">
+      <h5>
+        My Account
+      </h5>
+          <div class="card-body">
+            <div class="row">
+            <div class="col-6 mx-auto">
+          <h5 class="profile-details">
+            {{customer.metadata.name}}
+          </h5>
+          </div>
+          <div class="col-6 mx-auto">
+            <h5 class="profile-details">
+              Total Orders: {{customer.orders.data.length}}
             </h5>
-          </div> 
-              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                
-                <div class="card-body" style="background:white;">
-    
-                    <div class="col d-flex justify-content-end">
-                        <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
-                            <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
-                          </a>
-                        </div>
-                  <div class="col-12 col-md-5 col-lg-5 mx-auto" style="text-align:center;">
-                      <div class="col-12 mb-3">
-                        {{customer.metadata.name}}<br />
-                        {{customer.email}}
-                        <br />
-                      </div>
-                      <div id="delivery-fee" style="">
-                        Delivery Fee - <strong> $<span class="delivery-fee">0</span></strong>
-                      </div>
-                      <div id="order-total">
-                        Order Total - <strong> $<span class="order-total"></span></strong>
-                      </div>
-                  </div>
-                  
-                </div>
-              </div>
-    
-              <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingTwo">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Billing Info
-                </button>
-              </h5>
-              </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                  @!include('layout.user.profile.billing')
-
-              </div>
-    
-              <div class="card-header d-none" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingThree">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Shipping Info
-                </button>
-              </h5>
-              </div>
-              <div id="collapseThree" class="collapse d-none" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="card card-user">
-                    @!include('Checkout.shipping-info')
-
-                  </div>
-                </div>
-    
-              </div>
-            <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFour">
-                <h5 class="mb-0">
-                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    Order Preferences
-                  </button>
+            
+          </div>
+          <div class="col-6 mx-auto">
+              {{customer.email}}
+            <br />
+            {{customer.shipping.phone}}
+            </div>
+            <div class="col-6 mx-auto">
+                <h5 class="profile-details">
+                        
+                  Total Spent: {{currency(customer.totalSpend)}}
                 </h5>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <div class="col-8 mx-auto">
-                          <div class="row">
-                            <span class="store-desc"></span>
-                              <div class="col col-md-6 col-lg-6 mx-auto">
-                                <div class="radio">
-                                  <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal" data-target="#modal-pickup"
-                                    @if(customer.metadata.fulfillment_method == 'pickup')
-                                      checked
-                                    @endif
-                                  >
-                                  <label for="pickupRadio" class="radio-label">Pickup</label>
-                                </div>
-                              </div>
-                              <div class="col col-md-6 col-lg-6 mx-auto">
-                                  <div class="radio">
-                                      <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
-                                        @if(customer.metadata.fulfillment_day == 'monday')
-                                          checked
-                                        @endif
-                                      >
-                                      <label for="monday-switch" class="radio-label">Monday</label>
-                                    </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col col-md-6 col-lg-6 mx-auto">
-                                  <div class="radio">
-                                      <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery" 
-                                        @if(customer.metadata.fulfillment_method == 'delivery')
-                                          checked
-                                        @endif
-                                      >
-                                      <label for="deliveryRadio" class="radio-label">Delivery</label>
-                                    </div>
-    
-                              </div>
-                              <div class="col col-md-6 col-lg-6 mx-auto">
-                                <div class="radio">
-                                  <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday" 
-                                    @if(customer.metadata.fulfillment_day == 'wednesday')
-                                      checked
-                                    @endif
-                                  >
-                                  <label for="wednesday-switch" class="radio-label">Wednesday</label>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                          </div>
-                </div>
-                <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFive">
-                  <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                    Order History
-                    </button>
-                  </h5>
+                
+              </div>
+          </div>
+          </div>
+    </div>
+    <hr class="mb-2">
+
+    <div class="comSection comSection--light">
+      <h5>Order Preferences</h5>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6 mx-auto">
+              <div class="radio">
+                <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal" data-target="#modal-pickup"
+                  @if(customer.metadata.fulfillment_method == 'pickup')
+                    checked
+                  @endif
+                >
+                <label for="pickupRadio" class="radio-label">Pickup</label>
+              </div>
+            </div>
+            <div class="col-6 mx-auto">
+                <div class="radio">
+                    <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
+                      @if(customer.metadata.fulfillment_day == 'monday')
+                        checked
+                      @endif
+                    >
+                    <label for="monday-switch" class="radio-label">Monday</label>
                   </div>
-                  <div id="collapseFive" class="collapse " aria-labelledby="headingFive" data-parent="#accordionExample">
-                    @!include('layout.user.profile.order-history')
-                  </div>    
+            </div>
+            <div class="col-6 mx-auto">
+                <div class="radio">
+                    <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery" 
+                      @if(customer.metadata.fulfillment_method == 'delivery')
+                        checked
+                      @endif
+                    >
+                    <label for="deliveryRadio" class="radio-label">Delivery</label>
+                  </div>
+
+            </div>
+            <div class="col-6 mx-auto">
+              <div class="radio">
+                <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday" 
+                  @if(customer.metadata.fulfillment_day == 'wednesday')
+                    checked
+                  @endif
+                >
+                <label for="wednesday-switch" class="radio-label">Wednesday</label>
+              </div>
+            </div>
+      </div>
+      </div>
+    </div>
+    <hr class="mb-3">
+      <!-- Insert Billing here-->
+      <div class="comSection comSection--light">
+          <h5>
+             Billing
+          </h5>
+        </div> 
+      @!include('layout.user.profile.billing')
+
+
+  </div>
+  <div class="col-md-6 col-lg-6 col-12 mx-auto">
+
+              @!include('layout.user.profile.order-history')
+    
             </div>
   </div>
 </div>

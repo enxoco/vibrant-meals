@@ -242,6 +242,7 @@ and (min-device-width : 400px)
 and (max-device-width: 1000px)
 {
 
+
   .sidebar {
     right: -100px !important;
   }
@@ -271,6 +272,10 @@ and (max-device-width: 1000px)
 @media only screen 
 and (min-device-width : 350px) 
 and (max-device-width : 1024px)  {
+
+  h4.item-name, .modal-card-price {
+    font-size: 14px !important;
+  }
 
   #category-container .img-container {
     flex: 0;
@@ -775,6 +780,61 @@ p.desc {
   height: 75px;
     width: 75px;
 }
+
+.comSection--light {
+    padding: 16px 24px;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+}
+
+.comSection__header {
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-weight: 700;
+    font-size: .9em;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.text-smaller {
+    font-size: .9em;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.table-wrap {
+    max-width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+table.full {
+    width: 100%;
+    margin-bottom: 1em;
+}
+th {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-size: .8em;
+    padding-top: 20px;
+    border-bottom: 2px solid #00a0df;
+}
+th, td {
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
  
 </style>
 
@@ -823,6 +883,16 @@ p.desc {
                 <p class="delivery-desc">&nbsp</p>
               </div>
               <div class="col-12 d-flex justify-content-center">
+                <div id="shipping">
+                  Shipping - &nbsp<strong> $<span class="order-shipping">0</span></strong>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div id="tax">
+                  Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
                 <div id="order-total">
                     Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
                   </div>
@@ -845,6 +915,7 @@ p.desc {
                   <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none sidebar-toggle-helper">
                       <i data-feather="chevron-left" class="navbar-toggler"></i>
                     </a> 
+              
                 <a class="btn btn-success checkout-button" style="font-size:20px;text-transform:uppercase" href="/checkout" disabled>Next</a>
               </div>
                 </div>
@@ -883,6 +954,8 @@ p.desc {
 <script src="/js/moment.min.js"></script>
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="/js/mask-money.js"></script>
+
 <script>
   $('#alternate-address-bill').on('click',function(){
   $('#billing-info').toggleClass('hidden')
@@ -1058,8 +1131,8 @@ updateCartDiv()
 $(document).on('click', '#deliveryRadio', function(){
   $('.store-desc').html('&nbsp')
   if (window.location.href.includes('checkout')) {
-    $('#collapseTwo').removeClass('show')
-    $('#collapseOne').addClass('show')
+    $('#collapseTwo').addClass('show').fadeIn()
+    $('#collapseOne').removeClass('show').fadeOut()
   }
   $('.express-checkout-edit').show()
   $('.shipping-form').show()
@@ -1102,6 +1175,8 @@ $(document).ready(function(){
 
 // This is filtering logic based on category name
 $(".filter-button").click(function(){
+  $('.menu-hide').removeClass('show')
+  $('.menu-tab').removeClass('active')
     var value = $(this).attr('data-filter');
     $('h2').removeClass('active')
     $(this).find('h2').addClass('active')
@@ -1278,21 +1353,22 @@ if (window.location.href.includes('checkout')) {
               localStorage.shippingCode = '5to10miles'
               total += 5
               $('.order-total').html(total)
-              $('.delivery-fee').html('5.00')
+              $('.order-shipping').html('5.00')
             }
             if (miles.toFixed(0) > 10) {
               var total = $('.order-total').data('total')
               total += 10
               $('.order-total').html(total)
               localStorage.shippingCode = '11to15miles'
-              $('.delivery-fee').html('10.00')
+              console.log('over 10 miles')
+              $('.order-shipping').html('10.00')
 
             }
-            
+            console.log('les')
             toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
           } else if (miles.toFixed(0) < 5) {
             localStorage.shippingCode = 'freeshipping'
-            $('.delivery-fee').html('0')
+            $('.order-shipping').html('0')
             toastr['success']('You"re all set!')
             }
           }
@@ -1326,6 +1402,10 @@ $('.menu-tab').on('click',function(){
     $('.menu-hide').toggleClass('show')
     
   })
+
+
+
+
 $(document).ready(function() {
 
 
@@ -1371,6 +1451,28 @@ if ($('#firstName').val != "" && $('#lastName').val != "" && $('#email') !="" ) 
 function navbarToggle() {
   $('.navbar-toggle').click()
 }
+
+$('#toggleSections').on('click', function(){
+    if ($('#collapseOne').hasClass('show')) {
+      $('#collapseOne').removeClass('show')
+      $('#collapseTwo').addClass('show')
+    } else if ($('#collapseTwo').hasClass('show')) {
+      $('#collapseTwo').removeClass('show')
+      $('#collapseThree').addClass('show')
+    } else if ($('#collapseThree').hasClass('show')) {
+      $('#collapseThree').removeClass('show')
+      $('#collapseFour').addClass('show')
+    } else if ($('#collapseFour').hasClass('show')) {
+      $('#collapseFour').removeClass('show')
+      $('#collapseFive').addClass('show')
+      $(this).html('checkout')
+
+    } else if ($('#collapseFive').hasClass('show')) {
+      anything()
+      $(this).attr('disabled', 'disabled')
+    }
+    
+  })
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

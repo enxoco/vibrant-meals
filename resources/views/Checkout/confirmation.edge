@@ -1,0 +1,136 @@
+@layout('layout.user.master')
+@section('content')
+<style>
+h5.notification.jumbo {
+    text-align: center;
+    color: white;
+    font-weight: 800;
+    font-size: 26px;
+}
+
+div.notification.jumbo {
+    background: #aad0ad;
+    padding: 50px;
+}
+
+.sidebar {
+    display:none;
+}
+.main-panel {
+    width: 100%;
+}
+.content {
+    background: white;
+}
+</style>
+<div class="content">
+
+    <div class="row mt-5">
+        <div class="col-12 col-md-6 col-lg-6 mx-auto">
+                <div class="notification jumbo">
+                        <h5 class="notification jumbo">Your order has been placed!</h5>
+                        </div>
+            <section class="comSection comSection--light">
+                <h5>Order Summary</h5>
+                <div class="table-wrap">
+                    <table class="full">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th class="d-none d-md-block d-lg-block">Date</th>
+                                <th>Status</th>
+                                <th class="d-none d-md-block d-lg-block">Fulfillment Method</th>
+                                <th class="d-block d-md-none d-lg-none">Method</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @each(order in order.data)
+                            <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
+                                <td><a href="#">#{{order.metadata.orderId}}</a></td>
+                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                </td>
+                                <td>Fulfilled</td>
+                                <td>{{ capitalize(order.metadata.fulfillment_method) }}
+                                <td>{{currency(order.amount)}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border:none;">
+                                    <div id="{{order.metadata.orderId}}" class="collapse show"
+                                        style="background:white; padding:20px;">
+                                        <div class="row">
+                                            <div class="col-6 mx-auto">
+                                                <span class="d-block d-md-none d-lg-none">
+                                                    <strong>Order Date:</strong>
+                                                    {{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                                </span><br />
+                                                @if(order.metadata.fulfillment_method == 'pickup')
+
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4">
+                                                        <strong>Pickup Location:</strong>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8">
+                                                        {{order.shipping.address.line1}}<br />
+                                                        {{order.shipping.address.line2}}<br />
+                                                        {{order.shipping.address.city}}
+                                                        {{order.shipping.address.state}},
+                                                        {{order.shipping.address.postal_code}}
+                                                    </div>
+                                                </div>
+                                                @else
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4">
+                                                        <strong>Shipped to:</strong>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8">
+                                                        {{order.shipping.name}}<br />
+                                                        {{order.shipping.address.line1}}<br />
+                                                        @unless(order.shipping.address.line2 == null)
+                                                        {{order.shipping.address.line2}}<br />
+                                                        @endunless
+                                                        {{order.shipping.address.city}}
+                                                        {{order.shipping.address.state}},
+                                                        {{order.shipping.address.postal_code}}
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-6 mx-auto" <ul>
+                                                @each(item in order.items)
+                                                @unless(item.quantity == null)
+                                                <li style="text-align:left;margin-bottom:1em;">
+                                                    <!-- Item Description-->
+                                                    <div class="row">
+                                                        <div class="col-6 mx-auto">
+                                                            {{item.description}}
+                                                        </div>
+                                                        <div class="col-6 mx-auto">
+                                                            <strong>x{{item.quantity}} </strong> - {{currency(item.amount)}}
+                                                        </div>
+                                                            <div class="col-12 mx-auto justify-content-end">
+                                                            <strong> </strong>
+                                                            </div>
+                                                        </div>
+                                                </li>
+                                                @endunless
+                                                @endeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endeach
+
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="hr--small">
+                <a href="/account" class="btn btn-success">View all orders</a>
+            </section>
+        </div>
+    </div>
+</div>
+
+@endsection

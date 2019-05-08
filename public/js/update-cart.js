@@ -22,7 +22,7 @@ function updateCartDiv() {
     data: {pref: orderMethod},
     success: console.log('Options updated')
   })
-  if (orderMethod == 'pickup') {
+  if (orderMethod == 'pickup' && localStorage.myStore) {
     $('.store-desc').html(JSON.parse(localStorage.myStore).name)
     $('#pickupRadio').attr('checked', 'checked')
 
@@ -31,6 +31,7 @@ function updateCartDiv() {
       console.log('problem')
       localStorage.setItem('fulfillment_method', 'delivery')
       updateCartDiv()
+      $('#deliveryFee').show()
     }
 
       var orderLocation = ''
@@ -96,7 +97,6 @@ function updateCartDiv() {
       }
     }
     if (localStorage.fulfillment_day) {
-      $('#delivery-fee').hide()
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
       // $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
       $('.delivery-date-label, #delivery-date-label').html('<strong>'+capitalize(localStorage.fulfillment_method) + ' Date</strong> <br /><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong></a>')
@@ -147,6 +147,8 @@ function updateCartDiv() {
       localStorage.setItem('cartCount', cartCount)
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
 
+
+
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
         <div class="col-4 pt-2 card-user">\
           <div class="row mr-0 ml-0 pb-3">\
@@ -169,6 +171,8 @@ function updateCartDiv() {
       $('.cart-row-master').append(card)
 
     }
+    var tax = (total * .098)
+    total = total + tax
     if(cartCount == 0){
       $('.order-count').closest('div').css('background', 'none')
       $('.order-count').html('')
@@ -176,15 +180,21 @@ function updateCartDiv() {
       $('.order-count').closest('div').css('background', '#3b8d6a')
       $('.order-count').html(cartCount)
 
-    }
+    } 
+    $('.order-tax').html(tax.toFixed(2))
+    $('.order-tax').attr('data-tax', tax.toFixed(2))
+    $('.order-tax').maskMoney()
     $('.order-total').attr('data-total', total.toFixed(2))
     $('.order-total').html(total.toFixed(2))
-
+    $('.order-total').maskMoney()
     if (total >= 100) {
       localStorage.shippingCode = 'freeshipping'
-      $('.delivery-fee').html('0')
+      $('.order-shipping').html('0')
     }
 
+    if (localStorage.fulfillment_method == 'pickup') {
+      $('#delivery-fee').show()
+    }
   }
 
   // Functionality to increase/decrease cart quantity
