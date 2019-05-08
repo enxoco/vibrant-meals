@@ -1,68 +1,265 @@
 @layout('layout.admin.master')
 @section('content')
+
+<style>
+    /* .sidebar {
+        display: none;
+    }
+
+    .main-panel {
+        width: 100%;
+    }
+
+    .content {
+        background: white;
+    } */
+
+    .comSection--light {
+        padding: 16px 24px;
+        background-color: #f8f8f8;
+        border-radius: 3px;
+    }
+
+    .comSection__header {
+        text-transform: uppercase;
+        letter-spacing: .15em;
+        font-weight: 700;
+        font-size: .9em;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+    }
+
+    .text-smaller {
+        font-size: .9em;
+    }
+
+    thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    .table-wrap {
+        max-width: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table.full {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
+    th {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: .15em;
+        font-size: .8em;
+        padding-top: 20px;
+        border-bottom: 2px solid #00a0df;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    ul {
+        list-style: none;
+    }
+</style>
 <div class="content">
-    <div class="row">
-        <div class="col-6 mx-auto">
 
-            <h3>Order Details: &nbsp
-                @if(order.status_transitions.paid != null)
-                    <span class="badge badge-success">Paid</span>
-                @else
-                    <span class="badge badge-danger">Unpaid</span>
-                @endif
-                @if(order.status_transitions.fulfiled != null)
-                    <span class="badge badge-success">Fulfilled</span>
-                @else
-                    <span class="badge badge-warning">Unfulfilled</span>
-                @endif
-                @if(order.status_transitions.cancelled != null)
-                    <span class="badge badge-danger">Cancelled</span>
-                @endif
-                @if(charge.refunded == true)
-                    <span class="badge badge-danger">Refunded</span>
-                @endif
-            </h3>
-            <h4>Stripe id: <strong>{{order.id}}</strong></h4>
-            <h4>Order total: <strong>{{currency(order.amount)}}</strong></h4>
-            <h4>Amount Refunded: <strong>{{currency(charge.amount_refunded)}}</strong></h4>
-            <h4>Created: <strong>{{convertTime(order.created)}}</strong></h4>
-            <h4>Customer Name: <strong>{{order.shipping.name}}</strong></h4>
-            <h4>Customer Email: <strong>{{order.email}}</strong></h4>
-            <h4>Paid on: <strong>{{convertTime(order.status_transitions.paid)}}</strong></h4>
+    <div class="row mt-5">
+        <div class="col-12">
+
+            <section class="comSection comSection--light">
+                <h5>Order Summary</h5>
+                <div class="table-wrap">
+                    <table class="full">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th class="d-none d-md-block d-lg-block">Order Date</th>
+                                <th>Status</th>
+                                <th class="d-none d-md-block d-lg-block">Method</th>
+                                <th class="d-block d-md-none d-lg-none">Method</th>
+                                <th>Fulfillment Date</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
+                                <td><a href="#">#{{order.metadata.orderId}}</a></td>
+                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                </td>
+                                <td>
+                                    @if(order.status_transitions.paid != null)
+                                    Paid
+                                    @else
+                                    Unpaid
+                                    @endif
+                                    @if(order.status_transitions.fulfiled != null)
+                                    Fulfilled
+                                    @else
+                                    Unfulfilled
+                                    @endif
+                                    @if(order.status_transitions.cancelled != null)
+                                    Cancelled
+                                    @endif
+                                    @if(charge.refunded == true)
+                                    Refunded
+                                    @endif
+                                </td>
+                                <td>{{ capitalize(order.metadata.fulfillment_method) }}</td>
+                                <td class="d-none d-md-block d-lg-block">
+                                    {{capitalize(order.metadata.fulfillment_day)}}, {{order.metadata.fulfillment_date}}
+                                </td>
+                                <td>{{currency(order.amount)}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="border:none;">
+                                    <div id="{{order.metadata.orderId}}" class="collapse show"
+                                        style="background:white; padding:20px;">
+                                        <div class="row">
+
+                                            <div class="col-6 mx-auto">
+                                                <strong>Customer Info: </strong>
+                                                <ul>
+                                                    <li><strong>Name: </strong>{{order.shipping.name}}</li>
+                                                    <li><strong>
+                                                            Email:
+                                                        </strong>{{order.email}}
+                                                    </li>
+                                                    <li>
+                                                        <strong>Phone:</strong>
+                                                        {{order.shipping.phone}}
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                @if(order.metadata.fulfillment_method == 'pickup')
+                                                    <strong>Pickup Location:</strong>
+                                                    <ul>
+                                                        <li>
+                                                                {{order.shipping.address.line1}}
+                                                        </li>
+                                                        <li>
+                                                                {{order.shipping.address.line2}}
+                                                        </li>
+                                                        <li>
+                                                                {{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}
+                                                        </li>
+
+                                                    </ul>
+                                                    
+                                                    
+                                                    
+                                                        @else
+                                                    
+
+                                                        <strong>Shipped to:</strong>
+                                                        <ul>
+                                                            <li>
+                                                                {{order.shipping.name}}
+                                                            </li>
+                                                            <li>
+                                                                {{order.shipping.address.line1}}
+                                                            </li>
+                                                            <li>
+                                                                @unless(order.shipping.address.line2 == null)
+                                                                {{order.shipping.address.line2}}
+                                                                @endunless
+                                                            </li>
+                                                            <li>
+                                                                {{order.shipping.address.city}}
+                                                                {{order.shipping.address.state}},
+                                                                {{order.shipping.address.postal_code}}
+                                                            </li>
+                                                        </ul>
+                                                        @endif
+                                                    </div>
+                                        </div>
+                                        <hr class="mb-5">
+
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <span class="d-block d-md-none d-lg-none">
+                                                    <strong>Order Date:</strong>
+                                                    {{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                                </span>
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>Order Items:</strong>
+                                                <ul>
+                                                    @each(item in order.items)
+                                                    @unless(item.quantity == null)
+                                                    <li style="text-align:left;margin-bottom:1em;">
+                                                        <!-- Item Description-->
+                                                        <div class="row">
+                                                            <div class="col-6 mx-auto">
+                                                                {{item.description}}
+                                                            </div>
+                                                            <div class="col-6 mx-auto">
+                                                                <strong>x{{item.quantity}} </strong> -
+                                                                {{currency(item.amount)}}
+                                                            </div>
+                                                            <div class="col-12 mx-auto justify-content-end">
+                                                                <strong> </strong>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    @endunless
+                                                    @endeach
+                                                </ul>
+                                            </div>
 
 
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
 
-
-        </div>
-        <div class="col-md-6 col-lg-6 col-12 mx-auto">
-            <h4><strong>Order ID: </strong> {{order.metadata.orderId}}
-        <h4><strong>Fulfillment Day:</strong> {{capitalize(order.metadata.fulfillment_day)}}</h4>
-        <h4><strong>Fulfillment Date:</strong> {{order.metadata.fulfillment_date}}</h4>
-        <h4><strong>{{capitalize(order.metadata.fulfillment_method)}}</strong></h4>
-
-        @if(order.metadata.fulfillment_method === 'delivery')
-        <h4>Shipping/Delivery info: <strong><pre>{{ toJSON(order.shipping) }}</pre></strong></h4>
-        @else
-        <h4><strong>Store Location: </strong>{{order.shipping.address.line1}}</h4>
-        @endif
-        </div>
-        <div class="btn-group">
-                <a class="btn btn-danger btn-lg order-details-update mr-3" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
-
-
-                <div class="input-group mr-3 pt-2">
-
-                        <input type="text" class="form-control" id="demo1" placeholder="{{currency(order.amount - charge.amount_refunded)}}">
-                        <div class="input-group-append">
-
-                                <div class="input-group-text" id="btnGroupAddon2" style="background:#fcc557;">
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="hr--small">
+                <div class="row">
+                        <div class="col-4 mx-auto">
+                                <div class="row">
+                                    <div class="col-5 d-flex align-items-center">
+                                            <input type="text" class="form-control" style="height:37px;" id="demo1" placeholder="{{currency(order.amount - charge.amount_refunded)}}">
+                                    </div>
+                                    <div class="col" style="margin-left: -35px;">
+                                            <a class="btn btn-warning issue-custom-refund" style="height:37px;" data-charge="{{charge.id}}" data-amount="{{order.amount - charge.amount_refunded}}" data-status="refund" >Issue Refund</a></div>
+            
+                                    </div>
                                     
-                                    <a class="btn btn-warning issue-custom-refund" data-charge="{{order.charge}}" data-amount="{{order.amount}}" data-status="refund">Refund</a></div>
-                              </div>
-                      </div>
+                                </div>
 
-                      
-                <a class="btn btn-success btn-lg order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Order as fulfilled</a>
+                                <div class="col-4 mx-auto">
+                                        <a class="btn btn-success order-details-update" data-order="{{order.id}}" data-status="fulfilled">Mark Fulfilled</a>
+                                </div>
+                                <div class="col-4 mx-auto">
+                                        <a class="btn btn-danger order-details-update" data-order="{{order.id}}" data-status="canceled">Cancel Order</a>
+                                </div>
+                </div>
+
+                    
+     
+                                          
+                </div>
+
+            </section>
         </div>
     </div>
 </div>

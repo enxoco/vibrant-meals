@@ -50,7 +50,7 @@ div.notification.jumbo {
                                 <td><a href="#">#{{order.metadata.orderId}}</a></td>
                                 <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
                                 </td>
-                                <td>Fulfilled</td>
+                                <td>{{order.status_transitions}}</td>
                                 <td>{{ capitalize(order.metadata.fulfillment_method) }}
                                 <td>{{currency(order.amount)}}</td>
                             </tr>

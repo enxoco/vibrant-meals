@@ -69,7 +69,7 @@ class OrderController {
     async viewOrdersAdmin ({ request, response, session, view }) {
 
         // Grab our open orders from stripe and massage into an array of skus
-        const orders = await stripe.orders.list({limit: 10000})
+        const orders = await stripe.orders.list({limit: 100})
         var order = orders.data
         var itemList = []
         const orderCount = orders.data.length
@@ -102,7 +102,7 @@ class OrderController {
                 var item = order[i].items[x]
                 if (item.amount != 0) {  
                     for (var z = 0; z < item.quantity; z++) {
-                        itemList.push({item: item.parent, desc: item.description, day: order[i].metadata.fulfillment_day})
+                        itemList.push({item: item.parent, desc: item.description, day: order[i].metadata.fulfillment_day, date: order[i].metadata.fulfillment_date})
                     }
                 }
             }

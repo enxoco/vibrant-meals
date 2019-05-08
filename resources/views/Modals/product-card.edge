@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="{{item.skus.data[0].id}}"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -12,26 +13,26 @@
                 <div class="row">
                     <div class="col-12 col-md-10 col-lg-10 mx-auto">
                         <div class="row">
-                                <div class="col-9 col-md-10 col-lg-10 mx-auto">
-                                        <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
-                                            {{item.name}}
-                                            <span class="modal-card-price"
-                                                style="color:#F48566; font-size:18px; padding-left:10px;">{{currency(item.skus.data[0].price)}}</span>
-                
-                                        </h4>
-                
-                                        </h4>
-                                    </div>
-                                    <div class="col">
-                                        <a data-dismiss="modal" class="checkout-prompt-1" data-id="{{item.id}}"
-                                            data-sku="{{item.skus.data[0].id}}" data-name="{{item.name}}"
-                                            data-price="{{item.skus.data[0].price}}" data-img_url="{{item.skus.data[0].image}}"
-                                            data-quantity="1" href="#" class="">
-                                            <img src="/images/shopping-cart-add-button-inactive.png" height="40px" width="40px"
-                                                onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)"
-                                                onmousedown="hoverCart(this)" />
-                                        </a>
-                                    </div>
+                            <div class="col-9 col-md-10 col-lg-10 mx-auto">
+                                <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
+                                    {{item.name}}
+                                    <span class="modal-card-price"
+                                        style="color:#F48566; font-size:18px; padding-left:10px;">{{currency(item.skus.data[0].price)}}</span>
+
+                                </h4>
+
+                                </h4>
+                            </div>
+                            <div class="col">
+                                <a data-dismiss="modal" class="checkout-prompt-1" data-id="{{item.id}}"
+                                    data-sku="{{item.skus.data[0].id}}" data-name="{{item.name}}"
+                                    data-price="{{item.skus.data[0].price}}" data-img_url="{{item.skus.data[0].image}}"
+                                    data-quantity="1" href="#" class="">
+                                    <img src="/images/shopping-cart-add-button-inactive.png" height="40px" width="40px"
+                                        onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)"
+                                        onmousedown="hoverCart(this)" />
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -40,11 +41,11 @@
                         <table class="table">
                             <thead>
                                 <tr class="d-none d-md-flex d-lg-flex justify-content-around">
-                                    <th>Description</th>
-                                    <th>Nutrition</th>
+                                    <th style="font-weight:400">Description</th>
+                                    <th style="font-weight:400" >Nutrition</th>
                                 </tr>
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
-                                    <th>Description</th>
+                                    <th style="font-weight:400;">Description</th>
                                 </tr>
 
                             </thead>
@@ -53,37 +54,32 @@
                                 <tr class="d-none d-md-block d-lg-block">
                                     <td>
 
+                                        <div class="row">
+                                            <div class="col mx-auto" style="text-align:center;">
+                                                <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
+                                                <br />
+                                                Calories
+
+                                            </div>
+                                            <div class="col mx-auto" style="text-align:center;">
+                                                <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
+                                                <br />
+                                                Fats
+                                            </div>
+                                            <div class="col mx-auto" style="text-align:center;">
+                                                <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
+                                                <br />
+                                                Protein
+                                            </div>
+                                            <div class="col mx-auto" style="text-align:center;">
+                                                <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
+                                                <br />
+                                                Carbs
+                                            </div>
+                                        </div>
+                                        <hr class="mb-3">
                                         {{item.description}}
 
-                                        <hr class="mb-3">
-                                        <div class="row">
-                                            <div class="col mx-auto">
-                                        @if(item.skus.data[0].metadata.calories)
-                                        Calories: <strong>{{item.skus.data[0].metadata.calories}}</strong>
-                                        @else
-                                        Calories: <strong>0</strong>
-                                        @endif
-                                            </div>
-                                            <div class="col mx-auto">
-                                        @if(item.skus.data[0].metadata.fats)
-                                        Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                                        @else
-                                        Fats: <strong>0</strong>
-                                        @endif
-                                            </div>
-                                            <div class="col mx-auto">
-                                        @if(item.skus.data[0].metadata.proteins)
-                                        Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-                                        @else
-                                        Protein: <strong>0</strong>
-                                        @endif
-                                            </div>
-                                            <div class="col mx-auto">
-                                        @if(item.skus.data[0].metadata.carbs)
-                                        Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
-                                        @else
-                                        Carbs: <strong>0</strong>
-                                        @endif
 
                                     </td>
                                     <td>
@@ -94,43 +90,44 @@
 
                                 <!-- Mobile table style -->
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
-                                    <td>
+                                    <td style="border-bottom:none !important;">
                                         {{item.description}}
-                                        
-                                        @if(item.skus.data[0].metadata.calories)
-                                        Calories: <strong>{{item.skus.data[0].metadata.calories}}</strong>
-                                        @else
-                                        Calories: <strong>0</strong>
-                                        @endif
-
-                                        @if(item.skus.data[0].metadata.fats)
-                                        Fats: <strong>{{item.skus.data[0].metadata.fats}}</strong>
-                                        @else
-                                        Fats: <strong>0</strong>
-                                        @endif
-
-                                        @if(item.skus.data[0].metadata.proteins)
-                                        Protein: <strong>{{item.skus.data[0].metadata.proteins}}</strong>
-                                        @else
-                                        Protein: <strong>0</strong>
-                                        @endif
-
-                                        @if(item.skus.data[0].metadata.carbs)
-                                        Carbs: <strong>{{item.skus.data[0].metadata.carbs}}</strong>
-                                        @else
-                                        Carbs: <strong>0</strong>
-                                        @endif
 
                                     </td>
                                 </tr>
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
-                                    <th style="text-align:center; font-size:14px;">Nutrition</th>
+                                    <th style="text-align:center; font-size:14px; border-top:none !important;font-weight:400;">Nutrition</th>
                                 </tr>
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
 
                                     <td>
+                                            <div class="row pb-4">
+                                                    <div class="col mx-auto" style="text-align:center;">
+                                                        <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
+                                                        <br />
+                                                        Calories
+        
+                                                    </div>
+                                                    <div class="col mx-auto" style="text-align:center;">
+                                                        <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
+                                                        <br />
+                                                        Fats
+                                                    </div>
+                                                    <div class="col mx-auto" style="text-align:center;">
+                                                        <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
+                                                        <br />
+                                                        Protein
+                                                    </div>
+                                                    <div class="col mx-auto" style="text-align:center;">
+                                                        <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
+                                                        <br />
+                                                        Carbs
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex ml-2">
+                                                @!include('layout.user.nutrition-label')
+                                                </div>
 
-                                        @!include('layout.user.nutrition-label')
                                     </td>
                                 </tr>
                             </tbody>

@@ -269,9 +269,13 @@
                 <th>
                   Needed By
                 </th>
+                <th>
+                  Date Needed
+                </th>
               </thead>
               <tbody>
                 @each(o in orders)
+
                 <tr>
                   <td>
                     {{o.item}}
@@ -284,6 +288,9 @@
                   </td>
                   <td>
                     {{o.day}}
+                  </td>
+                  <td>
+                    {{o.date}}
                   </td>
                 </tr>
                 @endeach
