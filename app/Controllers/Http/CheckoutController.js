@@ -95,11 +95,10 @@ class CheckoutController {
         location.zip = store.zip
         location.postalCode = store.zip
 
-        if (req.billing.coupon) {
 
         var order = await stripe.orders.create({
           currency: 'usd',
-          coupon: req.billing.coupon,
+          ...(!truth && {coupon: req.billing.coupon}),
           customer: customer['id'],
           items: stripeItems,
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
@@ -110,16 +109,14 @@ class CheckoutController {
               city: location.city,
               state: location.state,
               country: 'US',
-              postal_code: location.postalCode,
+              postal_code: store.zip,
             },
           },  
           metadata: {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.id,
-            orderId: stringHash(order.id)
-
+            store_id: location.id
             
           },
           email: user.email
@@ -135,46 +132,11 @@ class CheckoutController {
 
           });
         });
-        } else {
-          var order = await stripe.orders.create({
-            currency: 'usd',
-            customer: customer['id'],
-            items: stripeItems,
-            shipping: { // shipping address could be either customers address for delivery or store address for pickup
-              name: user.name,
-              address: {
-                line1: store.name,
-                line2: location.address,
-                city: location.city,
-                state: location.state,
-                country: 'US',
-                postal_code: location.postalCode,
-              },
-            },  
-            metadata: {
-              fulfillment_day: req.user.fulfillment_day,
-              fulfillment_date: req.user.fulfillment_date,
-              fulfillment_method: req.user.fulfillment_method,
-              store_id: location.id
-
-            },
-            email: user.email
-          }, function(err, order) {
   
-            if (err){return err}
-            stripe.orders.pay(order.id, {
-              customer: customer.id,
-              source: source.id // obtained from Stripe api
-            }, function(err, order) {
-              if (err) return(err)
-
-              // asynchronously called
-            });
-          });
-        }
       } else {// Default to delivery if no method selected
         var order = await stripe.orders.create({
           currency: 'usd',
+          ...(!truth && {coupon: req.billing.coupon}),
           customer: customer['id'],
           items: stripeItems,
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
@@ -331,23 +293,26 @@ class CheckoutController {
   }
 
     if (curUser) {
-    
+      var truth = req.billing.coupon === ""
+
+
       if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
         if (req.billing.coupon) {
 
         var order = await stripe.orders.create({
           currency: 'usd',
-          coupon: req.billing.coupon,
+          ...(!truth && {coupon: req.billing.coupon}),
           customer: customer['id'],
           items: stripeItems,
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: user.name,
             address: {
               line1: loc.name,
+              line2: address,
               city: city,
               state: state,
               country: 'US',
-              postal_code: postalCode,
+              postal_code: req.billing.zip,
             },
           },
           metadata: {
@@ -371,16 +336,18 @@ class CheckoutController {
         } else { //Pickup order without a coupon code
           var order = await stripe.orders.create({
             currency: 'usd',
+            ...(!truth && {coupon: req.billing.coupon}),
             customer: customer['id'],
             items: stripeItems,
             shipping: { // shipping address could be either customers address for delivery or store address for pickup
               name: user.name,
               address: {
                 line1: location.name,
+                line2: address,
                 city: location.city,
                 state: location.state,
                 country: 'US',
-                postal_code: location.postalCode,
+                postal_code: location.zip,
               },
             },  
             metadata: {
@@ -407,6 +374,7 @@ class CheckoutController {
         var order = await stripe.orders.create({
           currency: 'usd',
           customer: customer['id'],
+          ...(!truth && {coupon: req.billing.coupon}),
           items: stripeItems,
           shipping: { // shipping address could be either customers address for delivery or store address for pickup
             name: req.shipping.recipient ? req.shipping.recipient : user.name,

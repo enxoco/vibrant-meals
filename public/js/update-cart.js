@@ -135,9 +135,12 @@ function updateCartDiv() {
         $('.express-checkout-status').html('Please add at least 5 items to cart').show()
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
           $('[data-toggle="tooltip"]').tooltip('enable')
+          $('.cart-minimum').show()
+
 
       } else {
         $('.checkout-button').removeAttr('disabled')
+        $('.cart-minimum').hide()
         $('#createToken').removeAttr('disabled')
         $('.express-checkout-default').removeAttr('disabled')
         $('.express-checkout-status').hide()
@@ -150,7 +153,7 @@ function updateCartDiv() {
 
 
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
-        <div class="col-4 pt-2 card-user">\
+        <div class="col-3 pt-2 card-user">\
           <div class="row mr-0 ml-0 pb-3">\
             <a onclick="addCart('+i+')"><i class="nc-icon nc-simple-add"></i></a>\
           </div>\

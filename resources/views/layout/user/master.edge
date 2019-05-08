@@ -836,6 +836,16 @@ table {
     border-spacing: 0;
 }
  
+button.close > svg {
+  height: 40px;
+  width: 40px;
+  color: red;
+  
+}
+
+.close {
+  opacity: 1;
+}
 </style>
 
 <link rel="stylesheet" href="/css/nutrition-label.css" />
@@ -915,7 +925,7 @@ table {
                   <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none sidebar-toggle-helper">
                       <i data-feather="chevron-left" class="navbar-toggler"></i>
                     </a> 
-              
+                <span class="cart-minimum">*Please add at least 5 items to cart to continue.</span>
                 <a class="btn btn-success checkout-button" style="font-size:20px;text-transform:uppercase" href="/checkout" disabled>Next</a>
               </div>
                 </div>

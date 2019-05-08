@@ -432,26 +432,43 @@ class AdminController {
 
 
     async addCoupon ({ request, response }) {
-      const couponData = request.only(['percentage', 'coupon_name'])
+      // const couponData = request.only(['percentage', 'coupon_name'])
+
+      const {percent_off, amount_off, coupon_name, coupon_desc, coupon_type, amount} = request.all()
+
       try {
-        const status = await this.createCoupon(couponData)
+        const status = await this.createCoupon(coupon_type, amount, coupon_name)
         return response.send(status)
       } catch (e) {
         return response.send(e.message)
       }
     }
   
-    createCoupon (couponData) {
-      return new Promise((resolve, reject) => {
-        stripe.coupons.create({
-          percent_off: couponData.percentage,
-          duration: 'forever',
-          id: couponData.coupon_name
-        }, (err) => {
-          if (err) { return reject(err) }
-          return resolve('Coupon Created')
-        });
-      })
+    createCoupon (ctype, amount, name) {
+      if (ctype == 'percent_off') {
+        return new Promise((resolve, reject) => {
+          stripe.coupons.create({
+            percent_off: amount,
+            duration: 'once',
+            id: name
+          }, (err) => {
+            if (err) { return reject(err) }
+            return resolve('Coupon Created')
+          });
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          stripe.coupons.create({
+            amount_off: amount,
+            duration: 'once',
+            id: name
+          }, (err) => {
+            if (err) { return reject(err) }
+            return resolve('Coupon Created')
+          });
+        })
+      }
+
     }
 }
 
