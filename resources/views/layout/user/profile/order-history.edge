@@ -1,92 +1,100 @@
 <div class="row">
-<div class="col-12 mx-auto">
-                    <section class="comSection comSection--light">
-                          <h5 class="">Order History</h5>
-                                <div class="table-wrap">
-                                  <table class="full">
-                                    <thead>
-                                      <tr>
-                                        <th>Order</th>
-                                        <th class="d-none d-md-block d-lg-block">Date</th>
-                                        <th>Status</th>
-                                        <th class="d-none d-md-block d-lg-block">Fulfillment Method</th>
-                                        <th class="d-block d-md-none d-lg-none">Method</th>
-                                        <th>Total</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        @each(order in customer.orders.data)
-                                        <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
-                                          <td><a href="#">#{{order.metadata.orderId}}</a></td>
-                                          <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}</td>
-                                          <td>Fulfilled</td>
-                                          <td>{{ capitalize(order.metadata.fulfillment_method) }}
-                                          <td>{{currency(order.amount)}}</td>
-                                        </tr>
-                                        <tr>
-                                                <td colspan="5" style="border:none;">
-                                                    <div id="{{order.metadata.orderId}}" class="collapse" style="background:white; padding:20px;">
-                                                        <div class="row">
-                                                            <div class="col-6 mx-auto">
-                                                                <span class="d-block d-md-none d-lg-none">
-                                                                    <strong>Order Date:</strong> {{convertTime(order.updated, 'MM/DD/YYYY')}}
-                                                                </span><br />
-                                                                @if(order.metadata.fulfillment_method == 'pickup')
+    <div class="col-12 mx-auto">
+        <section class="comSection comSection--light">
+            <h5 class="">Order History</h5>
+            <div class="table-wrap">
+                <table class="full">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th class="d-none d-md-block d-lg-block">Date</th>
+                            <th>Status</th>
+                            <th class="d-none d-md-block d-lg-block">Fulfillment Method</th>
+                            <th class="d-block d-md-none d-lg-none">Method</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @each(order in customer.orders.data)
+                        <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
+                            <td><a href="#">#{{order.metadata.orderId}}</a></td>
+                            <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}</td>
+                            <td>Fulfilled</td>
+                            <td>{{ capitalize(order.metadata.fulfillment_method) }}
+                            <td>{{currency(order.amount)}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="border:none;">
+                                <div id="{{order.metadata.orderId}}" class="collapse"
+                                    style="background:white; padding:20px;">
+                                    <div class="row">
+                                        <div class="col-12 mx-auto">
+                                            <span class="d-flex d-md-none d-lg-none">
+                                                <strong>Order Date:</strong>
+                                                {{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                            </span><br />
+                                            @if(order.metadata.fulfillment_method == 'pickup')
 
-                                                                <div class="row">
-                                                                    <div class="col-12 col-md-4 col-lg-4">
-                                                                <strong>Pickup Location:</strong>
-                                                                    </div>
-                                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                                {{order.shipping.address.line1}}<br />
-                                                                {{order.shipping.address.line2}}<br />
-                                                                {{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}
-                                                                    </div>
-                                                                </div>
-                                                                @else
-                                                                <div class="row">
-                                                                        <div class="col-12 col-md-4 col-lg-4">
-                                                                    <strong>Shipped to:</strong>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-8 col-lg-8">
-                                                                            {{order.shipping.name}}<br />
-                                                                    {{order.shipping.address.line1}}<br />
-                                                                    @unless(order.shipping.address.line2 == null)
-                                                                    {{order.shipping.address.line2}}<br />
-                                                                    @endunless
-                                                                    {{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                            <div class="col-6 mx-auto"
-                                                        <ul>
-                                                            @each(item in order.items)    
-                                                            @unless(item.quantity == null)
-                                                                <li style="text-align:left;margin-bottom:1em;">
-                                                                    <!-- Item Description-->
-                                                                    <div class="row">
-                                                                        <div class="col-6 mx-auto">
-                                                                    {{item.description}}
-                                                                        </div>
-                                                                        <div class="col-6 mx-auto">
-                                                                    <strong>x{{item.quantity}} </strong>
-                                                                        </div>
-                                                                </li>
-                                                            @endunless
-                                                        @endeach    
-                                                        </ul>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <strong>Pickup Location:</strong>
+                                                <ul style="word-break:break-word;">
+                                                    <li>{{order.shipping.address.line1}}</li>
+                                                    <li>{{order.shipping.address.line2}}</li>
+                                                    <li>{{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}</li>
+                                                </ul>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <strong>Shipped to:</strong>
+                                                    <ul>
+                                                    <li>{{order.shipping.name}}</li>
+                                                    <li>{{order.shipping.address.line1}}</li>
+                                                    @unless(order.shipping.address.line2 == null)
+                                                    <li>{{order.shipping.address.line2}}<li>
+                                                    @endunless
+                                                    <li>{{order.shipping.address.city}} {{order.shipping.address.state}}<li>,
+                                                    <li>{{order.shipping.address.postal_code}}<li>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mx-auto">
+                                            <hr class="mb-2">
+                                            <strong>Items:</strong>
+                                            <ul>
+                                                @each(item in order.items)
+                                                @unless(item.quantity == null)
+                                                <li style="text-align:left;margin-bottom:1em;">
+                                                    <!-- Item Description-->
+                                                    <div class="row">
+                                                        <div class="col-8 col-md-6 col-lg-6 mx-auto">
+                                                            {{item.description}}
                                                         </div>
+                                                        <div class="col-4 col-md-6 col-lg-6 mx-auto">
+                                                            <strong>x{{item.quantity}} </strong>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endeach
-                                      
-                                    </tbody>
-                                  </table>
+                                                </li>
+                                                @endunless
+                                                @endeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            <hr class="hr--small">
-                         
-                        </section>
+                            </td>
+                        </tr>
+                        @endeach
+
+                    </tbody>
+                </table>
+            </div>
+            <hr class="hr--small">
+
+        </section>
     </div>
+    </div>
+    

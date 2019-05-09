@@ -2,289 +2,139 @@
 @section('content')
 @!include('Modals.pickupLocations')
 <div class="row pt-5">
-  <div class="col-12 col-md-4 col-lg-4 mx-auto">
+  <div class="col-12 col-md-3 col-lg-3 mx-auto">
     <div class="comSection comSection--light">
       <h5>
         My Account
       </h5>
-          <div class="card-body">
-            <div class="row">
-            <div class="col-6 mx-auto">
-          <h5 class="profile-details">
-            {{customer.metadata.name}}
-          </h5>
-          </div>
-          <div class="col-6 mx-auto">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8 mx-auto" style="word-wrap:break-word;">
             <h5 class="profile-details">
-              Total Orders: {{customer.orders.data.length}}
+              {{customer.metadata.name}}
             </h5>
-            
-          </div>
-          <div class="col-6 mx-auto">
-              {{customer.email}}
+            {{customer.email}}
             <br />
             {{customer.shipping.phone}}
-            </div>
-            <div class="col-6 mx-auto">
-                <h5 class="profile-details">
-                        
-                  Total Spent: {{currency(customer.totalSpend)}}
-                </h5>
-                
-              </div>
           </div>
+          <div class="col mx-auto" style="text-align:center;">
+            <strong>{{customer.orders.data.length}}</strong><br />
+            Total Orders
+            <hr class="mb-3">
+            <strong>{{currency(customer.totalSpend)}}</strong>
+            <br />
+            Total Spent:
+
           </div>
+
+
+        </div>
+      </div>
     </div>
     <hr class="mb-2">
 
+
+    <!-- Insert Billing here-->
     <div class="comSection comSection--light">
+      <h5>
+        Billing
+      </h5>
+    </div>
+    @!include('layout.user.profile.billing')
+
+
+  </div>
+
+  <div class="col-md-5 col-lg-5 col-12 mx-auto">
+
+      @!include('layout.user.profile.order-history')
+  
+    </div>
+  
+  <div class="col-12 col-md-3 col-lg-3 mx-auto">
+      <div class="comSection comSection--light">
+        <h5>
+          Update Password
+        </h5>
+        <div class="card-body">
+          <div class="row">
+              <form id="password">
+                  <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label>New Password</label>
+                      <input type="password" name="password" required placeholder="********" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                      <input type="password" name="password_confirmation" required placeholder="********" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="update ml-auto mr-auto">
+                    <a class="btn btn-success update-password">Update</a>
+                  </div>
+                    </form>
+          </div>
+        </div>
+      </div>
+  <hr class="mb-3">
+  <div class="comSection comSection--light">
       <h5>Order Preferences</h5>
       <div class="card-body">
         <div class="row">
-          <div class="col-6 mx-auto">
-              <div class="radio">
-                <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal" data-target="#modal-pickup"
-                  @if(customer.metadata.fulfillment_method == 'pickup')
-                    checked
-                  @endif
+          <div class="col-6 p-0">
+            <div class="radio">
+              <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal"
+                data-target="#modal-pickup" 
+                @if(customer.metadata.fulfillment_method=='pickup') 
+                  checked 
+                @endif
                 >
-                <label for="pickupRadio" class="radio-label">Pickup</label>
-              </div>
+              <label for="pickupRadio" class="radio-label">Pickup</label>
             </div>
-            <div class="col-6 mx-auto">
-                <div class="radio">
-                    <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
-                      @if(customer.metadata.fulfillment_day == 'monday')
-                        checked
-                      @endif
-                    >
-                    <label for="monday-switch" class="radio-label">Monday</label>
-                  </div>
+          </div>
+          <div class="col-6 p-0">
+            <div class="radio">
+              <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
+                @if(customer.metadata.fulfillment_day=='monday' )
+                 checked 
+                @endif
+                >
+              <label for="monday-switch" class="radio-label">Monday</label>
             </div>
-            <div class="col-6 mx-auto">
-                <div class="radio">
-                    <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery" 
-                      @if(customer.metadata.fulfillment_method == 'delivery')
-                        checked
-                      @endif
-                    >
-                    <label for="deliveryRadio" class="radio-label">Delivery</label>
-                  </div>
+          </div>
+          <div class="col-6 p-0">
+            <div class="radio">
+              <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery"
+                @if(customer.metadata.fulfillment_method=='delivery' ) 
+                  checked
+                @endif
+                >
+              <label for="deliveryRadio" class="radio-label">Delivery</label>
+            </div>
 
-            </div>
-            <div class="col-6 mx-auto">
-              <div class="radio">
-                <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday" 
-                  @if(customer.metadata.fulfillment_day == 'wednesday')
-                    checked
-                  @endif
+          </div>
+          <div class="col-6 p-0">
+            <div class="radio">
+              <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday"
+                @if(customer.metadata.fulfillment_day=='wednesday') 
+                  checked
+                @endif
                 >
-                <label for="wednesday-switch" class="radio-label">Wednesday</label>
-              </div>
+              <label for="wednesday-switch" class="radio-label">Wednesday</label>
             </div>
-      </div>
+          </div>
+        </div>
       </div>
     </div>
-    <hr class="mb-3">
-      <!-- Insert Billing here-->
-      <div class="comSection comSection--light">
-          <h5>
-             Billing
-          </h5>
-        </div> 
-      @!include('layout.user.profile.billing')
-
-
-  </div>
-  <div class="col-md-6 col-lg-6 col-12 mx-auto">
-
-              @!include('layout.user.profile.order-history')
-    
-            </div>
-  </div>
 </div>
-<script>
-    (function() {
-      function getScript(url,success){
-        var script=document.createElement('script');
-        script.src=url;
-        var head=document.getElementsByTagName('head')[0],
-            done=false;
-        script.onload=script.onreadystatechange = function(){
-          if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
-            done=true;
-            success();
-            script.onload = script.onreadystatechange = null;
-            head.removeChild(script);
-          }
-        };
-        head.appendChild(script);
-      }
 
 
-                getScript('/js/jquery.fileupload.min.js', function(){
-                    getScript('/js/cloudinary-jquery-file-upload.min.js', function(){
-                        const configSettings = {
-    //api_key: '239559663666399',
-    cloud_name: 'themurphs',
-    upload_preset: 'z3dsbrwx',
-    // format: "jpg",
-    // callback: 'https://hookstore.io/bin/jmrrqzk',
-  }
-
-$.cloudinary.config(configSettings);
-
-$(document).on('click', '.add-another', function(){
-  var id = $('body').find('form').length
-  id = id - 1 //Get number of forms on the page and subtract 1
-  $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
-  $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
-
-})
-
-$(document).on('click', '.remove-size', function(){
-  var id = $('body').find('form').length
-  id = id - 1
-  console.log(id)
-  if (id != 2) {
-    $(this).closest('li.form-variation').remove()
-
-  }
-})
-
-
-$("select#variation").change(function(){
-    var form = $('#item-variations')
-    form.html('<form id="variation_1" ><ul id="variation-1">\
-        <input type="text" name="name" placeholder="Name" required />\
-                <input type="text" name="short_name" placeholder="Short Description" />\
-                <input type="number" name="price" placeholder="Price" />\
-                <input type="text" name="quantity" placeholder="Quantity" />\
-                <input type="text" name="category" placeholder="Category" />\
-                <textarea name="description" Placeholder="Enter item description"></textarea>\
-                <hr />\
-                <input type="text" name="'+$(this).val()+'" placeholder="'+$(this).val()+'"/>\
-                <input type="text" name="calories" placeholder="Calories" />\
-                <input type="text" name="fats" placeholder="Fats" />\
-                <input type="text" name="carbs" placeholder="Carbs" />\
-                <input type="text" name="proteins" placeholder="Proteins" />\
-                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+$(this).val()+'">Add another</a></ul></form>')
-
-});
-$(document).ready(function() {
-
-  if ($.fn.cloudinary_fileupload !== undefined) {
-      
-    
-   $("input.cloudinary-fileupload[type=file]")
-    .attr("data-form-data", JSON.stringify(configSettings));
-    
-    $("input.cloudinary-fileupload[type=file]")
-      .cloudinary_fileupload()
-    .bind('fileuploadadd', function (e, data) {
-    data.context = $('<p/>').text('Uploading...').appendTo(document.body);
-    var ajax = data.submit();
-      $('#button').on('click',function(e){
-        ajax.abort();
-  })
-    })
-     .bind("cloudinarydone", function(e, data) {
-      $('#parent_product').append('<input type="hidden" name="primary_img" value="'+data.result.url+'" />')
-      $(".thumbnails").append(
-        $.cloudinary.image(data.result.public_id, {
-          format: "jpg",
-          width: 150,
-          height: 100,
-          crop: "thumb",
-          gravity: "face",
-          effect: "saturation:50"
-        })
-      );
-    })
-      .bind("cloudinaryprogress", function(e, data) {
-      $(".progress_bar").css(
-        "width",
-        Math.round(data.loaded * 100.0 / data.total) + "%"
-      );
-    });
-  }
-
-  if (localStorage.fulfillment_method == 'delivery') {
-    $('#collapseThree').removeClass('d-none')
-    $('#headingThree').removeClass('d-none')
-  }
-});
-
-$('.save-form').on('click', function(){
-    var master = {}
-    var forms = $('body').find('form')
-
-    for (var i = 0; i < forms.length; i++) {
-        var obj = {};
-        var formName = forms[i].id
-		var elements = forms[i].querySelectorAll( "input, select, textarea" );
-		for( var x = 0; x < elements.length; ++x ) {
-			var element = elements[x];
-			var name = element.name;
-			var value = element.value;
-
-			if( name ) {
-				obj[ name ] = value;
-			}
-        }
-        master[formName] = obj
-	}
-	
-
-    $.ajax({
-        type: "POST",
-        url: "/admin/items/add",
-        // The key needs to match your method's input parameter (case-sensitive).
-        data: JSON.stringify(master),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(data){
-            console.log('success');
-        },
-        failure: function(errMsg) {
-            alert(JSON.stringify(errMsg));
-        }
-    });
-})
-
-
-//Function for placeholders
-$(function() {
-    var inputs = $('input, textarea')
-    inputs.each(function(){
-        var i = $(this)
-        if (i.val() == 'undefined') {i.val('')}
-        if (i.val().length) {
-            i.addClass('populated');
-        } else {
-            i.removeClass('populated');
-        }
-    })
-  $('input').on('change', function() {
-    var input = $(this);
-    if (input.val().length) {
-      input.addClass('populated');
-    } else {
-      input.removeClass('populated');
-    }
-  });
-  
-  setTimeout(function() {
-    $('#fname').trigger('focus');
-  }, 500);
-});
-                    })
-                })
-    })();
-
-
-
-    </script>
-
+</div>
 
 @endsection
