@@ -18,19 +18,6 @@ class HomeController {
       );
     }
 
-
-      // ToDo
-      // Check if a user has completed their initial order.  If they have, that means that they have already
-      // ordered with us and received an order.  If they have not, then we need to get the current day and 
-      // compare it to their fulfillment_day preference.
-
-      // If user has not completed initial order and todays date is less than 48 hours from their preferred
-      // fulfillment time, then we need to set their first scheduled delivery for the following week.
-
-      // For example if preferred pickup date is Wednesday, the cutoff time would be Monday night at 11:59PM.
-      // So if we visit the site on Tuesday Morning, we should not be shown this week as a possible delivery.
-
-      // session.put('initial_order_completed', user.initial_order_completed)
       return view.render('welcome')
 
   }

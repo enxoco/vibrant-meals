@@ -325,109 +325,63 @@ class AdminController {
         return view.render('admin.items', {items: prod, categories})
     }
 
-
-    async addItem ({request, response}) {
-        var form = request.all()
-
-        var prod = form.parent_product
-
-        var id = prod.name.replace(/ /g, '_')
-        id = id.replace(/,|&|'|"|\*|\(|\)/g, '')
-        id = id.toLowerCase()
-
-        var sku = form['parent_product']
-
-        var sku_id = id
-        var price = String(sku.price).replace(".", "")
-        if(price.length == 2) {
-          price += '0'
+    async createSku (product, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
+      if (!id) {
+        return
+      }
+      price = price.replace('.', '')
+      if(price.length == 2) {
+        price += '0'
+      }
+      var sku = await stripe.skus.create({
+        product: product,
+        id: id,
+        price: parseInt(price),
+        currency: 'usd',
+        inventory: {
+          type: 'finite',
+          quantity: 9000,
+        },
+        ...(sku_image && {image: sku_image}),
+        metadata: {
+          label: id,
+          calories: calories,
+          carbs: carbs,
+          proteins: proteins,
+          fats: fats
         }
 
-        var product = await stripe.products.create({
-            name: prod.name,
-            type: 'good',
-            description: prod.description,
-            id: id,
-            attributes: ['size'],
-            metadata: {
-                primary_category: sku.category
-            }
-          }, function(err, product) {
-            // Now that primary product is created, we need to create skus
-            // Start with the parent item
-                      var sku = form['parent_product']
-                      var size = sku.size
-                      size = size.replace(/,|&|'|"|\*|\(|\)/g, '')
-                      size = size ? size.toLowerCase().replace(/ /g, '_').replace(/ /g, '_') : 'everyday'
+      })
 
-                    stripe.skus.create({
-                      product: id,
-                      id: sku_id + '_' + size,
-                      price: parseInt(price),
-                      currency: 'usd',
-                      inventory: {
-                        type: 'finite', 
-                        quantity: 500
-                      },
-                      image: prod.primary_img,
-                      attributes: {
-                          size: size
-                      },
-                      metadata: {
-                          category: sku.category,
-                          size: size,
-                          fats: sku.fats,
-                          carbs: sku.carbs,
-                          proteins: sku.proteins,
-                          calories: sku.calories,
-                          filters: sku.filters
-                      },
-                    }, function(err, product) {
-                      // Create our secondary skus in this function
-                      for (var i = 1; i < Object.keys(form).length; i++) {
-                        var sku = form[`variation_${i}`]
-                        console.log(sku)
-                        var size = sku.size
-                        var price = String(sku.price).replace(".", "")
-                        if(price.length == 2) {
-                          price += '0'
-                        }
-                        console.log(price)
-                        size = size ? size.toLowerCase().replace(/ /g, '_').replace(/ /g, '_') : 'everyday'
-                        stripe.skus.create({
-                          product: id,
-                          id: sku_id + '_' + size,
-                          price: parseInt(price),
-                          currency: 'usd',
-                          inventory: {
-                            type: 'finite', 
-                            quantity: 500
-                          },
-                          image: prod.primary_img,
-                          attributes: {
-                              size: size
-                          },
-                          metadata: {
-                              category: sku.category,
-                              size: size,
-                              fats: sku.fats,
-                              carbs: sku.carbs,
-                              proteins: sku.proteins,
-                              calories: sku.calories,
-                              filters: sku.filters
-                          },
-                        })
-                      }
-                    })
-        });
-        /**
-         * 
-         * At this point product and skus have been created.  Now we want to update our list of
-         * items on the server.  This JSON file is what we will serve to users for performance
-         * reasons so we want it to be updated whenever an admin makes changes to an item.
-         */
-        var cacheUpdated = await this.updateItems()
-        return response.send(cacheUpdated)
+      return sku
+    }
+
+    async addItem ({request, response}) {
+  
+        const {parent_product : product, sku1, sku2, sku3, sku4} = request.all()
+        let prod = await stripe.products.create({
+          name: product.name,
+          type: 'good',
+          description: product.description,
+          id: product.product_id,
+          metadata: {
+              primary_category: product.category
+          }
+        })
+
+        var resp1 = await this.createSku(product.product_id, sku1.label, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins)
+        var resp2 = await this.createSku(product.product_id, sku2.label, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins)
+        var resp3 = await this.createSku(product.product_id, sku3.label, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins)
+        var resp4 = await this.createSku(product.product_id, sku4.label, sku4.price, sku4.image ? sku4.image : product.primary_img, sku4.calories, sku4.carbs, sku4.fats, sku4.proteins)
+        
+
+        return response.send({resp1, resp2, resp3, resp4})
+
+
+        return response.send({product, sku1, sku2, sku3, sku4})
+
+        
+
     }
 
 

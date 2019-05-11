@@ -27,8 +27,10 @@ hooks.after.providersBooted(() => {
     }
   })
 
-  View.global('currency', function(num) {
-
+  View.global('currency', function(num, removeDollarSign) {
+    if (removeDollarSign) {
+      return `${(num / 100).toFixed(2)}`
+    }
     return `$${(num / 100).toFixed(2) * 1}`
   })
 
@@ -92,7 +94,7 @@ hooks.after.providersBooted(() => {
     }
 
     function addGrams(name, value){
-      if (name.toLowerCase() == 'fats' || name.toLowerCase() == 'carbs' || name.toLowerCase() == 'proteins') {
+      if (name.toLowerCase() == 'fats' || name.toLowerCase() == 'carbs' || name.toLowerCase() == 'proteins' || name.toLowerCase() == 'calories') {
         return `${value}g`
       } else {
         return '0'
@@ -146,7 +148,7 @@ hooks.after.providersBooted(() => {
         if (i == 3) {break}
         var name = Object.keys(newObj)[i]
         var value = newObj[name]
-        div += `${_.capitalize(name)}:<strong>${value}</strong>`
+        div += `${_.capitalize(name)}:<strong>${value}g</strong>`
       }
       div += '</div>'
     }

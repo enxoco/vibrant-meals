@@ -1,315 +1,270 @@
 @layout('layout.admin.master')
 @section('content')
 
+<style>
+  .comSection--light {
+    padding: 16px 24px;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+  }
 
+  .comSection__header {
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-weight: 700;
+    font-size: .9em;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .text-smaller {
+    font-size: .9em;
+  }
+
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  .table-wrap {
+    max-width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table.full {
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  th {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-size: .8em;
+    padding-top: 20px;
+    border-bottom: 2px solid #00a0df;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+</style>
 <div class="content">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card card-user">
-              <div class="image">
-                
-              </div>
-              <div class="card-body">
-                <div class="author">
-                  <a href="#">
-                    <h5 class="title">{{prod.name}}</h5>
-                  </a>
-                  <div class="thumbnails"></div>
-                  <div class="progress_bar" id="progress_bar" color="blue" width="100%" style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
-                  <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
-                  <input id="button" type="button" value="Cancel" />
-                  <!--
-                  <p class="description">
-                    @chetfaker
-                  </p>-->
+  <div class="row">
+    <div class="col-md-4">
+
+        <section class="comSection comSection--light" style="position:fixed;width:25%;">
+
+              <div class="row">
+                <div class="col-md-12 col-12">
+                    <h5 class="card-title">Add New Item</h5>
+                  Use the forms to the right to create a new menu item.  The first form is for the Product information.  This is the name, description and image that should show up on the product card on the menu page.  The additional forms are for creating skus for each product.  Each product must have at least one sku.  If you have a variation such as Turkey/Tofu or Caramel/Vanilla you would enter that into The first field.
+                  <br />
+
                 </div>
-                <!--
-                <p class="description text-center">
-                  "I like the way you work it
-                  <br> No diggity
-                  <br> I wanna bag it up"
-                </p>
-            -->
+
               </div>
 
-              <div class="card-footer">
-
-                <hr>
-                <div class="button-container">
-                  <div class="row">
-                    <div class="col-lg-3 col-md-6 col-6 ml-auto">
-                      <h5>
-                        @if(prod.skus)
-                        {{prod.skus.data.length - 1}}
-                        @else
-                        0
-                        @endif
-                        <br>
-                        <small>Variations</small>
-                      </h5>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
-                      <h5>2GB
-                        <br>
-                        <small>Images</small>
-                      </h5>
-                    </div>
-                    <div class="col-lg-3 mr-auto">
-                      <h5>24,6$
-                        <br>
-                        <small>Spent</small>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button type="submit" class="btn btn-success save-form">Save Item</button>
             </div>
-
-            <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title">Variations</h4>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-unstyled team-members">
-                        <li>
-                          <div class="row">
-                            <div class="col-md-12 col-12">
-                              Use the form to the right to create additional sizes for this product.  Once you are done adding sizes, click the save button below to create the item in Stripe.
-                              <br />
-
-                            </div>
-
-                          </div>
-                        </li>
-
-                      </ul>
-                      <div class="row">
-                          <div class="update ml-auto mr-auto">
-                            <button type="submit" class="btn btn-success save-form">Save Item</button>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
           </div>
-          <!-- item-card -->
-          <div class="col-md-8">
-            <div class="card card-user">
-              <div class="card-header">
-                <h5 class="card-title">Add Item</h5>
+        </section>
+    </div>
+    <!-- item-card -->
+    <div class="col-md-8">
+      <section class="comSection comSection--light">
+        <h5 class="card-title">Product Info</h5>
+        <form id="parent_product">
+
+        <input type="text" name="product_id" class="product-id muted" disabled  value="{{prod.id ? prod.id : NULL}}"/>
+
+          <div class="row">
+            <div class="col-9">
+              <div class="row">
+                <div class="col-md-4 col-lg-4 mx-auto">
+                  <div class="form-group">
+                    <input type="text" name="name" placeholder="Name" required class="form-control"
+                    value="{{(prod.name ? prod.name :  NULL)}}"
+                    >
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-lg-4 mx-auto">
+                  <div class="form-group">
+                    <select class="form-control muted" name="category">
+                      @unless(prod)
+                      <option>Choose a product category</option>
+                      @endunless
+                        @each(cat in ['lunchDinner', 'breakfast', 'snacks', 'drinks'])
+                        <option 
+                        @if(prod.metadata.primary_category == cat)
+                          selected
+                        @endif
+                        name="{{cat}}" value="{{cat}}"
+                        >{{capitalize(cat).split(/(?=[A-Z])/).join(" & ")}}</option>
+                        @endeach
+                    </select>
+
+                  </div>
+                </div>
+                <div class="col-10 mx-auto">
+                  <textarea class="form-control" name="description" placeholder="Product Description"
+                    rows="4">{{prod.description ? prod.description.trim() : NULL}}
+                  </textarea>
+                </div>
               </div>
-              <div class="card-body">
-                <form id="parent_product">
-                  <div class="row">
-                    <div class="col-md-4 pr-1">
-                      <div class="form-group">
-                        <label>Item Name</label>
-                        <input type="text" name="name" placeholder="Name" required value="{{prod.name}}" class="form-control">
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-2">
-                      <div class="form-group">
-                        <label>Short Description</label>
-                        <input type="text" name="short_name" class="form-control" placeholder="Short Description" value="">
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-3">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Price</label>
-                        <input type="text" name="price" class="form-control" placeholder="Price" value="{{prod.skus.data[0].price}}">
-                      </div>
-                    </div>
-                    <div class="col-md-2 pr-4">
-                            <div class="form-group">
-                              <label>Quantity</label>
-                              <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="">
-                            </div>
-                          </div>
-                  </div>
-                  <div class="row">
 
-                    <div class="col-md-3 pr-2">
-                      <div class="form-group">
-                        <label>Product Category</label>
-                        <select class="form-control muted" name="category">
-                          <option>Choose category...</option>
-                          <option name="lunchDinner" value="lunchDinner">Lunch & Dinner</option>
-                          <option name="breakfast" value="Breakfast">Breakfast</option>
-                          <option name="snacks" value="Snacks">Snacks</option>
-                          <option name="drinks" value="Drinks">Drinks</option>
-                        </select>
-                          
-                      </div>
-                    </div>
-                    <div class="col-md-3 pr-2">
-                        <div class="form-group">
-                            <label>Size</label>
-                              <input type="text" class="form-control" placeholder="Size" name="size" value="{{prod.skus.data[0].attributes.size}}">
-                        </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Calories</label>
-                        <input type="text" class="form-control" name="calories" placeholder="calories" value="{{prod.skus.data[0].metadata.calories}}">
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Carbs</label>
-                              <input type="text" class="form-control" name="carbs" placeholder="carbs" value="{{prod.skus.data[0].metadata.carbs}}">
-                            </div>
-                          </div>                    <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Proteins</label>
-                                  <input type="text" class="form-control" name="proteins" placeholder="proteins" value="{{prod.skus.data[0].metadata.proteins}}">
-                                </div>
-                              </div>                    <div class="col-md-3">
-                                    <div class="form-group">
-                                      <label>Fats</label>
-                                      <input type="text" class="form-control" name="fats" placeholder="fats" value="{{prod.skus.data[0].metadata.fats}}">
-                                    </div>
-
-                                  </div>
-                    <div class="col">
-                        <label for="sehir">Filters</label>
-                        <input type="text" name="filters" value="" data-role="tagsinput" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Description</label>
-                        <textarea name="description" class="form-control textarea">{{prod.description}}</textarea>
-                      </div>
-                    </div>
-                  </div>
-
-                </form>
-              </div>
-              
             </div>
-            <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title">Size Variations</h4>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-unstyled size-variations">
-                        <li class="form-variation">
-                          <form id="variation_1">
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Label</label>
-                                  <input type="text" class="form-control" name="size" placeholder="Size Label" value="{{prod.skus.data[0].metadata.size}}">
-                              </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                  <label>Price</label>
-                                  <input type="text" class="form-control" name="price" placeholder="Price" value="{{prod.skus.data[0].price}}">
-                                </div>
+            <div class="col-3">
+              <div class="thumbnails"></div>
+              <div class="progress_bar" id="progress_bar" color="blue" width="100%"
+                style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
+              <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+        </form>
+      </section>
 
-                              </div>   
-                            <div class="col-md-2">
-                              <div class="form-group">
-                                <label>Calories</label>
-                                  <input type="text" class="form-control" name="calories" placeholder="Calories" value="{{prod.skus.data[0].metadata.calories}}">
-                              </div>
-                              
-                            </div>
-                                        <div class="col-md-2">
-                                                <div class="form-group">
-                                                  <label>Carbs</label>
-                                                  <input type="text" class="form-control" name="carbs" placeholder="Carbs" value="{{prod.skus.data[0].metadata.carbs}}">
-                                                </div>
-                                              </div> 
-                                              <div class="col-md-2">
-                                                    <div class="form-group">
-                                                      <label>Proteins</label>
-                                                      <input type="text" class="form-control" name="proteins" placeholder="Proteins" value="{{prod.skus.data[0].metadata.proteins}}">
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                        <div class="form-group">
-                                                          <label>Fats</label>
-                                                          <input type="text" class="form-control" name="fats" placeholder="Fats" value="{{prod.skus.data[0].metadata.fats}}">
-                                                        </div>
+      <hr class="mb-3">
+      <!-- First Sku -->
+      @each(i in [0,1,2,3])
+      <section class="comSection comSection--light">
+          <h5 class="card-title">Sku Info</h5><input class="sku-id muted" id="{{sku[$loop.index]}}" value="{{sku[$loop.index].id ? sku[$loop.index].id : NULL}}" />
+          <form id="{{sku[$loop.index]}}">
+            <div class="row">
+              <div class="col-md-4 col-lg-4 mx-auto">
+                <div class="form-group">
+                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{sku[$loop.index].metadata.label ? sku[$loop.index].metadata.label : NULL}}" onchange="updateSkuLabel('1', this.value)" />
+                </div>
+              </div>
+              <div class="col-md-4 col-lg-4 mx-auto">
+                <div class="form-group">
+                  <input type="text" name="price" placeholder="Price" required class="form-control" value="{{sku[$loop.index].price ? currency(sku[$loop.index].price, true) : NULL}}">
+                </div>
+              </div>
+        
+        
+            </div>
+            <div class="row">
+        
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Calories</label>
+                  <input type="text" class="form-control" name="calories" placeholder="Calories"
+                    value="{{sku[$loop.index].metadata.calories}}">
+                </div>
+        
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Carbs</label>
+                  <input type="text" class="form-control" name="carbs" placeholder="Carbs"
+                    value="{{sku[$loop.index].metadata.carbs}}">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Proteins</label>
+                  <input type="text" class="form-control" name="proteins" placeholder="Proteins"
+                    value="{{sku[$loop.index].metadata.proteins}}">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Fats</label>
+                  <input type="text" class="form-control" name="fats" placeholder="Fats"
+                    value="{{sku[$loop.index].metadata.fats}}">
+                </div>
+        
+              </div>
+        
+            </div>
+        
+          </form>
+        </section>
 
-                                                      </div>   
-                                                      
-                                                      <div class="col-md-8">
-                                                          <btn data-toggle="tooltip" data-placement="top" title="Add another size" class="btn btn-md btn-outline-success btn-round btn-icon add-another"><i class="nc-icon nc-simple-add"></i></btn>
-                                                          <btn class="btn btn-md btn-outline-danger btn-round btn-icon remove-size" data-toggle="tooltip" data-placement="top" title="Delete this size"><i class="nc-icon nc-simple-remove"></i></btn>
-                                                      </div> 
-                                                                     
-                                      </div>
-                          </form>
-                        </li>
-                        <div class="dropdown-divider"></div>
+        <hr class="mb-3">
+        @endeach
 
-                      </ul>
-                    </div>
-                  </div>
-          </div> <!-- /item card-->
-        </div>
+    </div>
 
-        </div>
-      </div>
+
+
+</div> <!-- /item card-->
+</div>
+
+</div>
+</div>
 <script>
-    (function() {
-      function getScript(url,success){
-        var script=document.createElement('script');
-        script.src=url;
-        var head=document.getElementsByTagName('head')[0],
-            done=false;
-        script.onload=script.onreadystatechange = function(){
-          if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
-            done=true;
-            success();
-            script.onload = script.onreadystatechange = null;
-            head.removeChild(script);
+  (function () {
+    function getScript(url, success) {
+      var script = document.createElement('script');
+      script.src = url;
+      var head = document.getElementsByTagName('head')[0],
+        done = false;
+      script.onload = script.onreadystatechange = function () {
+        if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+          done = true;
+          success();
+          script.onload = script.onreadystatechange = null;
+          head.removeChild(script);
+        }
+      };
+      head.appendChild(script);
+    }
+
+
+    getScript('/js/jquery-2.2.4.min.js', function () {
+      getScript('/js/jquery.fileupload.min.js', function () {
+        getScript('/js/cloudinary-jquery-file-upload.min.js', function () {
+          const configSettings = {
+            //api_key: '239559663666399',
+            cloud_name: 'themurphs',
+            upload_preset: 'z3dsbrwx',
+            // format: "jpg",
+            // callback: 'https://hookstore.io/bin/jmrrqzk',
           }
-        };
-        head.appendChild(script);
-      }
+
+          $.cloudinary.config(configSettings);
+
+          $(document).on('click', '.add-another', function () {
+            var id = $('body').find('form').length
+            id = id - 2 //Get number of forms on the page and subtract 2
+            $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
+            $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
+
+          })
+
+          $(document).on('click', '.remove-size', function () {
+            var id = $('body').find('form').length
+            id = id - 1
+            console.log(id)
+            if (id != 2) {
+              $(this).closest('li.form-variation').remove()
+
+            }
+          })
 
 
-        getScript('/js/jquery-2.2.4.min.js',function(){
-                getScript('/js/jquery.fileupload.min.js', function(){
-                    getScript('/js/cloudinary-jquery-file-upload.min.js', function(){
-                        const configSettings = {
-    //api_key: '239559663666399',
-    cloud_name: 'themurphs',
-    upload_preset: 'z3dsbrwx',
-    // format: "jpg",
-    // callback: 'https://hookstore.io/bin/jmrrqzk',
-  }
-
-$.cloudinary.config(configSettings);
-
-$(document).on('click', '.add-another', function(){
-  var id = $('body').find('form').length
-  id = id - 2 //Get number of forms on the page and subtract 2
-  $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
-  $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
-
-})
-
-$(document).on('click', '.remove-size', function(){
-  var id = $('body').find('form').length
-  id = id - 1
-  console.log(id)
-  if (id != 2) {
-    $(this).closest('li.form-variation').remove()
-
-  }
-})
-
-
-$("select#variation").change(function(){
-    var form = $('#item-variations')
-    form.html('<form id="variation_1" ><ul id="variation-1">\
+          $("select#variation").change(function () {
+            var form = $('#item-variations')
+            form.html('<form id="variation_1" ><ul id="variation-1">\
         <input type="text" name="name" placeholder="Name" required />\
                 <input type="text" name="short_name" placeholder="Short Description" />\
                 <input type="number" name="price" placeholder="Price" />\
@@ -317,122 +272,134 @@ $("select#variation").change(function(){
                 <input type="text" name="category" placeholder="Category" />\
                 <textarea name="description" Placeholder="Enter item description"></textarea>\
                 <hr />\
-                <input type="text" name="'+$(this).val()+'" placeholder="'+$(this).val()+'"/>\
+                <input type="text" name="'+ $(this).val() + '" placeholder="' + $(this).val() + '"/>\
                 <input type="text" name="calories" placeholder="Calories" />\
                 <input type="text" name="fats" placeholder="Fats" />\
                 <input type="text" name="carbs" placeholder="Carbs" />\
                 <input type="text" name="proteins" placeholder="Proteins" />\
-                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+$(this).val()+'">Add another</a></ul></form>')
+                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+ $(this).val() + '">Add another</a></ul></form>')
 
-});
-$(document).ready(function() {
+          });
+          $(document).ready(function () {
+            $('input[name=name]').on('focusout', function () {
+              var productId = $(this).val()
+              productId = productId.replace(/[!@#$%^&*]/g, "").toLowerCase().replace(/ /g, "_")
 
-  if ($.fn.cloudinary_fileupload !== undefined) {
-      
-    
-   $("input.cloudinary-fileupload[type=file]")
-    .attr("data-form-data", JSON.stringify(configSettings));
-    
-    $("input.cloudinary-fileupload[type=file]")
-      .cloudinary_fileupload()
-    .bind('fileuploadadd', function (e, data) {
-    data.context = $('<p/>').text('Uploading...').appendTo(document.body);
-    var ajax = data.submit();
-      $('#button').on('click',function(e){
-        ajax.abort();
-  })
-    })
-     .bind("cloudinarydone", function(e, data) {
-      $('#parent_product').append('<input type="hidden" name="primary_img" value="'+data.result.url+'" />')
-      $(".thumbnails").append(
-        $.cloudinary.image(data.result.public_id, {
-          format: "jpg",
-          width: 150,
-          height: 100,
-          crop: "thumb",
-          gravity: "face",
-          effect: "saturation:50"
-        })
-      );
-    })
-      .bind("cloudinaryprogress", function(e, data) {
-      $(".progress_bar").css(
-        "width",
-        Math.round(data.loaded * 100.0 / data.total) + "%"
-      );
-    });
-  }
-});
-
-$('.save-form').on('click', function(){
-    var master = {}
-    var forms = $('.content').find('form')
-
-    
-
-    for (var i = 0; i < forms.length; i++) {
-        var obj = {};
-        var formName = forms[i].id
-		var elements = forms[i].querySelectorAll( "input, select, textarea" );
-		for( var x = 0; x < elements.length; ++x ) {
-			var element = elements[x];
-			var name = element.name;
-			var value = element.value;
-
-			if( name ) {
-				obj[ name ] = value;
-			}
-        }
-        master[formName] = obj
-    }
-    $.ajax({
-        type: "POST",
-        url: "/admin/items/add",
-        // The key needs to match your method's input parameter (case-sensitive).
-        data: JSON.stringify(master),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(data){
-          if (data === 'success')
-          toastr['success']('Item added successfully')
-        },
-        failure: function(errMsg) {
-            alert(JSON.stringify(errMsg));
-        }
-    });
-})
+              $('.product-id').val(productId)
+            })
 
 
-//Function for placeholders
-$(function() {
-    var inputs = $('input, textarea')
-    inputs.each(function(){
-        var i = $(this)
-        if (i.val() == 'undefined') {i.val('')}
-        if (i.val().length) {
-            i.addClass('populated');
-        } else {
-            i.removeClass('populated');
-        }
-    })
-  $('input').on('change', function() {
-    var input = $(this);
-    if (input.val().length) {
-      input.addClass('populated');
-    } else {
-      input.removeClass('populated');
-    }
-  });
-  
-  setTimeout(function() {
-    $('#fname').trigger('focus');
-  }, 500);
-});
-                    })
+
+            if ($.fn.cloudinary_fileupload !== undefined) {
+
+
+              $("input.cloudinary-fileupload[type=file]")
+                .attr("data-form-data", JSON.stringify(configSettings));
+
+              $("input.cloudinary-fileupload[type=file]")
+                .cloudinary_fileupload()
+                .bind('fileuploadadd', function (e, data) {
+                  data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+                  var ajax = data.submit();
+                  $('#button').on('click', function (e) {
+                    ajax.abort();
+                  })
                 })
-        });
-    })();
-    </script>
+                .bind("cloudinarydone", function (e, data) {
+                  $('#parent_product').append('<input type="hidden" name="primary_img" value="' + data.result.url + '" />')
+                  $(".thumbnails").append(
+                    $.cloudinary.image(data.result.public_id, {
+                      format: "jpg",
+                      width: 150,
+                      height: 100,
+                      crop: "thumb",
+                      gravity: "face",
+                      effect: "saturation:50"
+                    })
+                  );
+                })
+                .bind("cloudinaryprogress", function (e, data) {
+                  $(".progress_bar").css(
+                    "width",
+                    Math.round(data.loaded * 100.0 / data.total) + "%"
+                  );
+                });
+            }
+          });
+
+          $('.save-form').on('click', function () {
+            var master = {}
+            var forms = $('.content').find('form')
+
+
+
+            for (var i = 0; i < forms.length; i++) {
+              var obj = {};
+              var formName = forms[i].id
+              var elements = forms[i].querySelectorAll("input, select, textarea");
+              for (var x = 0; x < elements.length; ++x) {
+                var element = elements[x];
+                var name = element.name;
+                var value = element.value;
+
+                if (name) {
+                  obj[name] = value;
+                }
+              }
+              master[formName] = obj
+            }
+
+            $.ajax({
+              type: "POST",
+              url: "/admin/items/add",
+              // The key needs to match your method's input parameter (case-sensitive).
+              data: JSON.stringify(master),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              success: function (data) {
+                if (data === 'success')
+                  toastr['success']('Item added successfully')
+              },
+              failure: function (errMsg) {
+                alert(JSON.stringify(errMsg));
+              }
+            });
+          })
+
+
+          //Function for placeholders
+          $(function () {
+            var inputs = $('input, textarea')
+            inputs.each(function () {
+              var i = $(this)
+              if (i.val() == 'undefined') { i.val('') }
+              if (i.val().length) {
+                i.addClass('populated');
+              } else {
+                i.removeClass('populated');
+              }
+            })
+            $('input').on('change', function () {
+              var input = $(this);
+              if (input.val().length) {
+                input.addClass('populated');
+              } else {
+                input.removeClass('populated');
+              }
+            });
+
+            setTimeout(function () {
+              $('#fname').trigger('focus');
+            }, 500);
+          });
+        })
+      })
+    });
+  })();
+
+
+
+</script>
 
 
 @endsection

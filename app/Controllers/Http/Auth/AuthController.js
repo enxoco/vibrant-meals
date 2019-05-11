@@ -4,42 +4,10 @@ const Env = use('Env')
 const { validateAll } = use('Validator')
 const users = make('App/Services/UserService')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
-const stringHash = require('@sindresorhus/string-hash');
 
 
 class AuthController {
 
-
-  async testOrder ({ request, response, session, view }) {
-    const user = await Database
-      .table('users')
-      .select('stripe_id')
-      .where('id', 1)
-      .limit(1)
-
-    const plans = await Database
-      .table('items')
-      .select('stripe_id')
-
-    var items = []
-    for (var i = 0; i < plans.length; i++) {
-      items.push({plan: plans[i].stripe_id})
-    }
-
-    if (plans.length > 4 && plans.length < 10) {// Apply a coupon for 5 - 10 items
-      stripe.subscriptions.create({
-        customer: user[0].stripe_id,
-        items: items,
-        coupon: 'k8dED2L5'
-      })
-    } else {
-      stripe.subscriptions.create({
-        customer: user[0].stripe_id,
-        items: items,
-      })
-    }
-
-  }
   async showLogin ({ view }) {
     return view.render('auth.login')
   }

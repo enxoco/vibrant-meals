@@ -22,7 +22,7 @@ data-toggle="modal" data-target="#{{item.id}}"
           @if(sku.price)
 
           <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
-              {{capitalize(sku.attributes.size).replace(/_/g, ' ')}}
+              {{capitalize(sku.metadata.label)}}
             </option>
           @endif
         @endeach
@@ -43,7 +43,7 @@ data-toggle="modal" data-target="#{{item.id}}"
           <a class="checkout-prompt-1"
             data-id="{{item.id}}"
             data-sku="{{item.skus.data[0].id}}" 
-            data-name="{{item.name}} {{capitalize(item.skus.data[0].attributes.size).replace(/_/g, ' ')}}" 
+            data-name="{{item.name}} {{capitalize(item.skus.data[0].metadata.label)}}" 
             data-price="{{item.skus.data[0].price}}" 
             data-img_url="{{item.skus.data[0].image}}" 
             data-quantity="1" 

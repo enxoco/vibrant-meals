@@ -571,5 +571,10 @@ $('.order-details-update').on('click', function(){
 })
 
 feather.replace()
+function updateSkuLabel(id, value) {
 
+  var productId = $('input.product-id.muted').val()
+  console.log(productId + value.toLowerCase())
+    $('#sku' + id).val(productId + '_' + value.toLowerCase())
+}
   </script>

@@ -123,32 +123,6 @@ class AccountController {
     }
   }
 
-  /**
-   * Avatar upload using cloudinary(https://www.cloudinary.com)
-   */
-  async uploadAvatar ({ request, session, response, auth }) {
-    const profilePic = request.file('avatar', {
-      types: ['image'],
-      size: '2mb'
-    })
-
-    if (Object.keys(profilePic.error()).length !== 0) {
-      session.flash({ error: 'Invalid File type' })
-      return response.redirect('back')
-    }
-
-    try {
-      const cloudinaryResponse = await users.uploadToCloudinary(profilePic.tmpPath)
-      const loginID = await auth.getUser()
-      await users.saveAvatar(loginID, cloudinaryResponse.url)
-      session.flash({status: 'Avatar has been updated successfully'})
-      return response.redirect('back')
-    } catch (e) {
-      session.flash({ error: 'Internal error while uploading' })
-      return response.redirect('back')
-    }
-  }
-
   async changePassword ({request, session, response, auth }) {
     const userInfo = request.only(['password', 'password_confirmation'])
     const rules = {
@@ -170,13 +144,6 @@ class AccountController {
     await users.changeUserPassword(loginID, userInfo)
     session.flash({ status: 'Password has been changed successfully' })
     return response.redirect('back')
-  }
-
-  async unlinkSocialMediaAccount ({ params, auth, response }) {
-    const provider = params.provider
-    const loginID = await auth.getUser()
-    await users.unlinkAccount(provider, loginID)
-    response.redirect('back')
   }
 
   async destroy ({ auth, response }) {

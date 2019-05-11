@@ -22,7 +22,6 @@ Route.get('/manifest.json', 'PwaController.manifest')
 
 
 Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')
-Route.get('/orders/test', 'Auth/AuthController.testOrder')
 
 Route.get('/api/stores/all', 'HomeController.showStores')
 
@@ -69,7 +68,6 @@ Route.post('/password/reset', 'Auth/PasswordController.reset').as('reset.passwor
 
 Route.post('/checkout/stripe', 'CheckoutController.stripeCheckout')
 Route.post('/checkout/express', 'CheckoutController.expressCheckout')
-Route.post('/checkout/paypal', 'CheckoutController.paypalCheckout')
 
 /**
  * Social Login Route
@@ -81,9 +79,7 @@ Route.group(() => {
   Route.post('/account/fulfillmethod/update', 'AccountController.updateFulfillmentMethod')
   Route.post('/account/updateOrderPref', 'AccountController.updateOrderPref')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
-  Route.post('/account/photo', 'AccountController.uploadAvatar').as('account.updateAvatar')
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')
-  Route.get('/account/unlink/:provider', 'AccountController.unlinkSocialMediaAccount').as('unlink.sm')
   Route.get('/account/delete', 'AccountController.destroy').as('account.delete')
   Route.post('/account/billing/update', 'AccountController.updateBilling')
 

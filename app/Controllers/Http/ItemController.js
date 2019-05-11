@@ -103,8 +103,9 @@ class ItemController {
         {product: prod.id}
       )
       prod.skus = sku
-    
-    return view.render('admin.items-edit', {prod})
+
+
+    return view.render('admin.items-new', {prod, sku: sku.data})
 
   }
 

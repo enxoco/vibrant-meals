@@ -2,25 +2,18 @@
 const Database = use('Database')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
-const moment = require('moment')
 const User = use('App/Models/User')
-const UsersProfile = use('App/Models/UsersProfile')
 const Hash = use('Hash')
-const stringHash = require('@sindresorhus/string-hash');
 
 
 
 
 class CheckoutController {
 
-  async paypalCheckout({ request, response }) {
-    var order = request.all()
-    return order
-  }
-
+  // Simple function to apply a coupon to customers order during checkout.
+  // Returns coupon details which get applied on the front end.
   async applyCoupon ({response, params}) {
-    var coupon = params.coupon
-    var couponDetails = await stripe.coupons.retrieve(coupon)
+    var couponDetails = await stripe.coupons.retrieve(params.coupon)
     return response.send(couponDetails)
   }
 
@@ -28,6 +21,8 @@ class CheckoutController {
     var req = request.all()
     req = req.data
     var user = await auth.user
+    const truth = req.billing.coupon === ""
+
 
     var update = await Database
       .table('users')
@@ -116,7 +111,9 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
-            store_id: location.id
+            store_id: location.id,
+            allergy_info: req.billing.allergy_info,
+            delivery_info: req.billing.delivery_info
             
           },
           email: user.email
@@ -153,6 +150,8 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
+            allergy_info: req.billing.allergy_info,
+            delivery_info: req.billing.delivery_info
           },
           email: user.email
         }, function(err, order) {
@@ -265,7 +264,9 @@ class CheckoutController {
         fulfillment_method: req.user.fulfillment_method,
         fulfillment_day: req.user.fulfillment_day,
         delivery_date: req.user.fulfillment_date,
-        next_fulfillment: req.user.fulfillment_date
+        next_fulfillment: req.user.fulfillment_date,
+        allergy_info: req.billing.allergy_info,
+        delivery_info: req.billing.delivery_info
       },
       shipping: {
         name: user.email,
@@ -320,6 +321,8 @@ class CheckoutController {
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
             store_id: loc.id,
+            allergy_info: req.billing.allergy_info,
+            delivery_info: req.billing.delivery_info
           },
           email: user.email
         }, function(err, order) {
@@ -354,7 +357,9 @@ class CheckoutController {
               fulfillment_day: req.user.fulfillment_day,
               fulfillment_date: req.user.fulfillment_date,
               fulfillment_method: req.user.fulfillment_method,
-              pickup_location: location.name
+              pickup_location: location.name,
+              allergy_info: req.billing.allergy_info,
+              delivery_info: req.billing.delivery_info
             },
             email: user.email
           }, function(err, order) {
@@ -390,6 +395,8 @@ class CheckoutController {
             fulfillment_day: req.user.fulfillment_day,
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
+            allergy_info: req.billing.allergy_info,
+            delivery_info: req.billing.delivery_info
           },
           email: user.email
         }, function(err, order) {
@@ -416,33 +423,6 @@ class CheckoutController {
 
   }
 
-    async startCheckout({ request, response, session}) {
-        var cart = session.get('cartItem')
-        var stripeItems = []
-        for (var i = 0; i < cart.length; i++) {
-            stripeItems.push({
-              type: 'sku',
-              parent: cart[i].sku,
-              quantity: parseInt(cart[i].quantity),
-            })
-
-        }
-
-        const user = await Database
-        .table('users')
-        .select('id', 'name', 'email', 'zip', 'fulfillment_method', 'is_guest', 'fulfillment_day', 'pickup_location')
-        .where('id', session.get('adonis_auth'))  
-        .first()
-
-        var fulfillment_day = await session.get('fulfillment_day')
-        fulfillment_day = moment(fulfillment_day).format('L')
-
-        // Todo - need to distinguish between pickup and delivery
-        // also need to decide between ala carte and subscription
-
-        // Shipping info based on user preferences
-
-    }
 }
 
 module.exports = CheckoutController
