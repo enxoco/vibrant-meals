@@ -178,8 +178,10 @@ if (moment().format('dddd') == 'Friday') {
         state: $('select#state-bill').val(),
         zip: $('input[name="zip-bill"]').val(),
         coupon: $('input[name="promoCode"]').val(),
-        shippingCode: localStorage.shippingCode
-      }
+        allergy_info: $('input[name=allergy_info]').val(),
+        delivery_info: $('input[name=delivery_notes]').val(),
+        shippingCode: localStorage.shippingCode,
+          }
     
       var shipping = {
           recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
@@ -277,8 +279,10 @@ if (moment().format('dddd') == 'Friday') {
       zip: $('input[name="zip-bill"]').val(),
       coupon: $('input[name="promoCode"]').val(),
       shippingCode: localStorage.shippingCode,
+      allergy_info: $('input[name=allergy_info]').val(),
+      delivery_info: $('input[name=delivery_notes]').val(),
       type: card.type,
-      paymentId: id
+      paymentId: id,
 
     }
   
@@ -351,9 +355,11 @@ if (moment().format('dddd') == 'Friday') {
         state: $('select#state-bill').val(),
         zip: $('input[name="zip-bill"]').val(),
         coupon: $('input[name="promoCode"]').val(),
+        allergy_info: $('input[name=allergy_info]').val(),
+        delivery_info: $('input[name=delivery_notes]').val(),
         stripeToken: result.token.id,
-        shippingCode: localStorage.shippingCode
-      }
+        shippingCode: localStorage.shippingCode,
+          }
     
     var shipping = {
         recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
@@ -562,8 +568,10 @@ function anything(){
       state: $('select#state-bill').val(),
       zip: $('input[name="zip-bill"]').val(),
       coupon: $('input[name="promoCode"]').val(),
+      allergy_info: $('input[name=allergy_info]').val(),
+      delivery_info: $('input[name=delivery_notes]').val(),
       stripeToken: result.token.id,
-      shippingCode: localStorage.shippingCode
+      shippingCode: localStorage.shippingCode,
     }
   
   var shipping = {

@@ -141,8 +141,11 @@
                                                     </li>
                                                     <li>
                                                         <strong>Phone:</strong>
-                                                        {{order.shipping.phone}}
+                                                        {{order.shipping.phone ? order.shipping.phone : NULL}}
                                                     </li>
+                                                    <li><strong>Allergy Info</strong> {{order.metadata.allergy_info ? order.metadata.allergy_info : NULL}}</li>
+                                                    <li><strong>Delivery Notes</strong> {{order.metadata.delivery_info ? order.metadata.delivery_info : NULL}}</li>
+
 
                                                 </ul>
                                             </div>
