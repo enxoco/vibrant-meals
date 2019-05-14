@@ -325,7 +325,7 @@ class AdminController {
         return view.render('admin.items', {items: prod, categories})
     }
 
-    async createSku (product, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
+    async createSku (product, label, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
       if (!id) {
         return
       }
@@ -344,7 +344,7 @@ class AdminController {
         },
         ...(sku_image && {image: sku_image}),
         metadata: {
-          label: id,
+          label: label,
           calories: calories,
           carbs: carbs,
           proteins: proteins,
@@ -369,10 +369,10 @@ class AdminController {
           }
         })
 
-        var resp1 = await this.createSku(product.product_id, sku1.label, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins)
-        var resp2 = await this.createSku(product.product_id, sku2.label, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins)
-        var resp3 = await this.createSku(product.product_id, sku3.label, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins)
-        var resp4 = await this.createSku(product.product_id, sku4.label, sku4.price, sku4.image ? sku4.image : product.primary_img, sku4.calories, sku4.carbs, sku4.fats, sku4.proteins)
+        var resp1 = await this.createSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins)
+        var resp2 = await this.createSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins)
+        var resp3 = await this.createSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins)
+        var resp4 = await this.createSku(product.product_id, sku4.label, sku4.sku_id, sku4.price, sku4.image ? sku4.image : product.primary_img, sku4.calories, sku4.carbs, sku4.fats, sku4.proteins)
         
 
         return response.send({resp1, resp2, resp3, resp4})
@@ -411,10 +411,12 @@ class AdminController {
           });
         })
       } else {
+        amount = (amount * 100)
         return new Promise((resolve, reject) => {
           stripe.coupons.create({
             amount_off: amount,
             duration: 'once',
+            currency: 'usd',
             id: name
           }, (err) => {
             if (err) { return reject(err) }

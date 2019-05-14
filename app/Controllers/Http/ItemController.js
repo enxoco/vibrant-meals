@@ -93,6 +93,46 @@ class ItemController {
   }
 
 
+  async listCustomMeals ({view, response, auth, request}) {
+
+    const path = Helpers.appRoot()    
+
+    var prod = await Drive.get(`${path}/products.json`, 'utf-8')
+    prod = JSON.parse(prod)
+
+    if (auth.user) {
+      var user = {}
+      if (auth.user.fulfillment_method == 'pickup' && auth.user.pickup_location != null) {
+        var store = await Database 
+        .table('locations')
+        .select('*')
+        .where('id', auth.user.pickup_location)
+        store[0].desc = store[0].name
+        user.pickupLocation = store[0]
+        user.fulfillment_method = 'pickup'
+
+      } else {
+        user.fulfillment_method = 'delivery'
+
+      }
+
+      prod = _.remove(prod, function(n){
+        return n.metadata.primary_category == 'customMeals'
+      })
+
+
+
+      user.fulfillment_day = auth.user.fulfillment_day
+      return view.render('menu.custom-meals', {items: prod, user: user})
+      
+    } else {
+
+      return view.render('menu.custom-meals', {items: prod})
+    }
+
+  }
+
+
   /* Show form for editing a current item */
 
   async listItemsAdmin ({view, response, params}) {

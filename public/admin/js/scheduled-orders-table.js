@@ -56,6 +56,28 @@ $("#paid").on('click', function() {
     ordersTable.draw();
 });    
 
+$("#refunded").on('click', function() {
+   $.fn.dataTable.ext.search.pop();
+   ordersTable.draw();
+   $.fn.dataTable.ext.search.push(
+      function(settings, data, dataIndex) {
+         return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'refunded';
+      }
+   );
+   ordersTable.draw();
+});   
+
+$("#canceled").on('click', function() {
+   $.fn.dataTable.ext.search.pop();
+   ordersTable.draw();
+   $.fn.dataTable.ext.search.push(
+      function(settings, data, dataIndex) {
+         return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'canceled';
+      }
+   );
+   ordersTable.draw();
+});    
+
 $("#pickupOrders").on('click', function() {
    $('#locationHeader').html('Store')
     $.fn.dataTable.ext.search.pop();

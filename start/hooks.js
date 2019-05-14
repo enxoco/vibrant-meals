@@ -75,46 +75,65 @@ hooks.after.providersBooted(() => {
   })
 
   View.global('secure', function(url){
-    return url.replace('http:', 'https:')
+    if (url && url.includes('http:')) {
+      return url.replace('http:', 'https:')
+    } else {
+      return url
+    }
   })
 
   View.global('nutritionFooterDesktop', function(obj){
     var newObj = Object.assign({}, obj);
 
 
-    delete newObj.category
-    delete newObj.size
-    delete newObj.filters
-    delete newObj.name
-    delete newObj.description
     var count = Object.keys(newObj)
-  
+    var macros = []
+    macros.push({
+      'calories': newObj['calories'] ? newObj['calories'] : 0,
+      'proteins': newObj['proteins'] ? newObj['proteins'] : 0,
+      'fats': newObj['fats'] ? newObj['fats'] : 0,
+      'carbs': newObj['carbs'] ? newObj['carbs'] : 0
+
+    })
+    // var macros = newObj.sort((a,b) => (a.order > b.order) ? 1 : -1) 
+
+
     if (count.length < 4) {
       return this.safe('<div class="col-9 pb-2"></div>')
     }
 
-    function addGrams(name, value){
-      if (name.toLowerCase() == 'fats' || name.toLowerCase() == 'carbs' || name.toLowerCase() == 'proteins' || name.toLowerCase() == 'calories') {
-        return `${value}g`
-      } else {
-        return '0'
-      }
-    }
+    macros = macros[0]
+
     var div = ``
-    if (count.length >= 4) {
-      for (var i = 0; i < Object.keys(newObj).length; i++) {
-        if (i == 4) {break}
-        var name = Object.keys(newObj)[i]
-        var value = newObj[name]
-        div += `<div class="col ml-auto pr-0 d-none d-lg-block">
-        <h5>
-         ${addGrams(name, value)}
-          <br>
-          <small>${_.capitalize(name)}</small>
-        </h5>
-      </div>`
-      }
-    }
+    div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+    <h5>
+    ${macros.calories ? macros.calories : 0}g 
+    <br>
+      <small>Calories</small>
+    </h5>
+  </div>`
+  div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+  <h5>
+  ${macros.proteins ? macros.proteins : 0}g 
+  <br>
+    <small>Protein</small>
+  </h5>
+</div>`
+    div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+    <h5>
+    ${macros.fats ? macros.fats : 0}g 
+    <br>
+      <small>Fats</small>
+    </h5>
+  </div>`
+
+  div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+  <h5>
+  ${macros.carbs ? macros.carbs : 0}g 
+  <br>
+    <small>Carbs</small>
+  </h5>
+</div>`
 
       return this.safe(div)
   })
@@ -125,6 +144,13 @@ hooks.after.providersBooted(() => {
     } else {
       return false
     }
+  })
+
+  View.global('dateFormat', function(day, weekCode){
+    if (day == 'monday') {
+      return moment().add(weekCode, 'weeks').startOf('isoweek').format('L')
+    }
+
   })
   View.global('nutritionFooterMobile', function(obj){
     var newObj = Object.assign({}, obj);
@@ -144,12 +170,16 @@ hooks.after.providersBooted(() => {
     if (count.length >= 3) {
       div = '<div class="col-10 d-flex justify-content-between">'
 
-      for (var i = 0; i < Object.keys(newObj).length; i++) {
-        if (i == 3) {break}
-        var name = Object.keys(newObj)[i]
-        var value = newObj[name]
-        div += `${_.capitalize(name)}:<strong>${value}g</strong>`
-      }
+      // for (var i = 0; i < Object.keys(newObj).length; i++) {
+      //   if (i == 2) {break}
+      //   var name = Object.keys(newObj)[i]
+      //   var value = newObj[name]
+      //   div += `${_.capitalize(name)}:<strong>${value}g</strong>`
+      // }
+      obj.calories ? div += `<strong>Calories:</strong> ${obj.calories}` : NULL
+      obj.proteins ? div += `<strong>Protein:</strong> ${obj.proteins}` : NULL
+
+      console.log(obj)
       div += '</div>'
     }
 

@@ -14,30 +14,28 @@ data-toggle="modal" data-target="#{{item.id}}"
       <h5 class="card-title">{{item.name}}</h5>
     </div>
     <div class="col price">
-      @if(item.skus.data.length > 1)
       <h5 class="price-label" style="float:right;">{{currency(item.skus.data[0].price)}}</h5>
 
       <select class="form-control muted price-change" data-id="{{item.id}}" style="width:150px;float:left;">
         @each(sku in item.skus.data)
           @if(sku.price)
-
           <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
               {{capitalize(sku.metadata.label)}}
             </option>
           @endif
         @endeach
       </select>
-      @else
-      <h5>{{currency(item.skus.data[0].price)}}</h5>
+      <select class="form-control muted veggie" style="width:150px;float:left;" onchange="getComboA(this)">
+          <option value="">Select combo</option>
 
-      @endif
+          <option value="broccoli">Broccoli</option>
+      </select>
     </div>
   </div>
 </div>
 <div class="card-footer">
     <div class="button-container">
       <div class="row pr-2">
-        
         {{nutritionFooterDesktop(item.skus.data[0].metadata)}}
         
         <div class="col-2 mx-auto d-flex justify-content-end">
@@ -48,6 +46,7 @@ data-toggle="modal" data-target="#{{item.id}}"
             data-price="{{item.skus.data[0].price}}" 
             data-img_url="{{item.skus.data[0].image}}" 
             data-quantity="1" 
+            data-veggie=""
             href="#" 
             class="is-pulled-right"
           >
@@ -58,3 +57,14 @@ data-toggle="modal" data-target="#{{item.id}}"
     </div>
   </div>
 </div>
+
+<script>
+
+function getComboA(selectObject) {
+    var value = selectObject.value;
+    console.log(selectObject)  
+    console.log(value)
+    $(selectObject).closest('.card').find('.checkout-prompt-1').attr('data-veggie', value)
+}
+
+</script>

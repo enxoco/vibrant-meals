@@ -1,0 +1,61 @@
+@layout('layout.user.master')
+@section('content')
+<@!include('Modals.initial')
+<style>
+    #category-container {
+        display: none !important;
+    }
+    </style>
+  <div class="content">
+
+      <div class="row row-eq-height">
+
+      @each(item in items)
+        
+        @unless(item.active === false)
+        @unless(item.id === 'shipping')
+          <!-- Start of individual Product card -->
+          <div class="col-12 col-lg-4 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
+
+          @!include('menu.product-card-mobile')
+          @!include('menu.product-card-desktop-custom-meals')
+          @!include('Modals.product-card')
+          </div>
+        <!--/individual product card-->
+        @endunless
+        @endunless
+
+        @endeach
+      </div>
+
+        </div>
+      <footer class="footer footer-black  footer-white ">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="credits ml-5">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i data-feather="heart" style="height:10px;width:10px;"></i> by <a href="https://enxo.co">enxo.co</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+  <!--   Core JS Files   -->
+
+</body>
+<script>
+
+function closeMenu() {
+  document.getElementById('macroFilters').classList.remove('show')
+
+}
+</script>
+
+
+</html>
+@endsection

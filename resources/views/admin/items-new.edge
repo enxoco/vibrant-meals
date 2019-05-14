@@ -143,19 +143,22 @@
 
       <hr class="mb-3">
       <!-- First Sku -->
-      @each(i in [0,1,2,3])
+      @each(i in [1,2,3,4])
+      
       <section class="comSection comSection--light">
-          <h5 class="card-title">Sku Info</h5><input class="sku-id muted" id="{{sku[$loop.index]}}" value="{{sku[$loop.index].id ? sku[$loop.index].id : NULL}}" />
-          <form id="{{sku[$loop.index]}}">
+          <h5 class="card-title">Sku Info</h5>
+          <form id="sku{{i}}">
+            <input class="sku-id muted" id="sku{{i}}_id" name="sku_id" value="{{sku[i].id ? sku[i].id : NULL}}" />
+
             <div class="row">
               <div class="col-md-4 col-lg-4 mx-auto">
                 <div class="form-group">
-                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{sku[$loop.index].metadata.label ? sku[$loop.index].metadata.label : NULL}}" onchange="updateSkuLabel('1', this.value)" />
+                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{sku[i].metadata.label ? sku[i].metadata.label : NULL}}" onchange="updateSkuLabel({{i}}, this.value)" />
                 </div>
               </div>
               <div class="col-md-4 col-lg-4 mx-auto">
                 <div class="form-group">
-                  <input type="text" name="price" placeholder="Price" required class="form-control" value="{{sku[$loop.index].price ? currency(sku[$loop.index].price, true) : NULL}}">
+                  <input type="text" name="price" placeholder="Price" required class="form-control" value="{{sku[i].price ? currency(sku[i].price, true) : NULL}}">
                 </div>
               </div>
         
@@ -167,7 +170,7 @@
                 <div class="form-group">
                   <label>Calories</label>
                   <input type="text" class="form-control" name="calories" placeholder="Calories"
-                    value="{{sku[$loop.index].metadata.calories}}">
+                    value="{{sku[i].metadata.calories}}">
                 </div>
         
               </div>
@@ -175,21 +178,21 @@
                 <div class="form-group">
                   <label>Carbs</label>
                   <input type="text" class="form-control" name="carbs" placeholder="Carbs"
-                    value="{{sku[$loop.index].metadata.carbs}}">
+                    value="{{sku[i].metadata.carbs}}">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label>Proteins</label>
                   <input type="text" class="form-control" name="proteins" placeholder="Proteins"
-                    value="{{sku[$loop.index].metadata.proteins}}">
+                    value="{{sku[i].metadata.proteins}}">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label>Fats</label>
                   <input type="text" class="form-control" name="fats" placeholder="Fats"
-                    value="{{sku[$loop.index].metadata.fats}}">
+                    value="{{sku[i].metadata.fats}}">
                 </div>
         
               </div>

@@ -171,7 +171,8 @@
             <table class="table" id="pickups">
                 <button class="btn" id="fulfilled">Filled</button>
                 <button class="btn" id="paid">Pending</button>
-                <button class="btn" id="cancelled">Cancelled</button>
+                <button class="btn" id="canceled">Canceled</button>
+                <button class="btn" id="refunded">Refunded</button>
                 <button class="btn btn-primary" id="pickupOrders">Pickups</button>
                 <button class="btn btn-primary" id="deliveryOrders">Deliveries</button>
               <thead class=" text-primary">
@@ -207,7 +208,7 @@
               </thead>
               <tbody>
                 @each(p in fulfillments)
-                <tr class="filter {{p.status}}" data-status="{{p.status}}" data-method="{{p.metadata.fulfillment_method}}">
+                <tr class="filter" data-status="{{p.returns.data[0].id ? 'refunded' : p.status}}" data-method="{{p.metadata.fulfillment_method}}">
                   <td>
                     <a href="/admin/orders/{{p.id}}">{{p.metadata.orderId}}</a>
                   </td>
@@ -234,7 +235,9 @@
                     {{p.metadata.fulfillment_method}}
                   </td>
                   <td>
-                    {{p.status}}
+                    {{p.status === 'paid' ? "Pending" : NULL}}
+                    {{p.status === 'fulfilled' ? "Fulfilled" : NULL }}
+                    {{p.status === 'canceled' ? "Canceled" : NULL}}
 
                   </td>
                   <td style="display:none;">{{p.metadata.orderId}}</td>
@@ -248,10 +251,10 @@
       </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-6">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title"> Product needed for orders</h4>
+          <h4 class="card-title"> Product needed for Monday {{monResult[0].date ? monResult[0].date : NULL}}</h4>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -261,33 +264,21 @@
                   Sku
                 </th>
                 <th>
-                  Description
-                </th>
-                <th>
                   Total Quantity
-                </th>
-                <th>
-                  Needed By
                 </th>
                 <th>
                   Date Needed
                 </th>
               </thead>
               <tbody>
-                @each(o in orders)
+                @each(o in monResult)
 
                 <tr>
                   <td>
                     {{o.item}}
                   </td>
                   <td>
-                    {{o.desc}}
-                  </td>
-                  <td>
                     {{o.count}}
-                  </td>
-                  <td>
-                    {{o.day}}
                   </td>
                   <td>
                     {{o.date}}
@@ -301,6 +292,46 @@
       </div>
     </div>
 
+    <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"> Product needed for Wednesday {{wedResult[0].date ? wedResult[0].date : NULL}}</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="productNeeded">
+                <thead class=" text-primary">
+                  <th>
+                    Sku
+                  </th>
+                  <th>
+                    Total Quantity
+                  </th>
+                  <th>
+                    Date Needed
+                  </th>
+                </thead>
+                <tbody>
+                  @each(o in wedResult)
+  
+                  <tr>
+                    <td>
+                      {{o.item}}
+                    </td>
+                    <td>
+                      {{o.count}}
+                    </td>
+                    <td>
+                      {{o.date}}
+                    </td>
+                  </tr>
+                  @endeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
 <!--   Core JS Files   -->

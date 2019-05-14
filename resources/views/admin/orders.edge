@@ -1,5 +1,7 @@
 @layout('layout.admin.master')
 @section('content')
+<pre>
+  {{toJSON(mondayFulfillments)}}
       <div class="content">
         <div class="row">
           @each(coupon in coupons.data)

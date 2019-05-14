@@ -91,6 +91,7 @@ Route.get('/checkout/coupon/apply/:coupon', 'CheckoutController.applyCoupon')
 
 Route.get('/api/user/check', 'AdminController.checkExistingUser')
 Route.get('/menu', 'ItemController.listItems').as('menu.items')
+Route.get('/menu/custom', 'ItemController.listCustomMeals')
 /* Admin route group.  All admin routes should go here.  They are inspected by Middleware/AdminAccess
 *  which checks to make sure that the user is logged in and that they have the appropriate permissions
 */
@@ -121,6 +122,7 @@ Route.group(() => {
   Route.get('/products/show/:itemId', 'ItemController.showItem')
   Route.get('/admin/import', 'AdminController.importProducts')
   Route.get('/admin/locations', 'AdminController.listLocations')
+  Route.get('/email/order/confirm/:id', 'OrderController.confirmationEmail')
   Route.post('/admin/locations', 'AdminController.addLocations')
 
   Route.post('/admin/locations/update/:id', 'AdminController.updateLocations')

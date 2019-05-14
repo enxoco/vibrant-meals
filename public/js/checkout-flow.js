@@ -217,6 +217,7 @@ if (moment().format('dddd') == 'Friday') {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
+
           document.write(data)
 
           if (data.status == 'success') {
@@ -401,6 +402,8 @@ if (moment().format('dddd') == 'Friday') {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
+          localStorage.cart = []
+          updateCartDiv()
           window.location.href = '/checkout/confirmation'
 
         },

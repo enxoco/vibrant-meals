@@ -300,23 +300,7 @@ and (max-device-width : 1024px)  {
     z-index: 9999;
     bottom: 60px;
 }
-/* }
-  .mobile-button-wrapper {
-    background: white;
-    position: fixed;
-    height: 100px;
-    bottom: 0px;
-    justify-content: center;
-    width: 100%;
-    left: 0px;
-    align-items: center;
-    display: flex;
-  } */
-  .checkout-button, .tooltip-wrapper {
-  /* position: relative;
-  bottom: 65px; */
-  /* left: 32.5%; */
-}
+
   img.delivery-icon, img.pickup-icon {
     max-width: 100px;
 }
@@ -482,8 +466,7 @@ body.menu-active nav#filter-slide ul {
 
 /*end of menu-tab*/
 .menu-tab.active {
-  left: 125px;
-  transition: all 600ms ease-in-out;
+  z-index: 0;
 }
 
 
@@ -839,12 +822,17 @@ table {
 button.close > svg {
   height: 40px;
   width: 40px;
-  color: red;
+  color: white;
   
 }
 
 .close {
   opacity: 1;
+}
+select.form-control:not([size]):not([multiple]) {
+    height: calc(2.25rem + 2px);
+    width: 90%;
+    margin-left: 15px;
 }
 </style>
 
@@ -1436,7 +1424,16 @@ document.addEventListener('click', function(event) {
 
   event.preventDefault()
   var form = document.getElementById("password-reset")
-  return
+  console.log(form.serialize)
+  $.ajax({
+    type: 'POST',
+    url: '/password/reset',
+    data: JSON.stringify(form),
+    success: function(res){
+      toastr['success'](res.status ? res.status : '')
+    }
+
+  })
   form.submit()
 })
 

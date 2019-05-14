@@ -19,7 +19,9 @@
               @else
               <div class="img-container">
               @endif
+              @unless(category == 'customMeals')
                 <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
+              @endunless
               </div>
             @endunless
           @endeach
