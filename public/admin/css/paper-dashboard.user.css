@@ -6494,6 +6494,13 @@ a.filter-button {
 
 .card-user .image img {
   border-radius: 12px 12px 0px 0px;
+  background-color: white;
+  /* height: 400px; */
+  /* margin: auto; */
+  max-height: 417px;
+  object-fit: cover;
+  width: 100%;
+  object-position: center;
 }
 /*# sourceMappingURL=dashboard-free.css.map */
 
