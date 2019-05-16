@@ -42,7 +42,7 @@
         @unless(item.active === false)
         @unless(item.id === 'shipping')
           <!-- Start of individual Product card -->
-          <div class="col-12 col-lg-4 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
+          <div class="col-12 col-lg-4 col-md-6 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
 
           @!include('menu.product-card-mobile')
           @!include('menu.product-card-desktop')

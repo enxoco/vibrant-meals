@@ -359,9 +359,8 @@
               data: JSON.stringify(master),
               contentType: "application/json; charset=utf-8",
               dataType: "json",
-              success: function (data) {
-                if (data === 'success')
-                  toastr['success']('Item added successfully')
+              success: function () {
+                  toastr['success']('Item saved successfully')
               },
               failure: function (errMsg) {
                 alert(JSON.stringify(errMsg));

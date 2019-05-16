@@ -3818,6 +3818,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 img {
   max-width: 100%;
   border-radius: 3px;
+  object-fit: scale-down;
 }
 
 .img-raised {
@@ -5779,7 +5780,7 @@ License - nucleoapp.com/license/
   line-height: 59px;
 }
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 1500px) {
   .navbar {
     padding: 0;
   }
@@ -6349,7 +6350,7 @@ License - nucleoapp.com/license/
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1500px) {
   .card-stats [class*="col-"] .statistics::after {
     display: none;
   }
@@ -6371,7 +6372,7 @@ License - nucleoapp.com/license/
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1500px) {
 
   div#order-details-footer {
     position: fixed !important;
@@ -6497,7 +6498,7 @@ a.filter-button {
   background-color: white;
   /* height: 400px; */
   /* margin: auto; */
-  max-height: 417px;
+  max-height: 394px;
   object-fit: cover;
   width: 100%;
   object-position: center;
@@ -6549,4 +6550,20 @@ div#delivery-fee, #order-total {
 .center-center {
   justify-content: center;
   align-items: center;
+}
+
+@media only screen and (max-device-width:350px) {
+
+}
+
+@media screen and (min-device-width: 350px) and (max-device-width: 500px) {
+  .sidebar, .bootstrap-navbar {
+    width: 100% !important;
+  }
+}
+
+@media screen and (min-device-width: 501px) and (max-device-width: 1400px) {
+  .sidebar, .bootstrap-navbar {
+    width: 400px !important;
+  }
 }

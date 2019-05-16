@@ -104,6 +104,7 @@ Route.group(() => {
   /* Coupon management routes */
   Route.get('/admin/coupon', 'AdminController.listCoupons')
   Route.post('/admin/coupon/add', 'AdminController.addCoupon')
+  Route.post('/admin/coupon/delete', 'AdminController.deleteCoupon')
   Route.get('/admin/customers', 'AdminController.listCustomers')
   Route.get('/admin/products', 'AdminController.showItems')
   Route.get('/admin/products/publish', 'AdminController.publishItems')

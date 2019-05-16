@@ -105,8 +105,6 @@ input#demo1 {
 </head>
 
 <body class="">
-@include('Modals.Coupons.add')
-@include('Modals.Coupons.delete')
 
   <div class="wrapper ">
     <div class="sidebar" data-color="white" data-active-color="success">
@@ -577,4 +575,29 @@ function updateSkuLabel(id, value) {
   console.log(productId + value.toLowerCase())
     $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
 }
+
+
+$('#deleteCoupon').on('click', function(){
+        var c = $('#coupon').val()
+        console.log(c)
+        $.ajax({
+          type: 'POST',
+          url: '/admin/coupon/delete',
+          data: {id: c},
+          success: function(res) {
+            toastr['success']('coupon deleted')
+            $('#deleteCouponModal').modal('hide')
+          }
+        })
+      })
+
+
+      $(document).on("click", ".delete-coupon", function () {
+     var c = $(this).data('coupon');
+     console.log(c)
+     $(".modal-footer #coupon").val( c );
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
   </script>

@@ -1,5 +1,8 @@
 @layout('layout.admin.master')
 @section('content')
+@include('Modals.Coupons.add')
+@include('Modals.Coupons.delete')
+
       <div class="content">
         <div class="row">
           @each(coupon in coupons.data)
@@ -15,7 +18,16 @@
                   <div class="col-7 col-md-8">
                     <div class="numbers">
                       <p class="card-category">Coupon Code - <strong>{{coupon.id}}</strong></p>
-                      <p class="card-title"><strong>{{coupon.percent_off}}% Off</strong></p>
+                      <p class="card-category">Discount Amount -
+                      <strong>
+                        @if(coupon.percent_off)
+                          {{coupon.percent_off}}
+                        @else
+                          {{currency(coupon.amount_off)}}
+                        @endif
+                      </strong></p>
+                      <p class="card-category">Redemptions - <strong>{{coupon.times_redeemed}}</strong>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -23,19 +35,19 @@
               <div class="card-footer ">
                 <hr>
                 <div class="stats">
-                    <span class="mr-10">{{coupon.times_redeemed}} Redemptions</span>
-                    
-                    <br />
-                    Created
-                    <span class="mr-10">{{convertTime(coupon.created)}} </span>
+                  <div class="row">
+                    <div class="col">
+                        <button data-coupon="{{coupon.id}}" data-toggle="modal" data-target="#deleteCouponModal" class="btn btn-md btn-outline-danger btn-round btn-icon delete-coupon">
+                            <i data-feather="x"></i>
+                            </button>
 
 
-                    <button data-toggle="tooltip" data-placement="top" title="Edit Item" class="btn btn-md btn-outline-success btn-round btn-icon add-another">
-                      <a href="/admin/coupon/edit/{{coupon.id}}"><i class="nc-icon nc-ruler-pencil"></i></a>
-                    </button>
-                    <button data-coupon="{{coupon.id}}" data-toggle="modal" data-target="#deleteCouponModal" class="btn btn-md btn-outline-danger btn-round btn-icon delete-coupon">
-                    <i class="nc-icon nc-simple-remove"></i>
-                    </button>
+                    </div>
+                    <div class="col">
+
+                    Created <br />{{convertTime(coupon.created)}}
+                    </div>
+                  </div>
 
                     </div>
               </div>

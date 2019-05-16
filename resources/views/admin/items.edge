@@ -19,7 +19,6 @@
                       <p class="card-title">{{currency(item.skus.data[0].price)}}</p>
                       <div class="controls mt-4">
                       <a href="/products/edit/{{item.id}}"><i data-feather="edit"></i></a>
-                      <a href="/products/remove/{{item.id}}"><i data-feather="trash-2" style="color:red;"></i></a>
                       @if(item.active === true)
                         <a href="#" id="hideItem" data-item="{{item.id}}"><i data-feather="eye"></i></a>
                       @else 
