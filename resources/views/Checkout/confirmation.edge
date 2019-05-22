@@ -47,7 +47,7 @@ div.notification.jumbo {
                         <tbody>
                             @each(order in order.data)
                             <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
-                                <td><a href="#">#{{order.metadata.orderId}}</a></td>
+                                <td><a href="#" id="orderIDtext">#{{order.metadata.orderId}}</a></td>
                                 <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
                                 </td>
                                 <td>{{order.status}}</td>

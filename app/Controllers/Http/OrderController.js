@@ -37,7 +37,15 @@ class OrderController {
             customer: auth.user.stripe_id,
             limit: 1
         })
-        return view.render('Checkout.confirmation', {order})
+        if (order.orderId) {
+            return view.render('Checkout.confirmation', {order})
+        } else {
+            var order = await stripe.orders.list({
+                customer: auth.user.stripe_id,
+                limit: 1
+            })
+            return view.render('Checkout.confirmation', {order})   
+        }
     }
 
     async batchFulfillStripe(id) {

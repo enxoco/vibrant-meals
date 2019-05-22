@@ -1480,6 +1480,14 @@ $('#toggleSections').on('click', function(){
     }
     
   })
+
+  $('document').on('ready', function(){
+    if ($('#orderIDtext').text().includes('undefined')) {
+      console.log('reloaded')
+    window.location.reload()
+  }
+  })
+
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->
