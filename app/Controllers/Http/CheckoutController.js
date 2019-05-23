@@ -215,6 +215,7 @@ class CheckoutController {
     }
 
 
+
     if (req.user.fulfillment_method == 'pickup') {
       user.pickup_location = location.id
 
@@ -244,13 +245,13 @@ class CheckoutController {
     var existing = await stripe.customers.list(
       {
         limit: 1,
-        email: req.user.email
+        email: email
       }
     )
 
     if (existing.data.length == 0) {
     var customer = await stripe.customers.create({
-      description: 'Customer for ' + req.user.email,
+      description: 'Customer for ' + email,
       source: req.billing.stripeToken,
       email: user.email,
       address: {
@@ -287,7 +288,7 @@ class CheckoutController {
   } else {
     var curUser = await Database
       .table('users')
-      .where('email', req.user.email)
+      .where('email', email)
     var customer = existing.data[0]
     await auth.attempt(user.email, req.user.password)
 

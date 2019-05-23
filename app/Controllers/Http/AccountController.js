@@ -11,7 +11,6 @@ class AccountController {
 
   async updateFulfillmentMethod ({request, response, auth}) {
 
-    var stripe_id = await auth.user.stripe_id
     var method = request.all()
     var {storeId} = request.all()
     if (storeId) {
@@ -22,45 +21,54 @@ class AccountController {
     }
     method = method.pref
 
-    if (method == 'delivery') {
-      await Database
-        .table('users')
-        .update({'pickup_location': null})
-        .where('id', auth.user.id)
-      await Database
-        .table('users')
-        .update({'fulfillment_method': 'delivery'})
-        .where('id', auth.user.id)
+
+    if (auth.user) {
+
+      if (method == 'delivery') {
+        await Database
+          .table('users')
+          .update({'pickup_location': null})
+          .where('id', auth.user.id)
+        await Database
+          .table('users')
+          .update({'fulfillment_method': 'delivery'})
+          .where('id', auth.user.id)
+          var update = await stripe.customers.update(stripe_id, {
+            metadata: {
+              fulfillment_method: 'delivery'
+            }
+          })
+      }
+      if (method == 'monday' || method == 'wednesday') {
+        await Database
+          .table('users')
+          .update({'fulfillment_day': method})
+          .where('id', auth.user.id)
         var update = await stripe.customers.update(stripe_id, {
           metadata: {
-            fulfillment_method: 'delivery'
+            fulfillment_day: method
           }
         })
-    }
-    if (method == 'monday' || method == 'wednesday') {
-      await Database
+      } else if (method == 'pickup') {
+        await Database
         .table('users')
-        .update({'fulfillment_day': method})
+        .update({'fulfillment_method': method})
         .where('id', auth.user.id)
-      var update = await stripe.customers.update(stripe_id, {
-        metadata: {
-          fulfillment_day: method
-        }
-      })
-    } else if (method == 'pickup') {
-      await Database
-      .table('users')
-      .update({'fulfillment_method': method})
-      .where('id', auth.user.id)
-      
-      var update = await stripe.customers.update(stripe_id, {
-        metadata: {
-          fulfillment_method: method
-        }
-      })
+        
+        var update = await stripe.customers.update(stripe_id, {
+          metadata: {
+            fulfillment_method: method
+          }
+        })
+      }
     }
 
-    return response.send(update)
+    if (update) {
+      return response.send(update)
+    } else {
+      return response.send('no changes')
+    }
+
   }
 
 
