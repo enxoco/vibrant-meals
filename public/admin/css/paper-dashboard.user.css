@@ -5780,7 +5780,7 @@ License - nucleoapp.com/license/
   line-height: 59px;
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1400px) {
   .navbar {
     padding: 0;
   }
@@ -6350,7 +6350,7 @@ License - nucleoapp.com/license/
   }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1400px) {
   .card-stats [class*="col-"] .statistics::after {
     display: none;
   }
@@ -6372,7 +6372,7 @@ License - nucleoapp.com/license/
   }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1400px) {
 
   div#order-details-footer {
     position: fixed !important;
