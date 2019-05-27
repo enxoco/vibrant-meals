@@ -311,7 +311,7 @@
                 .bind("cloudinarydone", function (e, data) {
                   $('#parent_product').append('<input type="hidden" name="primary_img" value="' + data.result.url + '" />')
                   $(".thumbnails").append(
-                    $.cloudinary.image(data.result.public_id, {
+                    $.cloudinary.image(data.result.secure_url, {
                       format: "jpg",
                       width: 150,
                       height: 100,
