@@ -6096,7 +6096,7 @@ a.filter-button {
     background-color: white;
     /* height: 400px; */
     /* margin: auto; */
-    max-height: 570px !important;
+    max-height: 350px !important;
     object-fit: cover;
     width: 100%;
     object-position: center;
