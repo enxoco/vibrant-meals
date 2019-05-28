@@ -1,27 +1,41 @@
-<div class="modal fade" id="modal-initial-click" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="background:white;">
+<div class="modal fade" id="modal-initial-click" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true" style="background:white;">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content" style="border:none;">
       <div class="modal-body">
-        <h5 class="title d-flex justify-content-center" style="font-size:3em;font-weight:400;text-align:center">Pickup or Delivery?</h5>
-        <div class="row mb-5 order-info d-flex justify-content-center">
-            <div class="col d-flex justify-content-center">
-              <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickup" data-toggle="modal" data-target="#modal-pickup">
-              <label class="label_item pickup" for="pickup">
-              <p class="desc">Pickup in store</p>
+        <h5 class="title d-flex justify-content-center" style="font-size:3em;font-weight:400;text-align:center">Pickup
+          or Delivery?</h5>
 
-              </label>
+          <div class="row">
+              <div class="col-6 d-flex">
+                <div class="row">
+                  <div class="col-12" style="min-height:100px;">
+                      <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio" id="pickup"
+                      data-toggle="modal" data-target="#modal-pickup">
+                    <label class="label_item pickup label_large" for="pickup"></label>
+                  </div>
+                  <div class="col-12">
+                      <p>Pickup in store</p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-6 d-flex">
+                  <div class="row">
+                      <div class="col-12" style="min-height:100px;">
+                          <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio"
+                        id="delivery">
+                      <label class="label_item delivery label_large" for="delivery"></label>
+                    </div>
+                    <div class="col-12">
+                        <p>Delivered to your door</p>
+            
+                    </div>
+                  </div>
+                </div>
             </div>
-            <div class="col d-flex justify-content-center">
-              <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio" id="delivery">
-              <label class="label_item delivery" for="delivery">
-                  <p class="desc">Delivered to your door</p>
-
-              </label>
-
-            </div>
-              <section id="order-info"></section>
-          </div>
       </div>
     </div>
   </div>
 </div>
+

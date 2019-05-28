@@ -1,54 +1,54 @@
 .radio-item.fulfillment {
-    display: none !important;
-  }
-  label.pickup {
-    cursor: pointer;   
-    display: inline-block;
-    width: 125px;
-    height: 125px;
-    background: url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-inactive_xwjmlz.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    border-radius: 50%;
-    border: 1px solid white;
-    margin-right: 10px auto;
-    box-shadow: 2px 2px 3px 4px #f2f2f2;
-    margin: 20px;
-  }
-  
-  label.delivery {
-    cursor: pointer;   
-    display: inline-block;
-    width: 125px;
-    height: 125px;
-    background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779996/delivery-truck-inactive_ocja4i.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    border-radius: 50%;
-    border: 1px solid white;
-    margin-right: 10px auto;
-    box-shadow: 2px 2px 3px 4px #f2f2f2;
-    margin: 20px;
-  }
-  .radio-item:checked + label.pickup {
-    width: 125px;
-    height: 125px;
-    background: url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-active_yadcmi.png");
-      background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-  
-  }
-  .radio-item:checked + label.delivery {
-    width: 125px;
-    height: 125px;
-    background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779995/delivery-truck-active_hsfssa.png");
-      background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-  
-  }
-  
+  display: none !important;
+}
 
+label.pickup {
+  cursor: pointer;
+  display: inline-block;
+
+  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-inactive_xwjmlz.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 2px 2px 3px 4px #f2f2f2;
+  margin: 10px;
+}
+
+label.delivery {
+  cursor: pointer;
+  display: inline-block;
+
+  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779996/delivery-truck-inactive_ocja4i.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 2px 2px 3px 4px #f2f2f2;
+  margin: 10px;
+}
+
+.radio-item:checked+label.pickup {
+
+  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-active_yadcmi.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+}
+
+.radio-item:checked+label.delivery {
+
+  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779995/delivery-truck-active_hsfssa.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+}
+
+.label_item {
+  height: 75px ;
+  width: 75px ;
+}

@@ -26,6 +26,8 @@
   <link href="/admin/css/paper-dashboard.user.css?v=2.0.0" rel="stylesheet" />
   <link rel="stylesheet" href="/css/toastr.min.css" />
   <style>
+    @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
   
   body {
     padding-right: 0px !important;
@@ -45,7 +47,7 @@ i.nc-icon.nc-simple-add, i.nc-icon.nc-simple-remove, i.nc-icon.nc-simple-delete 
   }
 
 h2.category-heading {
-  font-size: 2em;
+  font-size: 18px;
   color: #4e4e4e;
   font-weight: 800 !important;
 }
@@ -60,7 +62,7 @@ h2.category-heading:focus, h2.category-heading:hover {
 
 
 .list-item {
-  font-family: Montserrat;
+  font-family: "Poppins";
   font-style: normal;
   font-weight: normal;
   line-height: normal;
@@ -135,7 +137,7 @@ li.list-group-item.button-group {
 }
 .card-title {
     margin-bottom: .75rem;
-    font-size: 18px;
+    /* font-size: 18px; */
     font-weight: 800;
     color: #575353;
 }
@@ -237,90 +239,8 @@ li {
     background: #3b8f6b;
 }
 
-@media only screen 
-and (min-device-width : 400px) 
-and (max-device-width: 1400px)
-{
 
 
-  .sidebar {
-    right: -1000px !important;
-  }
-  .nav-open .sidebar {
-    -webkit-transform: translate3d(-1000px, 25px, 0);
-    -moz-transform: translate3d(-1000px, 25px, 0);
-    -o-transform: translate3d(-1000px, 25px, 0);
-    -ms-transform: translate3d(-1000px, 25px, 0);
-    transform: translate3d(-1000px, 25px, 0);
-}
-}
-
-@media only screen and (min-device-width: 1000px) {
-  label.label-item {
-    width: 300px;
-    height: 300px;
-  }
-  /* img.img-fluid {
-    width: 450px;
-    height: 300px;
-  } */
-  /* .card.card-user.card-product{
-    width: 450px;
-  } */
-}
-
-@media only screen 
-and (min-device-width : 350px) 
-and (max-device-width : 1400px)  {
-
-  h4.item-name, .modal-card-price {
-    font-size: 14px !important;
-  }
-
-  #category-container .img-container {
-    flex: 0;
-    cursor: pointer;
-    align-content: center;
-    text-align: center;
-    border-radius: 5px;
-    height: 35px;
-}
-.next-section {
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.row.order-footer {
-    position: fixed;
-    width: 100%;
-    padding-bottom: 20px;
-    background: white;
-    z-index: 9999;
-    bottom: 60px;
-}
-
-  img.delivery-icon, img.pickup-icon {
-    max-width: 100px;
-}
-  .toast.toast-success {
-    top: 10vh;
-    right: 15vw;
-    position: absolute;
-  }
-  .card-footer {
-    padding: 20px !important;
-  }
-  h2.category-heading {
-  font-size: 1.2em;
-  color: #4e4e4e;
-  font-weight: 800 !important;
-}
-h5.modal-title {
-    font-size: 1.2rem !important;
-  }
-}
 
 li.list-group-item.button-group {
     background: none;
@@ -633,7 +553,7 @@ h5.modal-title {
 }
 
 .small, small {
-  font-size: 12px !important;
+  font-size: 12px;
 }
 
 
@@ -720,7 +640,6 @@ p.desc {
 }
 
 
-
   .row::-webkit-scrollbar {
     width: 10px;
   }
@@ -753,15 +672,8 @@ p.desc {
   text-align: center;
 }
 
-.sidebar-toggle-helper {
-  position: absolute;
-    left: 5px;
-    bottom: -5px;
-}
-
-.sidebar-toggle-helper svg {
-  height: 75px;
-    width: 75px;
+.bg-everyday {
+  background-color: #abd1ad !important;
 }
 
 .comSection--light {
@@ -834,6 +746,351 @@ select.form-control:not([size]):not([multiple]) {
     width: 90%;
     margin-left: 15px;
 }
+
+
+/*New Sidebar*/
+
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #fff;
+    color: black;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    margin-right: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 0px;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul p {
+    color: black;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+  color: #fff;
+    background: #acd2ae;
+
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+  color: #acd2ae;
+    background: #fff;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+}
+
+ul.CTAs {
+    padding: 20px;
+    position: fixed;
+    background: white;
+    width: 14.25rem;
+    bottom: 0;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+/* ul.list-unstyled.CTAs {
+    position: fixed;
+    bottom: 0;
+    background: white;
+    width: 10%;
+    right: 2%;
+} */
+
+#sidebar::not(active) ul.list-unstyled.CTAs {
+    display: none;
+}
+#sidebar.active ul.list-unstyled.CTAs {
+  position: fixed;
+    bottom: 0;
+    background: white;
+    width: 50%;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+/*This is the breakpoint at which our sidebar collapses*/
+@media (max-width: 950px) {
+    #sidebar {
+        margin-right: -250px;
+        max-width: 175px;
+        max-height: 175px;
+    }
+    #sidebar.active {
+        margin-right: 0;
+    }
+    /* #sidebarCollapse span {
+        display: none;
+    } */
+    #sidebar ul li a {
+        font-size: 12px;
+    }
+
+    .h5, h5 {
+        font-size: 12px;
+    }
+}
+
+
+#sidebarCollapse span {
+    left: -15px;
+    position: relative;
+    top: -20px;
+    width: 10px;
+    background: green;
+    border-radius: 50%;
+    border-right: 5px solid green;
+    border-left: 5px solid green;
+    
+}
+
+#sidebarCollapse .col {
+    width: 100% !important;
+}
+
+.btn-clear {
+    background: #ffffff00;
+}
+
+@media (min-width: 1001px) and (max-width: 1200px) {
+    .h5, h5 {
+        font-size:14px;
+    }
+}
+
+@media (min-width: 1200) {
+  .img-fluid {
+    max-height: 575px !important;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 500px) {
+    .h5, h5 {
+        font-size: 10px !important;
+    }
+}
+
+
+@media (max-width:750px) {
+
+  select.form-control:not([size]):not([multiple]) {
+    height: auto !important;
+    width: 90%;
+    background: white;
+    margin: auto;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0px;
+}
+
+  .full-width-mobile {
+    width: 100%;
+    }
+
+    .label_item {
+      height: 50px !important;
+      width: 50px !important;
+    }
+  }
+
+
+
+  .checkout-prompt-1 img {
+    height: 20px;
+  }
+  h2.category-heading {
+    font-size: 18px ;
+    min-height: 0px;
+  }
+  .card-user .card-footer h5 {
+    font-size: 14px;
+  }
+
+  #category-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 40px;
+    max-height: 0px;
+    padding: 0px;
+  }
+  select.form-control:not([size]):not([multiple]) {
+    height: auto !important;
+    width: 90%;
+    margin: 5px auto;
+  }
+  .form-control {
+    font-size: 10px;
+  }
+
+  .small, small {
+    font-size: 10px;
+  }
+}
+
+.card-user .card-body+.card-footer {
+    padding-top: 0;
+    padding: 0px 10px 0px 10px !important;
+}
+
+@media (min-width: 1024px) {
+  .checkout-prompt-1 img {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  h2.category-heading {
+    font-size: 12px;
+    min-height: 0px;
+}
+}
+
+@media (max-width: 400px) {
+  #sidebar {
+    min-width: 50%;
+    max-width: 50%;
+    
+  } 
+  #sidebar.active {
+    margin-right: 15px;
+  }
+
+  
+}
+
+svg.feather.feather-plus-circle, svg.feather.feather-minus-circle {
+  color: green;
+}
+
+label.label_item.pickup.label_large, label.label_item.delivery.label_large {
+  height: 100px !important;
+  width: 100px !important;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 750px) {
+
+
+  #sidebar ul.components {
+    padding: 20px 0;
+    position: fixed;
+    overflow-y: scroll;
+    height: 90%;
+}
+#sidebar.active > ul.CTAs {
+    padding: 20px;
+    position: fixed;
+    bottom: -25px;
+    width: 150px;
+    right: 25px;
+}
+}
+
+ul.list-unstyled.components {
+    position: fixed;
+    height: 92%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+
 </style>
 
 <link rel="stylesheet" href="/css/nutrition-label.css" />
@@ -856,12 +1113,82 @@ select.form-control:not([size]):not([multiple]) {
   @!include('Modals.pickupLocations')
   <input type="hidden" id="cords" />
   <div class="wrapper ">
-    <div class="sidebar" data-color="white" data-active-color="danger">
+    
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-everyday bg-everyday">
+            <div class="container-fluid">
+
+
+                <button class="btn btn-clear d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i data-feather="chevron-down"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Locations</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" id="sidebarCollapse" class="btn btn-clear">
+                    <i data-feather="shopping-cart"></i>
+                    <span class="cart-total">5</span>
+                </button>
+            </div>
+        </nav>
+
+    <!--<div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo hidden">
         <h2 class="cart-heading">
           Cart
         </h2>
       </div>
+      <nav id="sidebar">
+          <div class="sidebar-header">
+          </div>
+
+          <ul class="list-unstyled components">
+              <p>Dummy Heading</p>
+              <li class="active">
+                  <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+
+              </li>
+              <li>
+                  <a href="#">About</a>
+              </li>
+              <li>
+                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                      class="dropdown-toggle">Pages</a>
+
+              </li>
+              <li>
+                  <a href="#">Portfolio</a>
+              </li>
+              <li>
+                  <a href="#">Contact</a>
+              </li>
+          </ul>
+
+          <ul class="list-unstyled CTAs">
+              <li>
+                  <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+              </li>
+              <li>
+                  <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+              </li>
+          </ul>
+      </nav>
       <div class="sidebar-wrapper">
 
         <ul class="nav pl-4" id="cart">
@@ -920,12 +1247,68 @@ select.form-control:not([size]):not([multiple]) {
             </div>
         </ul>
       </div>
-    </div>
+    </div>-->
 
-    <div class="main-panel">
-      @!include('layout.user.top-nav')
+    {{--@!include('layout.user.top-nav')--}}
 
 @!section('content')
+    </div>
+
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                </div>
+    
+                <ul class="list-unstyled components">
+                    <div class="row d-flex">
+                      <div class="col-5 col-xl">
+                            <input type="radio" class="radio-item fulfillment" value="pickup" name="fulfillment-radio"
+                                id="pickupRadio" data-toggle="modal" data-target="#modal-pickup" checked="checked" />
+                            <label class="label_item pickup" for="pickupRadio">
+                            </label>
+                      </div>
+                      <div class="col col-xl">
+                            <input type="radio" class="radio-item fulfillment" value="delivery" name="fulfillment-radio"
+                                id="deliveryRadio" />
+                            <label class="label_item delivery" for="deliveryRadio"></label>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <p class="store-desc mb-3">&nbsp</p>
+                        <p class="delivery-desc">&nbsp</p>
+                      </div>
+                      <div class="col-12 d-flex justify-content-center">
+                        <div id="shipping">
+                          Shipping - &nbsp<strong> $<span class="order-shipping">0</span></strong>
+                        </div>
+                      </div>
+                      <div class="col-12 d-flex justify-content-center">
+                        <div id="tax">
+                          Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
+                        </div>
+                      </div>
+                      <div class="col-12 d-flex justify-content-center">
+                        <div id="order-total">
+                            Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
+                          </div>
+                      </div>
+                      <section id="order-info"></section>
+                      <div id="cart-rows">
+
+                          <div class="row mb-5 cart-row-master pl-3">
+            
+                          </div>
+
+                </ul>
+    
+                <ul class="list-unstyled CTAs">
+
+                    <li>
+                        <span class="cart-minimum">*Please add at least 5 items to cart to continue.</span>
+                        <a class="btn btn-success checkout-button" style="font-size:20px;text-transform:uppercase" href="/checkout" disabled>Next</a>                    </li>
+                </ul>
+            </nav>
+  </div>
 <script type="text/javascript"> 
   var mobile = (/iphone|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
   // if (mobile) { 
@@ -937,6 +1320,7 @@ select.form-control:not([size]):not([multiple]) {
   //    alert("NOT A MOBILE DEVICE!!"); 
   // }
 </script> 
+
 
 <script src="/admin/js/core/jquery.min.js"></script>
 <script src="/admin/js/core/popper.min.js"></script>
@@ -953,6 +1337,16 @@ select.form-control:not([size]):not([multiple]) {
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="/js/mask-money.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+      $('#sidebarCollapse').on('click', function () {
+          $('#sidebar').toggleClass('active');
+          $('.col-6').toggleClass('col-12')
+          $('.img-container').toggleClass('d-none d-lg-flex d-xl-flex')
+      });
+  });
+</script>
 
 <script>
   $('#alternate-address-bill').on('click',function(){
@@ -1148,6 +1542,7 @@ $(document).on('click', '#deliveryRadio', function(){
 // Bootstrap filtering logic taken from https://bootsnipp.com/snippets/r1Z7d
 $(document).ready(function(){
   if (window.location.href.includes('checkout')){
+
     $('.mobile-button-wrapper').html('<a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none sidebar-toggle-helper"><i data-feather="chevron-left" class="navbar-toggler"></i></a> <a class="btn btn-success btn-lg d-md-none d-lg-none" id="createToken" disabled>Checkout</a>')
   }
 
@@ -1492,3 +1887,5 @@ $('#toggleSections').on('click', function(){
 
 <!-- Handle sanitation of inputs and formatting -->
 <script src="/js/form-handler.js"></script>
+</body>
+</html>

@@ -105,21 +105,21 @@ hooks.after.providersBooted(() => {
     macros = macros[0]
 
     var div = ``
-    div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+    div += `<div class="col pr-0">
     <h5>
     ${macros.calories ? macros.calories : 0}g 
     <br>
       <small>Calories</small>
     </h5>
   </div>`
-  div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+  div += `<div class="col pr-0">
   <h5>
   ${macros.proteins ? macros.proteins : 0}g 
   <br>
     <small>Protein</small>
   </h5>
 </div>`
-    div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+    div += `<div class="col pr-0 d-none d-md-none d-lg-none d-xl-flex">
     <h5>
     ${macros.fats ? macros.fats : 0}g 
     <br>
@@ -127,7 +127,7 @@ hooks.after.providersBooted(() => {
     </h5>
   </div>`
 
-  div += `<div class="col ml-auto pr-0 d-none d-lg-block">
+  div += `<div class="col pr-0 d-none d-md-none d-lg-none d-xl-flex">
   <h5>
   ${macros.carbs ? macros.carbs : 0}g 
   <br>

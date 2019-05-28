@@ -1,3 +1,57 @@
+<div class="card d-none d-block d-sm-block d-md-none" data-toggle="modal" data-target="#{{item.id}}"
+data-category="{{item.metadata.primary_category}}"
+data-sku="{{item.skus.data[0].id}}"
+data-meta='{{toJSON(item.skus.data[0].metadata)}}'
+>
+
+    <div class="card-header"
+        style="background:url({{secure(item.skus.data[0].image)}});background-repeat:no-repeat;background-size:cover;min-height: 100px;background-position: center center;">
+    </div>
+    @if(item.skus.data[0].metadata.filters)
+    <hr class="image {{ splitFilterTags(item.skus.data[0].metadata.filters) }}" style="margin-top:10px;margin-bottom:10px;">
+  @else
+    <hr class="image Everyday" style="margin-top:10px;margin-bottom:10px;">
+  @endif
+    <div class="card-body">
+        <div class="row d-flex justify-content-between align-items-center">
+            <h5>
+                {{item.name}}
+            </h5>
+            @if(item.skus.data.length > 1)
+            <h5>{{currency(item.skus.data[0].price)}}</h5>
+              <select class="form-control muted price-change" data-id="{{item.id}}">
+                @each(sku in item.skus.data)
+                  @if(sku.price)
+                    <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
+                      {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size)}}
+                    </option>
+                  @endif
+                @endeach
+              </select>
+          @else
+            <h5>{{currency(item.skus.data[0].price)}}</h5>
+          @endif
+        </div>
+        <hr class="mb-3">
+        <div class="row d-flex justify-content-between align-items-center">
+            <h5>Calories: {{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}g</h5>
+            <h5>Proteins: {{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}g</h5>
+            <a class="checkout-prompt-1"
+            data-id="{{item.id}}" 
+            data-sku="{{item.skus.data[0].id}}" 
+            data-name="{{item.name}}" 
+            data-price="{{item.skus.data[0].price}}" 
+            data-img_url="{{item.skus.data[0].image}}" 
+            data-quantity="1" 
+            href="#" 
+            class="is-pulled-right"
+          >
+            <img src="images/cart-icon.png" style="height:20px;max-width:1000px !important;"/>
+          </a>
+        </div>
+    </div>
+</div>
+
 <div class="card card-stats d-none d-block d-sm-block d-md-none" data-toggle="modal" data-target="#{{item.id}}"
   data-category="{{item.metadata.primary_category}}"
   data-sku="{{item.skus.data[0].id}}"
