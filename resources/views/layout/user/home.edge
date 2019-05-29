@@ -60,16 +60,36 @@ body {
   background: #aad0ad75 !important; 
 }
 
-.hero-bg {
-    background: url(/images/hero-bg.png);
-    background-size: cover;
-    background-position: center;
-    padding-top: 24vh;
-}
+
 
 .navbar {
   background: none;
 }
+
+  .hero-bg {
+    background: url(/images/hero-bg.png);
+    background-size: cover;
+    background-position: center;
+
+    position: relative;
+
+}
+
+@media screen and (min-width:420px) {
+  .carousel {
+    max-width: 66%;
+    margin-top: 15vh;
+  }
+
+
+}
+
+@media screen and (max-width: 420px) {
+  .hero-bg {
+    padding-top: 24vh;
+  }
+}
+
 /* @media(max-width:1200px) {
   .jumbotron {
     background-image:url('/images/hero-bg-md-lg.jpg');
@@ -80,7 +100,10 @@ body {
     background-image:url('/images/hero-bg-md.jpg');
   }
 }
-@media(max-width:800px) {
+
+
+
+(max-width:800px) {
   .jumbotron {
     background-image:url('/images/hero-bg-sm.jpg');
   }
@@ -97,7 +120,7 @@ body {
 h2.hero {
     font-weight: 800;
     text-align: left;
-    font-size: 50px;
+    font-size: 46px;
     font-family: 'Poppins', sans-serif;
 }
 .hero.hero-large {
@@ -563,6 +586,15 @@ and (max-device-width : 1024px)  {
   .text-dark {
     font-size: 20px;
   }
+
+  @media and screen (max-width:420px) {
+  .carousel {
+    max-width: 66%;
+  }
+  .hero-bg {
+    padding-top: 24vh !important;
+  }
+}
   
 </style>
 
