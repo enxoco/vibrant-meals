@@ -75,7 +75,7 @@ function updateCartDiv() {
   }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
-    var d = '<div class="col d-flex mt-4">\
+    var d = '<div class="col d-flex mt-4 hidden-on-mobile-checkout">\
     <div class="col-2 fulfillment-option">\
     <a id="deliveryDate" data-toggle="modal" data-target="#orderDetailsModal">\
     <div class="cart-icon">\
