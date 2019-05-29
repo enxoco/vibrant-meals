@@ -32,6 +32,8 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="/css/toastr.min.css">
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+<link href="https://fonts.googleapis.com/css?family=Oswald:300,400|Poppins&display=swap" rel="stylesheet">
+
   <style>
 
 
@@ -49,7 +51,7 @@ h2.category-heading:focus, h2.category-heading:hover {
 }
 
 body {
-  color: #4e4e4e;
+  color: white;
   overflow-x: hidden;
 }
 
@@ -58,12 +60,15 @@ body {
   background: #aad0ad75 !important; 
 }
 
-.jumbotron {
-  min-height: 75vh;
-  background:url('/images/hero-bg.jpg');
-
+.hero-bg {
+    background: url(/images/hero-bg.png);
     background-size: cover;
     background-position: center;
+    padding-top: 24vh;
+}
+
+.navbar {
+  background: none;
 }
 /* @media(max-width:1200px) {
   .jumbotron {
@@ -92,7 +97,8 @@ body {
 h2.hero {
     font-weight: 800;
     text-align: left;
-    font-size: 46px;
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;
 }
 .hero.hero-large {
   font-size: 3rem;
@@ -156,14 +162,15 @@ span.section-description {
 }
 
 .content, .content-secondary {
-    margin-top: 50px;
     padding-top: 50px;
     padding-bottom: 50px;
 }
-.content.content-secondary {
-  background: #f2f2f2;
+.content {
+  background: #aad0ae;
 
-
+}
+.content-secondary {
+  background: white;
 }
 
 .card-header {
@@ -171,8 +178,9 @@ span.section-description {
 }
 
 .navbar .nav-item .nav-link:not(.btn) {
-  font-weight: 800;
-  font-size: 16px;
+    font-weight: 300;
+    font-size: 19px;
+    font-family: 'Oswald', sans-serif;
 }
 
 .card-profile {
@@ -198,6 +206,19 @@ a.active.fulfillment-radio {
     flex-direction: column;
 
 } */
+
+.feather-circle {
+  border-radius: 50%;
+  margin: 5px;
+  background:white;
+  color:white;
+}
+
+svg.feather.feather-circle.active {
+    color: #aad1ae;
+    background: #aad1ae;
+
+}
 
 .switch {
   font-size: 1rem;
@@ -330,10 +351,7 @@ a.active.fulfillment-radio {
     border-radius: 10px;
     box-shadow: 2px 2px 7px 2px gainsboro;
 }
-.wrapper {
-    position: relative;
-    top: 75px;
-}
+
 .radio {
   margin: 0.5rem;
 }
@@ -505,7 +523,31 @@ and (max-device-width : 1024px)  {
   }
 
   .m15 {
-    margin: 15rem;
+    margin-top: 15rem;
+  }
+
+  p {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  @media screen and (max-width: 420px) {
+    img.img-brand {
+      width: 200px;
+    }
+    .wrapper {
+      top: -75px;
+      position: relative;
+    }
+    .navbar-light .navbar-toggler {
+      color: #aad1ae;
+      border-color: rgba(0,0,0,.1);
+    }
+    .navbar-toggle {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: #aad1ae;
+    }
   }
 </style>
 
@@ -518,6 +560,7 @@ and (max-device-width : 1024px)  {
     @!include('layout.user.top-nav')
 
 @!section('content')
+  </div>
 
 <script src="/admin/js/core/jquery.min.js"></script>
 <script src="/admin/js/core/bootstrap.min.js"></script>
@@ -723,5 +766,17 @@ $(document).ready(function(){
     }
 
   })
+
+  /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("navbar").style.top = "0";
+  } else {
+    document.getElementById("navbar").style.top = "-150px";
+  }
+  prevScrollpos = currentScrollPos;
+}
 
   </script>
