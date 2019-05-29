@@ -1,14 +1,20 @@
 @layout('layout.user.master') 
 @section('content')
 @!include('Modals.initial')
-<div class="content">
+
+<style>
+  #sidebar ul.list-unstyled.CTAs {
+    display: none !important;
+  }
+  </style>
   <iframe style="display:none;" src="/mailchimpForm.html" id="hidden-mailchimp"></iframe> 
+  <div class="row">
   @if(billing)
   <div class="col col-lg-8 col-md-8 mx-auto">
     @!include('Checkout.express')
   </div>
   @else
-  <div class="col col-lg-8 col-md-8 mx-auto">
+  <div class="col col-lg-8 col-md-8">
     <div class="accordion" id="accordionExample">
       <div class="card-header" id="headingOne" style="background:1px solid rgba(0,0,0,.125) !important;">
         <h5 class="mb-0">
@@ -127,7 +133,7 @@
 
     </div>            
   @endif
-</div><!--/content-->
+  </div>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 
