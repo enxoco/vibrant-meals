@@ -19,7 +19,6 @@ label.pickup {
 label.delivery {
   cursor: pointer;
   display: inline-block;
-
   background: url('/images/delivery-label.png');
   background-position: center center;
   background-repeat: no-repeat;
@@ -28,6 +27,20 @@ label.delivery {
   border: 1px solid white;
   box-shadow: 2px 2px 3px 4px #f2f2f2;
   margin: 10px;
+}
+
+label.label_item.pickup.cart-label {
+  background: url('https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-inactive_xwjmlz.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+label.label_item.delivery.cart-label {
+  background: url('https://res.cloudinary.com/themurphs/image/upload/v1555779996/delivery-truck-inactive_ocja4i.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .radio-item:checked+label.pickup {
@@ -40,17 +53,17 @@ label.delivery {
 }
 
 .radio-item:checked+label.delivery {
-
-  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779995/delivery-truck-active_hsfssa.png");
+  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779995/delivery-truck-active_hsfssa.png") !important;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: contain;
-
+  background-size: contain !important;
 }
 
-.label_item {
-  height: 75px ;
-  width: 75px ;
+.cart-label {
+  height: 75px;
+  width: 75px;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 

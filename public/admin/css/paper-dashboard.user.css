@@ -3007,7 +3007,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .navbar .navbar-nav .nav-item .nav-link:not(.btn):hover,
 .navbar .navbar-nav .nav-item .nav-link:not(.btn):active {
   border-radius: 3px;
-  color: #66615B;
+  color:black;
 }
 
 .navbar .logo-container {
@@ -5405,11 +5405,12 @@ License - nucleoapp.com/license/
     border: 0;
     transition: none;
     -webkit-box-shadow: none;
+    background: #abd2ac;
     width: auto;
     margin: 0px 1rem;
     margin-top: 0px;
     box-shadow: none;
-    position: static;
+    /* position: static; */
     padding-left: 10px;
   }
   .navbar .dropdown.show .dropdown-menu:before,
@@ -6096,7 +6097,7 @@ a.filter-button {
     background-color: white;
     /* height: 400px; */
     /* margin: auto; */
-    max-height: 350px !important;
+    max-height: 300px !important;
     object-fit: cover;
     width: 100%;
     object-position: center;

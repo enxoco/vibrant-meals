@@ -182,7 +182,6 @@ function updateCartDiv() {
       $('.order-count').closest('div').css('background', 'none')
       $('.order-count').html('')
     } else {
-      $('.order-count').closest('div').css('background', '#3b8d6a')
       $('.order-count').html(cartCount)
 
     } 

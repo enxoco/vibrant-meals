@@ -1,32 +1,18 @@
 @layout('layout.user.master')
 @section('content')
 @!include('Modals.initial')
-    <div class="row categories-row">
-      <section id="category-container">
-        <div class="img-container">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-start mb-0" style="box-shadow:none;">
             <div class="menu-tab" id="macroFilters">
                 <i class='icon orange' data-feather="filter"></i>
             </div>
-        </div>
-        <div class='img-container'>
-            <a href="#" class="filter-button" data-filter="all"><h2 class="category-heading">All</h2></a>
-        </div>
-          @each(category in categories)
-            @unless(category == '')
-              @if($loop.last)
-              <div class="img-container pr-4">
-              @else
-              <div class="img-container">
-              @endif
-              @unless(category == 'customMeals')
-                <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
-              @endunless
-              </div>
-            @endunless
+
+          @each(category in ['all','drinks','lunchDinner','breakfast','snacks'])
+        <li class="nav-item">
+          <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
+        </li>
           @endeach
-      </section>
       <!--/Filters-->
-    </div>
+    </nav>
       
       <div class="menu-hide">
         <a href="#" onclick="closeMenu()" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
