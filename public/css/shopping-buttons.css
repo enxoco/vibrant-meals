@@ -6,7 +6,7 @@ label.pickup {
   cursor: pointer;
   display: inline-block;
 
-  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555778203/shop-inactive_xwjmlz.png");
+  background: url('/images/shop-label.png');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -20,7 +20,7 @@ label.delivery {
   cursor: pointer;
   display: inline-block;
 
-  background: url("https://res.cloudinary.com/themurphs/image/upload/v1555779996/delivery-truck-inactive_ocja4i.png");
+  background: url('/images/delivery-label.png');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -51,4 +51,13 @@ label.delivery {
 .label_item {
   height: 75px ;
   width: 75px ;
+}
+
+
+@media screen and (min-width: 800px) {
+
+  label.label_item.pickup.label_large, label.label_item.delivery.label_large {
+    height: 200px;
+    width: 200px;
+  }
 }

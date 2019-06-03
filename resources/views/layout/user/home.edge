@@ -68,7 +68,6 @@ body {
 
   .hero-bg {
     background: url(/images/hero-bg.png);
-    background-size: cover;
     background-position: center;
 
     position: relative;
@@ -87,6 +86,9 @@ body {
 @media screen and (max-width: 420px) {
   .hero-bg {
     padding-top: 24vh;
+  }
+  .carousel {
+    margin-left: -5rem;
   }
 }
 
@@ -576,7 +578,7 @@ and (max-device-width : 1024px)  {
     }
   }
   .section-heading {
-    color:#d86a6a;
+    color:#f37374;
   }
 
   .column {
@@ -819,7 +821,7 @@ var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {
   var currentScrollPos = window.pageYOffset;
   if (prevScrollpos > currentScrollPos) {
-    document.getElementById("navbar").style.top = "0";
+      document.getElementById("navbar").style.top = "0";
   } else {
     document.getElementById("navbar").style.top = "-150px";
   }
