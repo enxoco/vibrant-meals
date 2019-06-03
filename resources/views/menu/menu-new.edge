@@ -1,6 +1,19 @@
 @layout('layout.user.master')
 @section('content')
 @!include('Modals.initial')
+<style>
+
+@media and screen (max-width: 500px) {
+  a.btn.btn-success.checkout-button {
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  left: 25px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  width: 220px;
+  }
+}
+
+</style>
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-start mb-0" style="box-shadow:none;">
             <div class="menu-tab" id="macroFilters">
                 <i class='icon orange' data-feather="filter"></i>

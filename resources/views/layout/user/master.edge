@@ -683,9 +683,6 @@ p.desc {
     background: #555; 
   }
 
-  #cart-rows {
-    margin-bottom: 100px;
-  }
 
   h4.item-name {
     font-size: 18px;
@@ -1086,24 +1083,6 @@ svg.feather.feather-plus-circle, svg.feather.feather-minus-circle {
 
 
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 750px) {
-
-
-  #sidebar ul.components {
-    padding: 20px 0;
-    position: fixed;
-    overflow-y: scroll;
-    height: 90%;
-}
-#sidebar.active > ul.CTAs {
-    padding: 20px;
-    position: fixed;
-    bottom: -25px;
-    width: 150px;
-    right: 25px;
-    background:none;
-}
-}
 
 ul.list-unstyled.components {
     position: fixed;
@@ -1114,7 +1093,6 @@ ul.list-unstyled.components {
 
 
 html, body {
-  overflow-x: hidden;
 }
 
 li.list-group-item.d-flex.justify-content-between.align-items-center:hover {
@@ -1179,31 +1157,6 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                         </li>
                     </ul>
                 </div>
-                <button type="button" id="sidebarCollapse" class="btn btn-clear">
-                    <div style="position:relative;text-align:center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
-                          <defs>
-                            <style>
-                              .cls-1 {
-                                fill: #000000;
-                              }
-                            </style>
-                          </defs>
-                          <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
-                            <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
-                              <g id="Group_15" data-name="Group 15">
-                                <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
-                              </g>
-                            </g>
-                            <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
-                              <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
-                            </g>
-                          </g>
-                        </svg>
-
-                        <div class="centered order-count"></div>
-                        </div>  
-                </button>
                 @unless(auth.user)
                 <li class="nav-item btn-rotate dropdown">
                   <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="modal" data-target="#loginModal">
@@ -1257,6 +1210,32 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                     </div>
                 </li>
               @endunless
+                <button type="button" id="sidebarCollapse" class="btn btn-clear">
+                    <div style="position:relative;text-align:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
+                          <defs>
+                            <style>
+                              .cls-1 {
+                                fill: #000000;
+                              }
+                            </style>
+                          </defs>
+                          <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
+                            <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
+                              <g id="Group_15" data-name="Group 15">
+                                <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
+                              </g>
+                            </g>
+                            <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
+                              <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
+                            </g>
+                          </g>
+                        </svg>
+
+                        <div class="centered order-count"></div>
+                        </div>  
+                </button>
+
 
 
             </div>
