@@ -98,9 +98,7 @@ hooks.after.providersBooted(() => {
     // var macros = newObj.sort((a,b) => (a.order > b.order) ? 1 : -1) 
 
 
-    if (count.length < 4) {
-      return this.safe('<div class="col-9 pb-2"></div>')
-    }
+
 
     macros = macros[0]
 
