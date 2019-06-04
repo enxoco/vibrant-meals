@@ -86,13 +86,19 @@ body {
   }
 
   h2.hero {
-    font-size: 26px !important;
+    font-size: 46px;
+
   }
+
 
 
 }
 
 @media screen and (max-width: 420px) {
+
+  h2.hero {
+    font-size: 36px;
+  }
   .hero-bg {
     padding-top: 24vh;
   }
@@ -131,7 +137,6 @@ body {
 h2.hero {
     font-weight: 800;
     text-align: left;
-    font-size: 46px;
     font-family: 'Poppins', sans-serif;
 }
 .hero.hero-large {
@@ -201,6 +206,7 @@ span.section-description {
 }
 .content {
   background: #aad0ae;
+  position: relative;
 
 }
 .content-secondary {
@@ -571,10 +577,7 @@ and (max-device-width : 1024px)  {
     img.img-brand {
       width: 200px;
     }
-    .wrapper {
-      top: -75px;
-      position: relative;
-    }
+
     .navbar-light .navbar-toggler {
       color: #aad1ae;
       border-color: rgba(0,0,0,.1);
@@ -606,9 +609,26 @@ and (max-device-width : 1024px)  {
     padding-top: 24vh !important;
   }
 }
-  
+a.text-dark.text-small {
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
 </style>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+crossorigin=""></script>
+
+<style>
+
+
+</style>
 </head>
 
 <body class="">
@@ -829,7 +849,7 @@ $(document).ready(function(){
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {
   var currentScrollPos = window.pageYOffset;
-  if (window.pageYOffset == 0) {
+  if (window.pageYOffset < 30) {
     document.getElementById("navbar").style.top = "0";
     document.getElementById("navbar").style.background = "none";
 
@@ -844,5 +864,52 @@ window.onscroll = function() {
 
   prevScrollpos = currentScrollPos;
 }
+
+
+$('#clearCart').on('click', function(){
+  localStorage.cart = "[]"
+  updateCartDiv()
+})
+
+var mymap = L.map('retailMain').setView(["35.068908", "-85.317076"], 13);
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA#12.0/48.866500/2.317600/0', {
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA',
+    center: L.latLng(35.0385917, -85.3136527)
+}).addTo(mymap);
+
+mymap.setView(new L.LatLng(35.049675, -85.3136527), 13);
+var retailMakerMain = L.marker(["35.068908", "-85.312839"]).addTo(mymap);
+
+retailMakerMain.bindPopup("Vibrant Meals Kitchen<br />601 Cherokee Blvd<br />Chattanooga TN<br />Open M-F 8AM-7PM SAT 9AM-4PM").openPopup();
+
+var ymca = L.marker(["35.049675", "-85.312839"]).addTo(mymap);
+ymca.bindPopup("YMCA Downtown <br /> 301 West 6th Street<br />Chattanooga")
+
+var kyleHouse = L.marker(["35.0385917", "-85.3136527"]).addTo(mymap)
+kyleHouse.bindPopup("Kyle House Fitness<br />525 West Main Street<br />Chattanooga")
+
+var crossEast = L.marker(["35.0034941", "-85.1484745"]).addTo(mymap)
+crossEast.bindPopup("Crossfit Brigade East<br />8142 E Brainerd Rd<br />Chattanooga")
+
+var burnBoot = L.marker(["35.0350449", "-85.1780835"]).addTo(mymap)
+burnBoot.bindPopup("Burn Bootcamp<br />6413 Lee Hwy #113<br />Chattanooga")
+
+
+var mymap = L.map('retailCleveland').setView(["35.1507661", "-84.8524849"], 13);
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA#9.0/37.780000/-122.424100/0', {
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA'
+}).addTo(mymap);
+
+var bodyHannah = L.marker(["35.1575936", "-84.8762426"]).addTo(mymap);
+
+bodyHannah.bindPopup("Body By Hannah<br />282 Church St SE").openPopup();
+
+var crossfitAni = L.marker(["35.1507661", "-84.8524849"]).addTo(mymap);
+crossfitAni.bindPopup("Crossfit Anistemi <br /> 5806 Waterlevel Hwy")
+
 
   </script>

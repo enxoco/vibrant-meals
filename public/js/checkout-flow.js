@@ -168,75 +168,7 @@ if (moment().format('dddd') == 'Friday') {
 
   })
 
-  $('.express-checkout-default').on('click', function(){
 
-
-      var billing = {
-        street: $('input[name="street-bill"]').val(),
-        street_2: $('input[name="street2-bill"]').val(),
-        city: $('input[name="city-bill"]').val(),
-        state: $('select#state-bill').val(),
-        zip: $('input[name="zip-bill"]').val(),
-        coupon: $('input[name="promoCode"]').val(),
-        allergy_info: $('input[name=allergy_info]').val(),
-        delivery_info: $('input[name=delivery_notes]').val(),
-        shippingCode: localStorage.shippingCode,
-          }
-    
-      var shipping = {
-          recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
-          street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
-          city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val() ,
-          state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
-          zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-      }
-      
-      var user = {
-          firstName: $('input[id="firstName"]').val(),
-          lastName: $('input[id="lastName"]').val(),
-          email: $('input[id="email-bill"]').val(),
-          phone: $('input[id="phone"]').val(),
-          password: $('#password-bill').val(),
-          fulfillment_method: localStorage.fulfillment_method,
-          fulfillment_day: $('li.list-group-item.clickable.active').data('day'),
-          fulfillment_date: $('li.list-group-item.clickable.active').data('date'),
-          pickup_location: localStorage.myStore
-      }
-      var cart = localStorage.cart
-      var obj = {
-          billing,
-          shipping,
-          user,
-          cart
-      }
-
-      $.ajax({
-        type: 'POST',
-        url: '/checkout/express',
-        data: JSON.stringify({data:obj}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(data){
-
-          document.write(data)
-
-          if (data.status == 'success') {
-            // toastr['success']('Order completed successfully')
-            // $('#orderConfirmation').modal('show')
-            // $('.express-checkout-default').html('<i data-feather="nc-check-2"></i> Payment Complete !')
-            // $('.express-checkout-default').attr('disabled', 'disabled')
-            // localStorage.cart = []
-            // updateCartDiv()
-          } else {
-            toastr['warning']('Something went wrong')
-          }
-
-        },
-        failure: function(errMsg) {
-          toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-        }
-    })
-  })
 
 
 
@@ -321,6 +253,7 @@ if (moment().format('dddd') == 'Friday') {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(data){
+        localStorage.cart = []
 
         window.location.href = '/checkout/confirmation'
       },
@@ -332,7 +265,8 @@ if (moment().format('dddd') == 'Friday') {
   
 
   $('document').on('click', '#createToken', function(){
-    console.log('do something')
+    $(this).html('Processing order... <div id="loading"></div>')
+    $(this).attr('disabled', 'disabled')
 
     var iframe = document.getElementById("hidden-mailchimp");
     var email = iframe.contentWindow.document.getElementById('mce-EMAIL')
@@ -344,8 +278,7 @@ if (moment().format('dddd') == 'Friday') {
     lname.value = document.getElementById('lastName').value
     var form = iframe.contentWindow.document.getElementById('mc-embedded-subscribe-form')
     form.submit()
-    $(this).html('Processing order... <div id="loading"></div>')
-    $(this).attr('disabled', 'disabled')
+
 
     stripe.createToken(card).then(function (result) {
 
@@ -617,6 +550,7 @@ function anything(){
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(data){
+        localStorage.cart = []
         window.location.href = '/checkout/confirmation'
 
       },

@@ -1,120 +1,67 @@
+
 @layout('layout.user.home')
-	
+
 @section('content')
+<style>
+		.navbar-light {
+				background: #aad0ae !important;
+			}
+			.navbar-toggler:not(:disabled):not(.disabled) {
+				color: white;
+				border: none;
+			}
+
+			.cls-1 {
+				fill: white !important;
+			}
+
+			li a span {
+				font-size: 60%;
+				font-weight: 800;
+				background: #faf9f9;
+				padding:5px;
+				border-radius: 5px;
+				
+			}
+			</style>
 @!include('Modals.initial')
+@!include('Modals.auth')
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+      <div class="content py-4">
+			<h1 class="section-heading mb-0" style="font-size:25px;font-family:'Poppins', sans-serif;font-weight:400;letter-spacing:5px;color:white;">
+				</h1>
 
-      <div class="content">
-		  <h1 class="section-heading mb-5">Retail Locations</h1>
-		  <div class="row">
-				@each(store in stores)
-				@unless(store.location_type == 'Pickup')
-				<div class="col-12 col-md-8 col-lg-8 col-xl-8 mx-auto retail">
-
-						<div class="card card-stats">
-                <div class="card-body ">
-                  <div class="row">
-                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                        <div id="map-store-{{store.id}}"></div>
-                    </div>
-                    <div class="col">
-                      <div class="numbers">
-													<p class="card-title">
-														{{store.name}}</p><hr class="mb-2">
-												<p class="card-category">{{store.street_addr}}
-												<br />{{store.city}}, {{store.state}}<br /><br />
-												Opens {{store.opens}}<br />
-												Closes {{store.closes}}
-												</p>
-
-													<p>
-                      </p></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-				</div>
-				<script>
-						mapboxgl.accessToken = 'pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA';
-
-					var map = new mapboxgl.Map({
-						container: 'map-store-{{store.id}}', // container id
-						style: 'mapbox://styles/mapbox/streets-v10', //hosted style id
-						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
-						// center: [-77.38, 39], // starting position
-						zoom: 15 // starting zoom
-					});
-					var marker = new mapboxgl.Marker()
-					.setLngLat('{lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} }')
-					.addTo(map);
-					</script>
-					@endunless
-					@endeach
-
-		  </div>
  
 	  </div>
 	  <div class="content content-secondary" id="how-it-works">
-				<h1 class="section-heading mb-5">Pickup Locations</h1>
-				<div class="col-8 mx-auto mb-5">
-					<p>
-						Orders must be placed before Friday, 8 AM, in order to receive your pickup/delivery on Monday. Or Sunday, 11:59 PM, for a Wednesday delivery. 
-					</p>
+			<h3 class="section-heading" style="font-weight:400;font-family:'Poppins', sans-serif;color:#f37374;"></h3>
+		  <div class="row ml-200">
+			  <hr class="mt-5" />
+			  <div class="col-12 col-md-7 ml-20 d-flex column">
+			<h3 class="section-heading" style="color:black;font-weight:600;">Chattanooga Locations</h3>
 
-				</div>
+					<div id="retailMain" style="height:400px;"></div>
+					<ul class="pl-0" style="text-align:center">
+							<li class="map-list"><a class="text-dark text-small" onclick="retailMakerMain.openPopup()" href="#">Vibrant Meals Kitchen <span>Retail</span></a></li>
+							<li class="map-list"><a class="text-dark text-small" onclick="ymca.openPopup()" href="#">YMCA Downtown<span> Pickup Only</span> </a></li>
+							<li class="map-list"><a class="text-dark text-small" onclick="kyleHouse.openPopup()" href="#">Kyle House Fitness <span>Pickup Only</span> </a></li>
+							<li class="map-list"><a class="text-dark text-small" onclick="crossEast.openPopup()" href="#">Crossfit Brigade East <span>Pickup Only</span> </a></li>
+							<li class="map-list"><a class="text-dark text-small" onclick="burnBoot.openPopup()" href="#">Burn Bootcamp <span>Pickup Only</span> </a></li>
+						</ul>
+			  </div>
+					<hr class="mt-5" />
+					<div class="col-12 col-md-5 ml-20 d-flex column">
+							<h3 class="section-heading" style="color:black;font-weight:600;">Cleveland Locations</h3>
 
-				<div class="row">
-					@each(store in stores)
-	
-					@unless(store.location_type == 'Retail')
-					<div class="col-12 col-md-4 col-lg-4 col-xl-4 mx-auto pickup">
-	
-						<div class="card card-user card-product">
-						<div id="map-store-{{store.id}}">
-						</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-8">
-									<h5 class="card-title" style="font-size:18px;"><strong>{{store.name}} </strong><br />{{store.street_addr}}<br />{{store.city}} {{store.state}}</h5>
-								</div>
-								<div class="col">
-									<h5 style="float:right; font-size:18px;"><strong>Pickup Hours:</strong> {{store.opens}} - {{store.closes}}</h5>
-	
-								</div>
-							</div>
-						</div>
-						<div class="card-footer">
-	
-							</div>
-						</div>
+						<div id="retailCleveland" style="height:400px;"></div>
+						<ul class="pl-0" style="text-align:center">
+								<li class="map-list"><a class="text-dark text-small" onclick="bodyHannah.openPopup()" href="#">Body By Hannah </a></li>
+								<li class="map-list"><a class="text-dark text-small" onclick="crossfitAni.openPopup()" href="#">Crossfit Anistemi </a></li>
+						</ul>
 					</div>
-					<script>
-					var map = new mapboxgl.Map({
-						container: 'map-store-{{store.id}}', // container id
-						style: 'mapbox://styles/mapbox/streets-v10', //hosted style id
-						center: {lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} },
-						// center: [-77.38, 39], // starting position
-						zoom: 15 // starting zoom
-					});
-					var marker = new mapboxgl.Marker()
-					.setLngLat({lng: {{store.coordinates[0]}}, lat: {{store.coordinates[1]}} })
-					.addTo(map);
-					</script>
-						@endunless
-						@endeach
-
-
-				</div>
+					</div>
 		</div>
 
 
-		@!include('layout.user.footer')
-
-</body>
-<script>
-document.getElementsByClassName('cart-heading').innerHTML = 'Order Info'
-</script>
-
-
-</html>
 @endsection
+

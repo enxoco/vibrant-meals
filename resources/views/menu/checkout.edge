@@ -18,11 +18,11 @@
     @!include('Checkout.express')
   </div>
   @else
-  <div class="col col-lg-8 col-md-8">
+  <div class="col col-lg-8 col-md-8 mx-auto">
     <div class="accordion" id="accordionExample">
       <div class="card-header" id="headingOne" style="background:1px solid rgba(0,0,0,.125) !important;">
         <h5 class="mb-0">
-          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <button class="btn btn-link full-width" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             Order Summary
           </button>
         </h5>
@@ -55,8 +55,8 @@
 
           <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingTwo">
           <h5 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Create account
+            <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Basic Info
             </button>
           </h5>
           </div>
@@ -67,7 +67,7 @@
 
           <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingThree">
           <h5 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
             Billing Info
             </button>
           </h5>
@@ -79,8 +79,8 @@
           </div>
         <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFour">
             <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-              Confirm your day
+              <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Delivery Date
               </button>
             </h5>
             </div>
@@ -92,14 +92,14 @@
             </div>
             <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFive">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                 Payment Method
                 </button>
               </h5>
               </div>
               <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
               <div class="card card-user card-checkout">
-                <div class="col-12 col-md-6 mx-auto">
+                <div class="col-12 col-md-6 mx-auto px-0">
                   <form id="payment-form">
                       <div class="form-row">
                         <label for="card-element">
