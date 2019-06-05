@@ -15,17 +15,17 @@
 
 </style>
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-start mb-0" style="box-shadow:none;">
-            <div class="menu-tab" id="macroFilters">
-                <i class='icon orange' data-feather="filter"></i>
-            </div>
+      <div class="menu-tab" id="macroFilters">
+          <i class='icon orange' data-feather="filter"></i>
+      </div>
 
-          @each(category in ['all','drinks','lunchDinner','breakfast','snacks'])
-        <li class="nav-item">
-          <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
-        </li>
-          @endeach
-      <!--/Filters-->
-    </nav>
+    @each(category in ['all','drinks','lunchDinner','breakfast','snacks'])
+  <li class="nav-item">
+    <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
+  </li>
+    @endeach
+<!--/Filters-->
+</nav>
       
       <div class="menu-hide">
         <a href="#" onclick="closeMenu()" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
@@ -52,6 +52,18 @@
 
         @endeach
       </div>
-      @!include('layout.user.footer')
 
+  <!--   Core JS Files   -->
+<!--
+</body>
+<script>
+
+function closeMenu() {
+  document.getElementById('macroFilters').classList.remove('show')
+
+}
+</script>
+
+
+</html>-->
 @endsection
