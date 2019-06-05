@@ -17,34 +17,7 @@
                                 <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
                                     {{item.name}}
                                 </h4>
-                                    <div class="row">
-                                            <div class="col mx-auto" style="text-align:center;">
-                                                <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
-                                                <br />
-                                                Calories
 
-                                            </div>
-                                            <div class="col mx-auto" style="text-align:center;">
-                                                <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
-                                                <br />
-                                                Fats
-                                            </div>
-                                            <div class="col mx-auto" style="text-align:center;">
-                                                <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
-                                                <br />
-                                                Protein
-                                            </div>
-                                            <div class="col mx-auto" style="text-align:center;">
-                                                <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
-                                                <br />
-                                                Carbs
-                                            </div>
-                                        </div>
-
-
-                                </h4>
-
-                                </h4>
                             </div>
                             <div class="col-4 col-md-3 d-flex justify-content-between">
                                 <a data-dismiss="modal" style="order:1;" class="checkout-prompt-1" data-id="{{item.id}}"
@@ -60,6 +33,29 @@
                             </span>
                             </div>
                         </div>
+                        <div class="row">
+                                <div class="col mx-auto" style="text-align:center;">
+                                    <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
+                                    <br />
+                                    Calories
+
+                                </div>
+                                <div class="col mx-auto" style="text-align:center;">
+                                    <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
+                                    <br />
+                                    Fats
+                                </div>
+                                <div class="col mx-auto" style="text-align:center;">
+                                    <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
+                                    <br />
+                                    Protein
+                                </div>
+                                <div class="col mx-auto" style="text-align:center;">
+                                    <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
+                                    <br />
+                                    Carbs
+                                </div>
+                            </div>
                     </div>
 
 
