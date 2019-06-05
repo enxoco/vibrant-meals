@@ -1902,6 +1902,10 @@ $('#toggleSections').on('click', function(){
   localStorage.cart = "[]"
   updateCartDiv()
 })
+
+if (window.location.href.includes('checkout')) {
+  $('.nav-link').removeAttr('active')
+}
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

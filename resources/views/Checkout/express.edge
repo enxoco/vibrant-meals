@@ -37,7 +37,14 @@
               <strong>Billing Address</strong>
               <li>{{billing.shipping.address.line1}}</li>
               <li>{{billing.shipping.address.city}} {{billing.shipping.address.state}}, {{billing.shipping.address.postal_code}}</li>
+
             </ul>
+            <ul style="text-align:left">
+              <li>
+                <span class="store-desc pl-0 mb-3" style="position:relative;"></span>
+              </li>
+            </ul>
+
           </div>
           <div class="col-12 col-md-6 col-lg-6">
           <ul style="text-align:left;">
@@ -45,6 +52,27 @@
             
             <li>{{billing.sources.data[0].brand}} ending in {{billing.sources.data[0].last4}} </li>
             <li>Expiration date: {{billing.sources.data[0].exp_month}}/{{billing.sources.data[0].exp_year}}</li>
+
+          </ul>
+          <ul style="text-align:left;">
+
+            <strong>Order Total</strong>
+          <li>
+              <div id="delivery-fee" style="">
+                  Shipping Fee - <strong> $<span class="order-shipping">0</span></strong>
+                </div>
+          </li>
+          <li>
+              <div id="tax">
+                  Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
+                </div>
+
+          </li>
+          <li>
+            <div id="order-total">
+              Total - <strong>$<span class="order-total"></span></strong>
+            </div>
+
           </ul>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
@@ -53,25 +81,7 @@
 
                   <li><span class="delivery-date-label"></span></li>
                 </ul>
-              <ul style="text-align:left;">
-                <strong>Order Total</strong>
-              <li>
-                  <div id="delivery-fee" style="">
-                      Shipping Fee - <strong> $<span class="order-shipping">0</span></strong>
-                    </div>
-              </li>
-              <li>
-                  <div id="tax">
-                      Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
-                    </div>
-              </li>
-              <li>
-                  <div id="order-total">
-                      Order Total - <strong> $<span class="order-total"></span></strong>
-                    </div>
 
-              </li>
-              </ul>
 
 
 
