@@ -13,9 +13,10 @@
                 <div class="row">
                     <div class="col-12 col-md-10 col-lg-10 mx-auto">
                         <div class="row">
-                            <div class="col-9 col-md-10 col-lg-10 mx-auto">
+                            <div class="col-9 mx-auto">
                                 <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
                                     {{item.name}}
+                                </h4>
                                     <div class="row">
                                             <div class="col mx-auto" style="text-align:center;">
                                                 <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
@@ -39,15 +40,14 @@
                                                 Carbs
                                             </div>
                                         </div>
-                                    <span class="modal-card-price"
-                                        style="color:#F48566; font-size:18px; padding-left:10px;">{{currency(item.skus.data[0].price)}}</span>
+
 
                                 </h4>
 
                                 </h4>
                             </div>
-                            <div class="col">
-                                <a data-dismiss="modal" class="checkout-prompt-1" data-id="{{item.id}}"
+                            <div class="col-3 d-flex justify-content-between">
+                                <a data-dismiss="modal" style="order:1;" class="checkout-prompt-1" data-id="{{item.id}}"
                                     data-sku="{{item.skus.data[0].id}}" data-name="{{item.name}}"
                                     data-price="{{item.skus.data[0].price}}" data-img_url="{{item.skus.data[0].image}}"
                                     data-quantity="1" href="#" class="">
@@ -55,6 +55,9 @@
                                         onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)"
                                         onmousedown="hoverCart(this)" />
                                 </a>
+                                <span class="modal-card-price"
+                                style="color:#F48566; font-size:18px; padding-left:10px;">{{currency(item.skus.data[0].price)}}
+                            </span>
                             </div>
                         </div>
                     </div>
@@ -75,13 +78,8 @@
                             <tbody>
                                 <!-- Desktop table style -->
                                 <tr class="d-none d-md-block d-lg-block">
-                                    <td>
-
-
-                                        <hr class="mb-3">
+                                    <td class="start">
                                         {{item.description}}
-
-
                                     </td>
                                     <td>
 
