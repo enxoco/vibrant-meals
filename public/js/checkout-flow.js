@@ -158,6 +158,23 @@ if (moment().format('dddd') == 'Friday') {
   
   $(document).ready(function(){
 
+    card.addEventListener('change', function(event) {
+      console.log(JSON.stringify(event))
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+        $('#toggleSections').attr('disabled', 'disabled')
+      } else {
+        if (event.complete) {
+          $('#toggleSections').removeAttr('disabled')
+        } else {
+          $('#toggleSections').attr('disabled', 'disabled')
+
+        }
+        displayError.textContent = '';
+      }
+    });
+
     $('.shipping-form').closest('.card').hide()
     //Hide the next button on Desktop 
     $('.checkout-button').addClass('d-md-none d-lg-none')
@@ -480,8 +497,6 @@ $.get(userSearch, function(data) {
 
 function anything(){
 
-  console.log('do something')
-
   var iframe = document.getElementById("hidden-mailchimp");
   var email = iframe.contentWindow.document.getElementById('mce-EMAIL')
   var fname = iframe.contentWindow.document.getElementById('mce-FNAME')
@@ -492,8 +507,8 @@ function anything(){
   lname.value = document.getElementById('lastName').value
   var form = iframe.contentWindow.document.getElementById('mc-embedded-subscribe-form')
   form.submit()
-  $(this).html('Processing order... <div id="loading"></div>')
-  $(this).attr('disabled', 'disabled')
+  $('#toggleSections').html('Processing order... <div id="loading"></div>')
+  $('#toggleSections').attr('disabled', 'disabled')
 
   stripe.createToken(card).then(function (result) {
 

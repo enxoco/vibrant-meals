@@ -10,6 +10,31 @@
     display:none !important;
 
   }
+
+
+@media screen and (max-width: 500px) {
+  img.avatar {
+    height: 75px;
+    width: 75px;
+  }
+
+  .cart-row-master.d-flex.d-lg-none {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .col-md-6.col-8.pt-2 {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.cart-item-label {
+  text-align: center;
+}
+
+}
   </style>
   <iframe style="display:none;" src="/mailchimpForm.html" id="hidden-mailchimp"></iframe> 
   <div class="row">
@@ -30,12 +55,8 @@
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             
             <div class="card-body" style="background:white;">
+              <div class="cart-row-master d-block d-lg-none"></div>
 
-                <div class="col d-flex justify-content-end">
-                    <a href="#" onclick="navbarToggle()" class="d-block d-sm-block d-lg-none d-md-none">
-                        <i class="navbar-toggle-dummy mb-0" data-feather="more-horizontal"></i>
-                      </a>
-                    </div>
               <div class="col-12 col-md-5 col-lg-5 mx-auto order-summary pt-1" style="text-align:center;">
                   <span class="store-desc pl-0 mb-3" style="position:relative;"></span><br /><br />
                   <div class="col-12 mb-3">
@@ -92,14 +113,14 @@
             </div>
             <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingFive">
               <h5 class="mb-0">
-                <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <button class="btn btn-link full-width collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" >
                 Payment Method
                 </button>
               </h5>
               </div>
               <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
               <div class="card card-user card-checkout">
-                <div class="col-12 col-md-6 mx-auto px-0">
+                <div class="col-12 col-md-8 mx-auto px-0">
                   <form id="payment-form">
                       <div class="form-row">
                         <label for="card-element">

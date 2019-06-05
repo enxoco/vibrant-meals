@@ -1112,7 +1112,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 }
 
 #toggleSections {
-  background-color: #1e7e34 !important;
+  background-color: #3b8e6b !important;
 }
 
 </style>
@@ -1222,8 +1222,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                     </div>
                 </li>
               @endunless
-                <button type="button" class="btn btn-clear">
-                  <a href="/checkout">
+                <button type="button" class="btn btn-clear my-0 checkout-button" style="padding: 0px !important;padding-bottom:5px !important;">
                     <div style="position:relative;text-align:center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
                           <defs>
@@ -1247,7 +1246,6 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 
                         <div class="centered order-count"></div>
                         </div>  
-                  </a>
                 </button>
 
 
@@ -1307,25 +1305,14 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 
                 </ul>
     
-                <ul class="list-unstyled CTAs">
+                <!--  <ul class="list-unstyled CTAs">
 
                     <li>
                         <span class="cart-minimum">*Please add at least 5 items to cart to continue.</span>
                         <a class="btn btn-success checkout-button" style="font-size:20px;text-transform:uppercase" href="/checkout" disabled>Next</a>                    </li>
-                </ul>
+                </ul>  -->
             </nav>
   </div>
-<script type="text/javascript"> 
-  var mobile = (/iphone|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
-  // if (mobile) { 
-  //     alert("MOBILE DEVICE!!");
-  //     $('.navWrap').css('display', 'none'); // OR you can use $('.navWrap').hide();
-  // } 
-  // else 
-  // { 
-  //    alert("NOT A MOBILE DEVICE!!"); 
-  // }
-</script> 
 
 
 <script src="/admin/js/core/jquery.min.js"></script>
@@ -1860,6 +1847,10 @@ function navbarToggle() {
   $('.navbar-toggle').click()
 }
 
+$('#headingFive').on('click', function(){
+  $('#toggleSections').attr('disabled', 'disabled')
+  $('#toggleSections').html('Checkout')
+})
 $('#toggleSections').on('click', function(){
     if ($('#collapseOne').hasClass('show')) {
       $('#collapseOne').removeClass('show')
@@ -1873,9 +1864,28 @@ $('#toggleSections').on('click', function(){
     } else if ($('#collapseFour').hasClass('show')) {
       $('#collapseFour').removeClass('show')
       $('#collapseFive').addClass('show')
+      $(this).attr('disabled', 'disabled')
       $(this).html('checkout')
 
     } else if ($('#collapseFive').hasClass('show')) {
+
+      var inputs = $('input')
+
+      var completion = 0
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value) {
+          completion += 1
+        }
+      }
+
+      if (completion < 20) {
+        $('#toggleSections').attr('disabled', 'disabled')
+        console.log(completion)
+        return false
+      } else {
+        console.log('greater than' + completion)
+      }
+
       anything()
       $(this).attr('disabled', 'disabled')
     }

@@ -23,13 +23,12 @@ function updateCartDiv() {
     success: console.log('Options updated')
   })
   if (orderMethod == 'pickup' && localStorage.myStore) {
-    $('.store-desc').html(JSON.parse(localStorage.myStore).name)
+    $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
     $('.delivery-desc').html('')
     $('#pickupRadio').attr('checked', 'checked')
 
     $('#delivery-fee').hide()
     if (!localStorage.pickupLocation) {
-      console.log('problem')
       localStorage.setItem('fulfillment_method', 'delivery')
       updateCartDiv()
       $('#deliveryFee').show()
@@ -40,7 +39,6 @@ function updateCartDiv() {
         orderLocation = JSON.parse(localStorage.pickupLocation).name
       }
     } else {
-      console.log('something went wrong')
       $('#deliveryRadio').attr('checked', 'checked')
       $('#pickupRadio').removeAttr('checked')
       localStorage.setItem('fulfillment_method', 'delivery')
@@ -130,8 +128,8 @@ function updateCartDiv() {
     for (var i = 0; i < cartItems.length; i++) {
       cartCount += cartItems[i].quantity
       if (cartCount < 5) {
-        $('.checkout-button').attr('disabled','disabled')
         $('.express-checkout-default').attr('disabled', 'disabled')
+        $('#toggleSections').attr('disabled', 'disabled')
         $('#createToken').attr('disabled', 'disabled')
         $('.express-checkout-status').html('Please add at least 5 items to cart').show()
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
@@ -141,6 +139,7 @@ function updateCartDiv() {
 
       } else {
         $('.checkout-button').removeAttr('disabled')
+        $('#toggleSections').removeAttr('disabled')
         $('.cart-minimum').hide()
         $('#createToken').removeAttr('disabled')
         $('.express-checkout-default').removeAttr('disabled')
