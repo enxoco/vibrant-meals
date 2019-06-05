@@ -1138,120 +1138,121 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" lazyload />
   @!include('Modals.pickupLocations')
   <input type="hidden" id="cords" />
+  <nav class="navbar navbar-expand-lg navbar-everyday bg-everyday">
+    <div class="container-fluid">
+
+
+        <button class="btn btn-clear d-inline-block d-lg-none" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <i data-feather="menu"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/locations">Locations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/menu">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="clearCart" href="#">Clear Cart</a>
+            </ul>
+        </div>
+        @unless(auth.user)
+        <li class="nav-item btn-rotate dropdown">
+          <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="modal" data-target="#loginModal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 32.191 32.191">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: black;
+                    }
+                  </style>
+                </defs>
+
+<g id="Group_22" data-name="Group 22" transform="translate(-1559.264 -68.227)">
+<g id="Group_20" data-name="Group 20">
+  <path id="Path_18" class="cls-1" data-name="Path 18" d="M1563.709,94.379l-.791-1.836,7.851-3.378.005-.352a8.026,8.026,0,1,1,9.2-.021l-.031.366,7.83,3.374-.791,1.837L1579.158,91a2.006,2.006,0,0,1-1.213-1.838v-.347a2.034,2.034,0,0,1,.879-1.66,6.025,6.025,0,1,0-6.93,0,2.041,2.041,0,0,1,.881,1.664v.345A2,2,0,0,1,1571.559,91Z" fill="#add4aa"/>
+</g>
+<g id="Group_21" data-name="Group 21">
+  <path id="Path_19" class="cls-1" data-name="Path 19" d="M1575.359,100.418a16.1,16.1,0,1,1,16.1-16.1A16.113,16.113,0,0,1,1575.359,100.418Zm0-30.191a14.1,14.1,0,1,0,14.1,14.1A14.111,14.111,0,0,0,1575.359,70.227Z" fill="#add4aa"/>
+</g>
+</g>
+</svg>                      <p>
+              </p>
+          </a>
+        </li>
+      @else
+        <li class="nav-item btn-rotate dropdown">
+          <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 32.191 32.191">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: white;
+                  }
+                </style>
+              </defs>
+
+<g id="Group_22" data-name="Group 22" transform="translate(-1559.264 -68.227)">
+<g id="Group_20" data-name="Group 20">
+<path id="Path_18" class="cls-1" data-name="Path 18" d="M1563.709,94.379l-.791-1.836,7.851-3.378.005-.352a8.026,8.026,0,1,1,9.2-.021l-.031.366,7.83,3.374-.791,1.837L1579.158,91a2.006,2.006,0,0,1-1.213-1.838v-.347a2.034,2.034,0,0,1,.879-1.66,6.025,6.025,0,1,0-6.93,0,2.041,2.041,0,0,1,.881,1.664v.345A2,2,0,0,1,1571.559,91Z" fill="#add4aa"/>
+</g>
+<g id="Group_21" data-name="Group 21">
+<path id="Path_19" class="cls-1" data-name="Path 19" d="M1575.359,100.418a16.1,16.1,0,1,1,16.1-16.1A16.113,16.113,0,0,1,1575.359,100.418Zm0-30.191a14.1,14.1,0,1,0,14.1,14.1A14.111,14.111,0,0,0,1575.359,70.227Z" fill="#add4aa"/>
+</g>
+</g>
+</svg>
+
+          </a>  
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/account">View Profile</a>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+        </li>
+      @endunless
+        <button type="button" class="btn btn-clear my-0 checkout-button" style="padding: 0px !important;padding-bottom:5px !important;">
+            <div style="position:relative;text-align:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #000000;
+                      }
+                    </style>
+                  </defs>
+                  <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
+                    <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
+                      <g id="Group_15" data-name="Group 15">
+                        <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
+                      </g>
+                    </g>
+                    <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
+                      <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
+                    </g>
+                  </g>
+                </svg>
+
+                <div class="centered order-count"></div>
+                </div>  
+        </button>
+
+
+
+    </div>
+</nav>
   <div class="wrapper ">
     
     <div id="content">
-        <nav class="navbar navbar-expand-lg navbar-everyday bg-everyday">
-            <div class="container-fluid">
 
-
-                <button class="btn btn-clear d-inline-block d-lg-none" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <i data-feather="menu"></i>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/locations">Locations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/menu">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about">About</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="clearCart" href="#">Clear Cart</a>
-                    </ul>
-                </div>
-                @unless(auth.user)
-                <li class="nav-item btn-rotate dropdown">
-                  <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="modal" data-target="#loginModal">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 32.191 32.191">
-                        <defs>
-                          <style>
-                            .cls-1 {
-                              fill: black;
-                            }
-                          </style>
-                        </defs>
-      
-      <g id="Group_22" data-name="Group 22" transform="translate(-1559.264 -68.227)">
-        <g id="Group_20" data-name="Group 20">
-          <path id="Path_18" class="cls-1" data-name="Path 18" d="M1563.709,94.379l-.791-1.836,7.851-3.378.005-.352a8.026,8.026,0,1,1,9.2-.021l-.031.366,7.83,3.374-.791,1.837L1579.158,91a2.006,2.006,0,0,1-1.213-1.838v-.347a2.034,2.034,0,0,1,.879-1.66,6.025,6.025,0,1,0-6.93,0,2.041,2.041,0,0,1,.881,1.664v.345A2,2,0,0,1,1571.559,91Z" fill="#add4aa"/>
-        </g>
-        <g id="Group_21" data-name="Group 21">
-          <path id="Path_19" class="cls-1" data-name="Path 19" d="M1575.359,100.418a16.1,16.1,0,1,1,16.1-16.1A16.113,16.113,0,0,1,1575.359,100.418Zm0-30.191a14.1,14.1,0,1,0,14.1,14.1A14.111,14.111,0,0,0,1575.359,70.227Z" fill="#add4aa"/>
-        </g>
-      </g>
-      </svg>                      <p>
-                      </p>
-                  </a>
-                </li>
-              @else
-                <li class="nav-item btn-rotate dropdown">
-                  <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 32.191 32.191">
-                      <defs>
-                        <style>
-                          .cls-1 {
-                            fill: white;
-                          }
-                        </style>
-                      </defs>
-    
-    <g id="Group_22" data-name="Group 22" transform="translate(-1559.264 -68.227)">
-      <g id="Group_20" data-name="Group 20">
-        <path id="Path_18" class="cls-1" data-name="Path 18" d="M1563.709,94.379l-.791-1.836,7.851-3.378.005-.352a8.026,8.026,0,1,1,9.2-.021l-.031.366,7.83,3.374-.791,1.837L1579.158,91a2.006,2.006,0,0,1-1.213-1.838v-.347a2.034,2.034,0,0,1,.879-1.66,6.025,6.025,0,1,0-6.93,0,2.041,2.041,0,0,1,.881,1.664v.345A2,2,0,0,1,1571.559,91Z" fill="#add4aa"/>
-      </g>
-      <g id="Group_21" data-name="Group 21">
-        <path id="Path_19" class="cls-1" data-name="Path 19" d="M1575.359,100.418a16.1,16.1,0,1,1,16.1-16.1A16.113,16.113,0,0,1,1575.359,100.418Zm0-30.191a14.1,14.1,0,1,0,14.1,14.1A14.111,14.111,0,0,0,1575.359,70.227Z" fill="#add4aa"/>
-      </g>
-    </g>
-    </svg>
-
-                  </a>  
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="/account">View Profile</a>
-                      <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
-                </li>
-              @endunless
-                <button type="button" class="btn btn-clear my-0 checkout-button" style="padding: 0px !important;padding-bottom:5px !important;">
-                    <div style="position:relative;text-align:center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
-                          <defs>
-                            <style>
-                              .cls-1 {
-                                fill: #000000;
-                              }
-                            </style>
-                          </defs>
-                          <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
-                            <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
-                              <g id="Group_15" data-name="Group 15">
-                                <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
-                              </g>
-                            </g>
-                            <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
-                              <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
-                            </g>
-                          </g>
-                        </svg>
-
-                        <div class="centered order-count"></div>
-                        </div>  
-                </button>
-
-
-
-            </div>
-        </nav>
 
 
 @!section('content')
