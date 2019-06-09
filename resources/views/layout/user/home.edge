@@ -62,18 +62,19 @@ body {
   background: none;
 }
 
-  .hero-bg {
+.hero-bg {
     background: url(/images/hero-bg.jpg);
     background-position: center;
-
     position: relative;
-
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: cover;
 }
 
 @media screen and (min-width:420px) {
   .carousel {
-    max-width: 66%;
     margin-top: 15vh;
+    right: -17vw;
   }
 
   h2.hero {
@@ -628,6 +629,7 @@ li.map-list:hover, li.map-list:active {
 }
 }
 
+
 </style>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -640,7 +642,27 @@ crossorigin=""></script>
 
 <style>
 
+.centered.order-count {
+      position: absolute !important;
+      top: 23px !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+    }
+  .btn-clear {
+    background: none;
+  }
 
+  .img-wrapper {
+    width: 425px;
+    height: 275px;
+    margin-bottom: 2rem;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+  }
+
+  .align-items-base {
+    align-items: baseline !important;
+  }
 </style>
 </head>
 
