@@ -958,7 +958,7 @@ a.article:hover {
 }
 
 .btn-clear {
-    background: #ffffff00;
+    background: none !important;
 }
 
 @media (min-width: 1001px) and (max-width: 1200px) {
@@ -1234,31 +1234,34 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
             </div>
         </li>
       @endunless
-        <button type="button" class="btn btn-clear my-0 checkout-button" style="padding: 0px !important;padding-bottom:5px !important;">
-            <div style="position:relative;text-align:center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
-                  <defs>
-                    <style>
-                      .cls-1 {
-                        fill: #000000;
-                      }
-                    </style>
-                  </defs>
-                  <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
-                    <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
-                      <g id="Group_15" data-name="Group 15">
-                        <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
+      <div class="tooltip-wrapper" data-title="Please add at least 5 items to cart">
+          <button type="button" class="btn btn-clear my-0 checkout-button" style="padding: 0px !important;padding-bottom:5px !important;">
+              <div style="position:relative;text-align:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 458.595 512">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #000000;
+                        }
+                      </style>
+                    </defs>
+                    <g id="Group_1" data-name="Group 1" transform="translate(-1615.362 -63.964)">
+                      <g id="Group_16" data-name="Group 16" transform="translate(1615.362 247.379)">
+                        <g id="Group_15" data-name="Group 15">
+                          <path id="Path_15" data-name="Path 15" class="cls-1" d="M2003.725,405.608H1685.592a70.226,70.226,0,0,1-69.385-81.068l38.752-247.517h379.4l38.75,247.5a70.223,70.223,0,0,1-69.383,81.082ZM1678.989,105.113,1643.96,328.88a42.153,42.153,0,0,0,41.632,48.638h318.132a42.094,42.094,0,0,0,41.615-48.638l-35.013-223.766Z" transform="translate(-1615.361 -77.023)"/>
+                        </g>
+                      </g>
+                      <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
+                        <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
                       </g>
                     </g>
-                    <g id="Group_17" data-name="Group 17" transform="translate(1757.445 63.964)">
-                      <path id="Path_16" data-name="Path 16" class="cls-1" d="M1653.567,211.775c0-70.549,31.152-119.72,59.117-119.72s59.115,49.172,59.115,119.72h28.091c0-82.88-38.3-147.811-87.206-147.811s-87.206,64.93-87.206,147.811h28.089Z" transform="translate(-1625.478 -63.964)"/>
-                    </g>
-                  </g>
-                </svg>
+                  </svg>
+  
+                  <div class="centered order-count"></div>
+                  </div>  
+          </button>
+      </div>
 
-                <div class="centered order-count"></div>
-                </div>  
-        </button>
 
 
 
@@ -1434,6 +1437,9 @@ function showItemDescription() {
 
 
 $('.checkout-button').on('click', function(){
+  if ($(this).disabled) {
+    alert('please add at least 5 items to the cart')
+  }
   var cart = JSON.parse(localStorage.cart)
   var t = 0
   for (var i = 0; i < cart.length; i++) {

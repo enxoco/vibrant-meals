@@ -131,6 +131,8 @@ function updateCartDiv() {
         $('.express-checkout-default').attr('disabled', 'disabled')
         $('#toggleSections').attr('disabled', 'disabled')
         $('#createToken').attr('disabled', 'disabled')
+        console.log('disable cart')
+        $('.checkout-button').attr('disabled', 'disabled')
         $('.express-checkout-status').html('Please add at least 5 items to cart').show()
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
           $('[data-toggle="tooltip"]').tooltip('enable')
