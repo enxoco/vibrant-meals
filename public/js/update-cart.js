@@ -156,13 +156,13 @@ function updateCartDiv() {
 
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
         <div class="col-3 pt-2 card-user">\
-          <div class="row mr-0 ml-0 pb-3 pl-1">\
+          <div class="row mr-0 ml-0 pb-3 pl-1 pointer">\
             <a onclick="addCart('+i+')"><i data-feather="plus-circle"></i></a>\
           </div>\
           <div class="row mr-0 ml-0" style="border-radius: 50%;width: 35px;box-shadow: 2px 2px 7px 2px gainsboro;pointer-events: none;">\
             <span class="quantity">'+cartItems[i].quantity+'</span>\
           </div>\
-          <div class="row mr-0 ml-0 pt-3 pl-1">\
+          <div class="row mr-0 ml-0 pt-3 pl-1 pointer">\
             <a data-id="'+i+'" onclick="subCart('+i+')"><i data-feather="minus-circle"></i></a>\
           </div>\
         </div>\

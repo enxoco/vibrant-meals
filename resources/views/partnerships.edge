@@ -2,16 +2,44 @@
 	
 @section('content')
 @!include('Modals.initial')
-<div class="content mt-3 mb-0">
-    <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">
-        PARTNER WITH US
+<style>
+    body {
+      color: black;
+    }
+    .navbar {
+    background: #aad0ae !important;
 
-      </h1>
+  }
+  * {
+    outline: none !important;
+  }
+  .navbar-light {
+				background: #aad0ae !important;
+			}
+			.navbar-toggler:not(:disabled):not(.disabled) {
+				color: white;
+				border: none;
+			}
 
+			.cls-1 {
+				fill: white !important;
+			}
 
+			li a span {
+				font-size: 60%;
+				font-weight: 800;
+				background: #faf9f9;
+				padding:5px;
+				border-radius: 5px;
+				
+			}
+    </style>
 
-      </div>
-      <div class="content content-secondary mt-0">
+      <div class="content content-secondary mt-5">
+          <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;">
+              PARTNER WITH US
+      
+            </h1>
         <div class="col col-md-8 col-lg-8 mx-auto mb-5">
             Do you have a gym or brand that is synergistic with ours, are you a social media influencer or an actively competing athlete? Drop us a line to see how we might work together. 
             <form action="/partnerships" method="post" class="mt-5">

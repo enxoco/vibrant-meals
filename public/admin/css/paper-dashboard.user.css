@@ -6140,3 +6140,15 @@ button.btn.btn-link {
 .table > tbody > tr > td.start {
   vertical-align: none !important;
 }
+
+.btn-clear:hover {
+  background: none !important;
+}
+div#cart-rows {
+  min-width: 235px;
+}
+
+
+.pointer {
+  cursor: pointer;
+}
