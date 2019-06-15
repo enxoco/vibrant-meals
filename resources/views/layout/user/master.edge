@@ -1873,6 +1873,8 @@ $('#headingFive').on('click', function(){
   $('#toggleSections').attr('disabled', 'disabled')
   $('#toggleSections').html('Checkout')
 })
+
+
 $('#toggleSections').on('click', function(){
     if ($('#collapseOne').hasClass('show')) {
       $('#collapseOne').removeClass('show')
@@ -1891,25 +1893,9 @@ $('#toggleSections').on('click', function(){
 
     } else if ($('#collapseFive').hasClass('show')) {
 
-      var inputs = $('input')
 
-      var completion = 0
-      for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].value) {
-          completion += 1
-        }
-      }
-
-      if (completion < 20) {
-        $('#toggleSections').attr('disabled', 'disabled')
-        console.log(completion)
-        return false
-      } else {
-        console.log('greater than' + completion)
-      }
-
-      anything()
       $(this).attr('disabled', 'disabled')
+      anything()
     }
     
   })
@@ -1928,6 +1914,14 @@ $('#toggleSections').on('click', function(){
 if (window.location.href.includes('checkout')) {
   $('.nav-link').removeAttr('active')
 }
+
+$('.card-header').on('click', function(){
+  let id = $(this).attr('id')
+  id = id.match(/[A-Z]*[^A-Z]+/g)
+  let me = 'collapse' + id[1]
+  console.log(me)
+  $('.collapse.show').removeClass('show')
+})
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

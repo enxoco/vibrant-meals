@@ -3031,7 +3031,6 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   width: 37px;
   height: 27px;
   vertical-align: middle;
-  outline: 0;
   cursor: pointer;
   position: absolute;
   right: 75px;

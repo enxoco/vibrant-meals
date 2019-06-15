@@ -2,16 +2,25 @@
 	
 @section('content')
 @!include('Modals.initial')
-<div class="content mt-3 mb-0">
-    <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">
-        JOIN THE VIBRANT FAMILY
+<style>
+    body {
+      color: black;
+    }
+    .navbar {
+    background: #aad0ae !important;
 
-      </h1>
+  }
+  * {
+    outline: none !important;
+  }
+    </style>
+  
 
-
-
-      </div>
-      <div class="content content-secondary mt-0">
+      <div class="content content-secondary mt-5">
+          <h1 class="section-heading mb-5 d-flex justify-content-center mt-5" style="color:#aad0ae;font-weight:900;    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">
+              JOIN THE VIBRANT FAMILY
+      
+            </h1>
         <div class="col col-md-8 col-lg-8 mx-auto mb-5">
             We're a group of passionate health nuts that are ready to change Chattanooga, then the world - are you in? We are always on the lookout for talented individuals. 
             <form action="/careers" method="post" class="mt-5">

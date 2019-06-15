@@ -1,35 +1,40 @@
 @layout('layout.user.master')
 @section('content')
 <style>
-h5.notification.jumbo {
-    text-align: center;
-    color: white;
-    font-weight: 800;
-    font-size: 26px;
-}
+    h5.notification.jumbo {
+        text-align: center;
+        color: white;
+        font-weight: 800;
+        font-size: 26px;
+    }
 
-div.notification.jumbo {
-    background: #aad0ad;
-    padding: 50px;
-}
+    div.notification.jumbo {
+        background: #aad0ad;
+        padding: 50px;
+    }
 
-.sidebar {
-    display:none;
-}
-.main-panel {
-    width: 100%;
-}
-.content {
-    background: white;
-}
+    .sidebar {
+        display: none;
+    }
+
+    .main-panel {
+        width: 100%;
+    }
+
+    .content {
+        background: white;
+    }
+    #sidebar {
+        display: none;
+    }
 </style>
 <div class="content">
 
     <div class="row mt-5">
         <div class="col-12 col-md-6 col-lg-6 mx-auto">
-                <div class="notification jumbo">
-                        <h5 class="notification jumbo">Your order has been placed!</h5>
-                        </div>
+            <div class="notification jumbo">
+                <h5 class="notification jumbo">Thank you! Your order has been placed.</h5>
+            </div>
             <section class="comSection comSection--light">
                 <h5>Order Summary</h5>
                 <div class="table-wrap">
@@ -106,12 +111,13 @@ div.notification.jumbo {
                                                             {{item.description}}
                                                         </div>
                                                         <div class="col-6 mx-auto">
-                                                            <strong>x{{item.quantity}} </strong> - {{currency(item.amount)}}
+                                                            <strong>x{{item.quantity}} </strong> -
+                                                            {{currency(item.amount)}}
                                                         </div>
-                                                            <div class="col-12 mx-auto justify-content-end">
+                                                        <div class="col-12 mx-auto justify-content-end">
                                                             <strong> </strong>
-                                                            </div>
                                                         </div>
+                                                    </div>
                                                 </li>
                                                 @endunless
                                                 @endeach
