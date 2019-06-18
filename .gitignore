@@ -28,3 +28,4 @@ lib-cov
 /.idea
 
 public/uploads/
+products.json
