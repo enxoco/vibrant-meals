@@ -167,13 +167,19 @@ class CheckoutController {
         });
       }
       
-      var order = await stripe.orders.list({
+      let newOrder = await stripe.orders.list({
         limit: 1,
         customer: customer.id
       })
+
+      if (newOrder.orderID) {
+        return response.send({status: 'success'}) 
+      } else {
+        return response.send({status: 'missing order id'})
+      }
       
     }
-    return response.send({status: 'success'})
+    // return response.send({status: 'success'})
 
   }
 
@@ -337,7 +343,16 @@ class CheckoutController {
 
           });
         });
-        } else { //Pickup order without a coupon code
+        var newOrder = await stripe.orders.list({
+          limit: 1,
+          customer: customer.id
+        })
+        if (newOrder.orderId){
+          return response.send({status: 'success'})
+        } else {
+          return response.send({status: 'waiting for order number'})
+        }
+              } else { //Pickup order without a coupon code
           var order = await stripe.orders.create({
             currency: 'usd',
             ...(!truth && {coupon: req.billing.coupon}),
@@ -375,6 +390,15 @@ class CheckoutController {
          
             });
           });
+          var newOrder = await stripe.orders.list({
+            limit: 1,
+            customer: customer.id
+          })
+          if (newOrder.orderId){
+            return response.send({status: 'success'})
+          } else {
+            return response.send({status: 'waiting for order number'})
+          }
         }
       } else {// Default to delivery if no method selected
         var order = await stripe.orders.create({
@@ -410,17 +434,20 @@ class CheckoutController {
                     
           });
         });
+        var newOrder = await stripe.orders.list({
+          limit: 1,
+          customer: customer.id
+        })
+        if (newOrder.orderId){
+          return response.send({status: 'success'})
+        } else {
+          return response.send({status: 'waiting for order number'})
+        }
       }
 
       
     }
-    var order = await stripe.orders.list({
-      limit: 1,
-      customer: customer.id
-    })
-    
-  
-  return response.send(order)
+
 
   }
 
