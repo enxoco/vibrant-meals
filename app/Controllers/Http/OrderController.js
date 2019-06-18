@@ -38,14 +38,29 @@ class OrderController {
             limit: 1
         })
         if (order.orderId) {
+            console.log('check 1')
             return view.render('Checkout.confirmation', {order})
         } else {
+            console.log('check 2')
             var order = await stripe.orders.list({
                 customer: auth.user.stripe_id,
                 limit: 1
             })
-            return view.render('Checkout.confirmation', {order})   
+            if (order.orderId) {
+                return view.render('Checkout.confirmation', {order})   
+            } else {
+                var order = await stripe.orders.list({
+                    customer: auth.user.stripe_id,
+                    limit: 1
+                })
+                return view.render('Checkout.confirmation', {order})
+            }
         }
+
+        var order = await stripe.orders.list({
+            customer: auth.user.stripe_id,
+            limit: 1
+        })
     }
 
     async batchFulfillStripe(id) {
