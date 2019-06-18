@@ -19,7 +19,7 @@
                         <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
                             <td><a href="#">#{{order.metadata.orderId}}</a></td>
                             <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}</td>
-                            <td>Fulfilled</td>
+                            <td>{{capitalize(order.status)}}</td>
                             <td>{{ capitalize(order.metadata.fulfillment_method) }}
                             <td>{{currency(order.amount)}}</td>
                         </tr>

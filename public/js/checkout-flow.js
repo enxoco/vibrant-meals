@@ -24,6 +24,14 @@ $('#paypal-button-container').hide()
 $('#checkout-options').html('<a id="createToken" class="button is-everyday">Checkout</a>')
 })
 
+$('.shipping-form :input').on('change', function(){
+  $('#shippingDetails').css('display', 'block')
+  $('#shippingDetails').html('')
+  $('#shippingDetails').append('<li>' + $('input[name=name-ship]').val()+'</li>')
+  $('#shippingDetails').append('<li>' + $('input[name=street-ship]').val() ? $('input[name=street-ship]').val() : +'</li>')
+  $('#shippingDetails').append('<li>' + $('input[name=city-ship]').val() ? $('input[name=city-ship]').val() : +'</li>')
+  $('#shippingDetails').append('<li>' + $('input[name=state-ship]').val() ? $('input[name=state-ship]').val() : +'</li>')
+})
 
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
 var wednesday

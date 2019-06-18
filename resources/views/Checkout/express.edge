@@ -37,12 +37,15 @@
               <strong>Billing Address</strong>
               <li>{{billing.shipping.address.line1}}</li>
               <li>{{billing.shipping.address.city}} {{billing.shipping.address.state}}, {{billing.shipping.address.postal_code}}</li>
-
             </ul>
+            
             <ul style="text-align:left">
               <li>
                 <span class="store-desc pl-0 mb-3" style="position:relative;"></span>
               </li>
+            </ul>
+            <ul id="shippingDetails" style="display:none;text-align:left;">
+              <strong>Shipping Address</strong>
             </ul>
 
           </div>
@@ -181,8 +184,4 @@
               <a href="#" class="btn btn-success btn-lg" id="addCardToCust">Checkout</a>
           </div>
   </div>
-
-
-
-
 <input name="stripeToken" type="hidden" />

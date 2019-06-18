@@ -9,6 +9,38 @@
     margin-bottom: 20px;
   }
   </style>
+  <style>
+      body {
+        color: black;
+      }
+      .navbar {
+      background: #aad0ae !important;
+  
+    }
+    * {
+      outline: none !important;
+    }
+    .navbar-light {
+          background: #aad0ae !important;
+        }
+        .navbar-toggler:not(:disabled):not(.disabled) {
+          color: white;
+          border: none;
+        }
+  
+        .cls-1 {
+          fill: white !important;
+        }
+  
+        li a span {
+          font-size: 60%;
+          font-weight: 800;
+          background: #faf9f9;
+          padding:5px;
+          border-radius: 5px;
+          
+        }
+      </style>
 <div class="row pt-5" style="color:black; top: 150px;position:relative;">
   <div class="col-12 col-md-3 col-lg-3 mx-auto">
     <div class="comSection comSection--light">
@@ -54,10 +86,8 @@
   </div>
 
   <div class="col-md-5 col-lg-5 col-12 mx-auto">
-
-      @!include('layout.user.profile.order-history')
-  
-    </div>
+    @!include('layout.user.profile.order-history')
+  </div>
   
   <div class="col-12 col-md-3 col-lg-3 mx-auto">
       <div class="comSection comSection--light">
