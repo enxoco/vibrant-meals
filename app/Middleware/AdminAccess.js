@@ -19,7 +19,6 @@ class AdminAccess {
   async handle ({ request, response, auth }, next) {
 
     if (auth.user.user_level == 'customer' || !auth.user) {
-      console.log('customer')
       response.redirect('back')
     }
     // call next to advance the request

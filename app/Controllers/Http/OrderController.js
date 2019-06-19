@@ -56,11 +56,6 @@ class OrderController {
                 return view.render('Checkout.confirmation', {order})
             }
         }
-
-        var order = await stripe.orders.list({
-            customer: auth.user.stripe_id,
-            limit: 1
-        })
     }
 
     async batchFulfillStripe(id) {
