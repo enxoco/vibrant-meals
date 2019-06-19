@@ -72,9 +72,27 @@ body {
 }
 
 @media screen and (min-width:420px) {
+  .w-100 {
+    width: 100%!important;
+    margin-top: -40px;
+    margin-left: 40px;
+}
+.row.ml-5 {
+  padding-bottom: 6rem !important;
+}
   .carousel {
     margin-top: 15vh;
     right: -17vw;
+  }
+
+  .carousel-indicators {
+    bottom: -75px;
+  }
+
+  .carousel-control-next, .carousel-control-prev {
+    /* top: 100px; */
+    top: 80vh;
+    opacity: 1;
   }
 
   h2.hero {
@@ -612,6 +630,8 @@ and (max-device-width : 1024px)  {
   .hero-bg {
     padding-top: 24vh !important;
   }
+
+
 }
 a.text-dark.text-small {
     font-size: 18px;

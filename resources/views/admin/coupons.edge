@@ -2,87 +2,83 @@
 @section('content')
 @include('Modals.Coupons.add')
 @include('Modals.Coupons.delete')
-
-      <div class="content">
-        <div class="row">
-          @each(coupon in coupons.data)
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-tag-content"></i>
-                    </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Coupon Code - <strong>{{coupon.id}}</strong></p>
-                      <p class="card-category">Discount Amount -
-                      <strong>
-                        @if(coupon.percent_off)
-                          {{coupon.percent_off}}
-                        @else
-                          {{currency(coupon.amount_off)}}
-                        @endif
-                      </strong></p>
-                      <p class="card-category">Redemptions - <strong>{{coupon.times_redeemed}}</strong>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+<div class="content">
+  <div class="row">
+  @each(coupon in coupons.data)
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-5 col-md-4">
+              <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-tag-content"></i>
               </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <div class="row">
-                    <div class="col">
-                        <button data-coupon="{{coupon.id}}" data-toggle="modal" data-target="#deleteCouponModal" class="btn btn-md btn-outline-danger btn-round btn-icon delete-coupon">
-                            <i data-feather="x"></i>
-                            </button>
-
-
-                    </div>
-                    <div class="col">
-
-                    Created <br />{{convertTime(coupon.created)}}
-                    </div>
-                  </div>
-
-                    </div>
+            </div>
+            <div class="col-7 col-md-8">
+              <div class="numbers">
+                <p class="card-category">Coupon Code - <strong>{{coupon.id}}</strong></p>
+                <p class="card-category">Discount Amount -
+                  <strong>
+                    @if(coupon.percent_off)
+                      {{coupon.percent_off}}
+                    @else
+                      {{currency(coupon.amount_off)}}
+                    @endif
+                  </strong>
+                </p>
+                <p class="card-category">Redemptions - <strong>{{coupon.times_redeemed}}</strong>
+                </p>
               </div>
             </div>
           </div>
-          @endeach
+        </div>
+        <div class="card-footer ">
+        <hr>
+          <div class="stats">
+            <div class="row">
+              <div class="col">
+                <button data-coupon="{{coupon.id}}" data-toggle="modal" data-target="#deleteCouponModal" class="btn btn-md btn-outline-danger btn-round btn-icon delete-coupon">
+                  <i data-feather="x"></i>
+                </button>
+              </div>
+              <div class="col">
+                Created <br />{{convertTime(coupon.created)}}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <footer class="footer footer-black  footer-white ">
-        <div class="container-fluid">
-          <div class="row">
-            <nav class="footer-nav">
-              <ul>
-                <li>
-                  <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
-                </li>
-                <li>
-                  <a href="http://blog.creative-tim.com/" target="_blank">Blog</a>
-                </li>
-                <li>
-                  <a href="https://www.creative-tim.com/license" target="_blank">Licenses</a>
-                </li>
-              </ul>
-            </nav>
-            <div class="credits ml-auto">
-              <span class="copyright">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
+    </div>
+    @endeach
+  </div>
+</div>
+<footer class="footer footer-black  footer-white ">
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="footer-nav">
+        <ul>
+          <li>
+            <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
+          </li>
+          <li>
+            <a href="http://blog.creative-tim.com/" target="_blank">Blog</a>
+          </li>
+          <li>
+            <a href="https://www.creative-tim.com/license" target="_blank">Licenses</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="credits ml-auto">
+        <span class="copyright">
+          ©
+          <script>
+            document.write(new Date().getFullYear())
+          </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   </div>
   <!--   Core JS Files   -->

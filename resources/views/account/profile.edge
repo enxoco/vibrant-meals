@@ -8,39 +8,37 @@
     padding-bottom: 10px;
     margin-bottom: 20px;
   }
-  </style>
-  <style>
-      body {
-        color: black;
-      }
-      .navbar {
-      background: #aad0ae !important;
-  
-    }
-    * {
-      outline: none !important;
-    }
-    .navbar-light {
-          background: #aad0ae !important;
-        }
-        .navbar-toggler:not(:disabled):not(.disabled) {
-          color: white;
-          border: none;
-        }
-  
-        .cls-1 {
-          fill: white !important;
-        }
-  
-        li a span {
-          font-size: 60%;
-          font-weight: 800;
-          background: #faf9f9;
-          padding:5px;
-          border-radius: 5px;
-          
-        }
-      </style>
+
+  body {
+    color: black;
+  }
+
+  * {
+    outline: none !important;
+  }
+
+  .navbar-light {
+    background: #aad0ae !important;
+  }
+
+  .navbar-toggler:not(:disabled):not(.disabled) {
+    color: white;
+    border: none;
+  }
+
+  .cls-1 {
+    fill: white !important;
+  }
+
+  li a span {
+    font-size: 60%;
+    font-weight: 800;
+    background: #faf9f9;
+    padding: 5px;
+    border-radius: 5px;
+
+  }
+</style>
 <div class="row pt-5" style="color:black; top: 150px;position:relative;">
   <div class="col-12 col-md-3 col-lg-3 mx-auto">
     <div class="comSection comSection--light">
@@ -64,64 +62,55 @@
             <strong>{{currency(customer.totalSpend)}}</strong>
             <br />
             Total Spent:
-
           </div>
-
-
         </div>
       </div>
     </div>
     <hr class="mb-2">
-
-
-    <!-- Insert Billing here-->
     <div class="comSection comSection--light">
       <h5>
         Billing
       </h5>
     </div>
     @!include('layout.user.profile.billing')
-
-
   </div>
-
   <div class="col-md-5 col-lg-5 col-12 mx-auto">
     @!include('layout.user.profile.order-history')
   </div>
-  
   <div class="col-12 col-md-3 col-lg-3 mx-auto">
-      <div class="comSection comSection--light">
-        <h5>
-          Update Password
-        </h5>
-        <div class="card-body">
-          <div class="row">
-              <form id="password">
-                  <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label>New Password</label>
-                      <input type="password" name="password" required placeholder="********" class="form-control">
-                    </div>
-                  </div>
+    <div class="comSection comSection--light">
+      <h5>
+        Update Password
+      </h5>
+      <div class="card-body">
+        <div class="row">
+          <form id="password">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" name="password" required placeholder="********" class="form-control">
                 </div>
-                <div class="row">
-                    <div class="col">
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                      <input type="password" name="password_confirmation" required placeholder="********" class="form-control">
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" name="password_confirmation" required placeholder="********"
+                    class="form-control">
                 </div>
-                <div class="update ml-auto mr-auto">
-                    <a class="btn btn-success update-password">Update</a>
-                  </div>
-                    </form>
-          </div>
+              </div>
+            </div>
+            <div class="update ml-auto mr-auto">
+              <a class="btn btn-success update-password">Update</a>
+            </div>
+          </form>
         </div>
       </div>
-  <hr class="mb-3">
-  <div class="comSection comSection--light">
+    </div>
+    <hr class="mb-3">
+    <div class="comSection comSection--light">
       <h5>Order Preferences</h5>
       <div class="card-body">
         <div class="row">
@@ -129,7 +118,7 @@
             <div class="radio">
               <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal"
                 data-target="#modal-pickup" 
-                @if(customer.metadata.fulfillment_method=='pickup') 
+                @if(customer.metadata.fulfillment_method=='pickup' ) 
                   checked 
                 @endif
                 >
@@ -139,8 +128,8 @@
           <div class="col-6 p-0">
             <div class="radio">
               <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
-                @if(customer.metadata.fulfillment_day=='monday' )
-                 checked 
+                @if(customer.metadata.fulfillment_day=='monday')
+                  checked 
                 @endif
                 >
               <label for="monday-switch" class="radio-label">Monday</label>
@@ -149,19 +138,18 @@
           <div class="col-6 p-0">
             <div class="radio">
               <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery"
-                @if(customer.metadata.fulfillment_method=='delivery' ) 
+                @if(customer.metadata.fulfillment_method=='delivery')
                   checked
                 @endif
                 >
               <label for="deliveryRadio" class="radio-label">Delivery</label>
             </div>
-
           </div>
           <div class="col-6 p-0">
             <div class="radio">
               <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday"
                 @if(customer.metadata.fulfillment_day=='wednesday') 
-                  checked
+                  checked 
                 @endif
                 >
               <label for="wednesday-switch" class="radio-label">Wednesday</label>
@@ -170,7 +158,7 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
 
 
 </div>
