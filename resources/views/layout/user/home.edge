@@ -841,6 +841,28 @@ $(document).ready(function(){
  <script src='/js/update-cart.js'>
  </script>
 <script>
+
+$('.checkout-button').on('click', function(){
+  if ($(this).disabled) {
+    alert('please add at least 5 items to the cart')
+  }
+  var cart = JSON.parse(localStorage.cart)
+  var t = 0
+  for (var i = 0; i < cart.length; i++) {
+    t += cart[i].quantity
+  }
+  if (t < 5) {
+    var d = 5 - t
+    toastr["error"]("Please add at least "+d+" more items to cart!")
+  } else {
+    if(window.location.href.includes('checkout')) {
+      $('html').removeClass('nav-open')
+    } else {
+      window.location.replace('/checkout')
+    }
+  }
+})
+
 $(document).ready(function(){
   //Only here to show the cart count preview in topnav on mobile.
   updateCartDiv()
