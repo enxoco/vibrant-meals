@@ -9,13 +9,13 @@ data-toggle="modal" data-target="#{{item.id}}"
   </div>
 <div class="card-body">
   <div class="row px-2">
-    <h5 class="mb-0" style="flex:.8;justify-content:flex-start;display:flex;">{{item.name}}</h5>
+    <h5 class="mb-0" style="flex:.7;justify-content:flex-start;display:flex;">{{item.name}}</h5>
     <h5 class="mb-0 price-label"> {{currency(item.skus.data[0].price)}}</h5>
   </div>
   <div class="row px-2">
       @if(item.skus.data.length > 1)
-      <div class="dropright">
-          <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.id}}">
+      <div class="dropdown">
+          <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.id}}" style="white-space:normal;font-size:10px !important;">
               {{item.skus.data[0].metadata.label ? capitalize(item.skus.data[0].metadata.label) : capitalize(item.skus.data[0].metadata.size) }}
           </button>
           <div class="dropdown-menu no-modal" aria-labelledby="dropdownMenuButton">
