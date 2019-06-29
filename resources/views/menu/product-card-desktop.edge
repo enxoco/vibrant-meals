@@ -10,19 +10,26 @@ data-toggle="modal" data-target="#{{item.id}}"
 <div class="card-body">
   <div class="row px-2">
     <h5 class="mb-0" style="flex:.8;justify-content:flex-start;display:flex;">{{item.name}}</h5>
-    <h5 class="mb-0" style="color: #F48566;flex: .2;display: flex;justify-content: flex-end;"> {{currency(item.skus.data[0].price)}}</h5>
+    <h5 class="mb-0 price-label"> {{currency(item.skus.data[0].price)}}</h5>
   </div>
-  @if(item.skus.data.length > 1)
-    <select class="form-control muted price-change" data-id="{{item.id}}" >
-      @each(sku in item.skus.data)
-        @if(sku.price)
-        <option data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="">
-          {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}
-        </option>
-        @endif
-      @endeach
-    </select>
-  @endif
+  <div class="row px-2">
+      @if(item.skus.data.length > 1)
+      <div class="dropright">
+          <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.id}}">
+              {{item.skus.data[0].metadata.label ? capitalize(item.skus.data[0].metadata.label) : capitalize(item.skus.data[0].metadata.size) }}
+          </button>
+          <div class="dropdown-menu no-modal" aria-labelledby="dropdownMenuButton">
+              @each(sku in item.skus.data)
+              @if(sku.price)
+                <a class="dropdown-item price-change" href="#" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
+                    {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}
+                  </a>
+              @endif
+              @endeach
+          </div>
+        </div>
+      @endif
+  </div>
 </div>
 <div class="card-footer">
   <div class="button-container">

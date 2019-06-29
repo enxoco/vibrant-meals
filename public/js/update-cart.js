@@ -241,11 +241,15 @@ function updateCartDiv() {
   *
   */
 
-  $('.price-change').change(function(){
-    var t = $(this).find(':selected').data()
-    var id = $(this).data('id')
+  $('.price-change').on('click', function(e){
+    e.preventDefault()
+    var t = $(this).data()
+    let id = $(this).closest('.card-product').data('id')
+    let btn = $('body').find(`[data-id='button_${id}']`)
 
-    $(this).closest('.price').find('.price-label').text('$' + t.price / 100)
+    btn.text(t.name)
+    //Update price on product card
+    $(this).closest('.card-body').find('.row').find('.price-label').text('$' + t.price / 100)
     var u = $('body').find('.checkout-prompt-1[data-id="'+id+'"]')
     var x = $('body').find('.card[data-id="'+id+'"]')
     var y = $('body').find('.modal[data-id="'+id+'"]')
@@ -270,6 +274,7 @@ function updateCartDiv() {
       $(this).attr('data-img_url', t.img_url)
       $(this).attr('data-price', t.price)
       $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+      $(this).find('.modal-card-price').text('$' + t.price / 100)
     })
 
 

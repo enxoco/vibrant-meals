@@ -587,8 +587,10 @@ label.pickup {
 }
 
 h5.price-label {
-    position: relative;
-    bottom: 35px;
+  color: #F48566;
+  flex: .2;
+  display: flex;
+  justify-content: flex-end;
 }
 
 label.label_item.pickup:hover {
@@ -1128,6 +1130,10 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
     margin-bottom: 10px;
     position: relative;
   }
+}
+
+.dropdown-menu.show {
+  border: 1px solid black;
 }
 
 </style>
@@ -1878,7 +1884,11 @@ document.addEventListener('click', function(event) {
 })
 
 //Prevent select box from opening product card modal.
-$('select').on('click', function(e){e.preventDefault();e.stopPropagation()})
+$('.no-modal').on('click', function(e){
+  e.stopPropagation()
+  $('.dropright').removeClass('show')
+  $(this).removeClass('show')
+ })
 
 // if('serviceWorker' in navigator) {
 //       navigator.serviceWorker
@@ -1952,6 +1962,8 @@ $('.card-header').on('click', function(){
   console.log(me)
   $('.collapse.show').removeClass('show')
 })
+
+
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->
