@@ -18,10 +18,10 @@ data-toggle="modal" data-target="#{{item.id}}"
           <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.id}}" style="white-space:normal;font-size:10px !important;">
               {{item.skus.data[0].metadata.label ? capitalize(item.skus.data[0].metadata.label) : capitalize(item.skus.data[0].metadata.size) }}
           </button>
-          <div class="dropdown-menu no-modal" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               @each(sku in item.skus.data)
               @if(sku.price)
-                <a class="dropdown-item price-change" href="#" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
+                <a class="dropdown-item price-change no-modal" href="#" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
                     {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}
                   </a>
               @endif

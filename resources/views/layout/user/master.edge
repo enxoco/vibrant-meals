@@ -1887,7 +1887,9 @@ document.addEventListener('click', function(event) {
 $('.no-modal').on('click', function(e){
   e.stopPropagation()
   $('.dropright').removeClass('show')
-  $(this).removeClass('show')
+  // $('.no-modal').hide()
+  let modal = $('.no-modal')
+  $(this).closest('.dropdown').dropdown('toggle')
  })
 
 // if('serviceWorker' in navigator) {
