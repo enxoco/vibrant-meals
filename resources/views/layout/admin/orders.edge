@@ -169,7 +169,7 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table" id="pickups">
-                <button class="btn" id="fulfilled">Filled</button>
+                <button class="btn" id="fulfilled">Fulfilled</button>
                 <button class="btn" id="paid">Pending</button>
                 <button class="btn" id="canceled">Canceled</button>
                 <button class="btn" id="refunded">Refunded</button>
@@ -313,6 +313,12 @@
                   <th>
                     Date Needed
                   </th>
+                  <th>
+                    Shipping Address
+                  </th>
+                  <th>
+                    Skus
+                  </th>
                 </thead>
                 <tbody>
                   @each(o in wedResult)
@@ -335,6 +341,60 @@
           </div>
         </div>
       </div>
+
+      <div class="col-12">
+          <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"> Export sheet</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table" id="productNeededExport">
+                    <thead class=" text-primary">
+                      <th>
+                        Customer Name
+                      </th>
+                      <th>
+                        Order Id
+                      </th>
+                      <th>
+                        Shipping Location
+                      </th>
+                      <th>
+                        items
+                      </th>
+                    </thead>
+                    <tbody>
+                      @each(o in ord)
+                      <tr>
+                        <td>
+                          {{o.name}}
+                        </td>
+                        <td>
+                          {{o.id}}
+                        </td>
+                        <td>
+                          {{o.address}}
+                        </td>
+                            <td>
+                                <ul>
+                                  @each(i in o.items)
+                                    @unless(i.quantity == null)
+                                      @unless(i.description === 'Shipping')
+                                        <li>{{i.parent}} X {{i.quantity}}</li>
+                                        @endunless
+                                  @endunless
+                                  @endeach
+                                </ul>
+                              </td>
+                      </tr>
+                      @endeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 </div>
 <!--   Core JS Files   -->

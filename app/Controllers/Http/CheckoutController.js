@@ -4,6 +4,10 @@ const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const User = use('App/Models/User')
 const Hash = use('Hash')
+const fs = require('fs')
+const Helpers = use('Helpers')
+var orderCount = parseInt(fs.readFileSync(`${Helpers.appRoot()}/config/orderCounter.txt`))
+
 
 
 
@@ -18,6 +22,10 @@ class CheckoutController {
   }
 
   async expressCheckout({ request, response, auth }) {
+    orderCount += 1
+    fs.writeFileSync(`${Helpers.appRoot()}/config/orderCounter.txt`, orderCount)
+
+
     var req = request.all()
     req = req.data
     var user = await auth.user
@@ -113,7 +121,8 @@ class CheckoutController {
             fulfillment_method: req.user.fulfillment_method,
             store_id: location.id,
             allergy_info: req.billing.allergy_info,
-            delivery_info: req.billing.delivery_info
+            delivery_info: req.billing.delivery_info,
+            orderId: orderCount
             
           },
           email: user.email
@@ -151,7 +160,9 @@ class CheckoutController {
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
             allergy_info: req.billing.allergy_info,
-            delivery_info: req.billing.delivery_info
+            delivery_info: req.billing.delivery_info,
+            orderId: orderCount
+
           },
           email: user.email
         }, function(err, order) {
@@ -182,6 +193,8 @@ class CheckoutController {
 
 
   async stripeCheckout({ request, response, auth }) {
+    orderCount += 1
+
     var req = request.all()
     req = req.data
 
@@ -270,7 +283,9 @@ class CheckoutController {
         delivery_date: req.user.fulfillment_date,
         next_fulfillment: req.user.fulfillment_date,
         allergy_info: req.billing.allergy_info,
-        delivery_info: req.billing.delivery_info
+        delivery_info: req.billing.delivery_info,
+        orderId: orderCount
+
       },
       shipping: {
         name: user.email,
@@ -326,7 +341,9 @@ class CheckoutController {
             fulfillment_method: req.user.fulfillment_method,
             store_id: loc.id,
             allergy_info: req.billing.allergy_info,
-            delivery_info: req.billing.delivery_info
+            delivery_info: req.billing.delivery_info,
+            orderId: orderCount
+
           },
           email: user.email
         }, function(err, order) {
@@ -372,13 +389,14 @@ class CheckoutController {
               fulfillment_method: req.user.fulfillment_method,
               pickup_location: location.name,
               allergy_info: req.billing.allergy_info,
-              delivery_info: req.billing.delivery_info
+              delivery_info: req.billing.delivery_info,
+              orderId: orderCount
+
             },
             email: user.email
           }, function(err, order) {
   
             if (err){return err}
-            console.log(customer.source)
 
             stripe.orders.pay(order.id, {
               source: customer.source // obtained with Stripe.js
@@ -387,15 +405,6 @@ class CheckoutController {
          
             });
           });
-          var newOrder = await stripe.orders.list({
-            limit: 1,
-            customer: customer.id
-          })
-          if (newOrder.orderId){
-            return response.send({status: 'success'})
-          } else {
-            return response.send({status: 'waiting for order number'})
-          }
         }
       } else {// Default to delivery if no method selected
         var order = await stripe.orders.create({
@@ -418,7 +427,9 @@ class CheckoutController {
             fulfillment_date: req.user.fulfillment_date,
             fulfillment_method: req.user.fulfillment_method,
             allergy_info: req.billing.allergy_info,
-            delivery_info: req.billing.delivery_info
+            delivery_info: req.billing.delivery_info,
+            orderId: orderCount
+
           },
           email: user.email
         }, function(err, order) {
@@ -431,15 +442,7 @@ class CheckoutController {
                     
           });
         });
-        var newOrder = await stripe.orders.list({
-          limit: 1,
-          customer: customer.id
-        })
-        if (newOrder.orderId){
-          return response.send({status: 'success'})
-        } else {
-          return response.send({status: 'waiting for order number'})
-        }
+
       }
 
       

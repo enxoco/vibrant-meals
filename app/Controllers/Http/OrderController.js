@@ -144,7 +144,23 @@ class OrderController {
             return obj.metadata.fulfillment_day == 'wednesday'
         })
 
+        let ord = []
 
+        for (var i = 0; i < orders.length; i++) {
+            let order = orders[i]
+            let obj = {
+                name: order.shipping.name,
+                id: order.metadata.orderId,
+                date: order.metadata.fulfillment_date,
+                fulfilmentMethod: order.metadata.fulfillment_method,
+                address: order.shipping.address.line1,
+                city: order.shipping.address.city,
+                state: order.shipping.address.state,
+                items: order.items
+            }
+
+            ord.push(obj)
+        }
 
         var itemList = []
         var monList = []
@@ -227,7 +243,8 @@ class OrderController {
             revenue, 
             fulfillments,
             monResult,
-            wedResult
+            wedResult,
+            ord
         })
     }
 }
