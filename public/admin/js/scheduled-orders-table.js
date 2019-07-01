@@ -14,7 +14,8 @@ var ordersTable = $('#pickups').DataTable( {
           var rows = dt.rows('.selected').data()
           var ids = []
           for (var i = 0; i < rows.length; i++) {
-            ids.push(rows[i][rows[i].length - 1])
+            var id = rows[i][0]
+            ids.push(id)
           }
           $.ajax({
             type: 'POST',
@@ -22,6 +23,7 @@ var ordersTable = $('#pickups').DataTable( {
             data: {ids: ids},
             success: function(res) {
               toastr['success']('Orders fulfilled')
+              window.location.reload()
               
             },
             error: function(){

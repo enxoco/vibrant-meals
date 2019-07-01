@@ -176,6 +176,7 @@
                 <button class="btn btn-primary" id="pickupOrders">Pickups</button>
                 <button class="btn btn-primary" id="deliveryOrders">Deliveries</button>
               <thead class=" text-primary">
+                <th style="display:none"></th>
                 <th>
                   ID
                 </th>
@@ -209,6 +210,8 @@
               <tbody>
                 @each(p in fulfillments)
                 <tr class="filter" data-status="{{p.returns.data[0].id ? 'refunded' : p.status}}" data-method="{{p.metadata.fulfillment_method}}">
+                  <td style="display:none">
+                    {{p.id}}</td>
                   <td>
                     <a href="/admin/orders/{{p.id}}">{{p.metadata.orderId}}</a>
                   </td>
@@ -350,7 +353,11 @@
 <script>
   $(document).ready(function() {
     // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-    demo.initChartsPages();
+    // demo.initChartsPages();
+
+    $('#pending').click()
+    $('#paid').click()
+
   });
 </script>
 </body>

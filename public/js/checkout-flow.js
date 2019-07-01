@@ -472,11 +472,11 @@ function calcShipping() {
 
           }
 
-          toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
+          // toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
         } else if (miles.toFixed(0) < 5) {
           localStorage.shippingCode = 'freeshipping'
           $('.order-shipping').html('0')
-          toastr['success']('You"re all set!')
+          // toastr['success']('You"re all set!')
         }
       }
 
@@ -565,4 +565,8 @@ function anything() {
     })
   })
 
+}
+
+if (localStorage.fulfillment_method === 'delivery') {
+  $('#shippingDetails').show()
 }

@@ -172,11 +172,8 @@ class CheckoutController {
         customer: customer.id
       })
 
-      if (newOrder.orderID) {
-        return response.send({status: 'success'}) 
-      } else {
-        return response.send({status: 'missing order id'})
-      }
+      return response.send({status: 'success'}) 
+
       
     }
     // return response.send({status: 'success'})
