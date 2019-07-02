@@ -1,8 +1,49 @@
+
+$(document).ready(function() {
+   var buttonCommon = {
+      exportOptions: {
+          format: {
+              body: function ( data, row, column, node ) {
+                  // Strip $ from salary column to make it numeric
+                  return removeBlanksAndSpaces(data) 
+              },
+              
+          }
+      }
+   }
+   var exportTable = $('#productNeededExport').DataTable( {
+      select: true,
+      dom: 'Bfrtip',
+      colReorder: true,
+      buttons: [
+        'pdfHtml5',
+        'selectAll',
+        'selectNone',
+        $.extend( true, {}, buttonCommon, {
+         extend: 'csv',
+         filename: 'product_export'
+     } ),
+      ],
+      
+      "columnDefs": [
+         { 
+            "width": "10%", "targets": 0
+         },
+         {
+            "width": "10%", "targets": 1
+         },
+         {
+            "width": "20%", "targets": 2
+         }
+       ]
+   } );
+})
 var ordersTable = $('#pickups').DataTable( {
     select: true,
     dom: 'Bfrtip',
     colReorder: true,
     buttons: [
+
       'csv',
       'pdfHtml5',
       'selectAll',
@@ -35,6 +76,8 @@ var ordersTable = $('#pickups').DataTable( {
       }
     ]
 } );
+
+
 
 $("#fulfilled").on('click', function() {
     $.fn.dataTable.ext.search.pop();
@@ -104,4 +147,7 @@ $('#deliveryOrders').on('click', function() {
     ordersTable.draw();
 });    
 
+function removeBlanksAndSpaces(data){
+  return data.replace(/<br>/g, '').replace(/  /g, '').replace(/^\s*[\r\n]/gm, '')
 
+}

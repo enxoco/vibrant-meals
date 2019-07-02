@@ -148,7 +148,17 @@ class OrderController {
 
         for (var i = 0; i < orders.length; i++) {
             let order = orders[i]
-            let obj = {
+            let items = orders[i].items
+            let filteredItems = []
+            let orderQuantity = 0
+            Object.keys(items).forEach(function (item) {
+                if (items[item].description === 'Shipping' || items[item].type != 'sku') {
+                } else {
+                    orderQuantity += items[item].quantity
+                    filteredItems.push(items[item])
+                }
+            });
+            var obj = {
                 name: order.shipping.name,
                 id: order.metadata.orderId,
                 date: order.metadata.fulfillment_date,
@@ -156,11 +166,13 @@ class OrderController {
                 address: order.shipping.address.line1,
                 city: order.shipping.address.city,
                 state: order.shipping.address.state,
-                items: order.items
+                items: filteredItems,
+                orderQuantity: orderQuantity
             }
 
             ord.push(obj)
         }
+
 
         var itemList = []
         var monList = []

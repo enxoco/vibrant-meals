@@ -1,6 +1,12 @@
 @layout('layout.admin.master')
 @section('content')
+<style>
 
+  li {
+    list-style: none;
+  }
+
+</style>
 <div class="content">
   <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -333,6 +339,7 @@
                     <td>
                       {{o.date}}
                     </td>
+                    <td>
                   </tr>
                   @endeach
                 </tbody>
@@ -352,40 +359,56 @@
                   <table class="table" id="productNeededExport">
                     <thead class=" text-primary">
                       <th>
-                        Customer Name
-                      </th>
-                      <th>
                         Order Id
                       </th>
                       <th>
-                        Shipping Location
+                        Shipping Name
                       </th>
                       <th>
-                        items
+                        Item
                       </th>
+                      <th>
+                        Quantity
+                      </th>
+                      <th>
+                        Order Quantity
+                      </th>
+
                     </thead>
                     <tbody>
                       @each(o in ord)
-                      <tr>
+                      @if($loop.isEven)
+                      <tr class="even" style="background:#f5f5f5;">
+                      @else
+                      <tr class="odd">
+                      @endif
+                      
+                        <td>
+                            @each(i in o.items)
+                            @unless(i.quantity == null)
+                              {{i.parent}}<br />
+                            @endunless
+                          @endeach
+                        </td>
                         <td>
                           {{o.name}}
                         </td>
-                        <td>
-                          {{o.id}}
-                        </td>
-                        <td>
-                          {{o.address}}
-                        </td>
                             <td>
-                                <ul>
-                                  @each(i in o.items)
-                                    @unless(i.quantity == null)
-                                      @unless(i.description === 'Shipping')
-                                        <li>{{i.parent}} X {{i.quantity}}</li>
-                                        @endunless
+                              @each(i in o.items)
+                                @unless(i.quantity == null)
+                                  {{i.parent}}<br />
+                                @endunless
+                              @endeach
+                            </td>
+                            <td>
+                                @each(i in o.items)
+                                  @unless(i.quantity == null)
+                                    {{i.quantity}}<br />
                                   @endunless
-                                  @endeach
-                                </ul>
+                                @endeach
+                              </td>
+                              <td>
+                                {{o.orderQuantity}}
                               </td>
                       </tr>
                       @endeach
