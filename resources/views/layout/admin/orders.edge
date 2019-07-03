@@ -373,6 +373,9 @@
                       <th>
                         Order Quantity
                       </th>
+                      <th>
+                        Delivery/Pickup Date
+                      </th>
 
                     </thead>
                     <tbody>
@@ -384,11 +387,7 @@
                       @endif
                       
                         <td>
-                            @each(i in o.items)
-                            @unless(i.quantity == null)
-                              {{i.parent}}<br />
-                            @endunless
-                          @endeach
+                          {{o.id}}
                         </td>
                         <td>
                           {{o.name}}
@@ -409,6 +408,9 @@
                               </td>
                               <td>
                                 {{o.orderQuantity}}
+                              </td>
+                              <td>
+                                {{o.date}}
                               </td>
                       </tr>
                       @endeach
