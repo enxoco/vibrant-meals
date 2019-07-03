@@ -5,6 +5,13 @@ const _ = require('lodash')
 
 hooks.after.providersBooted(() => {
   const View = use('View')
+  const Exception = use('Exception')
+
+  Exception.handle('HTTP_EXCEPTION', async (error, { response, session }) => {
+
+    return response.send('back')
+    return
+  })
 
   View.global('convertCatName', function(label) {
     
