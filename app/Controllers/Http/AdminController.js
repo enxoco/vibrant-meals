@@ -382,9 +382,10 @@ class AdminController {
 
     async addItem ({request, response}) {
   
-        const {parent_product : product, sku1, sku2, sku3, sku4} = request.all()
+        const {parent_product : product, sku0, sku1, sku2, sku3} = request.all()
 
         const exists = await stripe.products.retrieve(product.product_id)
+        console.log('exists ' + JSON.stringify(exists))
 
         if (exists) {
           let prod = await stripe.products.update(product.product_id, {
@@ -396,10 +397,10 @@ class AdminController {
           })
 
           
-          var resp1 = await this.updateSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins)
-          var resp2 = await this.updateSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins)
-          var resp3 = await this.updateSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins)
-          var resp4 = await this.updateSku(product.product_id, sku4.label, sku4.sku_id, sku4.price, sku4.image ? sku4.image : product.primary_img, sku4.calories, sku4.carbs, sku4.fats, sku4.proteins)
+          var resp1 = await this.updateSku(product.product_id, sku0.label, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
+          var resp2 = sku1 ? await this.updateSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
+          var resp3 = sku2 ? await this.updateSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
+          var resp4 = sku3 ? await this.updateSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
           
         } else {
           let prod = await stripe.products.create({
@@ -412,17 +413,13 @@ class AdminController {
             }
           })
   
-          var resp1 = await this.createSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins)
-          var resp2 = await this.createSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins)
-          var resp3 = await this.createSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins)
-          var resp4 = await this.createSku(product.product_id, sku4.label, sku4.sku_id, sku4.price, sku4.image ? sku4.image : product.primary_img, sku4.calories, sku4.carbs, sku4.fats, sku4.proteins)
+          var resp1 = await this.createSku(product.product_id, sku0.label, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
+          var resp2 = sku1 ? await this.createSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
+          var resp3 = sku2 ? await this.createSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
+          var resp4 = sku3 ? await this.createSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
           
         }
-
-        return response.send({resp1, resp2, resp3, resp4})
-
-
-        return response.send({product, sku1, sku2, sku3, sku4})
+        return response.send({status: 'success'})
 
         
 

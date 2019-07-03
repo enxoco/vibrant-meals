@@ -21,7 +21,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async handle (error, { request, response, view }) {
-    console.log(error.name)
+    console.log(error)
     if (error.name === 'HttpException') {
       return response.send(view.render('Errors.fourOhFour'))
     } else {
