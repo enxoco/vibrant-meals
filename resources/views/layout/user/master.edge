@@ -1925,12 +1925,26 @@ $('#toggleSections').on('click', function(){
     if ($('#collapseOne').hasClass('show')) {
       $('#collapseOne').removeClass('show')
       $('#collapseTwo').addClass('show')
+
+
     } else if ($('#collapseTwo').hasClass('show')) {
-      $('#collapseTwo').removeClass('show')
-      $('#collapseThree').addClass('show')
+      if ($('#firstName').val() != '' && $('#lastName').val() != '' && $('#email-bill').val() != '' && $('#password-bill').val() != '' && $('#password_confirmation').val() != '') {
+        $('#collapseTwo').removeClass('show')
+        $('#collapseThree').addClass('show')
+        $('#headingTwo').css('pointer-events', 'visible')
+        $('#headingThree').css('pointer-events', 'visible')
+      } else {
+        toastr['warning']('Please make sure all fields are filled out')
+      }
+
     } else if ($('#collapseThree').hasClass('show')) {
-      $('#collapseThree').removeClass('show')
-      $('#collapseFour').addClass('show')
+      if ($('#firstName').val() != '' && $('#lastName').val() != '' && $('#email-bill').val() != '' && $('#password-bill').val() != '' && $('#password_confirmation').val() != '' && $('#street-bill').val() != '' && $('#city-bill').val() != '' && $('#state-bill').val() != '' && $('#zip-bill').val() != '') {
+        $('#collapseThree').removeClass('show')
+        $('#collapseFour').addClass('show')
+        $('#headingFour').css('pointer-events', 'visible')
+      } else {
+        toastr['warning']('Please make sure all fields are filled out')
+      }
     } else if ($('#collapseFour').hasClass('show')) {
       $('#collapseFour').removeClass('show')
       $('#collapseFive').addClass('show')

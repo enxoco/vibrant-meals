@@ -87,7 +87,6 @@ function updateCartDiv() {
     if (localStorage.fulfillment_method == 'pickup') {
       if (localStorage.fulfillment_day) {
         $('#delivery-fee').hide()
-
         $('.delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
 
         $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
@@ -102,21 +101,13 @@ function updateCartDiv() {
 
 
     }
-
-    
-
   }
 
-
-
-    if (localStorage.pickupLocation && localStorage.pickupLocation != "undefined") {
-      
-      
+    if (localStorage.pickupLocation && localStorage.pickupLocation != "undefined") {      
       var pickup = JSON.parse(localStorage.pickupLocation).desc
       $('.cart-icon-label.pickup').html(pickup)
     } else {
       $('.cart-icon-label.ls').html()
-      
     }
 
     var cartCount = 0
@@ -137,8 +128,6 @@ function updateCartDiv() {
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
           $('[data-toggle="tooltip"]').tooltip('enable')
           $('.cart-minimum').show()
-
-
       } else {
         $('.checkout-button').removeAttr('disabled')
         $('#toggleSections').removeAttr('disabled')
@@ -151,9 +140,6 @@ function updateCartDiv() {
 
       localStorage.setItem('cartCount', cartCount)
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
-
-
-
         var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
         <div class="col-3 pt-2 card-user">\
           <div class="row mr-0 ml-0 pb-3 pl-1 pointer">\
@@ -260,15 +246,12 @@ function updateCartDiv() {
       $(this).attr('data-price', t.price)
       $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
     })
-
     x.each(function(){
       $(this).attr('data-sku', t.sku)
       $(this).attr('data-img_url', t.img_url)
       $(this).attr('data-price', t.price)
       $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
     })
-
-
     y.each(function(){
       $(this).attr('data-sku', t.sku)
       $(this).attr('data-img_url', t.img_url)
@@ -276,8 +259,4 @@ function updateCartDiv() {
       $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
       $(this).find('.modal-card-price').text('$' + t.price / 100)
     })
-
-
   })
-
-

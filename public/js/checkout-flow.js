@@ -57,22 +57,34 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   var pickupDaysModal = $('#pickupDaysList')
 
 
-  var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('MMM DD')
-  var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
-  var thisWed = moment(wednesday, 'dddd MMMM DD YYYY').format('MMM DD')
-  var nextWed = moment(wednesday, 'dddd MMMM DD YYYY').add(1, 'week').format('MMM DD')
+  var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
+  var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
+  var thisWed = moment(wednesday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
+  var nextWed = moment(wednesday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
 
   let dates = [thisMon, nextMon, thisWed, nextWed]
   let _sortedDates = dates.sort(function (a, b) {
     return moment(a).format('X') - moment(b).format('X')
-  });
+  })
+
   pickupDaysModal.html('<ul class="list-group">')
 
+  for (var i = 0; i < _sortedDates.length; i++) {
+    let dayObj = _sortedDates[i].split(' ')
+    let day = dayObj[0]
+    let date = dayObj[1] + ' ' + dayObj[2]
+    if (i === 0) {
+      var isActive = 'active'
+    } else {
+      var isActive = null
+    }
+    pickupDaysModal.append('<li class="list-group-item clickable '+isActive+'" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+  }
 
-  pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="' + thisMon + '"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">' + thisMon + '</div></div></div></li>')
-  pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + thisWed + '" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + thisWed + '</div></div></div></li>')
-  pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="' + nextMon + '"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">' + nextMon + '</div></div></div></li>')
-  pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + nextWed + '"><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + nextWed + '</div></div></div></li>')
+  // pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="' + thisMon + '"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">' + thisMon + '</div></div></div></li>')
+  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + thisWed + '" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + thisWed + '</div></div></div></li>')
+  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="' + nextMon + '"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">' + nextMon + '</div></div></div></li>')
+  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + nextWed + '"><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + nextWed + '</div></div></div></li>')
   pickupDaysModal.append('<li class="list-group-item button-group"><h4 class="mb-3 d-flex justify-content-center">Pick a time</h4>\
     <div class="btn-group btn-group-toggle deliveryWindow" data-toggle="buttons">\
         <label class="btn btn-secondary btn-lg active time-slot-am">\
@@ -86,10 +98,10 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
 
 
-  $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
-  $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
-  $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
-  $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
+  // $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
+  // $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
+  // $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
+  // $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
   let def = $('li.list-group-item.clickable.active').data()
   localStorage.fulfillment_day = def.day
   localStorage.fulfillment_date = def.date
@@ -267,6 +279,7 @@ function processOrder(card, id) {
 
 
 $('document').on('click', '#createToken', function () {
+  
   $(this).html('Processing order... <div id="loading"></div>')
   $(this).attr('disabled', 'disabled')
 
@@ -570,3 +583,15 @@ function anything() {
 if (localStorage.fulfillment_method === 'delivery') {
   $('#shippingDetails').show()
 }
+
+$('li.list-group-item.clickable').on('click', function(){
+  let def = $('li.list-group-item.clickable.active').data()
+  localStorage.fulfillment_day = def.day
+  localStorage.fulfillment_date = def.date
+  $.ajax({
+    type: 'POST',
+    url: '/account/fulfillmethod/update',
+    data: {pref: def.day},
+    success: console.log('Options updated')
+  })
+})
