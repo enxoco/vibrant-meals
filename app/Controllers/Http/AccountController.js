@@ -9,6 +9,20 @@ const Database = use('Database')
 
 class AccountController {
 
+  async updateFulfillmentDay ({request, response, auth}) {
+    const { fulfillment_day } = request.all()
+
+    if (auth) {
+      await Database
+        .table('users')
+        .update({
+          fulfillment_day: fulfillment_day,
+        })
+        .where('id', auth.user.id)
+        return response.send({status: 'Updated successfully'})
+    }
+  }
+
   async updateFulfillmentMethod ({request, response, auth}) {
 
     var method = request.all()
@@ -33,18 +47,18 @@ class AccountController {
           .table('users')
           .update({'fulfillment_method': 'delivery'})
           .where('id', auth.user.id)
-          var update = await stripe.customers.update(stripe_id, {
+          var update = await stripe.customers.update(auth.user.stripe_id, {
             metadata: {
               fulfillment_method: 'delivery'
             }
           })
       }
-      if (method == 'monday' || method == 'wednesday') {
+      if (method === 'Monday' || method === 'Wednesday') {
         await Database
           .table('users')
           .update({'fulfillment_day': method})
           .where('id', auth.user.id)
-        var update = await stripe.customers.update(stripe_id, {
+        var update = await stripe.customers.update(auth.user.stripe_id, {
           metadata: {
             fulfillment_day: method
           }

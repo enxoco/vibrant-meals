@@ -77,6 +77,7 @@ Route.group(() => {
 
   Route.get('/account', 'Auth/AuthController.viewProfile').as('user.account')
   Route.post('/account/fulfillmethod/update', 'AccountController.updateFulfillmentMethod')
+  Route.post('/account/fulfill/day/update', 'AccountController.updateFulfillmentDay')
   Route.post('/account/updateOrderPref', 'AccountController.updateOrderPref')
   Route.post('/account/profile', 'AccountController.update').as('account.update')
   Route.post('/account/password', 'AccountController.changePassword').as('account.updatePwd')

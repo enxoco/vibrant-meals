@@ -24,7 +24,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
     case 'Monday':
       wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
       break;
-
     case 'Tuesday':
       wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
       break;
@@ -32,20 +31,20 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
   if (moment().format('dddd') == 'Friday') {
     let format = 'HH:mm:ss'
-
     let t = moment().format(format)
     let time = moment(t, format)
     beforeTime = moment('00:00:00', format),
       afterTime = moment('08:00:00', format);
 
     if (time.isBetween(beforeTime, afterTime)) {
-
       monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
     } else {
-
       monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
-
     }
+  }
+  if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
+    monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+
   }
 
 
@@ -73,7 +72,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
     let dayObj = _sortedDates[i].split(' ')
     let day = dayObj[0]
     let date = dayObj[1] + ' ' + dayObj[2]
-    if (i === 0) {
+    if (localStorage.fulfillment_date === date || i === 0) {
       var isActive = 'active'
     } else {
       var isActive = null
@@ -102,9 +101,9 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   // $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
   // $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
   // $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
-  let def = $('li.list-group-item.clickable.active').data()
-  localStorage.fulfillment_day = def.day
-  localStorage.fulfillment_date = def.date
+  // let def = $('li.list-group-item.clickable.active').data()
+  // localStorage.fulfillment_day = def.day
+  // localStorage.fulfillment_date = def.date
 }
 localStorage.checkoutInitiated = 1
 nextAvalFulfill()
@@ -590,8 +589,8 @@ $('li.list-group-item.clickable').on('click', function(){
   localStorage.fulfillment_date = def.date
   $.ajax({
     type: 'POST',
-    url: '/account/fulfillmethod/update',
-    data: {pref: def.day},
+    url: '/account/fulfill/day/update',
+    data: {fulfillment_day: def.day},
     success: console.log('Options updated')
   })
 })
