@@ -972,7 +972,10 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{
 mymap.setView(new L.LatLng(35.049675, -85.3136527), 13);
 var retailMakerMain = L.marker(["35.068908", "-85.312839"]).addTo(mymap);
 
-retailMakerMain.bindPopup("Vibrant Meals Kitchen<br />601 Cherokee Blvd<br />Chattanooga TN<br />Open M-F 8AM-7PM SAT 9AM-4PM").openPopup();
+retailMakerMain.bindPopup("Vibrant Meals Kitchen Northshore<br />601 Cherokee Blvd<br />Chattanooga TN<br />Open M-F 8AM-7PM SAT 9AM-4PM").openPopup();
+
+var retailSouthSide = L.marker(["35.0353912", "-85.3051132"]).addTo(mymap)
+retailSouthSide.bindPopup("Vibrant Meals Southside <br />203 East Main Street <br />Chattanooga")
 
 var ymca = L.marker(["35.049675", "-85.312839"]).addTo(mymap);
 ymca.bindPopup("YMCA Downtown <br /> 301 West 6th Street<br />Chattanooga")
