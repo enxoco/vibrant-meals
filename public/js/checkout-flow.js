@@ -582,3 +582,7 @@ $('li.list-group-item.clickable').on('click', function(){
     success: console.log('Options updated')
   })
 })
+
+$('#pickupRadio').on('click', function(){
+  $('#shippingDetails').hide()
+})

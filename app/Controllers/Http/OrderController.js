@@ -176,7 +176,7 @@ class OrderController {
 
         var itemList = []
         var monList = []
-        var wedList = []
+        var thursList = []
         
         const orderCount = orders.length
         
@@ -211,7 +211,7 @@ class OrderController {
                         if (orders[i].metadata.fulfillment_day == 'monday') {
                             monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
                         } else if(orders[i].metadata.fulfillment_day == 'thursday') {
-                            wedList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                            thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
                         }
                     }
                 }
@@ -228,7 +228,7 @@ class OrderController {
             return r
         }, new Map).values()]
 
-        var wedResult = [...wedList.reduce((r, e) => {
+        var thursResult = [...thursList.reduce((r, e) => {
             let k = `${e.item}`
             if (!r.has(k)) r.set(k, { ...e, count: 1 })
             else r.get(k).count++
@@ -239,7 +239,7 @@ class OrderController {
         monResult = monResult.sort(function (a, b) {
             return b.count - a.count
         })
-        wedResult = wedResult.sort(function (a, b) {
+        thursResult = thursResult.sort(function (a, b) {
             return b.count - a.count
         })
 
