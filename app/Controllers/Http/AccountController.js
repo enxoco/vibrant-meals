@@ -53,7 +53,7 @@ class AccountController {
             }
           })
       }
-      if (method === 'Monday' || method === 'Wednesday') {
+      if (method === 'Monday' || method === 'Thursday') {
         await Database
           .table('users')
           .update({'fulfillment_day': method})

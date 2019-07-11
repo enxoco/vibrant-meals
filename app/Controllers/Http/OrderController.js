@@ -137,11 +137,11 @@ class OrderController {
         moreOrders ? moreorders = moreOrders.data : null
 
         var allOrdersMonday = _.pickBy(orders, function(obj){
-            return obj.metadata.fulfillment_day == 'monday'
+            return obj.metadata.fulfillment_day === 'monday'
         })
         
-        var allOrdersWednesday = _.pickBy(orders, function(obj){
-            return obj.metadata.fulfillment_day == 'wednesday'
+        var allOrdersThursday = _.pickBy(orders, function(obj){
+            return obj.metadata.fulfillment_day === 'thursday'
         })
 
         let ord = []
@@ -181,7 +181,7 @@ class OrderController {
         const orderCount = orders.length
         
         var deliveries = 0
-        var wednesdayFulfillments = []
+        var thursdayFulfillments = []
         var mondayFulfillments = []
         var fulfillments = []
         var pickups = 0
@@ -198,8 +198,8 @@ class OrderController {
                 fulfillments.push(orders[i])
                 deliveries++
             }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'wednesday') {
-                wednesdayFulfillments.push(orders[i])
+            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'thursday') {
+                thursdayFulfillments.push(orders[i])
             }
             if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'monday') {
                 mondayFulfillments.push(orders[i])
@@ -210,7 +210,7 @@ class OrderController {
                     for (var z = 0; z < item.quantity; z++) {
                         if (orders[i].metadata.fulfillment_day == 'monday') {
                             monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                        } else if(orders[i].metadata.fulfillment_day == 'wednesday') {
+                        } else if(orders[i].metadata.fulfillment_day == 'thursday') {
                             wedList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
                         }
                     }
@@ -250,12 +250,12 @@ class OrderController {
             orderCount, 
             deliveries, 
             pickups, 
-            wednesdayFulfillments, 
+            thursdayFulfillments, 
             mondayFulfillments, 
             revenue, 
             fulfillments,
             monResult,
-            wedResult,
+            thursResult,
             ord
         })
     }

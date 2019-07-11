@@ -150,8 +150,8 @@
             </div>
             <div class="col-7 col-md-8">
               <div class="numbers">
-                <p class="card-category">Wednesday Fulfillments</p>
-                <p class="card-title">{{wednesdayFulfillments.length}}
+                <p class="card-category">Thursday Fulfillments</p>
+                <p class="card-title">{{thursdayFulfillments.length}}
                   <p>
               </div>
             </div>
@@ -304,7 +304,7 @@
     <div class="col-6">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title"> Product needed for Wednesday {{wedResult[0].date ? wedResult[0].date : NULL}}</h4>
+            <h4 class="card-title"> Product needed for Thursday {{thursResult[0].date ? thursResult[0].date : NULL}}</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -327,7 +327,7 @@
                   </th>
                 </thead>
                 <tbody>
-                  @each(o in wedResult)
+                  @each(o in thursResult)
   
                   <tr>
                     <td>

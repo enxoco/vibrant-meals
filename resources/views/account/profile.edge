@@ -149,12 +149,12 @@
           </div>
           <div class="col-6 p-0">
             <div class="radio">
-              <input id="wednesday-switch" name="fulfillmentDay" type="radio" value="wednesday"
-                @if(customer.metadata.fulfillment_day=='wednesday') 
+              <input id="thursday-switch" name="fulfillmentDay" type="radio" value="thursday"
+                @if(customer.metadata.fulfillment_day === 'thursday') 
                   checked 
                 @endif
                 >
-              <label for="wednesday-switch" class="radio-label">Wednesday</label>
+              <label for="thursday-switch" class="radio-label">Thursday</label>
             </div>
           </div>
         </div>

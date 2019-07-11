@@ -787,9 +787,9 @@ $(function () {
        if ($(this).val() == 'monday') {
         localStorage.fulfillment_day = $(this).val()
 
-         $('#wednesday-switch').prop('checked', false)
+         $('#thursday-switch').prop('checked', false)
        }
-       if ($(this).val() == 'wednesday') {
+       if ($(this).val() === 'thursday') {
         localStorage.fulfillment_day = $(this).val()
 
          $('#monday-switch').prop('checked', false)

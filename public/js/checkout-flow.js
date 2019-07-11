@@ -15,17 +15,17 @@ $('.shipping-form :input').on('change', function () {
 })
 
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
-  let wednesday
+  let thursday
   let monday
 
   monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
-  wednesday = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+  thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
   switch (moment().format('dddd')) {
     case 'Monday':
-      wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+      thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
       break;
     case 'Tuesday':
-      wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+      thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
       break;
   }
 
@@ -50,7 +50,7 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
   var result = {
     monday: monday,
-    wednesday: wednesday
+    thursday: thursday
   }
 
   var pickupDaysModal = $('#pickupDaysList')
@@ -58,10 +58,10 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
   var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
   var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
-  var thisWed = moment(wednesday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
-  var nextWed = moment(wednesday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
+  var thisThurs = moment(thursday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
+  var nextThurs = moment(thursday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
 
-  let dates = [thisMon, nextMon, thisWed, nextWed]
+  let dates = [thisMon, nextMon, thisThurs, nextThurs]
   let _sortedDates = dates.sort(function (a, b) {
     return moment(a).format('X') - moment(b).format('X')
   })
@@ -80,10 +80,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
     pickupDaysModal.append('<li class="list-group-item clickable '+isActive+'" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
   }
 
-  // pickupDaysModal.append('<li class="list-group-item clickable active" data-day="monday" data-date="' + thisMon + '"><div class="row"><div class="col date-list-item">Monday</div><div class="col store-hours is-pulled-right">' + thisMon + '</div></div></div></li>')
-  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + thisWed + '" ><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + thisWed + '</div></div></div></li>')
-  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="monday" data-date="' + nextMon + '"><div class="row"><div class="col date-list-item" >Monday</div><div class="col store-hours is-pulled-right">' + nextMon + '</div></div></div></li>')
-  // pickupDaysModal.append('<li class="list-group-item clickable" data-day="wednesday" data-date="' + nextWed + '"><div class="row"><div class="col date-list-item">Wednesday</div><div class="col store-hours is-pulled-right">' + nextWed + '</div></div></div></li>')
   pickupDaysModal.append('<li class="list-group-item button-group"><h4 class="mb-3 d-flex justify-content-center">Pick a time</h4>\
     <div class="btn-group btn-group-toggle deliveryWindow" data-toggle="buttons">\
         <label class="btn btn-secondary btn-lg active time-slot-am">\
@@ -96,14 +92,6 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   pickupDaysModal.append('</ul>')
 
 
-
-  // $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
-  // $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
-  // $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
-  // $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
-  // let def = $('li.list-group-item.clickable.active').data()
-  // localStorage.fulfillment_day = def.day
-  // localStorage.fulfillment_date = def.date
 }
 localStorage.checkoutInitiated = 1
 nextAvalFulfill()

@@ -467,15 +467,15 @@ $(document).on('click', '#pickupDay', function(){ // Store users pickup day pref
 }) 
 
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
-  var wednesday
+  var thursday
   var monday 
   var day = moment().format('dddd')
   var dayTwo = moment().format('dddd')
 
   if (day == 'Monday' || day == 'Tuesday') { // If we are still prior to cut off date, allow fulfillment this week
-    var wednesday = moment().add(0, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+    var thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
   } else {// We have passed the cut off for this week, need to schedule for next week.
-    var wednesday = moment().add(1, 'weeks').startOf('isoweek').add(2, 'days').format('dddd MMMM DD YYYY')
+    var thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
   }
   
   if (dayTwo == 'Friday' || day == 'Saturday' || day == 'Sunday' || day == 'Monday') {
@@ -485,26 +485,26 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   }
   var result = {
     monday: monday,
-    wednesday: wednesday
+    thursday: thursday
   }
 
   var pickupDayModal = $('#pickupDaysList')
   var thisMon = moment(monday).format('MMM DD')
   var nextMon = moment(monday).add(1, 'week').format('MMM DD')
-  var thisWed = moment(wednesday).format('MMM DD')
-  var nextWed = moment(wednesday).add(1, 'week').format('MMM DD')
+  var thisThurs = moment(thursday).format('MMM DD')
+  var nextThurs = moment(thursday).add(1, 'week').format('MMM DD')
   pickupDayModal.html('')
   pickupDayModal.append('<div class="listing-item"><div class="list-item"><span-class="is-pulled-left">Monday<span><span class="store-hours is-pulled-right">'+thisMon+'</span></div></div>')
-  pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+thisWed+'</span></div></div>')
+  pickupDayModal.append('<div class="listing-item"><div class="list-item">Thursday<span class="store-hours is-pulled-right">'+thisThurs+'</span></div></div>')
   pickupDayModal.append('<div class="listing-item"><div class="list-item">Monday<span class="store-hours is-pulled-right">'+nextMon+'</span></div></div>')
-  pickupDayModal.append('<div class="listing-item"><div class="list-item">Wednesday<span class="store-hours is-pulled-right">'+nextWed+'</span></div></div>')
+  pickupDayModal.append('<div class="listing-item"><div class="list-item">Thursday<span class="store-hours is-pulled-right">'+nextThurs+'</span></div></div>')
 
 
   
   $('#pickup-monday').attr('data-date', moment(monday).format('MM-DD-YYYY'))
   $('#pickup-monday').html(moment(monday).format('dddd MMMM DD'))
-  $('#pickup-wednesday').attr('data-date', moment(wednesday).format('MM-DD-YYYY'))
-  $('#pickup-wednesday').html(moment(wednesday).format('dddd MMMM DD'))
+  $('#pickup-thursday').attr('data-date', moment(thursday).format('MM-DD-YYYY'))
+  $('#pickup-thursday').html(moment(thursday).format('dddd MMMM DD'))
 
 }
 
