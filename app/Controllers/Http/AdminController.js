@@ -325,7 +325,7 @@ class AdminController {
         return view.render('admin.items', {items: prod, categories})
     }
 
-    async createSku (product, label, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
+    async createSku (product, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
       if (!id) {
         return
       }
@@ -344,7 +344,6 @@ class AdminController {
         },
         ...(sku_image && {image: sku_image}),
         metadata: {
-          label: label,
           calories: calories,
           carbs: carbs,
           proteins: proteins,
@@ -356,7 +355,7 @@ class AdminController {
       return sku
     }
 
-    async updateSku (product, label, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
+    async updateSku (product, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0) {
       if (!id) {
         return
       }
@@ -368,7 +367,6 @@ class AdminController {
         price: parseInt(price),
         ...(sku_image && {image: sku_image}),
         metadata: {
-          label: label,
           calories: calories,
           carbs: carbs,
           proteins: proteins,
@@ -384,41 +382,43 @@ class AdminController {
   
         const {parent_product : product, sku0, sku1, sku2, sku3} = request.all()
 
-        const exists = await stripe.products.retrieve(product.product_id)
-        console.log('exists ' + JSON.stringify(exists))
-
-        if (exists) {
+        try {
+          let query = await stripe.products.retrieve(product.product_id)
+          console.log('product exists')
           let prod = await stripe.products.update(product.product_id, {
             name: product.name,
             description: product.description,
             metadata: {
-                primary_category: product.category
+                primary_category: product.category,
             }
           })
 
           
-          var resp1 = await this.updateSku(product.product_id, sku0.label, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
-          var resp2 = sku1 ? await this.updateSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
-          var resp3 = sku2 ? await this.updateSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
-          var resp4 = sku3 ? await this.updateSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
-          
-        } else {
+          var resp1 = await this.updateSku(product.product_id, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
+          var resp2 = sku1 ? await this.updateSku(product.product_id, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
+          var resp3 = sku2 ? await this.updateSku(product.product_id, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
+          var resp4 = sku3 ? await this.updateSku(product.product_id, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
+          console.log(resp1)
+        } catch(error) {
           let prod = await stripe.products.create({
             name: product.name,
             type: 'good',
             description: product.description,
             id: product.product_id,
             metadata: {
-                primary_category: product.category
+                primary_category: product.category,
             }
           })
   
-          var resp1 = await this.createSku(product.product_id, sku0.label, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
-          var resp2 = sku1 ? await this.createSku(product.product_id, sku1.label, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
-          var resp3 = sku2 ? await this.createSku(product.product_id, sku2.label, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
-          var resp4 = sku3 ? await this.createSku(product.product_id, sku3.label, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
-          
+          var resp1 = await this.createSku(product.product_id, sku0.sku_id, sku0.price, sku0.image ? sku0.image : product.primary_img, sku0.calories, sku0.carbs, sku0.fats, sku0.proteins)
+          var resp2 = sku1 ? await this.createSku(product.product_id, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
+          var resp3 = sku2 ? await this.createSku(product.product_id, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
+          var resp4 = sku3 ? await this.createSku(product.product_id, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
+          console.log(resp1)
+
         }
+        
+
         return response.send({status: 'success'})
 
         

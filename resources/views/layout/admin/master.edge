@@ -479,7 +479,7 @@ input#demo1 {
             }
           ]
       } );
-      $('#opens, #closes').combodate()
+      // $('#opens, #closes').combodate()
 } );
 $('.update-billing').on('click', function(){
 		console.log('hello')
@@ -570,9 +570,20 @@ $('.order-details-update').on('click', function(){
 
 feather.replace()
 function updateSkuLabel(id, value) {
+  var productId = ''
+  productId = value + '_'
 
-  var productId = $('input.product-id.muted').val()
+   productId += $('input[name=product_id]').val()
+   console.log(productId)
+   $('input[name=product_id]').val(productId)
+    // $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
+}
+
+function appendSkuLabel(id, value) {
+  var productId = $('input[name=product_id]').val()
+  productId += '_' + value
     $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
+
 }
 
 

@@ -111,7 +111,7 @@
               <div class="row">
                 <div class="col-md-4 col-lg-4 mx-auto">
                   <div class="form-group">
-                    <input type="text" name="name" placeholder="Name" required class="form-control"
+                    <input type="text" name="name" id="productName" placeholder="Name" required class="form-control"
                     value="{{(prod.name ? prod.name :  NULL)}}"
                     >
                   </div>
@@ -135,6 +135,25 @@
 
                   </div>
                 </div>
+
+                <div class="col-md-4 col-lg-4 mx-auto">
+                    <div class="form-group">
+                      <select class="form-control muted" name="label" onchange="updateSkuLabel({{$loop.index}}, this.value)">
+                        @unless(prod)
+                        <option>Choose a label</option>
+                        @endunless
+                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite'])
+                          <option 
+                          @if(prod.metadata.label == cat)
+                            selected
+                          @endif
+                          name="{{cat}}" value="{{cat}}"
+                          >{{capitalize(cat).split(/(?=[A-Z])/).join(" ")}}</option>
+                          @endeach
+                      </select>
+  
+                    </div>
+                  </div>
                 <div class="col-10 mx-auto">
                   <textarea class="form-control" name="description" placeholder="Product Description" rows="4">{{prod.description ? prod.description.trim() : NULL}}
                   </textarea>
@@ -152,6 +171,7 @@
 
       <hr class="mb-3">
       <!-- First Sku -->
+      @if(sku)
       @each(s in sku)      
       <section class="comSection comSection--light">
           <h5 class="card-title">Sku Info</h5>
@@ -161,7 +181,7 @@
             <div class="row">
               <div class="col-md-4 col-lg-4 mx-auto">
                 <div class="form-group">
-                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="updateSkuLabel({{$loop.index}}, this.value)" />
+                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel({{$loop.index}}, this.value)" />
                 </div>
               </div>
               <div class="col-md-4 col-lg-4 mx-auto">
@@ -212,6 +232,123 @@
 
         <hr class="mb-3">
         @endeach
+        @else
+        <section class="comSection comSection--light">
+            <h5 class="card-title">Sku Info</h5>
+            <form id="sku0">
+
+              <input class="sku-id muted" id="sku0_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
+  
+              <div class="row">
+                <div class="col-md-4 col-lg-4 mx-auto">
+                  <div class="form-group">
+                    <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('0', this.value)" />
+                  </div>
+                </div>
+                <div class="col-md-4 col-lg-4 mx-auto">
+                  <div class="form-group">
+                    <input type="text" name="price" placeholder="Price" required class="form-control" value="{{s.price ? currency(s.price, true) : NULL}}">
+                  </div>
+                </div>
+          
+          
+              </div>
+              <div class="row">
+          
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Calories</label>
+                    <input type="text" class="form-control" name="calories" placeholder="Calories"
+                      value="{{s.metadata.calories}}">
+                  </div>
+          
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Carbs</label>
+                    <input type="text" class="form-control" name="carbs" placeholder="Carbs"
+                      value="{{s.metadata.carbs}}">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Proteins</label>
+                    <input type="text" class="form-control" name="proteins" placeholder="Proteins"
+                      value="{{s.metadata.proteins}}">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Fats</label>
+                    <input type="text" class="form-control" name="fats" placeholder="Fats"
+                      value="{{s.metadata.fats}}">
+                  </div>
+          
+                </div>
+          
+              </div>
+          
+            </form>
+          </section>
+          <hr class="mb-3">
+          <section class="comSection comSection--light">
+              <h5 class="card-title">Sku Info</h5>
+              <form id="sku1">
+
+                <input class="sku-id muted" id="sku{{$loop.index}}_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
+    
+                <div class="row">
+                  <div class="col-md-4 col-lg-4 mx-auto">
+                    <div class="form-group">
+                      <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="updateSkuLabel({{$loop.index}}, this.value)" />
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-lg-4 mx-auto">
+                    <div class="form-group">
+                      <input type="text" name="price" placeholder="Price" required class="form-control" value="{{s.price ? currency(s.price, true) : NULL}}">
+                    </div>
+                  </div>
+            
+            
+                </div>
+                <div class="row">
+            
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Calories</label>
+                      <input type="text" class="form-control" name="calories" placeholder="Calories"
+                        value="{{s.metadata.calories}}">
+                    </div>
+            
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Carbs</label>
+                      <input type="text" class="form-control" name="carbs" placeholder="Carbs"
+                        value="{{s.metadata.carbs}}">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Proteins</label>
+                      <input type="text" class="form-control" name="proteins" placeholder="Proteins"
+                        value="{{s.metadata.proteins}}">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Fats</label>
+                      <input type="text" class="form-control" name="fats" placeholder="Fats"
+                        value="{{s.metadata.fats}}">
+                    </div>
+            
+                  </div>
+            
+                </div>
+            
+              </form>
+            </section>
+          @endif
 
     </div>
 
@@ -292,8 +429,9 @@
 
           });
           $(document).ready(function () {
-            $('input[name=name]').on('focusout', function () {
+            $('#productName').on('input', function() {
               var productId = $(this).val()
+              console.log(productId)
               productId = productId.replace(/[!@#$%^&*]/g, "").toLowerCase().replace(/ /g, "_")
 
               $('.product-id').val(productId)
