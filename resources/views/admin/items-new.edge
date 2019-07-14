@@ -171,6 +171,7 @@
 
       <hr class="mb-3">
       <!-- First Sku -->
+      {{toJSON(prod)}}
       @if(sku)
       @each(s in sku)      
       <section class="comSection comSection--light">
@@ -295,12 +296,12 @@
               <h5 class="card-title">Sku Info</h5>
               <form id="sku1">
 
-                <input class="sku-id muted" id="sku{{$loop.index}}_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
+                <input class="sku-id muted" id="sku1_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
     
                 <div class="row">
                   <div class="col-md-4 col-lg-4 mx-auto">
                     <div class="form-group">
-                      <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="updateSkuLabel({{$loop.index}}, this.value)" />
+                      <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('1', this.value)" />
                     </div>
                   </div>
                   <div class="col-md-4 col-lg-4 mx-auto">

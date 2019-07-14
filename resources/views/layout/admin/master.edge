@@ -581,7 +581,6 @@ function updateSkuLabel(id, value) {
 
 function appendSkuLabel(id, value) {
   var productId = $('input[name=product_id]').val()
-  productId += '_' + value
     $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
 
 }

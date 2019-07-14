@@ -338,6 +338,7 @@ class AdminController {
         id: id,
         price: parseInt(price),
         currency: 'usd',
+        attributes: {'style': 'default'}, // Needed to create multiple skus under single product with current Stripe API
         inventory: {
           type: 'finite',
           quantity: 9000,
@@ -405,6 +406,7 @@ class AdminController {
             type: 'good',
             description: product.description,
             id: product.product_id,
+            attributes: ['style'],
             metadata: {
                 primary_category: product.category,
             }
@@ -414,8 +416,6 @@ class AdminController {
           var resp2 = sku1 ? await this.createSku(product.product_id, sku1.sku_id, sku1.price, sku1.image ? sku1.image : product.primary_img, sku1.calories, sku1.carbs, sku1.fats, sku1.proteins) : null
           var resp3 = sku2 ? await this.createSku(product.product_id, sku2.sku_id, sku2.price, sku2.image ? sku2.image : product.primary_img, sku2.calories, sku2.carbs, sku2.fats, sku2.proteins) : null
           var resp4 = sku3 ? await this.createSku(product.product_id, sku3.sku_id, sku3.price, sku3.image ? sku3.image : product.primary_img, sku3.calories, sku3.carbs, sku3.fats, sku3.proteins) : null
-          console.log(resp1)
-
         }
         
 
