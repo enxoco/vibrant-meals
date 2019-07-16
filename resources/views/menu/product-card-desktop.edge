@@ -20,8 +20,10 @@ data-toggle="modal" data-target="#{{item.id}}"
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               @each(sku in item.skus.data)
+
               @if(sku.price)
-                <a class="dropdown-item price-change no-modal" href="#" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
+              
+                <a class="dropdown-item price-change no-modal" href="#" data-macros="{{toJSON(sku.metadata)}}" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
                     {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}
                   </a>
               @endif
@@ -33,8 +35,12 @@ data-toggle="modal" data-target="#{{item.id}}"
 </div>
 <div class="card-footer">
   <div class="button-container">
-    <div class="row px-2">    
+    <div class="row px-2 macros" ">   
+      <div class="col-10">
+        <div class="row" id="macros-{{item.id}}">
       {{nutritionFooterDesktop(item.skus.data[0].metadata)}}  
+        </div>
+      </div>
         <div class="col">
           <a class="checkout-prompt-1"
             data-id="{{item.id}}"

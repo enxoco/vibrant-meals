@@ -228,10 +228,46 @@ function updateCartDiv() {
   */
 
   $('.price-change').on('click', function(e){
+
+
     e.preventDefault()
     var t = $(this).data()
     let id = $(this).closest('.card-product').data('id')
     let btn = $('body').find(`[data-id='button_${id}']`)
+    let macro = t.macros
+    var calories = 0
+    var proteins = 0
+    var fats = 0
+    var carbs = 0
+    if (macro.calories) calories = macro.calories
+    if (macro.proteins) proteins = macro.proteins
+    if (macro.fats) fats = macro.fats
+    if (macro.carbs) carbs = macro.carbs
+    let div = '<div class="col pr-0"><h5>' + calories  + 'g<br /><small>Calories</small></h5></div>\
+    <div class="col pr-0"><h5>' + proteins  + 'g<br /><small>Proteins</small></h5></div>\
+    <div class="col pr-0"><h5>' + fats + 'g<br /><small>Fats</small></h5></div>\
+    <div class="col pr-0 d-none d-md-none d-lg-none d-xl-flex"><h5>'+ carbs  + 'g<br /><small>Carbs</small></h5></div>'
+
+    let footerDiv = '<div class="col mx-auto" style="text-align:center;">\
+    <strong>'+carbs+'</strong>\
+    <br>\
+    Calories\
+    </div>\
+    <div class="col mx-auto" style="text-align:center;">\
+    <strong>'+calories+'</strong>\
+    <br>\
+    Fats\
+    </div>\
+    <div class="col mx-auto" style="text-align:center;">\
+    <strong>'+proteins+'</strong>\
+    <br>\
+    Protein\
+    </div>\
+    <div class="col mx-auto" style="text-align:center;">\
+    <strong>'+carbs+'</strong>\
+    <br>\
+    Carbs\
+    </div>'
 
     btn.text(t.name)
     //Update price on product card
@@ -240,11 +276,14 @@ function updateCartDiv() {
     var x = $('body').find('.card[data-id="'+id+'"]')
     var y = $('body').find('.modal[data-id="'+id+'"]')
 
+    $('#macros-' + id).html(div)
+    $('#macro-card-' + id).html(footerDiv)
     u.each(function(){
       $(this).attr('data-sku', t.sku)
       $(this).attr('data-img_url', t.img_url)
       $(this).attr('data-price', t.price)
       $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
+      $(this).find('Calories').html(macro.calories)
     })
     x.each(function(){
       $(this).attr('data-sku', t.sku)

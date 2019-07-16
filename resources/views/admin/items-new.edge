@@ -224,6 +224,14 @@
                 </div>
         
               </div>
+              <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Sugars</label>
+                    <input type="text" class="form-control" name="sugars" placeholder="Sugars"
+                      value="{{s.metadata.sugars}}">
+                  </div>
+          
+                </div>
         
             </div>
         
@@ -285,6 +293,14 @@
                   </div>
           
                 </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Sugars</label>
+                      <input type="text" class="form-control" name="sugars" placeholder="Sugars"
+                        value="{{s.metadata.sugars}}">
+                    </div>
+            
+                  </div>
           
               </div>
           
@@ -354,24 +370,7 @@
           })
 
 
-          $("select#variation").change(function () {
-            var form = $('#item-variations')
-            form.html('<form id="variation_1" ><ul id="variation-1">\
-        <input type="text" name="name" placeholder="Name" required />\
-                <input type="text" name="short_name" placeholder="Short Description" />\
-                <input type="number" name="price" placeholder="Price" />\
-                <input type="text" name="quantity" placeholder="Quantity" />\
-                <input type="text" name="category" placeholder="Category" />\
-                <textarea name="description" Placeholder="Enter item description"></textarea>\
-                <hr />\
-                <input type="text" name="'+ $(this).val() + '" placeholder="' + $(this).val() + '"/>\
-                <input type="text" name="calories" placeholder="Calories" />\
-                <input type="text" name="fats" placeholder="Fats" />\
-                <input type="text" name="carbs" placeholder="Carbs" />\
-                <input type="text" name="proteins" placeholder="Proteins" />\
-                <a class="button add-another" id="add-another-variation" data-variation="1" data-variation-type="'+ $(this).val() + '">Add another</a></ul></form>')
 
-          });
           $(document).ready(function () {
             $('#productName').on('input', function() {
               var productId = $(this).val()
@@ -399,7 +398,7 @@
                   })
                 })
                 .bind("cloudinarydone", function (e, data) {
-                  $('#parent_product').append('<input type="hidden" name="primary_img" value="' + data.result.url + '" />')
+                  $('#parent_product').append('<input type="hidden" name="primary_img" value="' + data.result.secure_url + '" />')
                   $(".thumbnails").append(
                     $.cloudinary.image(data.result.secure_url, {
                       format: "jpg",
