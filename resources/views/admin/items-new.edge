@@ -181,7 +181,7 @@
             <div class="row">
               <div class="col-md-4 col-lg-4 mx-auto">
                 <div class="form-group">
-                  <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel({{$loop.index}}, this.value)" />
+                  <input type="text" name="label" placeholder="Protein Type/Flavor" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel({{$loop.index}}, this.value)" />
                 </div>
               </div>
               <div class="col-md-4 col-lg-4 mx-auto">
@@ -242,7 +242,7 @@
               <div class="row">
                 <div class="col-md-4 col-lg-4 mx-auto">
                   <div class="form-group">
-                    <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('0', this.value)" />
+                    <input type="text" name="label" placeholder="Protein Type/Flavor" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('0', this.value)" />
                   </div>
                 </div>
                 <div class="col-md-4 col-lg-4 mx-auto">
@@ -421,7 +421,16 @@
           });
 
           $('.save-form').on('click', function () {
-            var loadingText = 'Saving.. <div id="loading"></div>';
+            if ($('input[name=label]').val() === "") {
+              $('input[name=label]').val('default')
+              appendSkuLabel(0, 'default')
+            }
+              if ( $('input[name=price]').val() === "") {
+                toastr['error']('Please add a Protein Type/flavor and price')
+                return
+
+              } else {
+              var loadingText = 'Saving.. <div id="loading"></div>';
             $(this).html(loadingText).attr('disabled', 'disabled' )
             var master = {}
             var forms = $('.content').find('form')
@@ -467,6 +476,8 @@
 
           }
             });
+            }
+
           })
 
 
