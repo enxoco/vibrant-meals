@@ -584,15 +584,29 @@ function convertCamelToInitials(string) {
 
 feather.replace()
 function updateSkuLabel(id, value) {
-  if (convertCamelToInitials(value).includes('_')) {
-    value = convertCamelToInitials(value).split('_')
-    value = value[0][0].toUpperCase() + value[1][0].toUpperCase()
-  } else {
-    value = value.split("")[0].toUpperCase()
+  console.log(value)
+  switch(value) {
+    case 'elite':
+      value = 'ELT'
+      break;
+    case 'breakfast':
+      value = 'BF'
+      break;
+    case 'plant based':
+      value = 'PB'
+      break;
+    default:
+    if (convertCamelToInitials(value).includes('_')) {
+      value = convertCamelToInitials(value).split('_')
+      value = value[0][0].toUpperCase() + value[1][0].toUpperCase()
+    } else {
+      value = value.split("")[0].toUpperCase()
+    }
+    break;
+
   }
 
    $('input[name=product_id]').val(value + '_' + $('input[id=productName]').val().toLowerCase().replace(/ /g, '_'))
-    // $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
 }
 
 function appendSkuLabel(id, value) {

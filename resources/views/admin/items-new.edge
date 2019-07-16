@@ -142,7 +142,7 @@
                         @unless(prod)
                         <option>Choose a label</option>
                         @endunless
-                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast'])
+                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast', 'plant based'])
                           <option 
                           @if(prod.metadata.label == cat)
                             selected
