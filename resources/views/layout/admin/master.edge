@@ -98,8 +98,12 @@ div#admin-bar {
   flex-wrap: wrap;
 }
 
-input#demo1 {
-
+svg.feather.feather-plus {
+    height: 50px;
+    width: 50px;
+    background: #6ad098;
+    border-radius: 10em;
+    color: white;
 }
 </style>
 </head>
@@ -568,26 +572,35 @@ $('.order-details-update').on('click', function(){
   })
 })
 
+function convertCamelToInitials(string) {
+       return string.replace(/[\w]([A-Z])/g, function(m) {
+           return m[0] + "_" + m[1];
+       }).toLowerCase();
+   }
+
+
 feather.replace()
 function updateSkuLabel(id, value) {
-  var productId = ''
-  productId = value + '_'
+  if (convertCamelToInitials(value).includes('_')) {
+    value = convertCamelToInitials(value).split('_')
+    value = value[0][0].toUpperCase() + value[1][0].toUpperCase()
+  } else {
+    value = value.split("")[0].toUpperCase()
+  }
 
-   productId += $('input[name=product_id]').val()
-   console.log(productId)
-   $('input[name=product_id]').val(productId)
+   $('input[name=product_id]').val(value + '_' + $('input[id=productName]').val().toLowerCase().replace(/ /g, '_'))
     // $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
 }
 
 function appendSkuLabel(id, value) {
   var productId = $('input[name=product_id]').val()
-    $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(' ', '_'))
+    $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(/ /g, '_'))
 
 }
 
 
 $('#deleteCoupon').on('click', function(){
-        var c = $('#coupon').val()
+        var c = $('#coupon').val
         console.log(c)
         $.ajax({
           type: 'POST',
@@ -609,4 +622,56 @@ $('#deleteCoupon').on('click', function(){
      // it is unnecessary to have to manually call the modal.
      // $('#addBookDialog').modal('show');
 });
+
+function addSkuSection() {
+  let id = parseInt($('.sku-form')[$('.sku-form').length - 1].id.replace('skuForm', ''))
+  id += 1
+  let template = '<section class="comSection comSection--light sku-form" id="skuForm'+id+'">\
+            <h5 class="card-title">Sku Info</h5>\
+            <form id="sku'+id+'">\
+              <input class="sku-id muted" id="sku'+id+'_id" name="sku_id"/>\
+              <div class="row">\
+                <div class="col-md-4 col-lg-4 mx-auto">\
+                  <div class="form-group">\
+                    <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" onchange="appendSkuLabel('+id+', this.value)" />\
+                  </div>\
+                </div>\
+                <div class="col-md-4 col-lg-4 mx-auto">\
+                  <div class="form-group">\
+                    <input type="text" name="price" placeholder="Price" required class="form-control">\
+                  </div>\
+                </div>\
+              </div>\
+              <div class="row">\
+                <div class="col-md-2">\
+                  <div class="form-group">\
+                    <label>Calories</label>\
+                    <input type="text" class="form-control" name="calories" placeholder="Calories">\
+                  </div>\
+                </div>\
+                <div class="col-md-2">\
+                  <div class="form-group">\
+                    <label>Carbs</label>\
+                    <input type="text" class="form-control" name="carbs" placeholder="Carbs">\
+                  </div>\
+                </div>\
+                <div class="col-md-2">\
+                  <div class="form-group">\
+                    <label>Proteins</label>\
+                    <input type="text" class="form-control" name="proteins" placeholder="Proteins">\
+                  </div>\
+                </div>\
+                <div class="col-md-2">\
+                  <div class="form-group">\
+                    <label>Fats</label>\
+                    <input type="text" class="form-control" name="fats" placeholder="Fats">\
+                  </div>\
+                </div>\
+              </div>\
+            </form>\
+          </section>\
+          <hr class="mb-3">'
+          $('.sku-column').append(template)
+
+}
   </script>

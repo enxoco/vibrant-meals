@@ -99,7 +99,7 @@
         </section>
     </div>
     <!-- item-card -->
-    <div class="col-md-8">
+    <div class="col-md-8 sku-column">
       <section class="comSection comSection--light">
         <h5 class="card-title">Product Info</h5>
         <form id="parent_product">
@@ -171,7 +171,6 @@
 
       <hr class="mb-3">
       <!-- First Sku -->
-      {{toJSON(prod)}}
       @if(sku)
       @each(s in sku)      
       <section class="comSection comSection--light">
@@ -234,7 +233,7 @@
         <hr class="mb-3">
         @endeach
         @else
-        <section class="comSection comSection--light">
+        <section class="comSection comSection--light sku-form" id="skuForm0">
             <h5 class="card-title">Sku Info</h5>
             <form id="sku0">
 
@@ -292,63 +291,6 @@
             </form>
           </section>
           <hr class="mb-3">
-          <section class="comSection comSection--light">
-              <h5 class="card-title">Sku Info</h5>
-              <form id="sku1">
-
-                <input class="sku-id muted" id="sku1_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
-    
-                <div class="row">
-                  <div class="col-md-4 col-lg-4 mx-auto">
-                    <div class="form-group">
-                      <input type="text" name="label" placeholder="Flavor/Color/Meat Variation" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('1', this.value)" />
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-lg-4 mx-auto">
-                    <div class="form-group">
-                      <input type="text" name="price" placeholder="Price" required class="form-control" value="{{s.price ? currency(s.price, true) : NULL}}">
-                    </div>
-                  </div>
-            
-            
-                </div>
-                <div class="row">
-            
-                  <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Calories</label>
-                      <input type="text" class="form-control" name="calories" placeholder="Calories"
-                        value="{{s.metadata.calories}}">
-                    </div>
-            
-                  </div>
-                  <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Carbs</label>
-                      <input type="text" class="form-control" name="carbs" placeholder="Carbs"
-                        value="{{s.metadata.carbs}}">
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Proteins</label>
-                      <input type="text" class="form-control" name="proteins" placeholder="Proteins"
-                        value="{{s.metadata.proteins}}">
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Fats</label>
-                      <input type="text" class="form-control" name="fats" placeholder="Fats"
-                        value="{{s.metadata.fats}}">
-                    </div>
-            
-                  </div>
-            
-                </div>
-            
-              </form>
-            </section>
           @endif
 
     </div>
@@ -357,6 +299,7 @@
 
 </div> <!-- /item card-->
 </div>
+<a onclick="addSkuSection()" style="position:fixed;bottom:100px;right:20px;"><i data-feather="plus"></i></a>
 
 </div>
 </div>
@@ -478,6 +421,8 @@
           });
 
           $('.save-form').on('click', function () {
+            var loadingText = 'Saving.. <div id="loading"></div>';
+            $(this).html(loadingText).attr('disabled', 'disabled' )
             var master = {}
             var forms = $('.content').find('form')
 
@@ -506,12 +451,21 @@
               data: JSON.stringify(master),
               contentType: "application/json; charset=utf-8",
               dataType: "json",
-              success: function () {
+              success: function (resp) {
+                if (!resp.stack) {
                   toastr['success']('Item saved successfully')
+                  $('.save-form').html('Save Item').removeAttr('disabled')
+                } else {
+                  toastr['error'](resp.stack.split('.')[0])
+                  $('.save-form').html('Save Item').removeAttr('disabled')
+
+                }
               },
-              failure: function (errMsg) {
-                alert(JSON.stringify(errMsg));
-              }
+              error: function (evt, jqXHR, settings, err) {
+                toastr['warning']('Error has occurred: ' + settings )
+                $('.save-form').html('Save Item').removeAttr('disabled')
+
+          }
             });
           })
 
