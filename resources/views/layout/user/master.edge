@@ -1928,8 +1928,15 @@ $('#headingFive').on('click', function(){
 })
 
 
+$('.card-header').on('click', function(){
+  var id = $(this).attr('id')
+  $('#'+id).addClass('active')
+  $('.card-header:not(#'+id+')').removeClass('active')
+})
 $('#toggleSections').on('click', function(){
     if ($('#collapseOne').hasClass('show')) {
+      $('#headingOne').removeClass('active')
+      $('#headingTwo').addClass('active')
       $('#collapseOne').removeClass('show')
       $('#collapseTwo').addClass('show')
 
@@ -1938,6 +1945,8 @@ $('#toggleSections').on('click', function(){
       if ($('#firstName').val() != '' && $('#lastName').val() != '' && $('#email-bill').val() != '' && $('#password-bill').val() != '' && $('#password_confirmation').val() != '') {
         $('#collapseTwo').removeClass('show')
         $('#collapseThree').addClass('show')
+        $('#headingTwo').removeClass('active')
+      $('#headingThree').addClass('active')
         $('#headingTwo').css('pointer-events', 'visible')
         $('#headingThree').css('pointer-events', 'visible')
       } else {
@@ -1948,6 +1957,8 @@ $('#toggleSections').on('click', function(){
       if ($('#firstName').val() != '' && $('#lastName').val() != '' && $('#email-bill').val() != '' && $('#password-bill').val() != '' && $('#password_confirmation').val() != '' && $('#street-bill').val() != '' && $('#city-bill').val() != '' && $('#state-bill').val() != '' && $('#zip-bill').val() != '') {
         $('#collapseThree').removeClass('show')
         $('#collapseFour').addClass('show')
+        $('#headingThree').removeClass('active')
+      $('#headingFour').addClass('active')
         $('#headingFour').css('pointer-events', 'visible')
       } else {
         toastr['warning']('Please make sure all fields are filled out')
@@ -1955,6 +1966,8 @@ $('#toggleSections').on('click', function(){
     } else if ($('#collapseFour').hasClass('show')) {
       $('#collapseFour').removeClass('show')
       $('#collapseFive').addClass('show')
+      $('#headingFour').removeClass('active')
+      $('#headingFive').addClass('active')
       $(this).attr('disabled', 'disabled')
       $(this).html('checkout')
 
