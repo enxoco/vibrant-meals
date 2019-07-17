@@ -219,6 +219,8 @@ function updateCartDiv() {
       $('#delivery-fee').show()
     }
     feather.replace()
+    var div = document.getElementsByClassName('list-unstyled')[0]
+    div.scrollTo(0,div.scrollHeight);
   }
 
   // Functionality to increase/decrease cart quantity

@@ -1095,7 +1095,7 @@ svg.feather.feather-plus-circle, svg.feather.feather-minus-circle {
 
 ul.list-unstyled.components {
     position: fixed;
-    height: 92%;
+    height: 85%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -1505,8 +1505,9 @@ $('.checkout-prompt-1').on('click', function(e){
 
   e.preventDefault()
   e.stopPropagation()
-  var elem = $('#cart-rows')
-  elem.scrollTop = elem.scrollHeight;
+
+
+
 
   if (localStorage.getItem("custEngageCompleted") != 1) {
     $('#modal-initial-click').modal('toggle')
