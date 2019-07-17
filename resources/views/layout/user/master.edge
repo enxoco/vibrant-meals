@@ -1505,6 +1505,9 @@ $('.checkout-prompt-1').on('click', function(e){
 
   e.preventDefault()
   e.stopPropagation()
+  var elem = $('#cart-rows')
+  elem.scrollTop = elem.scrollHeight;
+
   if (localStorage.getItem("custEngageCompleted") != 1) {
     $('#modal-initial-click').modal('toggle')
     
