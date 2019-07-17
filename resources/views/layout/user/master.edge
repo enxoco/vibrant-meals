@@ -1198,7 +1198,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                 <defs>
                   <style>
                     .cls-1 {
-                      fill: black;
+                      fill: white;
                     }
                   </style>
                 </defs>
@@ -1251,7 +1251,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                     <defs>
                       <style>
                         .cls-1 {
-                          fill: #000000;
+                          fill: white;
                         }
                       </style>
                     </defs>
@@ -1278,7 +1278,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
               <defs>
                 <style>
                   .cls-1 {
-                    fill: #000000;
+                    fill: white;
                   }
                 </style>
               </defs>
@@ -1625,6 +1625,10 @@ $(document).ready(function(){
 
 
 // This is filtering logic based on category name
+function closeMenu() {
+  $('.menu-hide').removeClass('show')
+  $('.menu-tab').removeClass('active')
+}
 $(".filter-button").click(function(){
   $('.menu-hide').removeClass('show')
   $('.menu-tab').removeClass('active')
