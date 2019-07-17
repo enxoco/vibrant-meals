@@ -212,6 +212,8 @@ function processOrder(card, id) {
     delivery_info: $('input[name=delivery_notes]').val(),
     type: card.type,
     paymentId: id,
+    deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id')
+
 
   }
 
