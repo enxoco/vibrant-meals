@@ -28,7 +28,7 @@
 </nav>
       
       <div class="menu-hide">
-        <a href="#" onclick="closeMenu()" data-filter="Paleo" class="filter-button"><h2 class="category-heading"> Paleo</h2></a>
+        <a href="#" onclick="closeMenu()" data-filter="Paleo" class="filter-button"><h2 class="category-heading">Paleo</h2></a>
         <a href="#" onclick="closeMenu()" data-filter="Low_Carb" class="filter-button"><h2 class="category-heading">Low Carb</h2></a>
         <a href="#" onclick="closeMenu()" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
         <a href="#" onclick="closeMenu()" data-filter="Performance" class="filter-button"><h2 class="category-heading">Performance</h2></a>
@@ -40,7 +40,7 @@
         @unless(item.active === false)
         @unless(item.id === 'shipping')
           <!-- Start of individual Product card -->
-          <div class="col-6 col-lg-4 col-md-6 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.skus.data[0].metadata.filters) }}">
+          <div class="col-6 col-lg-4 col-md-6 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.id) }}">
 
           {{--@!include('menu.product-card-mobile')--}}
           @!include('menu.product-card-desktop')

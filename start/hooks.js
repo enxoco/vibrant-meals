@@ -45,10 +45,22 @@ hooks.after.providersBooted(() => {
     if (obj == undefined) {
       return obj
     } else {
-      obj =  obj.replace(' ', '_')
-      return obj.replace(/,/g, ' ')
+      obj = obj.split('_')
+      switch(obj[0]) {
+        case 'ELT':
+          return 'Elite'
+        case 'BF':
+          return 'Breakfast'
+        case 'PB':
+          return 'Plant_Based'
+        case 'P':
+          return 'Performance'
+        case 'LC':
+          return 'Low_Carb'
+        default:
+          return 'Everyday'
     }
-    // return obj.replace(/,/g, ' ')
+  }
   }) 
 
   View.global('getKeys', function(obj) {

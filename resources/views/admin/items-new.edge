@@ -463,6 +463,7 @@
                 if (!resp.stack) {
                   toastr['success']('Item saved successfully')
                   $('.save-form').html('Save Item').removeAttr('disabled')
+                  window.location.href = '/products/edit/'+ $('input[name=product_id]').val()
                 } else {
                   toastr['error'](resp.stack.split('.')[0])
                   $('.save-form').html('Save Item').removeAttr('disabled')

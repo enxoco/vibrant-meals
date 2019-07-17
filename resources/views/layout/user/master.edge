@@ -1102,6 +1102,7 @@ ul.list-unstyled.components {
 
 html, body {
   overflow-x: hidden;
+  overflow-y: overlay;
 }
 
 li.list-group-item.d-flex.justify-content-between.align-items-center:hover {
@@ -1632,6 +1633,7 @@ $(".filter-button").click(function(){
     }
     else
     {
+      console.log(value)
         $(".filter").not('.'+value).hide('3000');
         $('.filter').filter('.'+value).show('3000'); 
     }
