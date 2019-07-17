@@ -91,7 +91,7 @@ Route.get('/api', async ({ view }) => view.render('api'))
 Route.get('/checkout/coupon/apply/:coupon', 'CheckoutController.applyCoupon')
 
 Route.get('/api/user/check', 'AdminController.checkExistingUser')
-Route.get('/menu', 'ItemController.listItems').as('menu.items')
+Route.get('/menu', 'ItemController.listItems').as('menu.items').middleware(['analytics'])
 Route.get('/menu/custom', 'ItemController.listCustomMeals')
 /* Admin route group.  All admin routes should go here.  They are inspected by Middleware/AdminAccess
 *  which checks to make sure that the user is logged in and that they have the appropriate permissions

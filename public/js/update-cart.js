@@ -116,19 +116,51 @@ function updateCartDiv() {
         var cartItems = JSON.parse(localStorage.cart)
     }
     $('.cart-row-master').html('')
+    if (cartCount === 0) {
+      $('.checkout-button').css('background','white')
+      $('.checkout-button').css('color','black')
+    }
     for (var i = 0; i < cartItems.length; i++) {
       cartCount += cartItems[i].quantity
       if (cartCount < 5) {
+        var button = $('.checkout-button')
+        switch(cartCount) {
+          case 0:
+            button.css('background', 'white')
+            break;
+          case 1:
+              button.css('background', 'rgb(59,143,107)')
+              button.css('color', 'black')
+              button.css('background', 'linear-gradient(90deg, rgba(59,143,107,1) 0%, rgba(59,143,107,1) 20%, rgba(255,255,255,1) 20%)')
+              break;
+          case 2:
+              button.css('background', 'rgb(59,143,107)')
+              button.css('color', 'black')
+              button.css('background', 'linear-gradient(90deg, rgba(59,143,107,1) 0%, rgba(59,143,107,1) 40%, rgba(255,255,255,1) 40%)')
+              break;
+              case 3:
+                  button.css('background', 'rgb(59,143,107)')
+                  button.css('color', 'black')
+                  button.css('background', 'linear-gradient(90deg, rgba(59,143,107,1) 0%, rgba(59,143,107,1) 60%, rgba(255,255,255,1) 60%)')
+                  break;
+                  case 4:
+                      button.css('background', 'rgb(59,143,107)')
+                      button.css('color', 'black')
+                      button.css('background', 'linear-gradient(90deg, rgba(59,143,107,1) 0%, rgba(59,143,107,1) 80%, rgba(255,255,255,1) 80%)')
+                      break;
+        }
         $('.express-checkout-default').attr('disabled', 'disabled')
         $('#toggleSections').attr('disabled', 'disabled')
         $('#createToken').attr('disabled', 'disabled')
-        console.log('disable cart')
         $('.checkout-button').attr('disabled', 'disabled')
         $('.express-checkout-status').html('Please add at least 5 items to cart').show()
         $('.tooltip-wrapper').attr('data-toggle', 'tooltip')
           $('[data-toggle="tooltip"]').tooltip('enable')
           $('.cart-minimum').show()
       } else {
+        $('.checkout-button').css('background', '#3b8f6b')
+        $('.checkout-button').css('color', 'white')
+
         $('.checkout-button').removeAttr('disabled')
         $('#toggleSections').removeAttr('disabled')
         $('.cart-minimum').hide()

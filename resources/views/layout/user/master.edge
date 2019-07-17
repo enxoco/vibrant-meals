@@ -242,8 +242,9 @@ li {
 }
 
 .btn.btn-success {
-    color: white !important;
+    color: white;
     background: #3b8f6b;
+    border: 1px solid #3b8f6b;
 }
 
 
@@ -1832,11 +1833,11 @@ if (window.location.href.includes('checkout')) {
       calcShipping()
     })
     function hoverCart(element) {
-      element.setAttribute('src', '/images/shopping-cart-add-button-active.png');
+      element.setAttribute('src', '/images/shopping-cart-add-button-inactive.png');
     }
 
     function unhoverCart(element) {
-      element.setAttribute('src', '/images/shopping-cart-add-button-inactive.png');
+      element.setAttribute('src', '/images/shopping-cart-add-button-active.png');
     }
 
     $('#back-to-account').on('click', function(){
