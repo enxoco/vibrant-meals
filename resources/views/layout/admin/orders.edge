@@ -376,6 +376,9 @@
                       <th>
                         Delivery/Pickup Date
                       </th>
+                      <th>
+                        Fulfilment Method
+                      </th>
 
                     </thead>
                     <tbody>
@@ -410,7 +413,10 @@
                                 {{o.orderQuantity}}
                               </td>
                               <td>
-                                {{o.date}}
+                                {{o.date}}, {{o.deliveryWindow}}
+                              </td>
+                              <td>
+                                  {{o.fulfilmentMethod}}
                               </td>
                       </tr>
                       @endeach

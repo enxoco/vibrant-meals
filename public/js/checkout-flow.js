@@ -513,6 +513,8 @@ function anything() {
       delivery_info: $('input[name=delivery_notes]').val(),
       stripeToken: result.token.id,
       shippingCode: localStorage.shippingCode,
+      deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id')
+
     }
 
     var shipping = {

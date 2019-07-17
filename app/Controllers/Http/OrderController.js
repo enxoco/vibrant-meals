@@ -167,7 +167,8 @@ class OrderController {
                 city: order.shipping.address.city,
                 state: order.shipping.address.state,
                 items: filteredItems,
-                orderQuantity: orderQuantity
+                orderQuantity: orderQuantity,
+                deliveryWindow: order.metadata.deliveryWindow
             }
 
             ord.push(obj)
@@ -204,13 +205,15 @@ class OrderController {
             if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'monday') {
                 mondayFulfillments.push(orders[i])
             }
+
             for (var x = 0; x < orders[i].items.length; x++) {
                 var item = orders[i].items[x]
                 if (item.amount != 0) {  
                     for (var z = 0; z < item.quantity; z++) {
-                        if (orders[i].metadata.fulfillment_day == 'monday') {
+                        if (orders[i].metadata.fulfillment_day.toLowerCase() == 'monday') {
                             monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                        } else if(orders[i].metadata.fulfillment_day == 'thursday') {
+                        } else if(orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday') {
+                            console.log(orders[i].metadata)
                             thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
                         }
                     }

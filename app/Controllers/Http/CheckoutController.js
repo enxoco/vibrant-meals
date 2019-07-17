@@ -122,7 +122,8 @@ class CheckoutController {
             store_id: location.id,
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
-            orderId: orderCount
+            orderId: orderCount,
+            deliveryWindow: req.billing.deliveryWindow
             
           },
           email: user.email
@@ -161,7 +162,8 @@ class CheckoutController {
             fulfillment_method: req.user.fulfillment_method,
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
-            orderId: orderCount
+            orderId: orderCount,
+            deliveryWindow: req.billing.deliveryWindow
 
           },
           email: user.email
@@ -284,7 +286,8 @@ class CheckoutController {
         next_fulfillment: req.user.fulfillment_date,
         allergy_info: req.billing.allergy_info,
         delivery_info: req.billing.delivery_info,
-        orderId: orderCount
+        orderId: orderCount,
+        deliveryWindow: req.billing.deliveryWindow
 
       },
       shipping: {
@@ -342,7 +345,8 @@ class CheckoutController {
             store_id: loc.id,
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
-            orderId: orderCount
+            orderId: orderCount,
+            deliveryWindow: req.billing.deliveryWindow
 
           },
           email: user.email
@@ -390,7 +394,8 @@ class CheckoutController {
               pickup_location: location.name,
               allergy_info: req.billing.allergy_info,
               delivery_info: req.billing.delivery_info,
-              orderId: orderCount
+              orderId: orderCount,
+              deliveryWindow: req.billing.deliveryWindow
 
             },
             email: user.email
@@ -428,7 +433,8 @@ class CheckoutController {
             fulfillment_method: req.user.fulfillment_method,
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
-            orderId: orderCount
+            orderId: orderCount,
+            deliveryWindow: req.billing.deliveryWindow
 
           },
           email: user.email
