@@ -199,10 +199,10 @@ class OrderController {
                 fulfillments.push(orders[i])
                 deliveries++
             }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'thursday') {
+            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday') {
                 thursdayFulfillments.push(orders[i])
             }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day == 'monday') {
+            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday') {
                 mondayFulfillments.push(orders[i])
             }
 
@@ -245,8 +245,6 @@ class OrderController {
         thursResult = thursResult.sort(function (a, b) {
             return b.count - a.count
         })
-
-
         
         return view.render('layout.admin.orders', {
             pagetype: 'Pending orders', 
