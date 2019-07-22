@@ -172,23 +172,16 @@ function updateCartDiv() {
 
       localStorage.setItem('cartCount', cartCount)
         total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
-        var card = '<div class="row mb-5 pl-3 pr-3 order-info">\
-        <div class="col-3 pt-2 card-user">\
-          <div class="row mr-0 ml-0 pb-3 pl-1 pointer">\
-            <a onclick="addCart('+i+')"><i data-feather="plus-circle"></i></a>\
-          </div>\
-          <div class="row mr-0 ml-0" style="border-radius: 50%;width: 35px;box-shadow: 2px 2px 7px 2px gainsboro;pointer-events: none;">\
-            <span class="quantity">'+cartItems[i].quantity+'</span>\
-          </div>\
-          <div class="row mr-0 ml-0 pt-3 pl-1 pointer">\
-            <a data-id="'+i+'" onclick="subCart('+i+')"><i data-feather="minus-circle"></i></a>\
-          </div>\
-        </div>\
-        <div class="col-md-6 col-8 pt-2">\
-          <img class="avatar" src="'+cartItems[i].img_url.replace('http://', 'https://')+'">\
-          <span class="cart-item-label">'+cartItems[i].name+'</span>\
-        </div>\
+        var card = '<div class="row pl-3 pr-3">\
+        <figure class="figure">\
+          <img class="avatar figure-img pull-left mr-2 mt-3" src="'+cartItems[i].img_url.replace('http://', 'https://')+'"><span class="item-name">'+cartItems[i].name+'</span><br>\
+          <div class="btn-group">\
+          <button class="btn btn-circle" onclick="addCart('+i+')"><i data-feather="plus-circle"></i></button>\
+          <button class="btn btn-circle">'+cartItems[i].quantity+'</button>\
+          <button class="btn btn-circle" data-id="'+i+'" onclick="subCart('+i+')"><i data-feather="minus-circle"></i></button>\
       </div>\
+          </figcaption>\
+      </figure><hr class="mb-1">\
     </div>'
       // var card = '<div class="cart-items"><div class="cart-controls"><a href="#" onclick="addCart('+i+')"><img class="cart-control" src="/images/plus-icon.png"></a><br /><div class="item-quantity"><div id="item-quantity">'+cartItems[i].quantity+'</div></div><a href="#" class="cart-minus" data-id="'+i+'" onclick="subCart('+i+')"><img class="cart-control" src="/images/minus-icon.png"></a></div><img class="cart-image" src="'+cartItems[i].img_url+'" alt="Placeholder image" /><p class="title is-6">'+cartItems[i].name+'</p></div>'
       $('.cart-row-master').append(card)

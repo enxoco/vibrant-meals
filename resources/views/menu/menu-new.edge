@@ -12,33 +12,40 @@
   width: 220px;
   }
 }
+#dropdownMenuButtonFilters {
+  background: none !important;
+  text-transform: none !important;
+
+}
 
 </style>
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-start mb-0" style="box-shadow:none;">
-      <div class="menu-tab" id="macroFilters">
-          <i class='icon orange' data-feather="filter"></i>
-      </div>
 
+      <li class="nav-item">
+        <div class="dropright">
+            <button class="btn btn-outline" type="button" id="dropdownMenuButtonFilters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_filter" style="white-space:normal;font-size:10px !important;background:none;margin:0;padding:0;border:none;">
+                <h2 class="category-heading" style="margin-bottom:0px;">Size</h2><i data-feather="chevron-down" class="stroke-black"></i>
+
+
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonFilters">
+                <a class="dropdown-item no-modal filter-button " data-filter="EverydayOnly" href="#">Everyday</a>
+                <a class="dropdown-item no-modal filter-button " data-filter="Low_Carb" href="#">Low Carb</a>
+                <a class="dropdown-item no-modal filter-button " data-filter="Performance" href="#">Performance</a>
+                <a class="dropdown-item no-modal filter-button " data-filter="Elite" href="#">Elite</a>
+            </div>
+        </div>
+        </li>
     @each(category in ['all','drinks','lunchDinner','breakfast','snacks'])
   <li class="nav-item">
     <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
   </li>
     @endeach
+
 <!--/Filters-->
 </nav>
       
-      <div class="menu-hide">
-      
-        <a href="#" style="position:relative;left:100px;" onClick="(function(){
-          document.getElementsByClassName('menu-hide')[0].classList.remove('show')
-          return false;
-      })();return false;"><i data-feather="x"></i></a>
 
-        <a href="#" data-filter="Paleo" class="filter-button"><h2 class="category-heading">Paleo</h2></a>
-        <a href="#" data-filter="Low_Carb" class="filter-button"><h2 class="category-heading">Low Carb</h2></a>
-        <a href="#" data-filter="Whole_30" class="filter-button"><h2 class="category-heading">Whole 30</h2></a>
-        <a href="#" data-filter="Performance" class="filter-button"><h2 class="category-heading">Performance</h2></a>
-      </div>    
       <div class="row">
 
       @each(item in items)

@@ -11,6 +11,8 @@ $(document).ready(function() {
           }
       }
    }
+
+
    var exportTable = $('#productNeededExport').DataTable( {
       select: true,
       dom: 'Bfrtip',

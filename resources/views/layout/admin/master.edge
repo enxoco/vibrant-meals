@@ -453,8 +453,32 @@ svg.feather.feather-plus {
   });
 
 
+  
 
-    $('#productNeeded, #customers', '#productNeededExport').DataTable( {
+  $('#productNeededMonday').DataTable( {
+        select: true,
+        dom: 'Bfrtip',
+        colReorder: true,
+        buttons: [
+          'csv',
+          'pdfHtml5',
+          'selectAll',
+          'selectNone'
+        ]
+    } );
+
+    $('#productNeededThursday').DataTable( {
+        select: true,
+        dom: 'Bfrtip',
+        colReorder: true,
+        buttons: [
+          'csv',
+          'pdfHtml5',
+          'selectAll',
+          'selectNone'
+        ]
+    } );
+    $('#customers').DataTable( {
         select: true,
         dom: 'Bfrtip',
         colReorder: true,

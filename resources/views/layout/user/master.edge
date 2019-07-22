@@ -1139,6 +1139,24 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
   border: 1px solid black;
 }
 
+.btn-circle {
+  width: 26px;
+    height: 26px;
+    line-height: 25px;
+    padding: 0;
+    background: white;
+    border-radius: 50%;
+    color: black;
+}
+
+.btn-circle:hover {
+  background: white !important;
+  color: black !important;
+}
+
+.avatar.figure-img {
+  height: 50px;
+}
 </style>
 
 <link rel="stylesheet" href="/css/nutrition-label.css" />
@@ -1621,7 +1639,7 @@ $(document).ready(function(){
     }
   })
 
-  feather.replace()
+  feather.replace({class: 'stroke-black', stroke: 'black'})
 
 
 // This is filtering logic based on category name
@@ -1635,14 +1653,25 @@ $(".filter-button").click(function(){
     var value = $(this).attr('data-filter');
     $('h2').removeClass('active')
     $(this).find('h2').addClass('active')
+    console.log(value)
     
     if(value == "all")
     {
-        $('.filter').show('1000');
+      $('.filter').show('1000');
+    } else if(value === "Everyday") {
+      $(".filter").not('.'+value).hide('3000');
+      $('.filter').filter('.'+value).show('3000'); 
+      $('.filter').filter('.Low_Carb').show('3000'); 
+
+    } else if(value === "EverydayOnly") {
+      $(".filter").not('.Everyday').hide('3000');
+      $('.filter').filter('.Everyday').show('3000'); 
+
+
+
     }
     else
     {
-      console.log(value)
         $(".filter").not('.'+value).hide('3000');
         $('.filter').filter('.'+value).show('3000'); 
     }
