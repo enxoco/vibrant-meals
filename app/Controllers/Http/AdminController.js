@@ -462,7 +462,7 @@ class AdminController {
       const {percent_off, amount_off, coupon_name, coupon_desc, coupon_type, amount, redeem_by} = request.all()
 
       try {
-        const status = await this.createCoupon(coupon_type, amount, coupon_name, redeem_by)
+        const status = await this.createCoupon(coupon_type, amount, encodeURI(coupon_name), redeem_by)
         return response.send(status)
       } catch (e) {
         return response.send(e.message)
