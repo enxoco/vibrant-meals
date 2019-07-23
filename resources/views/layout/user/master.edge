@@ -1597,21 +1597,19 @@ updateCartDiv()
 
 
 $(document).on('click', '#deliveryRadio', function(){
-  $('.store-desc').html('&nbsp')
-  if (window.location.href.includes('checkout')) {
-    $('#collapseTwo').addClass('show').fadeIn()
-    $('#collapseOne').removeClass('show').fadeOut()
-  }
-  $('.express-checkout-edit').show()
-  $('.shipping-form').show()
 
-  localStorage.setItem('fulfillment_method', 'delivery')
+
+  localStorage.fulfillment_method = 'delivery'
 
   localStorage.removeItem('pickup_location')
   localStorage.removeItem('pickupLocation')
   localStorage.removeItem('myStore')
+
+  updateCartDiv('delivery')
+
   calcShipping()
-  updateCartDiv()
+
+  window.location.reload()
 })
 
 
@@ -1809,11 +1807,11 @@ if (window.location.href.includes('checkout')) {
       // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
       var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
       var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
-      var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
+      var state = $('#state-bill').val() ? $('#state-bill').val() : $('input[name="state-ship"]').val()
       var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
 
     
-      var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
+      var search = encodeURI(st + ' ' + city + ' ' + state ? state : 'TN' + ' ' + post)
   
       var userAddr = {
         street: st,
@@ -1830,10 +1828,11 @@ if (window.location.href.includes('checkout')) {
           var miles = distance.routes[0].distance*0.000621371192
           var total = $('.order-total').data('total')
 
+          console.log($('#deliveryRadio').is(':checked'))
           if (total >= 100) {
             localStorage.shippingCode = 'freeshipping'
           } else {
-            if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
+            if (miles.toFixed(0) > 5 && $('#deliveryRadio').is(':checked')) {
             if (miles.toFixed(0) <= 10) {
               localStorage.shippingCode = '5to10miles'
               total += 5
