@@ -868,7 +868,7 @@ ul ul a {
 }
 
 ul.CTAs {
-    padding: 20px;
+  overflow-x: hidden;
     position: fixed;
     background: white;
     width: 14.25rem;
@@ -1170,8 +1170,9 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 <link rel="stylesheet" href="/css/shopping-buttons.css" />
 </head>
 @!include('Modals.auth')
+@unless(disableModal)
 @!include('Modals.cart')
-
+@endunless
 @if(user)
 <div class="hidden" id="user-info" data-user="{{toJSON(user)}}"></div>
 @endif
@@ -1334,7 +1335,11 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
     </div>
 
             <!-- Sidebar  -->
+            @unless(disableModal)
             <nav id="sidebar">
+            @else
+            <nav id="sidebar" class="d-none d-md-flex d-lg-flex">
+            @endunless
                 <div class="sidebar-header">
                 </div>
     
@@ -1352,25 +1357,13 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                             <label class="label_item delivery cart-label" for="deliveryRadio"></label>
                       </div>
                     </div>
-                    <div class="col-12 d-flex justify-content-center hidden-on-mobile-checkout">
-                        <p class="store-desc mb-3">&nbsp</p>
-                        <p class="delivery-desc">&nbsp</p>
-                      </div>
-                      <div class="col-12 d-flex justify-content-center hidden-on-mobile-checkout">
-                        <div id="shipping">
-                          Shipping - &nbsp<strong> $<span class="order-shipping">0</span></strong>
-                        </div>
-                      </div>
-                      <div class="col-12 d-flex justify-content-center hidden-on-mobile-checkout">
-                        <div id="tax">
-                          Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
-                        </div>
-                      </div>
-                      <div class="col-12 d-flex justify-content-center hidden-on-mobile-checkout">
-                        <div id="order-total">
-                            Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
-                          </div>
-                      </div>
+                      <ul>
+                          <li class="store-desc"></li>
+                          <li class="delivery-desc"></li>
+                          <li id="tax">Tax: <strong><span class="order-tax"></span></strong></li>
+                          <li id="order-total">Total: <strong> $<span class="order-total">0</span></strong></li>
+                          <li><small>*If you choose delivery, shipping costs will be calculated at checkout</small></li>
+                        </ul>
                       <hr class="mb-2">
                       <section id="order-info"></section>
                       <div id="cart-rows">
@@ -1597,7 +1590,10 @@ updateCartDiv()
 
 
 $(document).on('click', '#deliveryRadio', function(){
+  $('.store-desc').html('&nbsp')
 
+  $('.express-checkout-edit').show()
+  $('.shipping-form').show()
 
   localStorage.fulfillment_method = 'delivery'
 
@@ -1605,11 +1601,14 @@ $(document).on('click', '#deliveryRadio', function(){
   localStorage.removeItem('pickupLocation')
   localStorage.removeItem('myStore')
 
-  updateCartDiv('delivery')
+  updateCartDiv()
+  console.log()
 
   calcShipping()
-
-  window.location.reload()
+  if (window.location.href.includes('checkout')) {
+    $('#collapseTwo').addClass('show').fadeIn()
+    $('#collapseOne').removeClass('show').fadeOut()
+  }
 })
 
 
@@ -1807,11 +1806,11 @@ if (window.location.href.includes('checkout')) {
       // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
       var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
       var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
-      var state = $('#state-bill').val() ? $('#state-bill').val() : $('input[name="state-ship"]').val()
+      var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
       var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
 
     
-      var search = encodeURI(st + ' ' + city + ' ' + state ? state : 'TN' + ' ' + post)
+      var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
   
       var userAddr = {
         street: st,
@@ -1828,11 +1827,10 @@ if (window.location.href.includes('checkout')) {
           var miles = distance.routes[0].distance*0.000621371192
           var total = $('.order-total').data('total')
 
-          console.log($('#deliveryRadio').is(':checked'))
           if (total >= 100) {
             localStorage.shippingCode = 'freeshipping'
           } else {
-            if (miles.toFixed(0) > 5 && $('#deliveryRadio').is(':checked')) {
+            if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
             if (miles.toFixed(0) <= 10) {
               localStorage.shippingCode = '5to10miles'
               total += 5

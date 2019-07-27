@@ -41,6 +41,13 @@
 .card-header.active {
     background: #3b8e6b;
 }
+
+select#fulfillmentOptions {
+    width: 100%;
+    height: 50px;
+    background: #f7f7f7;
+    text-align: center !important;
+}
   </style>
   <iframe style="display:none;" src="/mailchimpForm.html" id="hidden-mailchimp"></iframe> 
   <div class="row">
@@ -50,38 +57,66 @@
   </div>
   @else
   <div class="col col-lg-8 col-md-8 mx-auto">
-    <div class="accordion" id="accordionExample">
-      <div class="card-header active" id="headingOne">
+      <div class="card-header active d-sm-flex d-md-none d-lg-none" id="headingOne">
         <h5 class="mb-0">
-          <button class="btn btn-link full-width" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <button class="btn btn-link full-width">
             Order Summary
           </button>
         </h5>
       </div> 
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div>
             
-            <div class="card-body" style="background:white;">
-              <div class="cart-row-master d-block d-lg-none"></div>
+            <div class="card-body d-sm-flex d-md-none d-lg-none" style="background:white;">
+                <div class="row">
+                    <select onchange="fulfillMethod()" class="selectpicker" id="fulfillmentOptions" data-style="btn-primary">
+                    </select>
 
-              <div class="col-12 col-md-5 col-lg-5 mx-auto order-summary pt-1" style="text-align:center;">
-                  <span class="store-desc pl-0 mb-3" style="position:relative;"></span><br /><br />
-                  <div class="col-12 mb-3">
-                    <span class="delivery-date-label"></span>
-                    <br />
                   </div>
-                  <div id="delivery-fee" style="">
-                    Shipping - <strong> $<span class="order-shipping">0</span></strong>
-                  </div>
-                    <div id="tax">
+                  <div class="row">
+                    <ul>
+                      <li>
+                      <p class="delivery-desc">&nbsp</p>
+                      </li>
+                      <li>
+                      <div id="shipping">
+                        Shipping - &nbsp<strong> $<span class="order-shipping">0</span></strong>
+                      </div>
+                      </li>
+                      <li>
+    
+                      <div id="tax">
                         Tax - &nbsp<strong> $<span class="order-tax">0</span></strong>
                       </div>
-      
-                    Order Total - <strong> $<span class="order-total"></span></strong>
+                    </li>
+<li>
+                        <div id="order-total">
+                        Order Total - &nbsp<strong> $<span class="order-total">0</span></strong>
+                      </div>
+</li>
+                    </ul>
                   </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h2 class="btn btn-success full-width">
+                              <a data-toggle="collapse" href="#collapse1" style="color:black;">View Cart <i data-feather="chevron-down"></i></a>
+                            </h4>
+                          </div>
+                          <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="cart-row-master d-block d-lg-none"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
               </div>
               
             </div>
-          </div>
+
+            <div class="accordion" id="accordionExample">
 
           <div class="card-header" style="background:1px solid rgba(0,0,0,.125) !important;" id="headingTwo">
           <h5 class="mb-0">
@@ -90,7 +125,7 @@
             </button>
           </h5>
           </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
               @!include('Checkout.basic-info')
 
           </div>
@@ -160,15 +195,35 @@
                 </div>
               </div>
 
-
+            </div>
               <a class="btn btn-success d-flex center-center collapsed" id="toggleSections">Next</a>
-
         </div>
 
   @endif
   </div>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+
+  function fulfillMethod(){
+        d = document.getElementById("fulfillmentOptions").value;
+        if (d === 'delivery') {
+          button.innerHTML = '<option value="delivery">Delivery</option><option value="pickup">Pickup </option>'
+        } else {
+          document.getElementById('pickupRadio').click()
+          button.innerHTML = '<option value="pickup">Pickup</option><option value="delivery">Delivery</option>'
+        }
+  }
+  let button = document.getElementById('fulfillmentOptions')  
+  var fulfilMethod = localStorage.fulfillment_method.toLowerCase()
+  if (fulfilMethod === 'delivery') {
+    button.innerHTML = '<option value="delivery">Delivery</option><option value="pickup">Pickup</option>'
+  } else {
+    button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="delivery">Delivery</option>'
+  }
+
+
+
+
 
   </script>
 @endsection

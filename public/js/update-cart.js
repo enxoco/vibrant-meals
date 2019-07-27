@@ -2,7 +2,7 @@
 // Relies on a cart being set in localstorage.
 // Any function that calls this function should first update localstorage.cart
 
-function updateCartDiv() {
+function updateCartDiv(fulfillment_method) {
   if($('#pickupRadioMobile').is(':checked')){$('.same-address').hide()}
 
 
@@ -84,7 +84,7 @@ function updateCartDiv() {
     // $('.row.mb-5.pl-3').append(d)
     $('#order-info').html(d)
 
-    if (localStorage.fulfillment_method == 'pickup') {
+    if (localStorage.fulfillment_method == 'pickup' && fulfillment_method != 'delivery') {
       if (localStorage.fulfillment_day) {
         $('#delivery-fee').hide()
         $('.delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
@@ -214,6 +214,7 @@ function updateCartDiv() {
     feather.replace()
     var div = document.getElementsByClassName('list-unstyled')[0]
     div.scrollTo(0,div.scrollHeight);
+    calcShipping()
   }
 
   // Functionality to increase/decrease cart quantity

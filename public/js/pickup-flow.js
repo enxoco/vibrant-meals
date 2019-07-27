@@ -8,6 +8,7 @@ $(document).on('click', '#pickupRadio', function () {
   $('#pickupRadioMobile').click()
   getLocation()
   $('.delivery-fee').html('0')
+  $('.order-shipping').html('0')
   localStorage.shippingCode = 'freeshipping'
   var stores = $('#stores').data('stores')
   $('.express-checkout-edit').hide()
@@ -165,6 +166,10 @@ $(document).on('click', '#pickupRadio', function () {
       $('#pickup-label').html(st.store)
       $('.store-desc').html(JSON.parse(localStorage.myStore).name)
     }
+    if ($('#fulfillmentOptions').children() && $('#fulfillmentOptions').children()[0].innerHTML === 'Pickup') {
+      $('#fulfillmentOptions').children()[0].innerHTML += ' at ' + JSON.parse(localStorage.myStore).name
+
+    }
     updateCartDiv()
 
   })
@@ -173,13 +178,13 @@ $(document).on('click', '#pickupRadio', function () {
 
 $(document).on('click', '#delivery', function () {
 
-
-
   localStorage.setItem("fulfillment_method", "delivery")
   updateCartDiv()
   setTimeout(function () {
     $('#modal-initial-click').modal('toggle')
   }, 500);
+
+  
 
 })
 

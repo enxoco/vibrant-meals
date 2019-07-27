@@ -168,7 +168,8 @@ class OrderController {
                 state: order.shipping.address.state,
                 items: filteredItems,
                 orderQuantity: orderQuantity,
-                deliveryWindow: order.metadata.deliveryWindow
+                deliveryWindow: order.metadata.deliveryWindow,
+                allergy: order.metadata.allergy_info ? order.metadata.allergy_info : ''
             }
 
             ord.push(obj)
@@ -210,12 +211,14 @@ class OrderController {
                 var item = orders[i].items[x]
                 if (item.amount != 0) {  
                     for (var z = 0; z < item.quantity; z++) {
-                        if (orders[i].metadata.fulfillment_day.toLowerCase() == 'monday') {
-                            monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                        } else if(orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday') {
-                            console.log(orders[i].metadata)
-                            thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                        if (orders[i].metadata.fulfillment_day) {
+                            if (orders[i].metadata.fulfillment_day.toLowerCase() == 'monday') {
+                                monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                            } else if(orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday') {
+                                thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                            }
                         }
+
                     }
                 }
             }

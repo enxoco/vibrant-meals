@@ -1,3 +1,5 @@
+$('input[name=zip-bill]').on('change', calcShipping())
+
 $('#info-billing > a').on('click', function () {
   $('input[name="street-ship"]').val($('input[name="street-bill"]').val())
   $('input[name="city-ship"]').val($('input[name="city-bill"]').val())
@@ -138,6 +140,7 @@ $('#pickupDaysList > .list-group-item.clickable').on('click', function () {
 
 
 $(document).ready(function () {
+
 
   card.addEventListener('change', function (event) {
     var displayError = document.getElementById('card-errors');
