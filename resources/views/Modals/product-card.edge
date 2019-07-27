@@ -13,13 +13,13 @@
                 <div class="row">
                     <div class="col-12 col-md-10 col-lg-10 mx-auto">
                         <div class="row">
-                            <div class="col-8 col-md-9 mx-auto">
+                            <div class="col-7 col-md-9 mx-auto pr-0">
                                 <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
                                     {{item.name}}
                                 </h4>
 
                             </div>
-                            <div class="col-4 col-md-3 d-flex justify-content-between">
+                            <div class="col-5 col-md-3 d-flex justify-content-between pl-0">
                                 <a data-dismiss="modal" style="order:1;" class="checkout-prompt-1" data-id="{{item.id}}"
                                     data-sku="{{item.skus.data[0].id}}" data-name="{{item.name}}"
                                     data-price="{{item.skus.data[0].price}}" data-img_url="{{item.skus.data[0].image}}"
@@ -29,7 +29,7 @@
                                         onmousedown="hoverCart(this)" />
                                 </a>
                                 <span class="modal-card-price"
-                                style="color:#F48566; font-size:18px; padding-left:10px;">{{currency(item.skus.data[0].price)}}
+                                style="color:#F48566; font-size:14px; padding-left:10px;">{{currency(item.skus.data[0].price)}}
                             </span>
                             </div>
                         </div>
@@ -90,35 +90,12 @@
 
                                     </td>
                                 </tr>
-                                <tr class="d-flex d-md-none d-lg-none justify-content-center">
-                                    <th style="text-align:center; font-size:14px; border-top:none !important;font-weight:400;">Nutrition</th>
-                                </tr>
+
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
 
                                     <td>
                                             <div class="row pb-4">
-                                                    <div class="col mx-auto" style="text-align:center;">
-                                                        <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
-                                                        <br />
-                                                        Calories
-        
-                                                    </div>
-                                                    <div class="col mx-auto" style="text-align:center;">
-                                                        <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
-                                                        <br />
-                                                        Fats
-                                                    </div>
-                                                    <div class="col mx-auto" style="text-align:center;">
-                                                        <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
-                                                        <br />
-                                                        Protein
-                                                    </div>
-                                                    <div class="col mx-auto" style="text-align:center;">
-                                                        <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
-                                                        <br />
-                                                        Carbs
-                                                    </div>
-                                                </div>
+
                                                 <div class="d-flex ml-2">
                                                 @!include('layout.user.nutrition-label')
                                                 </div>

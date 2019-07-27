@@ -53,6 +53,13 @@ class OrderController {
                     customer: auth.user.stripe_id,
                     limit: 1
                 })
+                for (var i = 0; i < order.data[0].items.length; i++) {
+                    let item = order.data[0].items[i]
+                    if (item.type === 'sku') {
+                        let sku = await stripe.skus.retrieve(item.parent)
+                        item.image = sku.image
+                    }
+                }
                 return view.render('Checkout.confirmation', {order})
             }
         }
