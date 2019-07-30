@@ -60,6 +60,13 @@ class OrderController {
                         item.image = sku.image
                     }
                 }
+                await Mail.send('auth.email.order-confirmation', {
+                    order: order.data[0]
+                  }, (message) => {
+                    message.to(auth.user.email, auth.user.name)
+                    message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+                    message.subject('Order Confirmation')
+                  })
                 return view.render('Checkout.confirmation', {order})
             }
         }
