@@ -183,7 +183,8 @@ class OrderController {
                 items: filteredItems,
                 orderQuantity: orderQuantity,
                 deliveryWindow: order.metadata.deliveryWindow,
-                allergy: order.metadata.allergy_info ? order.metadata.allergy_info : ''
+                allergy: order.metadata.allergy_info ? order.metadata.allergy_info : '',
+                delivery: order.metadata.delivery_notes? order.metadata.delivery_notes : ''
             }
 
             ord.push(obj)
