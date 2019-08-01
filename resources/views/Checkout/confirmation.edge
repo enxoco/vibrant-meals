@@ -113,7 +113,10 @@
                                                         <div class="col-6 mx-auto">
                                                             @if(item.image)
                                                             <img class="avatar figure-img pull-left mr-2" src="{{item.image}}"/> {{item.description}}
+                                                            @else
+                                                            {{item.description}}
                                                             @endif
+
                                                         </div>
                                                         <div class="col-6 mx-auto">
                                                             <strong>x{{item.quantity}} </strong> -
