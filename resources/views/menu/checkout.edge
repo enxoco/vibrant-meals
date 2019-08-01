@@ -70,33 +70,9 @@ select#fulfillmentOptions {
                 <div class="row">
                     <select onchange="fulfillMethod()" class="selectpicker d-flex d-sm-flex d-md-none d-lg-none" id="fulfillmentOptions" data-style="btn-primary">
                       </select>
+
                 <div class="col-12 col-md-6 col-lg-6">
-                  <ul style="text-align:left;">
-                    <strong>Billing Address</strong>
-                    <li>{{billing.shipping.address.line1}}</li>
-                    <li>{{billing.shipping.address.city}} {{billing.shipping.address.state}}, {{billing.shipping.address.postal_code}}</li>
-                  </ul>
-                  
-                  <ul style="text-align:left">
-                    <li>
-                      <span class="store-desc pl-0 mb-3" style="position:relative;"></span>
-                    </li>
-                  </ul>
-                  <ul id="shippingDetails" style="display:none;text-align:left;">
-                    <strong>Shipping Address</strong>
-                    <li>{{billing.shipping.address.line1}}</li>
-                    <li>{{billing.shipping.address.city}} {{billing.shipping.address.state}}, {{billing.shipping.address.postal_code}}</li>
-                  </ul>
-      
-                </div>
-                <div class="col-12 col-md-6 col-lg-6">
-                <ul style="text-align:left;">
-                  <strong>Payment</strong>
-                  
-                  <li>{{billing.sources.data[0].brand}} ending in {{billing.sources.data[0].last4}} </li>
-                  <li>Expiration date: {{billing.sources.data[0].exp_month}}/{{billing.sources.data[0].exp_year}}</li>
-      
-                </ul>
+
                 <ul style="text-align:left;">
       
                   <strong>Order Total</strong>
