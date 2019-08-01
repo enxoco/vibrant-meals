@@ -111,7 +111,9 @@
                                                     <!-- Item Description-->
                                                     <div class="row">
                                                         <div class="col-6 mx-auto">
-                                                           <img class="avatar figure-img pull-left mr-2" src="{{item.image}}"/> {{item.description}}
+                                                            @if(item.image)
+                                                            <img class="avatar figure-img pull-left mr-2" src="{{item.image}}"/> {{item.description}}
+                                                            @endif
                                                         </div>
                                                         <div class="col-6 mx-auto">
                                                             <strong>x{{item.quantity}} </strong> -
