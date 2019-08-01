@@ -176,9 +176,9 @@ function updateCartDiv(fulfillment_method) {
         <figure class="figure">\
           <img class="avatar figure-img pull-left mr-2 mt-3" src="'+cartItems[i].img_url.replace('http://', 'https://')+'"><span class="item-name">'+cartItems[i].name+'</span><br>\
           <div class="btn-group">\
-          <button class="btn btn-circle" onclick="addCart('+i+')"><i data-feather="plus-circle"></i></button>\
-          <button class="btn btn-circle">'+cartItems[i].quantity+'</button>\
           <button class="btn btn-circle" data-id="'+i+'" onclick="subCart('+i+')"><i data-feather="minus-circle"></i></button>\
+          <button class="btn btn-circle">'+cartItems[i].quantity+'</button>\
+          <button class="btn btn-circle" onclick="addCart('+i+')"><i data-feather="plus-circle"></i></button>\
       </div>\
           </figcaption>\
       </figure><hr class="mb-1">\
