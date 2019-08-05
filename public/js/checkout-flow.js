@@ -456,35 +456,38 @@ function calcShipping() {
     var query = "https://api.mapbox.com/directions/v5/mapbox/driving/" + encodeURI(store.geometry.coordinates) + "%3B" + encodeURI(userCords) + ".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
     $.get(query, function (distance) {
       var miles = distance.routes[0].distance * 0.000621371192
+      miles = miles.toFixed(0)
       var total = $('.order-total').data('total')
 
       if (total >= 100) {
         localStorage.shippingCode = 'freeshipping'
       } else {
-        if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
-          if (miles.toFixed(0) <= 10) {
-            localStorage.shippingCode = '5to10miles'
-            total += 5
-            $('.order-total').html(total)
-            $('.order-shipping').html('5.00')
-          }
-          if (miles.toFixed(0) > 10) {
-            var total = $('.order-total').data('total')
-            total += 10
-            $('.order-total').html(total)
-            localStorage.shippingCode = '11to15miles'
-            $('.order-shipping').html('10.00')
 
-          }
-
-        } else if (miles.toFixed(0) < 5) {
-          localStorage.shippingCode = '5to10miles'
+        if (miles >= 0 && miles < 2) {
+          localStorage.shippingCode('shipping_tier1')
+          total += 5
+          $('.order-total').html(total)
           $('.order-shipping').html('5.00')
-          // toastr['success']('You"re all set!')
         }
+
+        if (miles > 2 && miles <= 10) {
+          localStorage.shippingCode('shipping_tier2')
+          total += 8
+          $('.order-total').html(total)
+          $('.order-shipping').html('8.00')
+        }
+
+
+        if (miles > 10) {
+          localStorage.shippingCode('shipping_tier3')
+          total += 12
+          $('.order-total').html(total)
+          $('.order-shipping').html('12.00')
+        }
+
       }
 
-      localStorage.deliveryDistance = miles.toFixed(1)
+      localStorage.deliveryDistance = miles
     })
   })
 }

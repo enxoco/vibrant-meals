@@ -96,7 +96,6 @@ function updateCartDiv(fulfillment_method) {
     }
     if (localStorage.fulfillment_day) {
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
-      // $('#delivery-date-label').html('Your order is scheduled for '+localStorage.fulfillment_method+' <br /> On <strong><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><i data-feather="edit-3"></i></a>')
       $('.delivery-date-label, #delivery-date-label').html('<strong>'+capitalize(localStorage.fulfillment_method) + ' Date</strong> <br /><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong></a>')
 
 
