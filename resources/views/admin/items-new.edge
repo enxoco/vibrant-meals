@@ -142,7 +142,7 @@
                         @unless(prod)
                         <option>Choose a label</option>
                         @endunless
-                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast', 'plant based'])
+                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast', 'plantBased', 'whole_30', 'drinks'])
                           <option 
                           @if(prod.metadata.label == cat)
                             selected
@@ -374,8 +374,8 @@
           $(document).ready(function () {
             $('#productName').on('input', function() {
               var productId = $(this).val()
-              console.log(productId)
               productId = productId.replace(/[!@#$%^&*]/g, "").toLowerCase().replace(/ /g, "_")
+              console.log(productId)
 
               $('.product-id').val(productId)
             })
