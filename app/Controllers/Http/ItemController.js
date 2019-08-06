@@ -83,11 +83,11 @@ class ItemController {
 
 
       user.fulfillment_day = auth.user.fulfillment_day
-      return view.render('menu.menu-new', {items: prod, categories: categories, user: user})
+      return view.render('menu.menu', {items: prod, categories: categories, user: user})
       
     } else {
 
-      return view.render('menu.menu-new', {items: prod, categories: categories})
+      return view.render('menu.menu', {items: prod, categories: categories})
     }
 
   }
