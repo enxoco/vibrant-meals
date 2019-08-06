@@ -501,8 +501,6 @@ svg.feather.feather-plus {
       // $('#opens, #closes').combodate()
 } );
 $('.update-billing').on('click', function(){
-		console.log('hello')
-    console.log($('form#billing').serialize())
     $.ajax({
       type: "POST",
       url: "/account/billing/update",
@@ -609,7 +607,7 @@ function updateSkuLabel(id, value) {
       break;
     default:
     if (convertCamelToInitials(value).includes('_')) {
-      value = convertCamelToInitials(value).split('_')
+      value = convertCamelToInitials(value).split('_').replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
       value = value[0][0].toUpperCase() + value[1][0].toUpperCase()
     } else {
       value = value.split("")[0].toUpperCase()
@@ -622,7 +620,7 @@ function updateSkuLabel(id, value) {
 }
 
 function appendSkuLabel(id, value) {
-  var productId = $('input[name=product_id]').val()
+  var productId = $('input[name=product_id]').val().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
     $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(/ /g, '_'))
 
 }
