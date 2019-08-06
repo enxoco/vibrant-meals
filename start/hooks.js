@@ -20,6 +20,8 @@ hooks.after.providersBooted(() => {
     return label
   })
 
+
+
   View.global('convertTime', function (time) {
 
 
@@ -57,6 +59,8 @@ hooks.after.providersBooted(() => {
           return 'Performance'
         case 'LC':
           return 'Low_Carb'
+        case 'S':
+          return 'Snacks'
         default:
           return 'Everyday'
     }
