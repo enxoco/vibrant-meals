@@ -604,6 +604,9 @@ function updateSkuLabel(id, value) {
     case 'plant based':
       value = 'PB'
       break;
+    case 'lowCarb':
+      value = 'LC'
+      break;
     default:
     if (convertCamelToInitials(value).includes('_')) {
       value = convertCamelToInitials(value).split('_').replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
