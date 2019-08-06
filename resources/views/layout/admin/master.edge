@@ -594,7 +594,6 @@ function convertCamelToInitials(string) {
 
 feather.replace()
 function updateSkuLabel(id, value) {
-  console.log(value)
   switch(value) {
     case 'elite':
       value = 'ELT'
@@ -610,18 +609,18 @@ function updateSkuLabel(id, value) {
       value = convertCamelToInitials(value).split('_').replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
       value = value[0][0].toUpperCase() + value[1][0].toUpperCase()
     } else {
-      value = value.split("")[0].toUpperCase()
+      value = value.split("")[0].toUpperCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
     }
     break;
 
   }
 
-   $('input[name=product_id]').val(value + '_' + $('input[id=productName]').val().toLowerCase().replace(/ /g, '_'))
+   $('input[name=product_id]').val(value + '_' + $('input[id=productName]').val().toLowerCase().replace(/ /g, '_').replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,''))
 }
 
 function appendSkuLabel(id, value) {
-  var productId = $('input[name=product_id]').val().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
-    $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(/ /g, '_'))
+  var productId = $('input[name=product_id]').val()
+    $('#sku' + id + '_id').val(productId + '_' + value.toLowerCase().replace(/ /g, '_').replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,''))
 
 }
 
