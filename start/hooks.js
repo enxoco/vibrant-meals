@@ -61,6 +61,10 @@ hooks.after.providersBooted(() => {
           return 'Low_Carb'
         case 'S':
           return 'Snacks'
+        case 'D':
+          return 'Drinks'
+        case 'W30':
+          return 'Whole_30'
         default:
           return 'Everyday'
     }
