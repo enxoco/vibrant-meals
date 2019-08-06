@@ -1788,81 +1788,7 @@ if (window.location.href.includes('checkout')) {
 
 }
 
-    function calcShipping(){
-      var store = {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-85.317172,35.069111]
-        }
-      }
-  
-      
-  
-      if (localStorage.userAddr) {
-        $('#address-input').text(localStorage.userAddr.street)
-      }
-  
-      // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
-      var st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
-      var city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
-      var state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
-      var post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
 
-    
-      var search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
-  
-      var userAddr = {
-        street: st,
-        city: city,
-        state: state,
-        zip: post
-      }
-      localStorage.userAddr = JSON.stringify(userAddr)
-      var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+search+".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
-      $.get(userSearch, function(data) {
-        var userCords = data.features[0].geometry.coordinates
-        var query = "https://api.mapbox.com/directions/v5/mapbox/driving/"+encodeURI(store.geometry.coordinates)+"%3B"+encodeURI(userCords)+".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
-        $.get(query, function(distance) {
-          var miles = distance.routes[0].distance*0.000621371192
-          var total = $('.order-total').data('total')
-
-          if (total >= 100) {
-            localStorage.shippingCode = 'freeshipping'
-          } else {
-            if (miles.toFixed(0) > 5 && localStorage.fulfillment_method != 'pickup') {
-            if (miles.toFixed(0) <= 10) {
-              localStorage.shippingCode = '5to10miles'
-              total += 5
-              $('.order-total').html(total)
-              $('.order-shipping').html('5.00')
-            }
-            if (miles.toFixed(0) > 10) {
-              var total = $('.order-total').data('total')
-              total += 10
-              $('.order-total').html(total)
-              localStorage.shippingCode = '11to15miles'
-              console.log('over 10 miles')
-              $('.order-shipping').html('10.00')
-
-            }
-            $('#shippingDetails').show()
-            // console.log('les')
-            // toastr['error']('Sorry this address is outside of our delivery zone.  You are ' + miles.toFixed(0) + ' miles from our nearest store.')
-          } else if (miles.toFixed(0) < 5) {
-            localStorage.shippingCode = 'freeshipping'
-            $('.order-shipping').html('0')
-            $('#shippingDetails').show()
-
-            // toastr['success']('You"re all set!')
-            }
-          }
-
-          localStorage.deliveryDistance = miles.toFixed(1)
-        })
-      })
-    }
 
     $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
       calcShipping()
@@ -2034,6 +1960,84 @@ $('.card-header').on('click', function(){
   $('.collapse.show').removeClass('show')
 })
 
+/**
+* 
+* Function to calculate shipping charges based on zip code
+*/
+
+function calcShipping() {
+  let store = {
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-85.317172, 35.069111]
+    }
+  }
+
+
+
+  if (localStorage.userAddr) {
+    $('#address-input').text(localStorage.userAddr.street)
+  }
+
+  // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
+  let st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
+  let city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
+  let state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
+  let post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
+
+
+  let search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
+
+  let userAddr = {
+    street: st,
+    city: city,
+    state: state,
+    zip: post
+  }
+  localStorage.userAddr = JSON.stringify(userAddr)
+  var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + search + ".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
+  $.get(userSearch, function (data) {
+    var userCords = data.features[0].geometry.coordinates
+    var query = "https://api.mapbox.com/directions/v5/mapbox/driving/" + encodeURI(store.geometry.coordinates) + "%3B" + encodeURI(userCords) + ".json?access_token=pk.eyJ1IjoiZW54byIsImEiOiJjanI5Nnc5aTUwZWo2NDlud2F6MnJwZ3A5In0.WhklmDXw40rTZ2OwDGS2LA"
+    $.get(query, function (distance) {
+      var miles = distance.routes[0].distance * 0.000621371192
+      miles = miles.toFixed(0)
+      var total = $('.order-total').data('total')
+
+      if (total >= 100) {
+        localStorage.shippingCode = 'freeshipping'
+      } else {
+
+        if (miles >= 0 && miles < 2) {
+          localStorage.shippingCode = 'shipping_tier1'
+          total += 5
+          $('.order-total').html(total)
+          $('.order-shipping').html('5.00')
+        }
+
+        if (miles > 2 && miles <= 10) {
+          localStorage.shippingCode = 'shipping_tier2'
+          total += 8
+          $('.order-total').html(total)
+          $('.order-shipping').html('8.00')
+        }
+
+
+        if (miles > 10) {
+          localStorage.shippingCode = 'shipping_tier3'
+          total += 12
+          $('.order-total').html(total)
+          $('.order-shipping').html('12.00')
+        }
+
+      }
+
+      localStorage.deliveryDistance = miles
+    })
+  })
+}
 
 </script>
 
