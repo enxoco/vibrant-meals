@@ -162,6 +162,9 @@
                 <th>
                  Status
                 </th>
+                <th>
+                  Delivery Notes
+                </th>
                 <th style="display:none;">Orderid</th>
 
               </thead>
@@ -202,6 +205,13 @@
 
                   </td>
                   <td style="display:none;">{{p.metadata.orderId}}</td>
+                  <td>
+                    
+                    @if(p.metadata.delivery_notes)
+                    {{p.metadata.delivery_notes}}
+                    @else
+                    @endif 
+                  </td>
 
                 </tr>
                 @endeach
