@@ -260,14 +260,7 @@ class CheckoutController {
     }
 
     user.password = await Hash.make(req.user.password)
-    var existing = await stripe.customers.list(
-      {
-        limit: 1,
-        email: email
-      }
-    )
 
-    if (existing.data.length == 0) {
     var customer = await stripe.customers.create({
       description: 'Customer for ' + email,
       source: req.billing.stripeToken,
@@ -306,14 +299,8 @@ class CheckoutController {
     var curUser = await user.save()
 
     await auth.attempt(user.email, req.user.password)
-  } else {
-    var curUser = await Database
-      .table('users')
-      .where('email', email)
-    var customer = existing.data[0]
-    await auth.attempt(user.email, req.user.password)
 
-  }
+  
 
     if (curUser) {
       var truth = req.billing.coupon === ""
