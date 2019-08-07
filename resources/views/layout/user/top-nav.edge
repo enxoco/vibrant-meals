@@ -13,6 +13,14 @@
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
         
         <ul class="navbar-nav">
+          @if(auth.user)
+            @if(auth.user.user_level === 'admin')
+            <li class="nav-item">
+                <a class="nav-link btn-magnify" href="/admin/dashboard">
+                  Admin Dashboard
+                </a>
+            @endif
+          @endif
           <li class="nav-item">
             <a class="nav-link btn-magnify" href="/">
               Home
