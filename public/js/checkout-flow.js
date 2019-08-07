@@ -417,16 +417,7 @@ $('input[type=radio]').on('change', function () {
 
 function anything() {
 
-  var iframe = document.getElementById("hidden-mailchimp");
-  var email = iframe.contentWindow.document.getElementById('mce-EMAIL')
-  var fname = iframe.contentWindow.document.getElementById('mce-FNAME')
-  var lname = iframe.contentWindow.document.getElementById('mce-LNAME')
 
-  email.value = document.getElementById('email-bill').value
-  fname.value = document.getElementById('firstName').value
-  lname.value = document.getElementById('lastName').value
-  var form = iframe.contentWindow.document.getElementById('mc-embedded-subscribe-form')
-  form.submit()
   $('#toggleSections').html('Processing order... <div id="loading"></div>')
   $('#toggleSections').attr('disabled', 'disabled')
 

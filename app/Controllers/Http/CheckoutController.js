@@ -7,8 +7,9 @@ const Hash = use('Hash')
 const fs = require('fs')
 const Helpers = use('Helpers')
 var orderCount = parseInt(fs.readFileSync(`${Helpers.appRoot()}/config/orderCounter.txt`))
-
-
+const Mailchimp = require('mailchimp-api-v3')
+const mailchimp = new Mailchimp(Env.get('MAILCHIMP_API_KEY'))
+const mcList = Env.get('MAILCHIMP_LIST_ID')
 
 
 
@@ -184,6 +185,7 @@ class CheckoutController {
         limit: 1,
         customer: customer.id
       })
+      
 
       return response.send({status: 'success'}) 
 
@@ -201,6 +203,20 @@ class CheckoutController {
     req = req.data
 
     const {email, firstName, lastName} = req.user
+
+    mailchimp.post(`/lists/${mcList}/members`, {
+      email_address : email,
+      FNAME : firstName,
+      LNAME : lastName,
+      status : 'subscribed'
+    
+    })
+    .then(function(results) {
+      console.log(`these are the results ${results}`)
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
 
   if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
