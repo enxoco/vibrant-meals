@@ -291,7 +291,9 @@ class AdminController {
 
       // Loop over all orders for a user and grab the total amounts
       for (var x = 0; x < order.data.length; x++) {
-        totalSpend += order.data[i].amount
+         if (order.data[i] && order.data[i].amount) {
+           totalSpend += order.data[i].amount
+         }
       }
 
       // Add the lifetime spending for the customer onto customer object
