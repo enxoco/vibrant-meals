@@ -132,7 +132,7 @@ hooks.after.providersBooted(() => {
     var div = ``
     div += `<div class="col pr-0">
     <h5>
-    ${macros.calories ? macros.calories : 0}g 
+    ${macros.calories ? macros.calories : 0} 
     <br>
       <small>Calories</small>
     </h5>
