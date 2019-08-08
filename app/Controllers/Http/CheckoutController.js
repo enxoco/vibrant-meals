@@ -124,7 +124,9 @@ class CheckoutController {
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
             orderId: orderCount,
-            deliveryWindow: req.billing.deliveryWindow
+            deliveryWindow: req.billing.deliveryWindow,
+            tax: req.billing.tax,
+            shipping: req.billing.shipping
             
           },
           email: user.email
@@ -164,7 +166,9 @@ class CheckoutController {
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
             orderId: orderCount,
-            deliveryWindow: req.billing.deliveryWindow
+            deliveryWindow: req.billing.deliveryWindow,
+            tax: req.billing.tax,
+            shipping: req.billing.shipping
 
           },
           email: user.email
@@ -296,7 +300,9 @@ class CheckoutController {
         allergy_info: req.billing.allergy_info,
         delivery_info: req.billing.delivery_info,
         orderId: orderCount,
-        deliveryWindow: req.billing.deliveryWindow
+        deliveryWindow: req.billing.deliveryWindow,
+        tax: req.billing.tax,
+        shipping: req.billing.shipping
 
       },
       shipping: {
@@ -349,7 +355,9 @@ class CheckoutController {
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
             orderId: orderCount,
-            deliveryWindow: req.billing.deliveryWindow
+            deliveryWindow: req.billing.deliveryWindow,
+            tax: req.billing.tax,
+            shipping: req.billing.shipping
 
           },
           email: user.email
@@ -398,7 +406,9 @@ class CheckoutController {
               allergy_info: req.billing.allergy_info,
               delivery_info: req.billing.delivery_info,
               orderId: orderCount,
-              deliveryWindow: req.billing.deliveryWindow
+              deliveryWindow: req.billing.deliveryWindow,
+              tax: req.billing.tax,
+              shipping: req.billing.shipping
 
             },
             email: user.email
@@ -437,7 +447,9 @@ class CheckoutController {
             allergy_info: req.billing.allergy_info,
             delivery_info: req.billing.delivery_info,
             orderId: orderCount,
-            deliveryWindow: req.billing.deliveryWindow
+            deliveryWindow: req.billing.deliveryWindow,
+            tax: req.billing.tax,
+            shipping: req.billing.shipping
 
           },
           email: user.email

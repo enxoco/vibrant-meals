@@ -27,7 +27,7 @@ function updateCartDiv(fulfillment_method) {
     $('.delivery-desc').html('')
     $('#pickupRadio').attr('checked', 'checked')
 
-    $('#delivery-fee').hide()
+    $('#order-shipping').html('0')
     if (!localStorage.pickupLocation) {
       localStorage.setItem('fulfillment_method', 'delivery')
       updateCartDiv()
@@ -86,7 +86,7 @@ function updateCartDiv(fulfillment_method) {
 
     if (localStorage.fulfillment_method == 'pickup' && fulfillment_method != 'delivery') {
       if (localStorage.fulfillment_day) {
-        $('#delivery-fee').hide()
+        $('.order-shipping').html('0')
         $('.delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
 
         $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )

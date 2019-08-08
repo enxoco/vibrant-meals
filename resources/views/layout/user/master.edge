@@ -2010,7 +2010,7 @@ function calcShipping() {
       miles = miles.toFixed(0)
       var total = $('.order-total').data('total')
 
-      if (total >= 100) {
+      if (total >= 100 || $('#pickupRadio').is(':checked')) {
         localStorage.shippingCode = 'freeshipping'
       } else {
 
@@ -2041,11 +2041,16 @@ function calcShipping() {
       localStorage.deliveryDistance = miles
     })
   })
+  if ($('#pickupRadio').is(':checked')) {
+    $('.order-shipping').html('0')
+  }
 }
 $(".filter").not('.Everyday').hide();
 
 $('.filter').filter('.Everyday').show(); 
 $('.filter').filter('.Low_Carb').show(); 
+
+$('.dropdown-item').on('click', function(){$('.dropdown-menu').removeClass('show')})
 
 
 </script>

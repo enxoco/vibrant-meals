@@ -215,7 +215,9 @@ function processOrder(card, id) {
     delivery_info: $('input[name=delivery_notes]').val(),
     type: card.type,
     paymentId: id,
-    deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id')
+    deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
+    tax: $('.order-tax').html(),
+    shipping: $('.order-shipping').html()
 
 
   }
@@ -434,7 +436,9 @@ function anything() {
       delivery_info: $('input[name=delivery_notes]').val(),
       stripeToken: result.token.id,
       shippingCode: localStorage.shippingCode,
-      deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id')
+      deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
+      tax: $('.order-tax').html(),
+      shipping: $('.order-shipping').html()
 
     }
 

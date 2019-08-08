@@ -60,8 +60,10 @@ class OrderController {
                         item.image = sku.image
                     }
                 }
+                var cust = await stripe.customers.retrieve(auth.user.stripe_id)
                 await Mail.send('auth.email.order-confirmation', {
-                    order: order.data[0]
+                    order: order.data[0],
+                    customer: cust
                   }, (message) => {
                     message.to(auth.user.email, auth.user.name)
                     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
