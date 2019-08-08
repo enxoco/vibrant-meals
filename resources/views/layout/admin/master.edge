@@ -440,7 +440,17 @@ svg.feather.feather-plus {
       }
   });
 
-
+  var buttonCommon = {
+      exportOptions: {
+          format: {
+              body: function ( data, row, column, node ) {
+                  // Strip $ from salary column to make it numeric
+                  return removeBlanksAndSpaces(data) 
+              },
+              
+          }
+      }
+   }
   
 
   $('#productNeededMonday').DataTable( {
@@ -448,7 +458,10 @@ svg.feather.feather-plus {
         dom: 'Bfrtip',
         colReorder: true,
         buttons: [
-          'csv',
+          $.extend( true, {}, buttonCommon, {
+         extend: 'csv',
+         filename: 'Monday Production Sheet'
+     } ),
           'pdfHtml5',
           'selectAll',
           'selectNone'
@@ -460,7 +473,10 @@ svg.feather.feather-plus {
         dom: 'Bfrtip',
         colReorder: true,
         buttons: [
-          'csv',
+          $.extend( true, {}, buttonCommon, {
+         extend: 'csv',
+         filename: 'Thursday Production Sheet'
+     } ),
           'pdfHtml5',
           'selectAll',
           'selectNone'

@@ -13,17 +13,19 @@ $(document).ready(function() {
    }
 
 
+
    var exportTable = $('#productNeededExport').DataTable( {
       select: true,
       dom: 'Bfrtip',
       colReorder: true,
+      order: [[0, 'desc']],
       buttons: [
         'pdfHtml5',
         'selectAll',
         'selectNone',
         $.extend( true, {}, buttonCommon, {
          extend: 'csv',
-         filename: 'product_export'
+         filename: 'Packing and Delivery List'
      } ),
       ],
       
@@ -39,45 +41,51 @@ $(document).ready(function() {
          }
        ]
    } );
-})
-var ordersTable = $('#pickups').DataTable( {
-    select: true,
-    dom: 'Bfrtip',
-    colReorder: true,
-    buttons: [
+   var ordersTable = $('#pickups').DataTable( {
+      select: true,
+      dom: 'Bfrtip',
+      colReorder: true,
+      order : [[1, 'desc']],
+      filename: 'Scheduled Orders',
+      buttons: [
+         $.extend( true, {}, buttonCommon, {
+            extend: 'csv',
+            filename: 'Scheduled Orders'
+        } ),
+        'pdfHtml5',
+        'selectAll',
+        'selectNone',
 
-      'csv',
-      'pdfHtml5',
-      'selectAll',
-      'selectNone',
-      {
-        text: 'Batch Fulfill',
-        className: 'btn-success',
-        action: function ( e, dt, node, config) {
-          var rows = dt.rows('.selected').data()
-          var ids = []
-          for (var i = 0; i < rows.length; i++) {
-            var id = rows[i][0]
-            ids.push(id)
-          }
-          $.ajax({
-            type: 'POST',
-            url: '/admin/orders/batch',
-            data: {ids: ids},
-            success: function(res) {
-              toastr['success']('Orders fulfilled')
-              window.location.reload()
-              
-            },
-            error: function(){
-              toastr['warning']('Something went wrong')
+        {
+          text: 'Batch Fulfill',
+          className: 'btn-success',
+          action: function ( e, dt, node, config) {
+            var rows = dt.rows('.selected').data()
+            var ids = []
+            for (var i = 0; i < rows.length; i++) {
+              var id = rows[i][0]
+              ids.push(id)
             }
-          })
-
+            $.ajax({
+              type: 'POST',
+              url: '/admin/orders/batch',
+              data: {ids: ids},
+              success: function(res) {
+                toastr['success']('Orders fulfilled')
+                window.location.reload()
+                
+              },
+              error: function(){
+                toastr['warning']('Something went wrong')
+              }
+            })
+  
+          }
         }
-      }
-    ]
-} );
+      ]
+  } );
+  
+})
 
 
 
