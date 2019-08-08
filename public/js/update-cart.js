@@ -22,22 +22,15 @@ function updateCartDiv(fulfillment_method) {
     data: {pref: orderMethod},
     success: console.log('Options updated')
   })
-  if (orderMethod == 'pickup' && localStorage.myStore) {
+
+  
+  if (orderMethod === 'pickup' && localStorage.myStore) {
     $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
     $('.delivery-desc').html('')
     $('#pickupRadio').attr('checked', 'checked')
 
-    $('#order-shipping').html('0')
-    if (!localStorage.pickupLocation) {
-      localStorage.setItem('fulfillment_method', 'delivery')
-      updateCartDiv()
-      $('#deliveryFee').show()
-    }
+    $('.order-shipping').html('0')
 
-      var orderLocation = ''
-      if (localStorage.pickupLocation) {
-        orderLocation = JSON.parse(localStorage.pickupLocation).name
-      }
     } else {
       $('#deliveryRadio').attr('checked', 'checked')
       $('#pickupRadio').removeAttr('checked')
@@ -84,16 +77,7 @@ function updateCartDiv(fulfillment_method) {
     // $('.row.mb-5.pl-3').append(d)
     $('#order-info').html(d)
 
-    if (localStorage.fulfillment_method == 'pickup' && fulfillment_method != 'delivery') {
-      if (localStorage.fulfillment_day) {
-        $('.order-shipping').html('0')
-        $('.delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
 
-        $('#delivery-date-label').html('Your order will be ready for ' + localStorage.fulfillment_method + '<br /> On <strong>' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date + '</strong><br /> You can pickup your order from <strong>' + JSON.parse(localStorage.pickupLocation).desc )
-      } else {
-
-      }
-    }
     if (localStorage.fulfillment_day) {
       $('#fulfillment-date').val(localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + localStorage.fulfillment_date)
       $('.delivery-date-label, #delivery-date-label').html('<strong>'+capitalize(localStorage.fulfillment_method) + ' Date</strong> <br /><a href="#" id="update-fulfillment-day">' + localStorage.fulfillment_day.charAt(0).toUpperCase() + localStorage.fulfillment_day.slice(1) + ' - ' + $(".list-group-item.clickable.active").data("date") + '</strong></a>')
