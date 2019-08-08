@@ -548,7 +548,7 @@
 }</style></head>
     <body>
         <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">Confirmation</span><!--<![endif]-->
+        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">Refund</span><!--<![endif]-->
         <!--*|END:IF|*-->
         <center>
             <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
@@ -579,7 +579,7 @@
 							
 							<td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 							
-								Vibrant Meals : New Order Confirmed #{{order.metadata.orderId}}
+								Vibrant Meals : Order refunded #{{order.metadata.orderId}}
 							</td>
 						</tr>
 					</tbody></table>
@@ -659,20 +659,11 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
                         
-                            <h1>Order Confirmed: #{{order.metadata.orderId}}.</h1>
+                            <h1>Order Refunded: #{{order.metadata.orderId}}.</h1>
 
-<p>Thank you for your order with Vibrant Meals!&nbsp; You will receive a confirmation email on the day your meals are bagged and out for delivery.<br>
+<p>Your order from Vibrant Meals has been refunded {{currency(amount)}}<br>
 <br>
-<strong>Bag Return:&nbsp; </strong>Please return the tote bag (and ice pack) at the same location as your initial pickup/delivery.&nbsp; You may keep one Vibrant Meals bag for personal use.<br>
-<br>
-@if(order.metadata.fulfillment_method === 'delivery')
-<strong>Home Delivery:&nbsp; </strong>Your meals will be delivered in a climate controlled bag with ice, these can sit for up to 3-4 hours.&nbsp; If you will not be home during the delivery time selected you may leave a cooler outside for us to place your meals in.<br>
-<br>
-@else
-<strong>Pick-up:</strong>&nbsp; Your meals will be dropped off in an onsite refrigerator.<br>
-<br>
-@endif
-Enjoy!<br>
+
 <br>
 Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertTime(order.created)}})</p>
 
@@ -700,9 +691,9 @@ Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertT
 				<![endif]-->
 			    
 				<!--[if mso]>
-				<td valign="top" width="300" style="width:300px;">
+				<td valign="top" width="500" style="width:500px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:300px;" width="100%" class="mcnTextContentContainer">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:500px;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-left:18px; padding-bottom:9px; padding-right:18px; text-align:center;">
@@ -738,45 +729,8 @@ Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertT
 							</td>
 						</tr>
 					</tbody></table>
-				<!--[if mso]>
-				</td>
-				<![endif]-->
-                
-				<!--[if mso]>
-				<td valign="top" width="300" style="width:500px;">
-				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:200px;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-left:18px; padding-bottom:9px; padding-right:18px;text-align:center;">
-							@if(order.metadata.fulfillment_method === 'delivery')
-								<strong>SHIPPING TO:</strong><br>
-								{{order.shipping.name}}<br>
-								{{order.shipping.address.line1}}<br>
-								@if(order.shipping.address.line2)
-								{{order.shipping.address.line2}}
-								@endif
-								{{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}<br>
-								United States<br>
-								CC: ****-{{customer.sources.data[0].last4}}<br>
-								{{order.email}}
-							@else 
-								<strong>PICKUP LOCATION:</strong><br>
-								{{order.shipping.address.line1}}<br>
-								{{order.shipping.address.line2}}<br>
-								Your order will be ready on {{order.metadata.fulfillment_day}} {{order.metadata.fulfillment_date}}!
-							@endif
-                        </td>
-                    </tr>
-                </tbody></table>
-				<!--[if mso]>
-				</td>
-				<![endif]-->
-                
-				<!--[if mso]>
-				</tr>
-				</table>
-				<![endif]-->
+
+
             </td>
         </tr>
     </tbody>

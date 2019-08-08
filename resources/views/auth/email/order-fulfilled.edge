@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Vibrant Meals Order Confirmation</title>
+        <title>Vibrant Meals Order Fulfilled</title>
         
     <style type="text/css">
 		p{
@@ -579,7 +579,7 @@
 							
 							<td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 							
-								Vibrant Meals : New Order Confirmed #{{order.metadata.orderId}}
+								Vibrant Meals : Meal Order Packaged #{{order.metadata.orderId}}
 							</td>
 						</tr>
 					</tbody></table>
@@ -658,10 +658,13 @@
                     <tbody><tr>
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                        
-                            <h1>Order Confirmed: #{{order.metadata.orderId}}.</h1>
+                        @if(order.metadata.fulfillment_method === 'pickup')
+                        <h1>Order #{{order.metadata.orderId}} is ready for pickup!</h1>
+                        @else
+                        <h1>Order #{{order.metadata.orderId}} is out for delivery!</h1>
+                        @endif
 
-<p>Thank you for your order with Vibrant Meals!&nbsp; You will receive a confirmation email on the day your meals are bagged and out for delivery.<br>
+<p>Your order from Vibrant Meals has been packaged and will be sent out from our facility just before your selected time window.  Please remember to check your selected time window<br>
 <br>
 <strong>Bag Return:&nbsp; </strong>Please return the tote bag (and ice pack) at the same location as your initial pickup/delivery.&nbsp; You may keep one Vibrant Meals bag for personal use.<br>
 <br>
@@ -758,7 +761,7 @@ Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertT
 								@endif
 								{{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}<br>
 								United States<br>
-								CC: ****-{{customer.sources.data[0].last4}}<br>
+                                CC: ****-{{customer.sources.data[0].last4}}<br>
 								{{order.email}}
 							@else 
 								<strong>PICKUP LOCATION:</strong><br>
@@ -802,11 +805,11 @@ Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertT
 <div style="text-align:center;"><strong><span style="font-size:12px">ITEM&nbsp; &nbsp; &nbsp; QTY&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></strong><strong><span style="font-size:12px">UNIT&nbsp; &nbsp; &nbsp; SUBTOTAL&nbsp;</span><br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong></div>
 
-<div style="text-align: left;">
+<div style="text-align: center;">
 	@each(i in order.items) 
 	@unless(i.quantity === null) 
 	@unless(i.description === 'Shipping')
-	{{truncate(i.description, 20, '...')}} x{{i.quantity}}&nbsp;&nbsp;{{currency(i.amount / i.quantity)}}&nbsp; &nbsp;{{currency(i.amount)}}<br>
+	<span style="text-align:left;">{{truncate(i.description, 20, '...')}} x{{i.quantity}}</span>&nbsp;&nbsp;<span style="text-align:right;">{{currency(i.amount / i.quantity)}}&nbsp; &nbsp;{{currency(i.amount)}}</span><br>
 	@endunless
 	@endunless
 	@endeach
