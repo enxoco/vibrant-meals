@@ -26,7 +26,7 @@ class OrderController {
           }, (message) => {
             message.to(auth.user.email, auth.user.name)
             message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
-            message.subject('Order Confirmation')
+            message.subject('Vibrant Meals Order Confirmation')
           })
 
     }
@@ -75,6 +75,16 @@ class OrderController {
     }
 
     async batchFulfillStripe(id) {
+        const order = await stripe.orders.retrieve(id)
+        const customer = await stripe.customers.retrieve(order.customer)
+        await Mail.send('auth.email.order-fulfilled', {
+            order,
+            customer
+          }, (message) => {
+            message.to(customer.email, customer.metadata.name)
+            message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+            message.subject('Order Fulfilled')
+          })
         await stripe.orders.update(id,{status:'fulfilled'})
     }
 
@@ -97,12 +107,35 @@ class OrderController {
             var update = await stripe.orders.update(id,{
                 status: status
             })
+            const order = await stripe.orders.retrieve(id)
+            const customer = await stripe.customers.retrieve(order.customer)
+            await Mail.send('auth.email.order-fulfilled', {
+                order,
+                customer
+              }, (message) => {
+                message.to(customer.email, customer.metadata.name)
+                message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+                message.subject('Order Confirmation')
+              })
         }
         return response.send(update)
     }
 
-    async postRefund ({request, response}) {
+    async postRefund ({request, response, view}) {
         const {charge, amount} = request.all()
+        const chargeDetails = await stripe.charges.retrieve(charge)
+        const order = await stripe.orders.retrieve(chargeDetails.order)
+        var customer = await stripe.customers.retrieve(order.customer)
+        await Mail.send('auth.email.order-refund', {
+            amount,
+            order,
+            customer
+          }, (message) => {
+            message.to(customer.email, customer.metadata.name)
+            message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+            message.subject('Vibrant Meals Order Refund')
+          })
+
 
         var refund = await stripe.refunds.create({
             charge: charge,

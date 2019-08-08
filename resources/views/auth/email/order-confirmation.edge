@@ -802,7 +802,7 @@ Order Number: <strong>#{{order.metadata.orderId}} </strong>(placed on {{convertT
 <div style="text-align:center;"><strong><span style="font-size:12px">ITEM&nbsp; &nbsp; &nbsp; QTY&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></strong><strong><span style="font-size:12px">UNIT&nbsp; &nbsp; &nbsp; SUBTOTAL&nbsp;</span><br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong></div>
 
-<div style="text-align: left;">
+<div style="text-align: center;">
 	@each(i in order.items) 
 	@unless(i.quantity === null) 
 	@unless(i.description === 'Shipping')
