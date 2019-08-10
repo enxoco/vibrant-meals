@@ -68,6 +68,10 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
   let _sortedDates = dates.sort(function (a, b) {
     return moment(a).format('X') - moment(b).format('X')
   })
+  let defaultDate = _sortedDates[0].split(' ')
+  let defaultDay = defaultDate[0]
+  defaultDate = defaultDate[1] + ' ' + defaultDate[2]
+
 
   pickupDaysModal.html('<ul class="list-group">')
 
@@ -238,8 +242,8 @@ function processOrder(card, id) {
     phone: $('input[id="phone"]').val(),
     password: $('#password-bill').val(),
     fulfillment_method: localStorage.fulfillment_method,
-    fulfillment_day: $('li.list-group-item.clickable.active').data('day'),
-    fulfillment_date: $('li.list-group-item.clickable.active').data('date'),
+    fulfillment_day: $('li.list-group-item.clickable.active').data('day') ? $('li.list-group-item.clickable.active').data('day') : defaultDay,
+    fulfillment_date: $('li.list-group-item.clickable.active').data('date') ? $('li.list-group-item.clickable.active').data('date') : defaultDate,
     pickup_location: localStorage.myStore
   }
   var cart = localStorage.cart
@@ -320,8 +324,9 @@ $('document').on('click', '#createToken', function () {
       phone: $('input[id="phone"]').val(),
       password: $('#password-bill').val(),
       fulfillment_method: localStorage.fulfillment_method,
-      fulfillment_day: localStorage.fulfillment_day,
-      fulfillment_date: localStorage.fulfillment_date,
+      fulfillment_day: $('li.list-group-item.clickable.active').data('day') ? $('li.list-group-item.clickable.active').data('day') : defaultDay,
+      fulfillment_date: $('li.list-group-item.clickable.active').data('date') ? $('li.list-group-item.clickable.active').data('date') : defaultDate,
+  
       pickup_location: localStorage.myStore
     }
 
@@ -458,8 +463,8 @@ function anything() {
       phone: $('input[id="phone"]').val(),
       password: $('#password-bill').val(),
       fulfillment_method: localStorage.fulfillment_method,
-      fulfillment_day: localStorage.fulfillment_day,
-      fulfillment_date: localStorage.fulfillment_date,
+      fulfillment_day: localStorage.fulfillment_day ? localStorage.fulfillment_day : defaultDay,
+      fulfillment_date: localStorage.fulfillment_date ? localStorage.fulfillment_date : defaultDate,
       pickup_location: localStorage.myStore
     }
 

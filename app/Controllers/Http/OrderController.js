@@ -109,14 +109,27 @@ class OrderController {
             })
             const order = await stripe.orders.retrieve(id)
             const customer = await stripe.customers.retrieve(order.customer)
-            await Mail.send('auth.email.order-fulfilled', {
-                order,
-                customer
-              }, (message) => {
-                message.to(customer.email, customer.metadata.name)
-                message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
-                message.subject('Order Confirmation')
-              })
+
+            if (status.toLowerCase() === 'cancelled') {
+                await Mail.send('auth.email.order-cancel', {
+                    order,
+                    customer
+                  }, (message) => {
+                    message.to(customer.email, customer.metadata.name)
+                    message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+                    message.subject('Order Cancellation')
+                  })  
+            } else {
+                await Mail.send('auth.email.order-fulfilled', {
+                    order,
+                    customer
+                  }, (message) => {
+                    message.to(customer.email, customer.metadata.name)
+                    message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+                    message.subject('Order Confirmation')
+                  })
+            }
+
         }
         return response.send(update)
     }
