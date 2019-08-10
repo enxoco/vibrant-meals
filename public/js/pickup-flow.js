@@ -1,6 +1,89 @@
 
 $(document).on('click', '#pickupRadio', function () {
+  showPickupLocations()
+})
 
+$(document).on('click', '#pickup', function() {
+  $('#modal-initial-click').modal('hide')
+  $('#pickupRadio').prop('checked', true)
+  showPickupLocations()
+})
+
+
+
+$(document).on('click', '#delivery', function () {
+
+  localStorage.setItem("fulfillment_method", "delivery")
+  updateCartDiv()
+  setTimeout(function () {
+    $('#modal-initial-click').modal('toggle')
+  }, 500);
+
+  
+
+})
+
+
+function formatDate(date) {
+  var time = date.split(":");
+  var hh = parseInt(time[0]);
+  var m = parseInt(time[1]);
+  var h = hh;
+  if (h >= 12) {
+    h = hh - 12;
+    dd = "PM";
+  }
+  if (h == 0) {
+    h = 12;
+  }
+
+  m = m < 10 ? "0" + m : m;
+
+  /* if you want 2 digit hours: */
+  // h = h<10?"0"+h:h;
+  var timeStr = h + ":" + m + "" + dd;
+  return timeStr;
+}
+
+function getLocation() {
+  if ($('.coords').val() != "") {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+  
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+}
+function showPosition(position) {
+  var cord = [];
+  cord.push(position.coords.longitude);
+  cord.push(position.coords.latitude);
+  $("#cords").val(cord);
+}
+function showError(error) {
+  getLocationByIp()
+}
+function getLocationByIp() {
+  $.ajax({
+    type: 'GET',
+    url: 'https://icanhazip.com',
+    success: function (res) {
+      $.ajax({
+        type: 'GET',
+        url: 'http://api.ipstack.com/' + res + '?access_key=a30e90d0c810992415e2eb14c1e5e9bb&fields=longitude,latitude,zip',
+        success: function (res) {
+          var test = res.longitude + ',' + res.latitude
+          $('#cords').val(test)
+        }
+      })
+    }
+  })
+}
+getLocation()
+
+
+function showPickupLocations() {
   if (window.location.href.includes('checkout')) {
     $('#collapseTwo').removeClass('show')
     $('#collapseOne').addClass('show')
@@ -173,76 +256,4 @@ $(document).on('click', '#pickupRadio', function () {
     updateCartDiv()
 
   })
-})
-
-
-$(document).on('click', '#delivery', function () {
-
-  localStorage.setItem("fulfillment_method", "delivery")
-  updateCartDiv()
-  setTimeout(function () {
-    $('#modal-initial-click').modal('toggle')
-  }, 500);
-
-  
-
-})
-
-
-function formatDate(date) {
-  var time = date.split(":");
-  var hh = parseInt(time[0]);
-  var m = parseInt(time[1]);
-  var h = hh;
-  if (h >= 12) {
-    h = hh - 12;
-    dd = "PM";
-  }
-  if (h == 0) {
-    h = 12;
-  }
-
-  m = m < 10 ? "0" + m : m;
-
-  /* if you want 2 digit hours: */
-  // h = h<10?"0"+h:h;
-  var timeStr = h + ":" + m + "" + dd;
-  return timeStr;
 }
-
-function getLocation() {
-  if ($('.coords').val() != "") {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-  
-      x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  }
-}
-function showPosition(position) {
-  var cord = [];
-  cord.push(position.coords.longitude);
-  cord.push(position.coords.latitude);
-  $("#cords").val(cord);
-}
-function showError(error) {
-  getLocationByIp()
-}
-function getLocationByIp() {
-  $.ajax({
-    type: 'GET',
-    url: 'https://icanhazip.com',
-    success: function (res) {
-      $.ajax({
-        type: 'GET',
-        url: 'http://api.ipstack.com/' + res + '?access_key=a30e90d0c810992415e2eb14c1e5e9bb&fields=longitude,latitude,zip',
-        success: function (res) {
-          var test = res.longitude + ',' + res.latitude
-          $('#cords').val(test)
-        }
-      })
-    }
-  })
-}
-getLocation()
