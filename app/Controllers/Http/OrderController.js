@@ -167,8 +167,31 @@ class OrderController {
         let monday
       
         monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
-        thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
-
+        thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
+        if (moment().format('dddd') === 'Monday' && moment().format('H') < 12) {
+            thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
+          }
+          if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
+            thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
+         
+          } 
+        if (moment().format('dddd') == 'Friday') {
+            let format = 'HH:mm:ss'
+            let t = moment().format(format)
+            let time = moment(t, format)
+            beforeTime = moment('00:00:00', format),
+              afterTime = moment('08:00:00', format);
+        
+            if (time.isBetween(beforeTime, afterTime)) {
+              monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
+            } else {
+              monday = moment().add(2, 'weeks').startOf('isoweek').format('MMM DD')
+            }
+          }
+          if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
+            monday = moment().add(2, 'weeks').startOf('isoweek').format('MMM DD')
+        
+          }
 
         // Grab our open orders from stripe and massage into an array of skus
         var orders = await stripe.orders.list({
@@ -262,11 +285,11 @@ class OrderController {
                 fulfillments.push(orders[i])
                 deliveries++
             }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday' && orders[i].status === 'paid' && orders[i].metadata.fulfillment_date === thursday) {
+            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
             
                 thursdayFulfillments.push(orders[i])
             }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday' && orders[i].status === 'paid' && orders[i].metadata.fulfillment_date === monday) {
+            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday' && orders[i].metadata.fulfillment_date === monday) {
                 mondayFulfillments.push(orders[i])
             }
 
@@ -275,9 +298,9 @@ class OrderController {
                 if (item.amount != 0) {  
                     for (var z = 0; z < item.quantity; z++) {
                         if (orders[i].metadata.fulfillment_day) {
-                            if (orders[i].metadata.fulfillment_day.toLowerCase() === 'monday' && orders[i].status === 'paid' && orders[i].metadata.fulfillment_date === monday) {
+                            if (orders[i].metadata.fulfillment_day.toLowerCase() === 'monday' && orders[i].metadata.fulfillment_date === monday) {
                                 monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                            } else if(orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].status === 'paid' && orders[i].metadata.fulfillment_date === thursday) {
+                            } else if(orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
                                 thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
                             }
                         }
@@ -286,7 +309,6 @@ class OrderController {
                 }
             }
         }
-        return response.send(monList)
         revenue = (revenue / 100).toFixed(2)
         
 

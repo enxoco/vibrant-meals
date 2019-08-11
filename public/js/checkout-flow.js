@@ -22,14 +22,15 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
   monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
   thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
-  switch (moment().format('dddd')) {
-    case 'Monday':
-      thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
-      break;
-    case 'Tuesday':
-      thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
-      break;
+
+  if (moment().format('dddd') === 'Monday' && moment().format('H') < 12) {
+    thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
   }
+  if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
+    thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
+ 
+  } 
+
 
   if (moment().format('dddd') == 'Friday') {
     let format = 'HH:mm:ss'
