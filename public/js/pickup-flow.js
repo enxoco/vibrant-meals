@@ -243,6 +243,9 @@ function showPickupLocations() {
 
     localStorage.myStore = JSON.stringify(myStore)
     localStorage.fulfillment_method = 'pickup'
+    let button = document.getElementById('fulfillmentOptions')  
+    button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="pickup">Pickup at another location</option><option value="delivery">Delivery</option>'
+
     $('#user-info').remove()
     var userInfo = {
       fulfillment_method: 'pickup',

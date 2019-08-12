@@ -215,6 +215,7 @@ select#fulfillmentOptions {
   </div>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+  let button = document.getElementById('fulfillmentOptions')  
 
   function fulfillMethod(){
         d = document.getElementById("fulfillmentOptions").value;
@@ -225,12 +226,11 @@ select#fulfillmentOptions {
           button.innerHTML = '<option value="pickup">Pickup</option><option value="delivery">Delivery</option>'
         }
   }
-  let button = document.getElementById('fulfillmentOptions')  
   var fulfilMethod = localStorage.fulfillment_method.toLowerCase()
   if (fulfilMethod === 'delivery') {
     button.innerHTML = '<option value="delivery">Delivery</option><option value="pickup">Pickup</option>'
   } else {
-    button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="delivery">Delivery</option>'
+    button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="pickup">Pickup at another location</option><option value="delivery">Delivery</option>'
   }
 
 
