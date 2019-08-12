@@ -46,13 +46,20 @@ function formatDate(date) {
 }
 
 function getLocation() {
-  if ($('.coords').val() != "") {
+  if ($('.cords').val() != "") {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
   
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
+  }
+  if ($('#cords').val()) {
+    var cords = $('#cords').val()
+    var cord = cords.split(',')
+    console.log(cord)
+  } else {
+    var cord = ["-85.317076", "35.068908"]
   }
 }
 function showPosition(position) {
@@ -99,8 +106,15 @@ function showPickupLocations() {
 
   localStorage.setItem("fulfillment_method", "pickup")
 
-  var cords = $('#cords').val()
-  var cord = cords.split(',')
+  if ($('#cords').val()) {
+    var cords = $('#cords').val()
+    var cord = cords.split(',')
+    console.log(cord)
+  } else {
+    var cord = ["-85.317076", "35.068908"]
+  }
+
+
 
   // Using mapbox to sort and order our list of locations based on how far they are from main store.
   mapboxgl.accessToken =
