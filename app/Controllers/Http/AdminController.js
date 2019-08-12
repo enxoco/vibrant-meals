@@ -477,7 +477,7 @@ class AdminController {
           stripe.coupons.create({
             percent_off: amount,
             duration: 'once',
-            id: name,
+            id: encodeURI(name),
             ...(redeem_by && {redeem_by: redeem_by})
           }, (err) => {
             if (err) { return reject(err) }
