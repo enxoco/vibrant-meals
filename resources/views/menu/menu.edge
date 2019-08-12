@@ -68,7 +68,10 @@ body {
             </div>
         </div>
         </li>
-    @each(category in ['all','drinks','lunchDinner','breakfast','snacks'])
+        <li class="nav-item">
+            <a href="#" data-filter="all" class="all filter-button"><h2 class="category-heading active">All</h2></a>
+          </li>
+    @each(category in ['drinks','lunchDinner','breakfast','snacks'])
   <li class="nav-item">
     <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
   </li>
