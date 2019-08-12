@@ -87,7 +87,6 @@ function getLocationByIp() {
     }
   })
 }
-getLocation()
 
 
 function showPickupLocations() {
