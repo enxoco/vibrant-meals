@@ -491,7 +491,7 @@ class AdminController {
             amount_off: amount,
             duration: 'once',
             currency: 'usd',
-            id: name,
+            id: encodeURI(name),
             ...(redeem_by && {redeem_by: redeem_by})
           }, (err) => {
             if (err) { return reject(err) }
