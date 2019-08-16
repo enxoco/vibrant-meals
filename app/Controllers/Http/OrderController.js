@@ -192,8 +192,8 @@ class OrderController {
             let format = 'HH:mm:ss'
             let t = moment().format(format)
             let time = moment(t, format)
-            beforeTime = moment('00:00:00', format),
-              afterTime = moment('08:00:00', format);
+            let beforeTime = moment('00:00:00', format)
+            let afterTime = moment('08:00:00', format)
         
             if (time.isBetween(beforeTime, afterTime)) {
               monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
