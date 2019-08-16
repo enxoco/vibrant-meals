@@ -243,13 +243,16 @@ class OrderController {
             let filteredItems = []
             let orderQuantity = 0
             Object.keys(items).forEach(function (item) {
-                if (items[item].description === 'Shipping' || items[item].type != 'sku') {
-                } else {
-                    orderQuantity += items[item].quantity
-                    filteredItems.push(items[item])
+                if (order.status != 'canceled') {
+                    if (items[item].description === 'Shipping' || items[item].type != 'sku') {
+                    } else {
+                        orderQuantity += items[item].quantity
+                        filteredItems.push(items[item])
+                    }
                 }
+
             });
-            if (order.metadata.fulfillment_date) {
+            if (order.metadata.fulfillment_date && order.status != 'canceled') {
                 if (order.metadata.fulfillment_date === monday || order.metadata.fulfillment_date === thursday) {
                     var obj = {
                         name: order.shipping.name,
@@ -277,8 +280,12 @@ class OrderController {
         var itemList = []
         var monList = []
         var thursList = []
+        var outstandingOrders = orders.filter(function (el) {
+            return el.status != 'canceled'
+          });
         
-        const orderCount = orders.length
+        const orderCount = outstandingOrders.length
+
         
         var deliveries = 0
         var thursdayFulfillments = []
@@ -288,39 +295,42 @@ class OrderController {
         var revenue = 0
         // Iterate over our open/pending orders and grab each menu item
         for (var i = 0; i < orders.length; i++) {
-            revenue += orders[i].amount
+            if (orders[i].status != 'canceled') {
+                revenue += orders[i].amount
 
-            if (orders[i].metadata.fulfillment_method && orders[i].metadata.fulfillment_method == 'pickup') {
-                fulfillments.push(orders[i])
-                pickups++
-            }
-            if (orders[i].metadata.fulfillment_method && orders[i].metadata.fulfillment_method == 'delivery') {
-                fulfillments.push(orders[i])
-                deliveries++
-            }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
-            
-                thursdayFulfillments.push(orders[i])
-            }
-            if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday' && orders[i].metadata.fulfillment_date === monday) {
-                mondayFulfillments.push(orders[i])
-            }
-
-            for (var x = 0; x < orders[i].items.length; x++) {
-                var item = orders[i].items[x]
-                if (item.amount != 0) {  
-                    for (var z = 0; z < item.quantity; z++) {
-                        if (orders[i].metadata.fulfillment_day) {
-                            if (orders[i].metadata.fulfillment_day.toLowerCase() === 'monday' && orders[i].metadata.fulfillment_date === monday) {
-                                monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                            } else if(orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
-                                thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                if (orders[i].metadata.fulfillment_method && orders[i].metadata.fulfillment_method == 'pickup') {
+                    fulfillments.push(orders[i])
+                    pickups++
+                }
+                if (orders[i].metadata.fulfillment_method && orders[i].metadata.fulfillment_method == 'delivery') {
+                    fulfillments.push(orders[i])
+                    deliveries++
+                }
+                if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
+                
+                    thursdayFulfillments.push(orders[i])
+                }
+                if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday' && orders[i].metadata.fulfillment_date === monday) {
+                    mondayFulfillments.push(orders[i])
+                }
+    
+                for (var x = 0; x < orders[i].items.length; x++) {
+                    var item = orders[i].items[x]
+                    if (item.amount != 0) {  
+                        for (var z = 0; z < item.quantity; z++) {
+                            if (orders[i].metadata.fulfillment_day) {
+                                if (orders[i].metadata.fulfillment_day.toLowerCase() === 'monday' && orders[i].metadata.fulfillment_date === monday) {
+                                    monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                                } else if(orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
+                                    thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                                }
                             }
+    
                         }
-
                     }
                 }
             }
+
         }
         revenue = (revenue / 100).toFixed(2)
         
