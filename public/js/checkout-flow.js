@@ -207,6 +207,9 @@ $('#addCardToCust').on('click', function () {
 })
 
 function processOrder(card, id) {
+  let defaultDay = $('.list-group-item.clickable.active').data('day')
+  let defaultDate = $('.list-group-item.clickable.active').data('date')
+
 
   var billing = {
     street: $('input[name="street-bill"]').val(),
@@ -428,6 +431,8 @@ function anything() {
 
   $('#toggleSections').html('Processing order... <div id="loading"></div>')
   $('#toggleSections').attr('disabled', 'disabled')
+  let defaultDay = $('.list-group-item.clickable.active').data('day')
+  let defaultDate = $('.list-group-item.clickable.active').data('date')
 
   stripe.createToken(card).then(function (result) {
 
