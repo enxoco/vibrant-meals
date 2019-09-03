@@ -1829,7 +1829,9 @@ $('.menu-tab').on('click',function(){
 
 
 $(document).ready(function() {
-
+  if (!$('.list-group-item.clickable.active')) {
+    $('.list-group-item.clickable')[0].click()
+  }
 
   calcShipping()
   $('.express-checkout-default').on('click', function() {
