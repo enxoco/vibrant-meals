@@ -431,6 +431,7 @@ function anything() {
 
   $('#toggleSections').html('Processing order... <div id="loading"></div>')
   $('#toggleSections').attr('disabled', 'disabled')
+
   let defaultDay = $('.list-group-item.clickable.active').data('day')
   let defaultDate = $('.list-group-item.clickable.active').data('date')
 
