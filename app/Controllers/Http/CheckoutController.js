@@ -207,6 +207,7 @@ class CheckoutController {
     req = req.data
 
     const {email, firstName, lastName} = req.user
+    const { stripeToken } = req.billing
 
     mailchimp.post(`/lists/${mcList}/members`, {
       email_address : email,
@@ -283,7 +284,6 @@ class CheckoutController {
 
     var customer = await stripe.customers.create({
       description: 'Customer for ' + email,
-      source: req.billing.stripeToken,
       email: user.email,
       address: {
         line1: req.billing.street,
@@ -366,7 +366,7 @@ class CheckoutController {
           if (err){return err}
           stripe.orders.pay(order.id, {
             
-            source: customer.source // obtained with Stripe.js
+            source: stripeToken // obtained with Stripe.js
           }, function(err, order) {
             if (err) return(err)
 
