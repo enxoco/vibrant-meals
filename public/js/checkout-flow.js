@@ -195,18 +195,17 @@ $('#password_confirmation').on('focusout', function () {
 $('#addCardToCust').on('click', function () {
   $(this).html('Processing order... <div id="loading"></div>')
   $(this).attr('disabled', 'disabled')
-  var source = $('.billing-source').find('input[type=radio]:checked').val()
-  if (source === 'addCard') {
+  if ($('#addCard').is(':checked')) {
     stripe.createToken(card).then(function (result) {
       processOrder({ type: 'new' }, result.token.id)
     })
   } else {
     processOrder({ type: 'existing' }, source)
-  }
 
+  }
 })
 
-function processOrder(card, id) {
+function processOrder(card, token, id) {
   let defaultDay = $('.list-group-item.clickable.active').data('day')
   let defaultDate = $('.list-group-item.clickable.active').data('date')
 
@@ -222,7 +221,7 @@ function processOrder(card, id) {
     allergy_info: $('input[name=allergy_info]').val(),
     delivery_info: $('input[name=delivery_notes]').val(),
     type: card.type,
-    paymentId: id,
+    paymentId: token,
     deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
     tax: $('.order-tax').html(),
     shipping: $('.order-shipping').html()

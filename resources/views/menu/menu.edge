@@ -100,4 +100,11 @@ body {
 
         @endeach
       </div>
+
+      <script>
+
+        if(!localStorage.cords) {
+          getLocation()
+        }
+        </script>
 @endsection

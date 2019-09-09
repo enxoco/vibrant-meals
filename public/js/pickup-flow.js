@@ -1,11 +1,14 @@
 
 $(document).on('click', '#pickupRadio', function () {
+
   showPickupLocations()
 })
 
 $(document).on('click', '#pickup', function() {
   $('#modal-initial-click').modal('hide')
   $('#pickupRadio').prop('checked', true)
+  getLocation()
+
   showPickupLocations()
 })
 
@@ -67,6 +70,7 @@ function showPosition(position) {
   cord.push(position.coords.longitude);
   cord.push(position.coords.latitude);
   $("#cords").val(cord);
+  localStorage.cords = cord
 }
 function showError(error) {
   getLocationByIp()
@@ -95,7 +99,6 @@ function showPickupLocations() {
     $('#collapseOne').addClass('show')
   }
   $('#pickupRadioMobile').click()
-  getLocation()
   $('.delivery-fee').html('0')
   $('.order-shipping').html('0')
   localStorage.shippingCode = 'freeshipping'
