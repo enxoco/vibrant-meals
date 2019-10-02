@@ -41,7 +41,11 @@ class AuthController {
       // Add customers most recent order to their object
       customer.recent_order = order.data[0]
       customer.orders = order
-      return view.render('account.profile', {customer})
+      var orders = await Database
+      .table('orders')
+      .select()
+      .where('user_id', auth.user.id)
+      return view.render('account.profile', {customer, orders})
     }
   }
 

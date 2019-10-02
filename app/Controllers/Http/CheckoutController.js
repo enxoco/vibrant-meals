@@ -18,6 +18,101 @@ const moment = require('moment')
 
 class CheckoutController {
 
+    async createDeliveryOrder(req, user, billing_info) {
+      const amount = Number(req.billing.amount * 100).toFixed(0)
+
+
+      var newDate = moment(`'${req.user.fulfillment_date} '` + moment().year()).format('MM-DD-YYYY')
+      var fulfillment_week = moment(newDate, 'MM-DD-YYYY').week()
+
+      if (req.billing.type === 'new') {
+        var charge = await stripe.charges.create({
+          amount: amount,
+          currency: 'usd',
+          source: req.billing.paymentId,
+          metadata: {
+              fulfillment_day: req.user.fulfillment_day,
+              fulfillment_date: req.user.fulfillment_date,
+              fulfillment_method: 'Delivery',
+              allergy_info: req.billing.allergy_info,
+              delivery_info: req.billing.delivery_info,
+              orderId: orderCount,
+              deliveryWindow: req.billing.deliveryWindow,
+              tax: req.billing.tax,
+              shipping: req.billing.shipping,
+          }
+        })
+      } else {
+        var charge = await stripe.charges.create({
+          amount: amount,
+          currency: 'usd',
+          customer: user.stripe_id,
+          metadata: {
+              fulfillment_day: req.user.fulfillment_day,
+              fulfillment_date: req.user.fulfillment_date,
+              fulfillment_method: 'Delivery',
+              allergy_info: req.billing.allergy_info,
+              delivery_info: req.billing.delivery_info,
+              orderId: orderCount,
+              deliveryWindow: req.billing.deliveryWindow,
+              tax: req.billing.tax,
+              shipping: req.billing.shipping,
+          }
+        })
+      }
+      return charge
+    }
+
+    async createPickupOrder(req, user, store, shipping_info, billing_info){
+      const amount = Number(req.billing.amount * 100).toFixed(0)
+
+      var newDate = moment(`'${req.user.fulfillment_date} '` + moment().year()).format('MM-DD-YYYY')
+      var fulfillment_week = moment(newDate, 'MM-DD-YYYY').week()
+
+
+      if (req.billing.type === 'new') {
+        var charge = await stripe.charges.create({
+          amount: amount,
+          currency: 'usd',
+          source: req.billing.paymentId,
+          metadata: {
+              fulfillment_day: req.user.fulfillment_day,
+              fulfillment_date: req.user.fulfillment_date,
+              fulfillment_method: 'Pickup',
+              store_id: store.id,
+              allergy_info: req.billing.allergy_info,
+              delivery_info: req.billing.delivery_info,
+              orderId: orderCount,
+              deliveryWindow: req.billing.deliveryWindow,
+              tax: req.billing.tax,
+              shipping: req.billing.shipping,
+          }
+        })
+      } else {
+        var charge = await stripe.charges.create({
+          amount: amount,
+          currency: 'usd',
+          customer: user.stripe_id,
+          metadata: {
+              fulfillment_day: req.user.fulfillment_day,
+              fulfillment_date: req.user.fulfillment_date,
+              fulfillment_method: 'Pickup',
+              store_id: store.id,
+              allergy_info: req.billing.allergy_info,
+              delivery_info: req.billing.delivery_info,
+              orderId: orderCount,
+              deliveryWindow: req.billing.deliveryWindow,
+              tax: req.billing.tax,
+              shipping: req.billing.shipping,
+          }
+        })
+      }
+
+      return charge
+
+
+    }
+
   // Simple function to apply a coupon to customers order during checkout.
   // Returns coupon details which get applied on the front end.
   async applyCoupon ({response, params}) {
@@ -33,10 +128,8 @@ class CheckoutController {
 
     var req = request.all()
     req = req.data
-    const amount = Number(req.billing.amount * 100).toFixed(0)
 
     var user = await auth.user
-    const truth = req.billing.coupon === ""
 
     var update = await Database
       .table('users')
@@ -55,40 +148,13 @@ class CheckoutController {
 
     var cart = JSON.parse(req.cart)
 
-    // var stripeItems = []
-    
-    // if (req.billing.shippingCode && req.user.fulfillment_method != 'pickup') {
-    //   stripeItems.push({
-    //     type: 'sku',
-    //     parent: req.billing.shippingCode,
-    //     quantity: 1
-    //   })
-    // }
-    
-    // for (var i = 0; i < cart.length; i++) {
-    //   stripeItems.push({
-    //     type: 'sku',
-    //     parent: cart[i].sku,
-    //     quantity: parseInt(cart[i].quantity)
-    //   })
-    // }
-
-    if (req.billing.type == 'new') {
-      var source = await stripe.customers.createSource(customer.id, {
-        source: req.billing.paymentId
-      })  
-    } else {
-      var source = {id: req.billing.paymentId}
-    }
-
-
-    var address = req.billing.street
-    var city = req.billing.city
-    var state = req.billing.state
-    var zip = req.billing.zip
-
-
     if (user) {
+      var billing_info = {
+        address: req.billing.street,
+        city: req.billing.city,
+        state: req.billing.state,
+        zip: req.billing.zip
+      }
     
       if (req.user.fulfillment_method == 'pickup') {// Create an order for pickup
         var store = await Database
@@ -96,93 +162,35 @@ class CheckoutController {
         .where('id', JSON.parse(req.user.pickup_location).id)
         
         var store = store[0]
-        var location = {}
+        var shipping_info = {
+          address : store.street_addr,
+          city : store.city,
+          state : store.state,
+          zip : store.zip,
+          postalCode : store.zip,
+          name : auth.user.name,
+          pickup_location : store.name
+        }
+        var charge = await this.createPickupOrder(req, user, store, shipping_info)
+        var order = await this.saveNewOrder(req, customer, user, charge, shipping_info, billing_info)
 
-        location.address = store.street_addr
-        location.city = store.city
-        location.state = store.state
-        location.zip = store.zip
-        location.postalCode = store.zip
 
-
-        var charge = await stripe.charges.create({
-          amount: amount,
-          currency: 'usd',
-          customer: customer.id,
-          metadata: {
-              fulfillment_day: req.user.fulfillment_day,
-              fulfillment_date: req.user.fulfillment_date,
-              fulfillment_method: 'Pickup',
-              store_id: location.id,
-              allergy_info: req.billing.allergy_info,
-              delivery_info: req.billing.delivery_info,
-              orderId: orderCount,
-              deliveryWindow: req.billing.deliveryWindow,
-              tax: req.billing.tax,
-              shipping: req.billing.shipping,
-          }
-        })
   
       } else {// Default to delivery if no method selected
-        var charge = await stripe.charges.create({
-          amount: amount,
-          currency: 'usd',
-          customer: customer.id,
-          metadata: {
-              fulfillment_day: req.user.fulfillment_day,
-              fulfillment_date: req.user.fulfillment_date,
-              fulfillment_method: 'Delivery',
-              allergy_info: req.billing.allergy_info,
-              delivery_info: req.billing.delivery_info,
-              orderId: orderCount,
-              deliveryWindow: req.billing.deliveryWindow,
-              tax: req.billing.tax,
-              shipping: req.billing.shipping,
-          }
-        })
+        var shipping_info = {
+          address: req.shipping.street,
+          city: req.shipping.city,
+          state: req.shipping.state,
+          zip: req.shipping.zip,
+          name: auth.user.name,
+        }
+        var charge = await this.createDeliveryOrder(req, auth.user, shipping_info)
+        var order = await this.saveNewOrder(req, customer, user, charge, shipping_info, billing_info)
       }
       
-      var shipping_info = {}
-      if (req.user.fulfillment_method === 'pickup') {
-        shipping_info.address = store.street_addr
-        shipping_info.city = store.city
-        shipping_info.state = store.state
-        shipping_info.zip = store.zip
-        shipping_info.postalCode = store.zip
-      } else {
-        shipping_info.address = req.shipping.street
-        shipping_info.city = req.shipping.city
-        shipping_info.state = req.shipping.state
-        shipping_info.zip = req.shipping.zip
-        shipping_info.name = auth.user.name
-      }
-      var billing_info = {
-        address: req.billing.street,
-        city: req.billing.city,
-        state: req.billing.state,
-        zip: req.billing.zip
-      }
 
-      var savedOrder = await Database
-      .table('orders')
-      .insert({
-        stripe_id: customer.id,
-        user_id: user.id,
-        items: req.cart,
-        fulfillment_day: req.user.fulfillment_day,
-        fulfillment_date: req.user.fulfillment_date,
-        fulfillment_method: req.user.fulfillment_method,
-        charge_id: charge.id,
-        orderId: orderCount,
-        allergy_info: req.billing.allergy_info,
-        delivery_info: req.billing.delivery_info,
-        payment_status: 'paid',
-        order_status: 'pending',
-        order_amount: amount,
-        created_at: moment().unix(),
-        shipping_info: JSON.stringify(shipping_info),
-        billing_info: JSON.stringify(billing_info)
-      })
+
+
 
       return response.send({status: 'success'}) 
 
@@ -192,6 +200,34 @@ class CheckoutController {
 
   }
 
+  async saveNewOrder(req, customer, user, charge, shipping_info, billing_info){
+    var newDate = moment(`'${req.user.fulfillment_date} '` + moment().year()).format('MM-DD-YYYY')
+    var fulfillment_week = moment(newDate, 'MM-DD-YYYY').week()
+    var order = await Database
+    .table('orders')
+    .insert({
+      stripe_id: customer.id,
+      user_id: user.id,
+      items: req.cart,
+      fulfillment_day: req.user.fulfillment_day,
+      fulfillment_date: req.user.fulfillment_date,
+      fulfillment_method: req.user.fulfillment_method,
+      charge_id: charge.id,
+      orderId: orderCount,
+      allergy_info: req.billing.allergy_info,
+      delivery_info: req.billing.delivery_info,
+      payment_status: 'paid',
+      order_status: 'pending',
+      order_amount: charge.amount,
+      created_at: moment().unix(),
+      shipping_info: JSON.stringify(shipping_info),
+      billing_info: JSON.stringify(billing_info),
+      creation_week: moment().isoWeek(),
+      fulfillment_week: fulfillment_week
+      
+    })
+    return order
+  }
 
   async stripeCheckout({ request, response, auth, session }) {
     orderCount += 1
@@ -200,7 +236,6 @@ class CheckoutController {
     req = req.data
 
     const {email, firstName, lastName} = req.user
-    const amount = Number(req.billing.amount * 100).toFixed(0)
     
     mailchimp.post(`/lists/${mcList}/members`, {
       email_address : email,
@@ -359,6 +394,8 @@ class CheckoutController {
         shipping_info.state = store.state
         shipping_info.zip = store.zip
         shipping_info.postalCode = store.zip
+        shipping_info.name = auth.user.name
+        shipping_info.pickup_location = store.name
       } else {
         shipping_info.address = req.shipping.street
         shipping_info.city = req.shipping.city
@@ -375,6 +412,9 @@ class CheckoutController {
         zip: req.billing.zip
       }
 
+
+      var newDate = moment(`'${req.user.fulfillment_date} '` + moment().year()).format('MM-DD-YYYY')
+      var fulfillment_week = moment(newDate, 'MM-DD-YYYY').week()
 
       var savedOrder = await Database
       .table('orders')
@@ -394,7 +434,10 @@ class CheckoutController {
         order_amount: amount,
         shipping_info: JSON.stringify(shipping_info),
         billing_info: JSON.stringify(billing_info),
-        created_at: moment().unix()
+        created_at: moment().unix(),
+        creation_week: moment().isoWeek(),
+        fulfillment_week: fulfillment_week
+
       })
   
       await auth.attempt(user.email, req.user.password)
@@ -408,6 +451,7 @@ class CheckoutController {
   }
 
 }
+
 
 
 

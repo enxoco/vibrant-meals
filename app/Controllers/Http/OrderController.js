@@ -54,7 +54,7 @@ class OrderController {
         var items = JSON.parse(recentOrder.items)
         var shipping = JSON.parse(recentOrder.shipping_info)
         var billing = JSON.parse(recentOrder.billing_info)
-        // return response.send({items, shipping, billing})
+        return response.send({items, shipping, billing})
         
         return view.render('Checkout.confirmation', {order: recentOrder, items, shipping, billing})
     }

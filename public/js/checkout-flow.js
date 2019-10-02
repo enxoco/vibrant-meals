@@ -41,12 +41,15 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
 
     if (time.isBetween(beforeTime, afterTime)) {
       monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+
     } else {
       monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+
     }
   }
   if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
     monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+
 
   }
 

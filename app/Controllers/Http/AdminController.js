@@ -3,6 +3,14 @@ const Database = use('Database')
 const Env = use('Env')
 const stripe = require('stripe')(Env.get('STRIPE_SK'))
 stripe.setApiVersion('2019-03-14');
+const moment = require('moment')
+
+
+var dateCodes = {
+  previous: moment().subtract(1, 'week').isoWeek(),
+  current: moment().isoWeek(),
+  next: moment().add(1, 'week').isoWeek()
+}
 
 
 const Drive = use('Drive')
@@ -11,6 +19,23 @@ const cheerio = require('cheerio')
 const opencage = require('opencage-api-client');
 
 class AdminController {
+
+  async getDashboard({request, response, view, session, auth}) {
+    const allOrders = await Database
+      .select('*')
+      .from('orders')
+    
+    const lastWeekOrders = await Database
+      .select('*')
+      .from('orders')
+      .where('fulfillment_week', dateCodes.previous)
+    
+    const currentOrders = await Database
+      .select('*')
+      .from('orders')
+      .where('fulfillment_week', dateCodes.current)
+    return view.render('layout.admin.dashboard', {allOrders, lastWeekOrders, currentOrders})
+  }
 
   async updateItems() {
     const path = Helpers.appRoot()

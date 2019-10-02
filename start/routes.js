@@ -98,6 +98,7 @@ Route.get('/menu/custom', 'ItemController.listCustomMeals')
 *  which checks to make sure that the user is logged in and that they have the appropriate permissions
 */
 Route.group(() => {
+  Route.get('/admin/dashboard', 'AdminController.getDashboard')
   Route.get('/admin/dashboard', async({view}) => view.render('layout.admin.dashboard'))
 
   Route.get('/products/add', async ({ view }) => view.render('admin.items-new'))
