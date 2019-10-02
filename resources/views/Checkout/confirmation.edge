@@ -29,7 +29,6 @@
     }
 </style>
 <div class="content">
-
     <div class="row mt-5">
         <div class="col-12 col-md-6 col-lg-6 mx-auto">
             <div class="notification jumbo">
@@ -50,18 +49,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @each(order in order.data)
-                            <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
-                                <td><a href="#" id="orderIDtext">#{{order.metadata.orderId}}</a></td>
-                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
+
+                            <tr data-toggle="collapse" data-target="#{{order.orderId}}" class="clickable">
+                                <td><a href="#" id="orderIDtext">#{{order.orderId}}</a></td>
+                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.created_at, 'MM/DD/YYYY h:ma')}}
                                 </td>
-                                <td>{{order.status}}</td>
-                                <td>{{ capitalize(order.metadata.fulfillment_method) }}
-                                <td>{{currency(order.amount)}}</td>
+                                <td>{{order.order_status}}</td>
+                                <td>{{ capitalize(order.fulfillment_method) }}
+                                <td>{{ currency(order.order_amount) }}</td>
                             </tr>
                             <tr>
                                 <td colspan="5" style="border:none;">
-                                    <div id="{{order.metadata.orderId}}" class="collapse show"
+                                    <div id="{{order.orderId}}" class="collapse show"
                                         style="background:white; padding:20px;">
                                         <div class="row">
                                             <div class="col-12 col-md-8 col-lg-8 mx-auto">
@@ -69,17 +68,17 @@
                                                     <strong>Order Date:</strong>
                                                     {{convertTime(order.updated, 'MM/DD/YYYY')}}
                                                 </span><br />
-                                                @if(order.metadata.fulfillment_method == 'pickup')
+                                                @if(order.fulfillment_method == 'pickup')
                                                 <div class="row">
                                                     <div class="col-12 col-md-4 col-lg-4">
                                                         <strong>Pickup Location:</strong>
                                                     </div>
                                                     <div class="col-12 col-md-8 col-lg-8">
-                                                        {{order.shipping.address.line1}}<br />
-                                                        {{order.shipping.address.line2}}<br />
-                                                        {{order.shipping.address.city}}
-                                                        {{order.shipping.address.state}},
-                                                        {{order.shipping.address.postal_code}}
+                                                        {{shipping_info.street}<br />
+                                                        {{shipping.line2}}<br />
+                                                        {{shipping.city}}
+                                                        {{shipping.state}},
+                                                        {{shipping.zip}}
                                                     </div>
 
                                                 </div>
@@ -91,36 +90,36 @@
                                                         <strong>Shipped to:</strong>
                                                     </div>
                                                     <div class="col-12 col-md-8 col-lg-8">
-                                                        {{order.shipping.name}}<br />
-                                                        {{order.shipping.address.line1}}<br />
-                                                        @unless(order.shipping.address.line2 == null)
-                                                        {{order.shipping.address.line2}}<br />
+                                                        {{shipping.name}}<br />
+                                                        {{shipping.address}}<br />
+                                                        @unless(shipping.line2 == null)
+                                                        {{shipping.line2}}<br />
                                                         @endunless
-                                                        {{order.shipping.address.city}}
-                                                        {{order.shipping.address.state}},
-                                                        {{order.shipping.address.postal_code}}
+                                                        {{shipping.city}}
+                                                        {{shipping.state}},
+                                                        {{shipping.zip}}
                                                     </div>
                                                 </div>
                                                 @endif
                                             </div>
                                             
                                             <div class="col-10 mx-auto"> <ul>
-                                                @each(item in order.items)
+                                                @each(item in items)
                                                 @unless(item.quantity == null)
                                                 <li style="text-align:left;margin-bottom:1em;">
                                                     <!-- Item Description-->
                                                     <div class="row">
                                                         <div class="col-6 mx-auto">
                                                             @if(item.image)
-                                                            <img class="avatar figure-img pull-left mr-2" src="{{item.image}}"/> {{item.description}}
+                                                            <img class="avatar figure-img pull-left mr-2" src="{{item.image}}"/> {{item.name}}
                                                             @else
-                                                            {{item.description}}
+                                                            {{item.name}}
                                                             @endif
 
                                                         </div>
                                                         <div class="col-6 mx-auto">
                                                             <strong>x{{item.quantity}} </strong> -
-                                                            {{currency(item.amount)}}
+                                                            {{currency(item.price)}}
                                                         </div>
                                                         <div class="col-12 mx-auto justify-content-end">
                                                             <strong> </strong>
@@ -136,7 +135,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endeach
+                            
 
                         </tbody>
                     </table>

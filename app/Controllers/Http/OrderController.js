@@ -32,58 +32,31 @@ class OrderController {
     }
 
     async showConfirmation({ request, response, view, auth }) {
-        var cust = await stripe.customers.retrieve(auth.user.stripe_id)
-        var order = await stripe.orders.list({
-            customer: auth.user.stripe_id,
-            limit: 1
-        })
-        if (order.orderId) {
-            console.log('check 1')
-            return view.render('Checkout.confirmation', {order})
-        } else {
-            console.log('check 2')
-            var order = await stripe.orders.list({
-                customer: auth.user.stripe_id,
-                limit: 1
-            })
 
-            if (order.orderId) {
-                return view.render('Checkout.confirmation', {order})   
-            } else {
-                var order = await stripe.orders.list({
-                    customer: auth.user.stripe_id,
-                    limit: 1
-                })
-                try {
-                    for (var i = 0; i < order.data[0].items.length; i++) {
-                        let item = order.data[0].items[i]
-                        if (item.type === 'sku') {
-                            let sku = await stripe.skus.retrieve(item.parent)
-                            item.image = sku.image
-                        }
-                    }
-                } catch(e) {
-                    session.flash({'error': 'Your order could not be completed at this time.'})
-                    return response.redirect('back')
-                }
-                var cust = await stripe.customers.retrieve(auth.user.stripe_id)
-                await Mail.send('auth.email.order-confirmation', {
-                    order: order.data[0],
-                    customer: cust
-                  }, (message) => {
-                    message.to(auth.user.email, auth.user.name)
-                    message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
-                    message.subject('Order Confirmation')
-                  })
-                  try {
-                    return view.render('Checkout.confirmation', {order})
+        var cust = auth.user
+        var orders = await Database
+            .table('orders')
+            .select()
+            .where('user_id', auth.user.id)
+        var recentOrder = orders[orders.length - 1]
 
-                  } catch(e) {
-                      session.flash({'error': 'something went wrong'})
-                      return response.redirect('back')
-                  }
-            }
-        }
+        // await Mail.send('auth.email.order-confirmation', {
+        //     order: order.data[0],
+        //     customer: cust
+        //   }, (message) => {
+        //     message.to(auth.user.email, auth.user.name)
+        //     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
+        //     message.subject('Order Confirmation')
+        //   })
+        // return response.send(recentOrder)
+        console.log(recentOrder.orderId)
+        // recentOrder = JSON.parse(recentOrder)
+        var items = JSON.parse(recentOrder.items)
+        var shipping = JSON.parse(recentOrder.shipping_info)
+        var billing = JSON.parse(recentOrder.billing_info)
+        // return response.send({items, shipping, billing})
+        
+        return view.render('Checkout.confirmation', {order: recentOrder, items, shipping, billing})
     }
 
     async batchFulfillStripe(id) {

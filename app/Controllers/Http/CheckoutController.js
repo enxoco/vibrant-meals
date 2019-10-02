@@ -12,6 +12,7 @@ const ordersPath = `${configPath}/orders`
 const Mailchimp = require('mailchimp-api-v3')
 const mailchimp = new Mailchimp(Env.get('MAILCHIMP_API_KEY'))
 const mcList = Env.get('MAILCHIMP_LIST_ID')
+const moment = require('moment')
 
 
 
@@ -141,6 +142,27 @@ class CheckoutController {
         })
       }
       
+      var shipping_info = {}
+      if (req.user.fulfillment_method === 'pickup') {
+        shipping_info.address = store.street_addr
+        shipping_info.city = store.city
+        shipping_info.state = store.state
+        shipping_info.zip = store.zip
+        shipping_info.postalCode = store.zip
+      } else {
+        shipping_info.address = req.shipping.street
+        shipping_info.city = req.shipping.city
+        shipping_info.state = req.shipping.state
+        shipping_info.zip = req.shipping.zip
+        shipping_info.name = auth.user.name
+      }
+      var billing_info = {
+        address: req.billing.street,
+        city: req.billing.city,
+        state: req.billing.state,
+        zip: req.billing.zip
+      }
+
       var savedOrder = await Database
       .table('orders')
       .insert({
@@ -155,7 +177,11 @@ class CheckoutController {
         allergy_info: req.billing.allergy_info,
         delivery_info: req.billing.delivery_info,
         payment_status: 'paid',
-        order_status: 'pending'
+        order_status: 'pending',
+        order_amount: amount,
+        created_at: moment().unix(),
+        shipping_info: JSON.stringify(shipping_info),
+        billing_info: JSON.stringify(billing_info)
       })
 
       return response.send({status: 'success'}) 
@@ -326,6 +352,30 @@ class CheckoutController {
 
   
       var curUser = await user.save()
+      var shipping_info = {}
+      if (req.user.fulfillment_method === 'pickup') {
+        shipping_info.address = store.street_addr
+        shipping_info.city = store.city
+        shipping_info.state = store.state
+        shipping_info.zip = store.zip
+        shipping_info.postalCode = store.zip
+      } else {
+        shipping_info.address = req.shipping.street
+        shipping_info.city = req.shipping.city
+        shipping_info.state = req.shipping.state
+        shipping_info.zip = req.shipping.zip
+        shipping_info.name = auth.user.name
+
+      }
+
+      var billing_info = {
+        address: req.billing.street,
+        city: req.billing.city,
+        state: req.billing.state,
+        zip: req.billing.zip
+      }
+
+
       var savedOrder = await Database
       .table('orders')
       .insert({
@@ -340,7 +390,11 @@ class CheckoutController {
         allergy_info: req.billing.allergy_info,
         delivery_info: req.billing.delivery_info,
         payment_status: 'paid',
-        order_status: 'pending'
+        order_status: 'pending',
+        order_amount: amount,
+        shipping_info: JSON.stringify(shipping_info),
+        billing_info: JSON.stringify(billing_info),
+        created_at: moment().unix()
       })
   
       await auth.attempt(user.email, req.user.password)
