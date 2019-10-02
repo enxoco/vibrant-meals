@@ -69,7 +69,7 @@ class AccountController {
         .update({'fulfillment_method': method})
         .where('id', auth.user.id)
         
-        var update = await stripe.customers.update(stripe_id, {
+        var update = await stripe.customers.update(auth.user.stripe_id, {
           metadata: {
             fulfillment_method: method
           }

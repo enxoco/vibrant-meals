@@ -254,21 +254,7 @@ class CheckoutController {
   if (req.user.pickup_location) {
       var location = JSON.parse(req.user.pickup_location)
     }
-    // var stripeItems = []
-    // if (req.billing.shippingCode && req.user.fulfillment_method == 'delivery') {
-    //   stripeItems.push({
-    //     type: 'sku',
-    //     parent: req.billing.shippingCode,
-    //     quantity: 1
-    //   })
-    // }
-    // for (var i = 0; i < cart.length; i++) {
-    //   stripeItems.push({
-    //     type: 'sku',
-    //     parent: cart[i].sku,
-    //     quantity: parseInt(cart[i].quantity)
-    //   })
-    // }
+
 
     // Create a local user
     const user = new User()
