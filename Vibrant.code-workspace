@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/home/murph/projects/pwa-example"
+		},
+		{
+			"path": "/home/murph/projects/simple-staff/dist"
+		},
+		{
+			"path": "/home/murph/projects/bridgeScholars/projectSite"
+		},
+		{
+			"path": "/home/murph/projects/dragAndDrop"
+		},
+		{
+			"path": "/home/murph/projects/enxoapi"
+		},
+		{
+			"path": "/home/murph/projects/frontend"
+		},
+		{
+			"path": "/home/murph/projects/pdftransform"
+		},
+		{
+			"path": "/home/murph/projects/bridgeScholars/projectSite/hit-counter"
+		},
+		{
+			"path": "/home/murph/projects/kiddie-blocker"
+		},
+		{
+			"path": "/var/lib/docker/volumes/craftcms-docker_craftcms-data/_data"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "dist"
+	}
+}

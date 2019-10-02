@@ -108,6 +108,17 @@ svg.feather.feather-plus {
     border-radius: 10em;
     color: white;
 }
+
+span.list-item {
+    position: relative;
+    bottom: 5px;
+    left: 20px;
+    color: black;
+}
+
+li, li > svg {
+  color: black;
+}
 </style>
 </head>
 
@@ -171,8 +182,8 @@ svg.feather.feather-plus {
           <li class="">
               
               <a data-toggle="collapse" href="#promotions" role="button" aria-expanded="false" aria-controls="promotions">
-                <i class="nc-icon nc-tag-content"></i>
-                <p>Promotions</p>
+                <i data-feather="tag"></i>
+                <span class="list-items">Coupons</span>
               </a>
             </li>
             
@@ -188,14 +199,14 @@ svg.feather.feather-plus {
             </li>
             <li>
                 <a href="/admin/locations">
-                  <i class="nc-icon nc-pin-3"></i>
-                  <p>Locations</p>
+                  <i data-feather="map"></i>
+                  <span class="list-item">Stores</span>
                 </a>
               </li>
           <li>
             <a href="/admin/customers">
-              <i class="nc-icon nc-single-02"></i>
-              <p>Customers</p>
+              <i data-feather="users"></i>
+              <span class="list-item">Customers</span>
             </a>
           </li>
 
@@ -203,8 +214,8 @@ svg.feather.feather-plus {
           <li class="">
               
               <a data-toggle="collapse" href="#forms" role="button" aria-expanded="false" aria-controls="forms">
-                <i class="nc-icon nc-tag-content"></i>
-                <p>Forms</p>
+                <i data-feather="folder"></i>
+                <span class="list-item">Forms</span>
               </a>
             </li>
             
@@ -227,6 +238,31 @@ svg.feather.feather-plus {
                   <p>Partnerships</p>
                 </a>
             </li>
+
+            <li>
+                            
+                <a data-toggle="collapse" href="#settings" role="button" aria-expanded="false" aria-controls="settings">
+                    <i data-feather="settings"></i>
+                    <span class="list-item">Settings</span>
+                  </a>
+                </li>
+                
+                <li class="collapse" id="settings" style="background-color:#dcdcdc66;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
+                    
+                  <a href="/admin/settings/api">
+                      <i class="nc-icon nc-zoom-split success" data-active-color="success"></i>
+                      <p>API Keys</p>
+                    </a>
+                    <a href="/admin/settings/orders">
+                      <i class="nc-icon nc-simple-add"></i>
+                      <p>Orders</p>
+                    </a>
+                    <a href="/admin/settings/users">
+                      <i class="nc-icon nc-simple-add"></i>
+                      <p>Users</p>
+                    </a>
+
+                </li>
         </ul>
       </div>
     </div>

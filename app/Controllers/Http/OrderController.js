@@ -46,6 +46,7 @@ class OrderController {
                 customer: auth.user.stripe_id,
                 limit: 1
             })
+
             if (order.orderId) {
                 return view.render('Checkout.confirmation', {order})   
             } else {
@@ -53,12 +54,17 @@ class OrderController {
                     customer: auth.user.stripe_id,
                     limit: 1
                 })
-                for (var i = 0; i < order.data[0].items.length; i++) {
-                    let item = order.data[0].items[i]
-                    if (item.type === 'sku') {
-                        let sku = await stripe.skus.retrieve(item.parent)
-                        item.image = sku.image
+                try {
+                    for (var i = 0; i < order.data[0].items.length; i++) {
+                        let item = order.data[0].items[i]
+                        if (item.type === 'sku') {
+                            let sku = await stripe.skus.retrieve(item.parent)
+                            item.image = sku.image
+                        }
                     }
+                } catch(e) {
+                    session.flash({'error': 'Your order could not be completed at this time.'})
+                    return response.redirect('back')
                 }
                 var cust = await stripe.customers.retrieve(auth.user.stripe_id)
                 await Mail.send('auth.email.order-confirmation', {
@@ -69,7 +75,13 @@ class OrderController {
                     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
                     message.subject('Order Confirmation')
                   })
-                return view.render('Checkout.confirmation', {order})
+                  try {
+                    return view.render('Checkout.confirmation', {order})
+
+                  } catch(e) {
+                      session.flash({'error': 'something went wrong'})
+                      return response.redirect('back')
+                  }
             }
         }
     }

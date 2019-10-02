@@ -123,6 +123,7 @@
                     <div class="col-md-3 pr-2">
                       <div class="form-group">
                         <label>Product Category</label>
+                        {{prod.metadata.primary_category}}
                         <select class="form-control muted" name="primary_category">
                             <option selected value="{{prod.metadata.primary_category}}">{{prod.metadata.primary_category}}</option>
                             <option name="lunchDinner" value="lunchDinner">Lunch & Dinner</option>

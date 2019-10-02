@@ -51,6 +51,7 @@ select#fulfillmentOptions {
   </style>
   <div class="row">
   @if(billing)
+  
   <div class="col col-lg-8 col-md-8 mx-auto">
     @!include('Checkout.express')
   </div>
@@ -89,6 +90,7 @@ select#fulfillmentOptions {
                 <li>
                   <div id="order-total">
                     Total - <strong>$<span class="order-total"></span></strong>
+                    <input type="hidden" name="amount" />
                   </div>
       
                 </ul>
@@ -233,9 +235,10 @@ select#fulfillmentOptions {
     button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="pickup">Pickup at another location</option><option value="delivery">Delivery</option>'
   }
 
-
-
+  // Redirect to menu page if no items in cart.
+  if (JSON.parse(localStorage.cart).length === 0) window.location.href = '/menu'
 
 
   </script>
 @endsection
+

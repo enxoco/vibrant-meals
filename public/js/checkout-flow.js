@@ -200,7 +200,7 @@ $('#addCardToCust').on('click', function () {
       processOrder({ type: 'new' }, result.token.id)
     })
   } else {
-    processOrder({ type: 'existing' }, source)
+    processOrder({ type: 'existing' }, $('input[name="radio"]:checked').val())
 
   }
 })
@@ -224,7 +224,9 @@ function processOrder(card, token, id) {
     paymentId: token,
     deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
     tax: $('.order-tax').html(),
-    shipping: $('.order-shipping').html()
+    shipping: $('.order-shipping').html(),
+    amount: $('.order-total').html()
+
 
 
   }
@@ -386,6 +388,7 @@ $('#applyCoupon').on('click', function () {
         total = total.toFixed(2)
         $('.order-total').data('total', total)
         $('.order-total').html(total)
+        $('input[name="amount"]').val(total)
         disableCoupon()
       }
       if (data.percent_off) {
@@ -429,7 +432,7 @@ function anything() {
 
 
   $('#toggleSections').html('Processing order... <div id="loading"></div>')
-  $('#toggleSections').attr('disabled', 'disabled')
+  $('#toggleSections').prop('disabled', true)
 
   let defaultDay = $('.list-group-item.clickable.active').data('day')
   let defaultDate = $('.list-group-item.clickable.active').data('date')
@@ -449,7 +452,8 @@ function anything() {
       shippingCode: localStorage.shippingCode,
       deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
       tax: $('.order-tax').html(),
-      shipping: $('.order-shipping').html()
+      shipping: $('.order-shipping').html(),
+      amount: $('.order-total').html()
 
     }
 
@@ -493,8 +497,27 @@ function anything() {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function (data) {
-        localStorage.cart = []
-        window.location.href = '/checkout/confirmation'
+
+        if (data['type']){
+          if (data['type'] === "StripeInvalidRequestError") {
+            toastr['error'](data['message'])
+          }
+          if (data['type'] === "invalid_request_error") {
+            toastr['error']('Your payment was unable to be processed.  Please reload the page and try again.')
+          }
+          if (data['sqlMessage']) {
+            toastr['error']('Their was an error processing your order')
+          }
+          if (data['status'] === 'success') {
+            $('#toggleSections').html('Checkout')
+            $('#toggleSections').prop('disabled', false)
+            $('#toggleSections').removeAttr('disabled')
+    
+            localStorage.cart = []
+            window.location.href = '/checkout/confirmation'
+          }
+        } 
+
 
       },
       failure: function (errMsg) {
@@ -524,3 +547,4 @@ $('li.list-group-item.clickable').on('click', function(){
 $('#pickupRadio').on('click', function(){
   $('#shippingDetails').hide()
 })
+

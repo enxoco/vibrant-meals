@@ -8,6 +8,8 @@ const stripe = require('stripe')(Env.get('STRIPE_SK'))
 const path = Helpers.appRoot()
 const _ = require('lodash')
 
+const stripe_pk = Env.get('STRIPE_PK')
+
 stripe.setApiVersion('2019-03-14');
 
 
@@ -273,16 +275,16 @@ class ItemController {
         
         // return response.send(orders)
         if (orders.data.length != 0) {
-          return view.render('menu.checkout', {user, billing: stripeDetails, shipping: orders.data[0].shipping.address, disableModal: true})
+          return view.render('menu.checkout', {stripe_pk, user, billing: stripeDetails, shipping: orders.data[0].shipping.address, disableModal: true})
 
         } else {
-          return view.render('menu.checkout', {user, billing: stripeDetails, shipping: '', disableModal: true})
+          return view.render('menu.checkout', {stripe_pk, user, billing: stripeDetails, shipping: '', disableModal: true})
 
         }
 
       } // If we reach this condition, it means the user is not logged in.  Just show them the menu
         // and we will collect their details before order is placed.
-        return view.render('menu.checkout', {disableModal: true})
+        return view.render('menu.checkout', {stripe_pk, disableModal: true})
     }
 
 }

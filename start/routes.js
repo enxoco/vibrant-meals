@@ -14,6 +14,7 @@
 */
 
 const Route = use('Route')
+Route.get('/test/fulfill', 'OrderController.testFulfill')
 
 Route.get('/checkout', 'ItemController.showCheckout')
 Route.get('/checkout/confirmation', 'OrderController.showConfirmation')

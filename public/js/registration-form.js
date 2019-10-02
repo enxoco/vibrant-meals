@@ -1,7 +1,4 @@
-
-
 // Create a Stripe client.
-
 var stripe = Stripe("pk_test_RIU7I4O49GFzLUZHRafKTrtF");
 
 // Create an instance of Elements.
@@ -9,16 +6,7 @@ var elements = stripe.elements();
 
 // Custom styling can be passed to options when creating an Element.
 // (Note that this demo uses a wider set of styles than the guide below.)
-var paymentRequest = stripe.paymentRequest({
-  country: 'US',
-  currency: 'usd',
-  total: {
-    label: 'Demo total',
-    amount: 1000,
-  },
-  requestPayerName: true,
-  requestPayerEmail: true,
-});
+
 var style = {
   
   base: {
@@ -53,6 +41,3 @@ card.addEventListener("change", function(event) {
     displayError.textContent = "";
   }
 });
-
-
-

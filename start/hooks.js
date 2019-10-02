@@ -3,6 +3,7 @@ const moment = require('moment')
 require('moment-countdown');
 const _ = require('lodash')
 
+
 hooks.after.providersBooted(() => {
   const View = use('View')
   const Exception = use('Exception')
@@ -92,6 +93,16 @@ hooks.after.providersBooted(() => {
     return parseInt(d[1])
 
   })
+
+
+  View.global('registrationForm', function(){
+    let stripe_pk = Env.get('STRIPE_PK')
+    
+
+    
+    return day
+  })
+
 
   View.global('convertTime', function(unix, format){
     var day = moment.unix(unix).format('LLL')
