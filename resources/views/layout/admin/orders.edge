@@ -7,122 +7,116 @@
   }
 
 </style>
+<style>
+    .comSection--light {
+      padding: 16px 24px;
+      background-color: #f8f8f8;
+      border-radius: 3px;
+      box-shadow: 2px 7px 7px gainsboro;
+    }
+    
+    .comSection__header {
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-weight: 700;
+      font-size: .9em;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .text-smaller {
+      font-size: .9em;
+    }
+    
+    thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+    }
+    
+    .table-wrap {
+      max-width: 100%;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    table.full {
+      width: 100%;
+      margin-bottom: 1em;
+    }
+    
+    th {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-size: .8em;
+      padding-top: 20px;
+      border-bottom: 2px solid #00a0df;
+    }
+    
+    th,
+    td {
+      text-align: left;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    
+    ul {
+      list-style: none;
+    }
+    .product-id.muted {
+      position: absolute;
+      top:10px;
+      right: 30px;
+    }
+    .sku-id.muted {
+      position: relative;
+      left: 68%;
+      bottom: 45px;
+    }
+    </style>
 <div class="content">
-  <div class="row">
-      <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="card card-stats">
-            <div class="card-body ">
-              <div class="row">
-                <div class="col-1 col-md-1">
-                    <i data-feather="dollar-sign"></i>
 
-                </div>
-                <div class="col-7 col-md-8">
-                    <p class="card-category">Revenue</p>
-                    <p class="card-title">${{revenue}}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-1 col-md-1">
-                      <i data-feather="loader"></i>
-  
-                  </div>
-                  <div class="col-7 col-md-8">
-                      <p class="card-category">Pending Orders</p>
-                      <p class="card-title">{{orderCount}}
-                  </div>
-                </div>
-              </div>
-  
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-body ">
-                  <div class="row">
-                    <div class="col-1 col-md-1">
-                        <i data-feather="truck"></i>
-    
-                    </div>
-                    <div class="col-7 col-md-8">
-                        <p class="card-category">Pending Deliveries</p>
-                        <p class="card-title">{{deliveries}}
-                    </div>
-                  </div>
-                </div>
-    
-              </div>
-            </div>
-
-  
-    <div class="col-lg-3 col-md-6 col-sm-6">
-      <div class="card card-stats">
-        <div class="card-body ">
-          <div class="row">
-            <div class="col-5 col-md-4">
-              <div class="icon-big text-center icon-warning">
-                <i class="nc-icon nc-favourite-28 text-primary"></i>
-              </div>
-            </div>
-            <div class="col-7 col-md-8">
-              <div class="numbers">
-                <p class="card-category">Pickup Orders</p>
-                <p class="card-title">{{pickups}}
-                  <p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer ">
-          <hr>
-          <div class="stats">
-            <i class="fa fa-refresh"></i> Update now
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-      <div class="card card-stats">
-        <div class="card-body ">
-          <div class="row">
-            <div class="col-5 col-md-4">
-              <div class="icon-big text-center icon-warning">
-                <i class="nc-icon nc-favourite-28 text-primary"></i>
-              </div>
-            </div>
-            <div class="col-7 col-md-8">
-              <div class="numbers">
-                <p class="card-category">Monday Fulfillments</p>
-                <p class="card-title">{{mondayFulfillments.length}}
-                  <hr class="mb-5">
-                    <p class="card-category">Thursday Fulfillments</p>
-                    <p class="card-title">{{thursdayFulfillments.length}}
-                  <p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer ">
-          <hr>
-          <div class="stats">
-            <i class="fa fa-refresh"></i> Update now
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row" id="#">
+      <div class="col-md-4">
+
+          <section class="comSection comSection--light">
+  
+                <div class="row">
+                  <div class="col-6 mx-auto">
+
+                        <div class="form-group">
+
+                            </select>
+      
+                          </div>
+  
+                  </div>
+  
+                </div>
+          </section>
+      </div>
+  
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <h4 class="card-title"> Scheduled Orders</h4>
+          <div class="row">
+            <div class="col-4">
+                <select class="form-control muted" name="category">
+      
+
+
+                  </select>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="table-responsive">

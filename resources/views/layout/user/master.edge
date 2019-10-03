@@ -1942,7 +1942,9 @@ $('#toggleSections').on('click', function(){
 
 
       $(this).attr('disabled', 'disabled')
-      anything()
+      stripe.createToken(card).then(function (result) {
+      processOrder({ type: 'new' }, result.token.id, 'initial')
+      })    
     }
     
   })

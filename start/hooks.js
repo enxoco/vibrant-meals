@@ -22,6 +22,35 @@ hooks.after.providersBooted(() => {
   })
 
 
+  View.global('timestamp', function(week, factor, format){
+
+    if (factor === 'add') var moment_prefix = moment().add(week, 'weeks')
+    if (factor === 'subtract') var moment_prefix = moment().add(week, 'weeks')
+    if (!factor) var moment_prefix = moment()
+
+
+      var startWeek = moment_prefix.startOf('isoWeek').format(format)
+      var endWeek = moment_prefix.endOf('isoWeek').format(format)
+      var startTimestamp = moment(startWeek).unix()
+      var endTimestamp = moment(endWeek).unix()
+
+      return {
+        startWeek,
+        endWeek,
+        startTimestamp,
+        endTimestamp
+      }
+
+    
+  })
+
+
+
+  View.global('lastWeek', function(week){
+    var date = moment().subtract(week, 'weeks').startOf('isoWeek').format('YYYY-MM-DD') + ' - ' + moment().subtract(week, 'weeks').endOf('isoWeek').format('YYYY-MM-DD')
+    return date
+  })
+
 
   View.global('convertTime', function (time) {
 

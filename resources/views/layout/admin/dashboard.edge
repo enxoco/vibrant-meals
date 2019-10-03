@@ -1,178 +1,259 @@
 @layout('layout.admin.master')
 @section('content')
-{{ toJSON(currentOrders) }}
+<style>
+.comSection--light {
+  padding: 16px 24px;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  box-shadow: 2px 7px 7px gainsboro;
+}
+
+.comSection__header {
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-weight: 700;
+  font-size: .9em;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.text-smaller {
+  font-size: .9em;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table-wrap {
+  max-width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.full {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+th {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-size: .8em;
+  padding-top: 20px;
+  border-bottom: 2px solid #00a0df;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 8px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul {
+  list-style: none;
+}
+.product-id.muted {
+  position: absolute;
+  top:10px;
+  right: 30px;
+}
+.sku-id.muted {
+  position: relative;
+  left: 68%;
+  bottom: 45px;
+}
+
+.form__answer {
+	display: inline-block;
+	box-sizing: border-box;
+	height: 10px;
+	vertical-align: top;
+	text-align: center; 
+}
+
+
+.form__answer > label {
+    padding: 5px;
+}
+/* Input style */
+
+input[type="radio"] {
+	opacity: 0;
+	width: 0;
+  height: 0;
+}
+
+input[type="radio"]:active ~ label {
+  opacity: 1;
+}
+
+input[type="radio"]:checked ~ label {
+  opacity: 1;
+	border: 1px solid black;
+}
+
+tr.cancelled {
+  opacity: .5;
+}
+
+</style>
+
       <div class="content">
         <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-globe text-warning"></i>
-                    </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Capacity</p>
-                      <p class="card-title">150GB
-                        <p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-refresh"></i> Update Now
-                </div>
-              </div>
+            <div class="col-md-4">
+
+                <section class="comSection comSection--light">
+        
+                      <div class="row">
+                        <div class="col-10 mx-auto">
+                            <h5 class="card-title center">Current Orders <br>
+
+                              </h5>
+                              <div class="form-group">
+                                
+                              <label for="datepickerStart" class="form-control">Start</label>
+                      <input class="form-control" placeholder="Choose Start Date" data-date-format="yyyy-mm-dd" id="datepickerStart">
+                              </div>
+                              <div class="form-group">
+                      <label class="form-control" for="datepickerEnd">End</label>
+
+                      <input class="form-control" placeholder="Choose End Date" data-date-format="yyyy-mm-dd" id="datepickerEnd">
+                              </div>
+                      <a class="btn btn-success" onclick="updateOrdersView()">Update</a>
+                        </div>
+
+
+                      </div>
+
+        
+
+                </section>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-money-coins text-success"></i>
+            <div class="col-md-12"><hr class="mb-3"></div>
+            <div class="col-md-12">
+
+                <section class="comSection comSection--light">
+        
+                      <div class="row">
+                        <div class="col-9 mx-auto">
+                            <h5 class="card-title center">Scheduled Orders</h5>
+                            <form name="FilterForm" id="FilterForm" action="" method="">
+                              <div class="radio-group">
+                                <p class="form__answer"> 
+                                    <input type="radio" name="fulfillment_day" id="match_1" value="Monday"> 
+                                    <label for="match_1">
+                                      Monday
+                                    </label> 
+                                  </p>
+                                  
+                                  <p class="form__answer"> 
+                                    <input type="radio" name="fulfillment_day" id="match_2" value="Thursday"> 
+                                    <label for="match_2">
+                                      Thursday
+                                    </label> 
+                                  </p>
+                                  
+                                  <p class="form__answer"> 
+                                    <input type="radio" name="fulfillment_day" id="match_3" value="inactive" checked> 
+                                    <label for="match_3">
+                                      
+                                      All
+                                    </label> 
+                                  </p>	
+                                  <p class="form__answer"> 
+                                      <input type="radio" name="order_status" id="match_4" value="fulfilled"> 
+                                      <label for="match_4">
+                                        Fulfilled
+                                      </label> 
+                                    </p>
+                                    
+                                    <p class="form__answer"> 
+                                      <input type="radio" name="order_status" id="match_5" value="cancelled"> 
+                                      <label for="match_5">
+                                        Cancelled
+                                      </label> 
+                                    </p>
+                                    
+                                    <p class="form__answer"> 
+                                      <input type="radio" name="order_status" id="match_6" value="pending"> 
+                                      <label for="match_6">
+                                        
+                                        Pending
+                                      </label> 
+                                    </p>	
+                                    <p class="form__answer"> 
+                                        <input type="radio" name="order_status" id="match_7" value="refunded"> 
+                                        <label for="match_7">
+                                          
+                                          Refunded
+                                        </label> 
+                                      </p>	
+                                      <p class="form__answer"> 
+                                          <input type="radio" name="fulfillment_type" id="match_8" value="pickup"> 
+                                          <label for="match_8">
+                                            
+                                            Pickup
+                                          </label> 
+                                        </p>	
+                                        <p class="form__answer"> 
+                                            <input type="radio" name="fulfillment_type" id="match_9" value="delivery"> 
+                                            <label for="match_9">
+                                              
+                                              Delivery
+                                            </label> 
+                                          </p>	
+                                          
+                              </div>		
+
+                              </form>
+                              
+
+                        </div>
+                        <div class="col-3 mx-auto">
+                            <input id="searchInput" class="form-control" value="Type To Filter">
+                        </div>
+                        
+                      </div>
+        
+                  <div class="row">
+                    <div class="update ml-auto mr-auto">
+                        <table>
+                          <tr>
+                            <th id="orderId">ID</th>
+                            <th id="name">Name</th>
+                            <th id="email">Email</th>
+                            <th id="location">Location</th>
+                            <th id="total">Total</th>
+                            <th id="day">Day</th>
+                            <th id="date">Date</th>
+                            <th id="type">Type</th>
+                            <th id="status">Status</th>
+                            <th id="delivery_notes">Delivery Notes</th>
+                          </tr>
+                          <tbody id="mondayOrders">
+
+                          </tbody>
+                        </table>
+
                     </div>
                   </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Revenue</p>
-                      <p class="card-title">$ 1,345
-                        <p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-calendar-o"></i> Last day
-                </div>
-              </div>
+                </section>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-vector text-danger"></i>
-                    </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Errors</p>
-                      <p class="card-title">23
-                        <p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-clock-o"></i> In the last hour
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-favourite-28 text-primary"></i>
-                    </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Followers</p>
-                      <p class="card-title">+45K
-                        <p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-refresh"></i> Update now
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card ">
-              <div class="card-header ">
-                <h5 class="card-title">Users Behavior</h5>
-                <p class="card-category">24 Hours performance</p>
-              </div>
-              <div class="card-body ">
-                <canvas id=chartHours width="400" height="100"></canvas>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-history"></i> Updated 3 minutes ago
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card ">
-              <div class="card-header ">
-                <h5 class="card-title">Email Statistics</h5>
-                <p class="card-category">Last Campaign Performance</p>
-              </div>
-              <div class="card-body ">
-                <canvas id="chartEmail"></canvas>
-              </div>
-              <div class="card-footer ">
-                <div class="legend">
-                  <i class="fa fa-circle text-primary"></i> Opened
-                  <i class="fa fa-circle text-warning"></i> Read
-                  <i class="fa fa-circle text-danger"></i> Deleted
-                  <i class="fa fa-circle text-gray"></i> Unopened
-                </div>
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-calendar"></i> Number of emails sent
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-title">NASDAQ: AAPL</h5>
-                <p class="card-category">Line Chart with Points</p>
-              </div>
-              <div class="card-body">
-                <canvas id="speedChart" width="400" height="100"></canvas>
-              </div>
-              <div class="card-footer">
-                <div class="chart-legend">
-                  <i class="fa fa-circle text-info"></i> Tesla Model S
-                  <i class="fa fa-circle text-warning"></i> BMW 5 Series
-                </div>
-                <hr/>
-                <div class="card-stats">
-                  <i class="fa fa-check"></i> Data information certified
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
         <!--   Core JS Files   -->
   <script src="/admin/js/core/jquery.min.js"></script>
@@ -189,11 +270,146 @@
   <script src="/admin/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
   <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <script src="/admin/demo/demo.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script src="/js/moment.min.js"></script>
   <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
+
+
+
+    $('#dateCode').on('change', function(){
+      console.log($(this).val())
+    })
+
+    $('#datepickerStart, #datepickerEnd').datepicker({
+        weekStart: 1,
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
     });
+    if (localStorage['filter-start'] && localStorage['filter-end']) {
+        $('#datepickerStart').datepicker("setDate", localStorage['filter-start']);
+        $('#datepickerEnd').datepicker("setDate", localStorage['filter-end']);
+      } else {
+        $('#datepickerStart').datepicker("setDate", moment().startOf('isoWeek').format('YYYY-MM-DD'));
+        $('#datepickerEnd').datepicker("setDate", moment().endOf('isoWeek').format('YYYY-MM-DD'));
+
+      }
+      updateOrdersView()
+
+      function updateOrdersView(){
+        var start = $('#datepickerStart').val()
+      var end = $('#datepickerEnd').val()
+
+      localStorage.setItem('filter-start', start)
+      localStorage.setItem('filter-end', end)
+      $.ajax({
+        method: 'GET',
+        url: '/api/orders/filtered/date/'+start+'/'+end+'/all',
+        success: function(resp) {
+
+
+          var mondayOrdersTable = $('#mondayOrders')
+          mondayOrdersTable.html('')
+          if (resp.length === 0){
+            mondayOrdersTable.append('<h4><center>No results found</center></h4>')
+          }
+          for (var i = 0; i < resp.length; i++) {
+            var order = resp[i]
+            // if (order.fulfillment_day === 'Monday') {
+              mondayOrdersTable.append('<tr class="'+order.order_status+'"><td>'+order.orderId+'</td><td>'
+                +order.name+
+                '</td><td>'+order.email+
+                '</td><td>'+order.location+
+                '</td><td>'+order.order_amount+
+                '</td><td class="fulfillment_day">'+order.fulfillment_day+
+                '</td><td>'+moment(order.fulfillment_date).format('MM/DD/YYYY')+
+                '</td><td class="fulfillment_type">'+order.fulfillment_method+
+                '</td><td class="order_status">'+order.order_status+
+                '</td><td>'+order.delivery_info+
+                '</td></tr>')
+              
+            // }
+          }
+        },
+        error: function(err){
+          toastr['error'](err)
+        }
+      })
+      }
+
+
+    $("#searchInput").keyup(function () {
+    //split the current value of searchInput
+    var data = this.value.split(" ");
+    //create a jquery object of the rows
+    var jo = $("#mondayOrders").find("tr");
+    if (this.value == "fulfilled") {
+        jo.show();
+        return;
+    }
+    //hide all the rows
+    jo.hide();
+
+    //Recusively filter the jquery object to get results.
+    jo.filter(function (i, v) {
+        var $t = $(this);
+        for (var d = 0; d < data.length; ++d) {
+            if ($t.is(":contains('" + data[d] + "')")) {
+                return true;
+            }
+        }
+        return false;
+    })
+    //show the rows that match.
+    .show();
+}).focus(function () {
+    this.value = "";
+    $(this).css({
+        "color": "black"
+    });
+    $(this).unbind('focus');
+}).css({
+    "color": "#C0C0C0"
+});
+
+$(document).ready(function(){
+
+    $('input[type="radio"]').change(function () {
+        var firstRow = 'name';
+        var day = $('input[name="fulfillment_day"]:checked').prop('value') || '';
+        var status = $('input[name="order_status"]:checked').prop('value') || '';
+        var fulfillment_type = $('input[name="fulfillment_type"]:checked').prop('value') || '';
+        
+        var trs = $('tr:not(:first)');
+        $(trs).hide();
+        
+        if(day == 'inactive' || status == 'inactive' || fulfillment_type == 'inactive'){
+          // Do nothing as any of three condition says show all
+          // And currently we all rows selected in trs
+        } else {
+          if(day != '' && day != 'inactive'){
+              var chkdName = $('input[name="fulfillment_day"]:checked').prop('name');
+              trs = $(trs).find("."+chkdName+':contains('+day+')').parent();
+          }
+  
+          if(status != '' && status != 'inactive'){
+              var chkdName = $('input[name="order_status"]:checked').prop('name');
+              trs = $(trs).find("."+chkdName+':contains('+status+')').parent();
+          }
+  
+          if(fulfillment_type != '' && fulfillment_type != 'inactive'){
+              var chkdName = $('input[name="fulfillment_type"]:checked').prop('name');
+              trs = $(trs).find("."+chkdName+':contains('+fulfillment_type+')').parent();
+          }
+        }
+        $(trs).show();
+    });
+    
+    $("#reset").on('click', function(){
+      $(':radio').prop('checked', false);
+      $('tr').show();
+    });
+});
   </script>
 </body>
 

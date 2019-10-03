@@ -200,15 +200,15 @@ $('#addCardToCust').on('click', function () {
   $(this).attr('disabled', 'disabled')
   if ($('#addCard').is(':checked')) {
     stripe.createToken(card).then(function (result) {
-      processOrder({ type: 'new' }, result.token.id)
+      processOrder({ type: 'new' }, result.token.id, 'express')
     })
   } else {
-    processOrder({ type: 'existing' }, $('input[name="radio"]:checked').val())
+    processOrder({ type: 'existing' }, $('input[name="radio"]:checked').val(), 'express')
 
   }
 })
 
-function processOrder(card, token, id) {
+function processOrder(card, token, checkout_type) {
   let defaultDay = $('.list-group-item.clickable.active').data('day')
   let defaultDate = $('.list-group-item.clickable.active').data('date')
 
@@ -261,9 +261,11 @@ function processOrder(card, token, id) {
     cart
   }
 
+  if (checkout_type === 'express') var url = '/checkout/express'
+  if (checkout_type === 'initial') var url = '/checkout/stripe'
   $.ajax({
     type: 'POST',
-    url: '/checkout/express',
+    url: url,
     data: JSON.stringify({ data: obj }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -301,77 +303,7 @@ $('document').on('click', '#createToken', function () {
   form.submit()
 
 
-  stripe.createToken(card).then(function (result) {
 
-    let billing = {
-      street: $('input[name="street-bill"]').val(),
-      street_2: $('input[name="street2-bill"]').val(),
-      city: $('input[name="city-bill"]').val(),
-      state: $('select#state-bill').val(),
-      zip: $('input[name="zip-bill"]').val(),
-      coupon: $('input[name="promoCode"]').val(),
-      allergy_info: $('input[name=allergy_info]').val(),
-      delivery_info: $('input[name=delivery_notes]').val(),
-      stripeToken: result.token.id,
-      shippingCode: localStorage.shippingCode,
-    }
-
-    let shipping = {
-      recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
-      street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
-      city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val(),
-      state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
-      zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-    }
-
-    let user = {
-      firstName: $('input[id="firstName"]').val(),
-      lastName: $('input[id="lastName"]').val(),
-      email: $('input[id="email-bill"]').val(),
-      phone: $('input[id="phone"]').val(),
-      password: $('#password-bill').val(),
-      fulfillment_method: localStorage.fulfillment_method,
-      fulfillment_day: $('li.list-group-item.clickable.active').data('day') ? $('li.list-group-item.clickable.active').data('day') : defaultDay,
-      fulfillment_date: $('li.list-group-item.clickable.active').data('date') ? $('li.list-group-item.clickable.active').data('date') : defaultDate,
-  
-      pickup_location: localStorage.myStore
-    }
-
-    if ($('input[name="subscribe"]').is(':checked')) {
-      user.subscribe = true
-    } else {
-      user.subscribe = false
-    }
-
-    let cart = localStorage.cart
-    let obj = {
-      billing,
-      shipping,
-      user,
-      cart
-    }
-    $.ajax({
-      type: 'POST',
-      url: '/checkout/stripe',
-      data: JSON.stringify({ data: obj }),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function (data) {
-        localStorage.cart = []
-
-        if (data.status == 'success') {
-          window.location.href = '/checkout/confirmation'
-        } else {
-          $('#toggleSections').html('Waiting for order confirmation')
-          $('#addCardToCust').html('Waiting for order confirmation')
-        }
-
-      },
-      failure: function (errMsg) {
-        toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-      }
-    })
-  })
 
 })
 
@@ -384,6 +316,12 @@ $('#applyCoupon').on('click', function () {
       toastr['warning']('Sorry this coupon appears to be invalid')
     },
     success: function (data) {
+      if (data['type']) {
+        if (data['type'] === "StripeInvalidRequestError") {
+          toastr['error'](data.message)
+          return
+        }
+      }
       var total = $('.order-total').html()
       if (data.amount_off) {
         toastr['success']('Coupon for $' + (data.amount_off / 100) + ' successfully applied')
@@ -431,105 +369,105 @@ $('input[type=radio]').on('change', function () {
 
 
 
-function anything() {
+// function anything() {
 
 
-  $('#toggleSections').html('Processing order... <div id="loading"></div>')
-  $('#toggleSections').prop('disabled', true)
+//   $('#toggleSections').html('Processing order... <div id="loading"></div>')
+//   $('#toggleSections').prop('disabled', true)
 
-  let defaultDay = $('.list-group-item.clickable.active').data('day')
-  let defaultDate = $('.list-group-item.clickable.active').data('date')
+//   let defaultDay = $('.list-group-item.clickable.active').data('day')
+//   let defaultDate = $('.list-group-item.clickable.active').data('date')
 
-  stripe.createToken(card).then(function (result) {
+//   stripe.createToken(card).then(function (result) {
 
-    var billing = {
-      street: $('input[name="street-bill"]').val(),
-      street_2: $('input[name="street2-bill"]').val(),
-      city: $('input[name="city-bill"]').val(),
-      state: $('select#state-bill').val(),
-      zip: $('input[name="zip-bill"]').val(),
-      coupon: $('input[name="promoCode"]').val(),
-      allergy_info: $('input[name=allergy_info]').val(),
-      delivery_info: $('input[name=delivery_notes]').val(),
-      stripeToken: result.token.id,
-      shippingCode: localStorage.shippingCode,
-      deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
-      tax: $('.order-tax').html(),
-      shipping: $('.order-shipping').html(),
-      amount: $('.order-total').html()
+//     var billing = {
+//       street: $('input[name="street-bill"]').val(),
+//       street_2: $('input[name="street2-bill"]').val(),
+//       city: $('input[name="city-bill"]').val(),
+//       state: $('select#state-bill').val(),
+//       zip: $('input[name="zip-bill"]').val(),
+//       coupon: $('input[name="promoCode"]').val(),
+//       allergy_info: $('input[name=allergy_info]').val(),
+//       delivery_info: $('input[name=delivery_notes]').val(),
+//       stripeToken: result.token.id,
+//       shippingCode: localStorage.shippingCode,
+//       deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
+//       tax: $('.order-tax').html(),
+//       shipping: $('.order-shipping').html(),
+//       amount: $('.order-total').html()
 
-    }
+//     }
 
-    var shipping = {
-      recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
-      street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
-      city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val(),
-      state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
-      zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-    }
+//     var shipping = {
+//       recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
+//       street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
+//       city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val(),
+//       state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
+//       zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
+//     }
 
-    var user = {
-      firstName: $('input[id="firstName"]').val(),
-      lastName: $('input[id="lastName"]').val(),
-      email: $('input[id="email-bill"]').val(),
-      phone: $('input[id="phone"]').val(),
-      password: $('#password-bill').val(),
-      fulfillment_method: localStorage.fulfillment_method,
-      fulfillment_day: localStorage.fulfillment_day ? localStorage.fulfillment_day : defaultDay,
-      fulfillment_date: localStorage.fulfillment_date ? localStorage.fulfillment_date : defaultDate,
-      pickup_location: localStorage.myStore
-    }
+//     var user = {
+//       firstName: $('input[id="firstName"]').val(),
+//       lastName: $('input[id="lastName"]').val(),
+//       email: $('input[id="email-bill"]').val(),
+//       phone: $('input[id="phone"]').val(),
+//       password: $('#password-bill').val(),
+//       fulfillment_method: localStorage.fulfillment_method,
+//       fulfillment_day: localStorage.fulfillment_day ? localStorage.fulfillment_day : defaultDay,
+//       fulfillment_date: localStorage.fulfillment_date ? localStorage.fulfillment_date : defaultDate,
+//       pickup_location: localStorage.myStore
+//     }
 
-    if ($('input[name="subscribe"]').is(':checked')) {
-      user.subscribe = true
-    } else {
-      user.subscribe = false
-    }
+//     if ($('input[name="subscribe"]').is(':checked')) {
+//       user.subscribe = true
+//     } else {
+//       user.subscribe = false
+//     }
 
-    var cart = localStorage.cart
-    var obj = {
-      billing,
-      shipping,
-      user,
-      cart
-    }
-    $.ajax({
-      type: 'POST',
-      url: '/checkout/stripe',
-      data: JSON.stringify({ data: obj }),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function (data) {
+//     var cart = localStorage.cart
+//     var obj = {
+//       billing,
+//       shipping,
+//       user,
+//       cart
+//     }
+//     $.ajax({
+//       type: 'POST',
+//       url: '/checkout/stripe',
+//       data: JSON.stringify({ data: obj }),
+//       contentType: "application/json; charset=utf-8",
+//       dataType: "json",
+//       success: function (data) {
 
-        if (data['type']){
-          if (data['type'] === "StripeInvalidRequestError") {
-            toastr['error'](data['message'])
-          }
-          if (data['type'] === "invalid_request_error") {
-            toastr['error']('Your payment was unable to be processed.  Please reload the page and try again.')
-          }
-          if (data['sqlMessage']) {
-            toastr['error']('Their was an error processing your order')
-          }
-          if (data['status'] === 'success') {
-            $('#toggleSections').html('Checkout')
-            $('#toggleSections').prop('disabled', false)
-            $('#toggleSections').removeAttr('disabled')
+//         if (data['type']){
+//           if (data['type'] === "StripeInvalidRequestError") {
+//             toastr['error'](data['message'])
+//           }
+//           if (data['type'] === "invalid_request_error") {
+//             toastr['error']('Your payment was unable to be processed.  Please reload the page and try again.')
+//           }
+//           if (data['sqlMessage']) {
+//             toastr['error']('Their was an error processing your order')
+//           }
+//           if (data['status'] === 'success') {
+//             $('#toggleSections').html('Checkout')
+//             $('#toggleSections').prop('disabled', false)
+//             $('#toggleSections').removeAttr('disabled')
     
-            localStorage.cart = []
-            window.location.href = '/checkout/confirmation'
-          }
-        } 
+//             localStorage.cart = []
+//             window.location.href = '/checkout/confirmation'
+//           }
+//         } 
 
 
-      },
-      failure: function (errMsg) {
-        toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-      }
-    })
-  })
+//       },
+//       failure: function (errMsg) {
+//         toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
+//       }
+//     })
+//   })
 
-}
+// }
 
 if (localStorage.fulfillment_method === 'delivery') {
   $('#shippingDetails').show()

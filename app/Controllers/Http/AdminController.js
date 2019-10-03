@@ -20,21 +20,88 @@ const opencage = require('opencage-api-client');
 
 class AdminController {
 
+
+  async fullRefund(charge) {
+    const refund = await stripe.refunds.create({
+      charge: charge
+    });
+    return refund
+  }
+  async cancelOrder({request, response, auth, session, params}){
+
+    const refund = await this.fullRefund(params.charge)
+
+    const status = await Database
+      .table('orders')
+      .where('orderId', params.order)
+      .update({
+        payment_status: 'refunded',
+        order_status: 'cancelled'
+      })
+
+    var message = {'status': 'order' + params.order + ' has been cancelled.  Refund id is ' + refund}
+    return response.send(message)
+
+
+  }
+
+  // API method to return a filtered list of orders.  If a day of the week is passed in, then only orders
+  // set to be fulfilled on that day will be shown.  Otherwise all orders between matching dates will be shown.
+  async filteredOrdersByDate({request, response, params}){
+
+    if (params.day != 'all') {
+      var orders = await Database
+      .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}" AND fulfillment_day = "${params.day}";`)
+    } else {
+      var orders = await Database
+      .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}";`)
+    }
+
+    return response.send(orders[0])
+  }
+
+
+  async getFilteredOrders(filter, value){
+    const orders = await Database
+      .table('orders')
+      .where(filter, value)
+      .select()
+    return orders
+  }
+
+  async getFilteredOrdersMultiple(filter1, value1, filter2, value2){
+    const orders = await Database
+      .table('orders')
+      .where(filter1, value1)
+      .where(filter2, value2)
+      .select()
+    return orders
+  }
+
   async getDashboard({request, response, view, session, auth}) {
     const allOrders = await Database
-      .select('*')
-      .from('orders')
+      .select()
+      .table('orders')
+    const lastWeekOrders = await this.getFilteredOrders('creation_week', dateCodes.previous)
+    const currentOrders = await this.getFilteredOrders('creation_week', dateCodes.current)
+    const nextWeekOrders = await this.getFilteredOrders('creation_week', dateCodes.next)
+    const allMondayOrders = await this.getFilteredOrders('fulfillment_day', 'monday')
+
+    const thisMondayOrders = await this.getFilteredOrdersMultiple('fulfillment_day', 'monday', 'fulfillment_week', dateCodes.next)
+    // const lastWeekOrders = await Database
+    //   .table('orders')
+    //   .where('creation_week', dateCodes.previous)
+    //   .select()
+
+
     
-    const lastWeekOrders = await Database
-      .select('*')
-      .from('orders')
-      .where('fulfillment_week', dateCodes.previous)
-    
-    const currentOrders = await Database
-      .select('*')
-      .from('orders')
-      .where('fulfillment_week', dateCodes.current)
-    return view.render('layout.admin.dashboard', {allOrders, lastWeekOrders, currentOrders})
+    // const currentOrders = await Database
+    //   .table('orders')
+    //   .where('creation_week', dateCodes.current)
+    //   .select()
+
+    // const 
+    return view.render('layout.admin.dashboard', {allOrders, lastWeekOrders, currentOrders, allMondayOrders, thisMondayOrders})
   }
 
   async updateItems() {

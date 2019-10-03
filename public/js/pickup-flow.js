@@ -25,6 +25,15 @@ $(document).on('click', '#delivery', function () {
   
 
 })
+$(document).on('click', '#deliveryRadio', function () {
+
+  localStorage.setItem("fulfillment_method", "delivery")
+  updateCartDiv()
+
+
+  
+
+})
 
 
 function formatDate(date) {

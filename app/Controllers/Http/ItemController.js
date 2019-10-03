@@ -49,7 +49,10 @@ class ItemController {
     return console.log(response)
   }
 
-  async listItems ({view, response, auth, request}) {
+  async listItems ({view, response, auth, request, params}) {
+
+    var filter_categories = params.categories.split(',')
+    var filter_filters = params.filters.split(',')
 
     const path = Helpers.appRoot()    
 
@@ -57,11 +60,35 @@ class ItemController {
     prod = JSON.parse(prod)
     var categories = []
     var filters = []
-    for (var i = 0; i < prod.length; i++) {
-      if(typeof prod[i].metadata.primary_category == "string" && !categories.includes(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))) {
-        categories.push(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))
-      } 
+
+    if (filter_categories && filter_filters) {
+      var finalProd = []
+      
+      for (var i = 0; i < prod.length; i++) {
+        for (var x = 0; x < filter_categories.length; x++) {
+
+          var cat = prod[i].metadata.primary_category
+          if (filter_categories[x] === cat || filter_categories[x] === 'all') {
+            for (var y = 0; y < filter_filters.length; y++) {
+              if (filter_filters[y] === prod[i].id.split('_')[0] || filter_filters[y] === 'all') finalProd.push(prod[i])
+            }
+          }
+
+        }
+
+        if(typeof prod[i].metadata.primary_category == "string" && !categories.includes(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))) {
+          categories.push(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))
+        } 
+      }
+    } else {
+      for (var i = 0; i < prod.length; i++) {
+
+        if(typeof prod[i].metadata.primary_category == "string" && !categories.includes(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))) {
+          categories.push(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))
+        } 
+      }
     }
+
 
 
     if (auth.user) {
@@ -79,18 +106,13 @@ class ItemController {
         user.fulfillment_method = 'delivery'
 
       }
+      user.fulfillment_day = auth.user.fulfillment_day
+    }
 
       prod = _.orderBy(prod, ['metadata.primary_category', 'updated'], ['desc', 'desc']);
 
 
-
-      user.fulfillment_day = auth.user.fulfillment_day
-      return view.render('menu.menu', {items: prod, categories: categories, user: user})
-      
-    } else {
-
-      return view.render('menu.menu', {items: prod, categories: categories})
-    }
+      return view.render('menu.menu', {items: finalProd, categories: categories, user})
 
   }
 

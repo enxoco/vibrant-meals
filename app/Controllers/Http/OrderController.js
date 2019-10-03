@@ -38,7 +38,13 @@ class OrderController {
             .table('orders')
             .select()
             .where('user_id', auth.user.id)
-        var recentOrder = orders[orders.length - 1]
+
+        if (orders.length <= 1) {
+            var recentOrder = orders[0]
+        } else {
+            var recentOrder = orders[orders.length - 1]
+
+        }
 
         // await Mail.send('auth.email.order-confirmation', {
         //     order: order.data[0],
@@ -49,12 +55,10 @@ class OrderController {
         //     message.subject('Order Confirmation')
         //   })
         // return response.send(recentOrder)
-        console.log(recentOrder.orderId)
         // recentOrder = JSON.parse(recentOrder)
         var items = JSON.parse(recentOrder.items)
         var shipping = JSON.parse(recentOrder.shipping_info)
         var billing = JSON.parse(recentOrder.billing_info)
-        return response.send({items, shipping, billing})
         
         return view.render('Checkout.confirmation', {order: recentOrder, items, shipping, billing})
     }

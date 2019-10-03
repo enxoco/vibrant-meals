@@ -73,7 +73,7 @@ body {
           </li>
     @each(category in ['drinks','lunchDinner','breakfast','snacks'])
   <li class="nav-item">
-    <a href="#" data-filter="{{category}}" class="{{category}} filter-button"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
+    <a class="category-button" data-category="{{ category }}"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
   </li>
     @endeach
 
