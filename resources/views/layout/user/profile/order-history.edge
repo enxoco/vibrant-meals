@@ -15,33 +15,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @each(order in customer.orders.data)
-                        <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
-                            <td><a href="#">#{{order.metadata.orderId}}</a></td>
-                            <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}</td>
-                            <td>{{capitalize(order.status)}}</td>
-                            <td>{{ capitalize(order.metadata.fulfillment_method) }}
-                            <td>{{currency(order.amount)}}</td>
+                        @each(order in orders)
+                        <tr data-toggle="collapse" data-target="#{{order.orderId}}" class="clickable">
+                            <td><a href="#">#{{order.orderId}}</a></td>
+                            <td class="d-none d-md-block d-lg-block">{{convertTime(order.created_at, 'MM/DD/YYYY')}}</td>
+                            <td>{{capitalize(order.order_status)}}</td>
+                            <td>{{ capitalize(order.fulfillment_method) }}
+                            <td>{{currency(order.order_amount)}}</td>
                         </tr>
                         <tr>
                             <td colspan="5" style="border:none;">
-                                <div id="{{order.metadata.orderId}}" class="collapse"
+                                <div id="{{order.orderId}}" class="collapse"
                                     style="background:white; padding:20px;">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
                                             <span class="d-flex d-md-none d-lg-none">
                                                 <strong>Order Date:</strong>
-                                                {{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                                {{convertTime(order.created_at, 'MM/DD/YYYY')}}
                                             </span><br />
-                                            @if(order.metadata.fulfillment_method == 'pickup')
+                                            @if(order.fulfillment_method == 'pickup')
 
                                             <div class="row">
                                                 <div class="col-12">
                                                     <strong>Pickup Location:</strong>
                                                 <ul style="word-break:break-word;">
-                                                    <li>{{order.shipping.address.line1}}</li>
-                                                    <li>{{order.shipping.address.line2}}</li>
-                                                    <li>{{order.shipping.address.city}} {{order.shipping.address.state}}, {{order.shipping.address.postal_code}}</li>
+                                                    <li>{{order.shipping_info.pickup_location}}</li>
+                                                    <li>{{order.shipping_info.address}}</li>
+                                                    <li>{{order.shipping_info.city}} {{order.shipping_info.state}}, {{order.shipping_info.zip}}</li>
                                                 </ul>
                                                 </div>
                                             </div>
@@ -50,13 +50,12 @@
                                                 <div class="col-12">
                                                     <strong>Shipped to:</strong>
                                                     <ul>
-                                                    <li>{{order.shipping.name}}</li>
-                                                    <li>{{order.shipping.address.line1}}</li>
-                                                    @unless(order.shipping.address.line2 == null)
-                                                    <li>{{order.shipping.address.line2}}<li>
+                                                    <li>{{order.shipping_info.name}}</li>
+                                                    <li>{{order.shipping_info.address}}</li>
+                                                    @unless(order.shipping_info.line2 == null)
+                                                    <li>{{order.shipping_info.line2}}<li>
                                                     @endunless
-                                                    <li>{{order.shipping.address.city}} {{order.shipping.address.state}}<li>,
-                                                    <li>{{order.shipping.address.postal_code}}<li>
+                                                    <li>{{order.shipping_info.city}} {{order.shipping_info.state}}, {{order.shipping_info.zip}}<li>
                                                 </div>
                                             </div>
                                             @endif
@@ -73,7 +72,7 @@
                                                     <!-- Item Description-->
                                                     <div class="row">
                                                         <div class="col-8 col-md-6 col-lg-6 mx-auto">
-                                                            {{item.description}}
+                                                            {{item.name}}
                                                         </div>
                                                         <div class="col-4 col-md-6 col-lg-6 mx-auto">
                                                             <strong>x{{item.quantity}} </strong>

@@ -4,7 +4,7 @@ $(document).on('click', '#pickupRadio', function () {
   showPickupLocations()
 })
 
-$(document).on('click', '#pickup', function() {
+$(document).on('click', '#pickup', function () {
   $('#modal-initial-click').modal('hide')
   $('#pickupRadio').prop('checked', true)
   getLocation()
@@ -16,23 +16,21 @@ $(document).on('click', '#pickup', function() {
 
 $(document).on('click', '#delivery', function () {
 
-  localStorage.setItem("fulfillment_method", "delivery")
+  localStorage.fulfillment_method = 'delivery'
   updateCartDiv()
   setTimeout(function () {
     $('#modal-initial-click').modal('toggle')
   }, 500);
 
-  
+
 
 })
 $(document).on('click', '#deliveryRadio', function () {
 
-  localStorage.setItem("fulfillment_method", "delivery")
-  updateCartDiv()
-
-
-  
-
+  localStorage.fulfillment_method = 'delivery'
+  $('.store-desc').html('')
+  $('.delivery-desc').html('Select delivery address at checkout')
+  // updateCartDiv()
 })
 
 
@@ -62,7 +60,7 @@ function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
-  
+
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
   }
@@ -115,7 +113,7 @@ function showPickupLocations() {
   $('.express-checkout-edit').hide()
   $('.shipping-form').closest('.card').hide()
 
-  localStorage.setItem("fulfillment_method", "pickup")
+  localStorage.fulfillment_method = 'pickup'
 
   if ($('#cords').val()) {
     var cords = $('#cords').val()
@@ -254,8 +252,7 @@ function showPickupLocations() {
 
     localStorage.myStore = JSON.stringify(myStore)
     localStorage.fulfillment_method = 'pickup'
-    let button = document.getElementById('fulfillmentOptions')  
-    button.innerHTML = '<option value="pickup">Pickup at ' + JSON.parse(localStorage.myStore).name +'</option><option value="pickup">Pickup at another location</option><option value="delivery">Delivery</option>'
+    $('.store-desc').html('<strong>Pickup Location</strong><br>' + JSON.parse(localStorage.myStore).name)
 
     $('#user-info').remove()
     var userInfo = {
@@ -274,14 +271,14 @@ function showPickupLocations() {
       // nextAvalFulfill()
       // $("#modal-pickup-day").addClass("is-active")
       $('#pickup-label').html(st.store)
-      $('.store-desc').html(JSON.parse(localStorage.myStore).name)
+      $('.store-desc').html('<strong>Pickup Location</strong><br>' + JSON.parse(localStorage.myStore).name)
+      $('.delivery-desc').html('')
     }
     // if ($('#fulfillmentOptions').children() && $('#fulfillmentOptions').children()[0].innerHTML === 'Pickup') {
     //   $('#fulfillmentOptions').children()[0].innerHTML += ' at ' + JSON.parse(localStorage.myStore).name
 
     // }
 
-    updateCartDiv()
-
+    
   })
 }

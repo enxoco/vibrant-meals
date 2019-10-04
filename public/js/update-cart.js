@@ -8,41 +8,41 @@ function updateCartDiv(fulfillment_method) {
 
   var orderMethod = localStorage.fulfillment_method
   var orderDay = localStorage.fulfillment_day
-  if (localStorage.myStore) {
-    $.ajax({
-      type: 'POST',
-      url: '/account/fulfillmethod/update',
-      data: {storeId: JSON.parse(localStorage.myStore).id},
-      success: console.log('Options updated')
-    })
-  }
-  $.ajax({
-    type: 'POST',
-    url: '/account/fulfillmethod/update',
-    data: {pref: orderMethod},
-    success: console.log('Options updated')
-  })
+  // if (localStorage.myStore) {
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: '/account/fulfillmethod/update',
+  //     data: {storeId: JSON.parse(localStorage.myStore).id},
+  //     success: console.log('Options updated')
+  //   })
+  // }
+  // $.ajax({
+  //   type: 'POST',
+  //   url: '/account/fulfillmethod/update',
+  //   data: {pref: orderMethod},
+  //   success: console.log('Options updated')
+  // })
 
   
-  if (orderMethod === 'pickup' && localStorage.myStore) {
-    $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
-    $('.delivery-desc').html('')
-    $('#pickupRadio').attr('checked', 'checked')
+  // if (orderMethod === 'pickup' && localStorage.myStore) {
+  //   $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
+  //   $('.delivery-desc').html('')
+  //   $('#pickupRadio').attr('checked', 'checked')
 
-    $('.order-shipping').html('0')
+  //   $('.order-shipping').html('0')
 
-    } else {
-      $('#deliveryRadio').attr('checked', 'checked')
-      $('#pickupRadio').removeAttr('checked')
-      localStorage.setItem('fulfillment_method', 'delivery')
-      localStorage.removeItem('pickup_location')
-      localStorage.removeItem('pickupLocation')
-      localStorage.removeItem('myStore')
-      $('.store-desc').html('&nbsp')
+  //   } else {
+  //     $('#deliveryRadio').attr('checked', 'checked')
+  //     $('#pickupRadio').removeAttr('checked')
+  //     localStorage.setItem('fulfillment_method', 'delivery')
+  //     localStorage.removeItem('pickup_location')
+  //     localStorage.removeItem('pickupLocation')
+  //     localStorage.removeItem('myStore')
+  //     $('.store-desc').html('&nbsp')
 
-      $('.delivery-desc').html('Select delivery address at checkout')
+  //     $('.delivery-desc').html('Select delivery address at checkout')
 
-  }
+  // }
 
 
 
@@ -54,16 +54,16 @@ function updateCartDiv(fulfillment_method) {
 
   $('#'+orderMethod+'Radio').closest('.fulfillment-option').addClass('active')
 
-  if($('#user-info').data()) {
-    var user = $('#user-info').data()
-    localStorage.fulfillment_method = user.user.fulfillment_method
-    localStorage.fulfillment_day = user.user.fulfillment_day
-    localStorage.custEngageCompleted = 1
-    localStorage.checkoutInitiated = 1
-    if (user.user.pickup_location) {
-      localStorage.pickupLocation = JSON.stringify(user.user.pickup_location)
-    }
-  }
+  // if($('#user-info').data()) {
+  //   var user = $('#user-info').data()
+  //   localStorage.fulfillment_method = user.user.fulfillment_method
+  //   localStorage.fulfillment_day = user.user.fulfillment_day
+  //   localStorage.custEngageCompleted = 1
+  //   localStorage.checkoutInitiated = 1
+  //   if (user.user.pickup_location) {
+  //     localStorage.pickupLocation = JSON.stringify(user.user.pickup_location)
+  //   }
+  // }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
     var d = '<div class="col d-flex mt-4 hidden-on-mobile-checkout">\

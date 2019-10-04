@@ -51,8 +51,7 @@ class ItemController {
 
   async listItems ({view, response, auth, request, params}) {
 
-    var filter_categories = params.categories.split(',')
-    var filter_filters = params.filters.split(',')
+
 
     const path = Helpers.appRoot()    
 
@@ -61,7 +60,9 @@ class ItemController {
     var categories = []
     var filters = []
 
-    if (filter_categories && filter_filters) {
+    if (params.categories && params.filters) {
+      var filter_categories = params.categories.split(',')
+      var filter_filters = params.filters.split(',')
       var finalProd = []
       
       for (var i = 0; i < prod.length; i++) {
@@ -111,8 +112,13 @@ class ItemController {
 
       prod = _.orderBy(prod, ['metadata.primary_category', 'updated'], ['desc', 'desc']);
 
+      if (finalProd) {
+        var items = finalProd
+      } else {
+        items = prod
+      }
 
-      return view.render('menu.menu', {items: finalProd, categories: categories, user})
+      return view.render('menu.menu', {items: items, categories: categories, user})
 
   }
 

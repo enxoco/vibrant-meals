@@ -38,7 +38,7 @@ class AccountController {
 
     if (auth.user) {
 
-      if (method == 'delivery') {
+      if (method == 'delivery' || method == 'Delivery') {
         await Database
           .table('users')
           .update({'pickup_location': null})
@@ -53,7 +53,8 @@ class AccountController {
             }
           })
       }
-      if (method === 'Monday' || method === 'Thursday') {
+      if (method === 'monday' || method === 'thursday' || method === 'Monday' || method === 'Thursday') {
+        console.log('updating fulfillment day')
         await Database
           .table('users')
           .update({'fulfillment_day': method})
@@ -63,7 +64,7 @@ class AccountController {
             fulfillment_day: method
           }
         })
-      } else if (method == 'pickup') {
+      } else if (method == 'pickup' || method === 'Pickup') {
         await Database
         .table('users')
         .update({'fulfillment_method': method})

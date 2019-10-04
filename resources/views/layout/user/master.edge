@@ -1841,6 +1841,27 @@ $(document).ready(function() {
     }
 
   });
+
+  if (localStorage.fulfillment_method === 'pickup') {
+    $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
+    $('.delivery-desc').html('')
+    $('#pickupRadio').attr('checked', 'checked')
+
+    $('.order-shipping').html('0')
+
+    } else {
+      console.log('delivery')
+      $('#deliveryRadio').attr('checked', 'checked')
+      $('#pickupRadio').removeAttr('checked')
+      localStorage.fulfillment_method = 'delivery'
+      localStorage.removeItem('pickup_location')
+      localStorage.removeItem('pickupLocation')
+      localStorage.removeItem('myStore')
+      $('.store-desc').html('&nbsp')
+
+      $('.delivery-desc').html('Select delivery address at checkout')
+
+  }
 })
 
 document.addEventListener('click', function(event) {
@@ -1937,13 +1958,15 @@ $('#toggleSections').on('click', function(){
       $('#headingFive').addClass('active')
       $(this).attr('disabled', 'disabled')
       $(this).html('checkout')
+      $('#headingFive').css('pointer-events', 'visible')
+
 
     } else if ($('#collapseFive').hasClass('show')) {
 
 
       $(this).attr('disabled', 'disabled')
       stripe.createToken(card).then(function (result) {
-      processOrder({ type: 'new' }, result.token.id, 'initial')
+      processOrder({ type: 'existing' }, result.token.id, 'initial')
       })    
     }
     
@@ -1954,6 +1977,30 @@ $('#toggleSections').on('click', function(){
       console.log('reloaded')
     window.location.reload()
   }
+
+
+    if (localStorage.fulfillment_method === 'pickup') {
+    $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
+    $('.delivery-desc').html('')
+    $('#pickupRadio').attr('checked', 'checked')
+
+    $('.order-shipping').html('0')
+
+    } else {
+      console.log('delivery')
+      $('#deliveryRadio').attr('checked', 'checked')
+      $('#pickupRadio').removeAttr('checked')
+      localStorage.fulfillment_method = 'delivery'
+      localStorage.removeItem('pickup_location')
+      localStorage.removeItem('pickupLocation')
+      localStorage.removeItem('myStore')
+      $('.store-desc').html('&nbsp')
+
+      $('.delivery-desc').html('Select delivery address at checkout')
+
+  }
+
+
   })
   $('#clearCart').on('click', function(){
   localStorage.cart = "[]"
@@ -2060,7 +2107,37 @@ $('.filter').filter('.Low_Carb').show();
 
 $('.dropdown-item').on('click', function(){$('.dropdown-menu').removeClass('show')})
 
+function checkStepCompletion(formName){
 
+var complete
+    // Iterate over each input with name ending in _a
+    $('input[name$="_'+formName+'"]').each( function() {
+
+    // Get the base name by removing _a
+    var name = $(this).attr('name').replace(/_basic$/, '');
+
+    // Compare _a to _b
+    if( $('input[name="'+name+'_'+formName+'"]').val() == "") {
+        alert(name+" field does not match!");   
+        return complete = false
+    } else {
+      complete = true
+    }
+    });
+
+  return complete;
+}
+
+var stepOneForm = $('#firstName, #lastName, #email-bill, #phone, #password-bill, #password_confirmation')
+var stepOneComplete
+for (var i = 0; i < stepOneForm.length; i++){
+  if (stepOneForm.value === "") {
+    stepOneComplete = false;
+    break;
+  } else {
+    stepOneComplete = true;
+  }
+}
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

@@ -323,7 +323,7 @@ class CheckoutController {
     try {
       var customer = await stripe.customers.create({
         description: 'Customer for ' + email,
-        source: req.billing.stripeToken,
+        source: req.billing.paymentId,
         email: user.email,
         address: {
           line1: req.billing.street,

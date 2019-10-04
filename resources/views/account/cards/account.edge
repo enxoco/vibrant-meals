@@ -1,0 +1,25 @@
+<div class="comSection comSection--light">
+        <h5>
+          My Account
+        </h5>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-8 mx-auto" style="word-wrap:break-word;">
+              <h5 class="profile-details">
+                {{customer.metadata.name}}
+              </h5>
+              {{customer.email}}
+              <br />
+              {{customer.shipping.phone}}
+            </div>
+            <div class="col mx-auto" style="text-align:center;">
+              <strong>{{orders.length}}</strong><br />
+              Total Orders
+              <hr class="mb-3">
+              <strong>{{currency(customer.totalSpend)}}</strong>
+              <br />
+              Total Spent:
+            </div>
+          </div>
+        </div>
+      </div>

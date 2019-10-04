@@ -45,6 +45,12 @@ class AuthController {
       .table('orders')
       .select()
       .where('user_id', auth.user.id)
+      for (var i = 0; i < orders.length; i++) {
+        orders[i].shipping_info = JSON.parse(orders[i].shipping_info)
+        orders[i].billing_info = JSON.parse(orders[i].billing_info)
+        orders[i].items = JSON.parse(orders[i].items)
+        
+      }
       return view.render('account.profile', {customer, orders})
     }
   }

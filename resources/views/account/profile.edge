@@ -40,130 +40,31 @@
   }
 </style>
 <div class="row pt-5" style="color:black; top: 150px;position:relative;">
-  <div class="col-12 col-md-10 mx-auto">
-    <div class="row">
+
   <div class="col-12 col-md-3 col-lg-3 mx-auto">
-    <div class="comSection comSection--light">
-      <h5>
-        My Account
-      </h5>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-8 mx-auto" style="word-wrap:break-word;">
-            <h5 class="profile-details">
-              {{customer.metadata.name}}
-            </h5>
-            {{customer.email}}
-            <br />
-            {{customer.shipping.phone}}
-          </div>
-          <div class="col mx-auto" style="text-align:center;">
-            <strong>{{orders.length}}</strong><br />
-            Total Orders
-            <hr class="mb-3">
-            <strong>{{currency(customer.totalSpend)}}</strong>
-            <br />
-            Total Spent:
-          </div>
-        </div>
-      </div>
-    </div>
+    @!include('account.cards.account')
     <hr class="mb-2">
-    <div class="comSection comSection--light">
-      <h5>
-        Billing
-      </h5>
-    </div>
-    @!include('layout.user.profile.billing')
+
+    @!include('account.cards.billing')
+    <hr class="mb-2">
+    @!include('account.cards.password')
+
   </div>
-  <div class="col-md-5 col-lg-5 col-12 mx-auto">
-    @!include('layout.user.profile.order-history')
-  </div>
-  <div class="col-12 col-md-3 col-lg-3 mx-auto">
-    <div class="comSection comSection--light">
-      <h5>
-        Update Password
-      </h5>
-      <div class="card-body">
-        <div class="row">
-          <form id="password">
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label>New Password</label>
-                  <input type="password" name="password" required placeholder="********" class="form-control">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label>Confirm Password</label>
-                  <input type="password" name="password_confirmation" required placeholder="********"
-                    class="form-control">
-                </div>
-              </div>
-            </div>
-            <div class="update ml-auto mr-auto">
-              <a class="btn btn-success update-password">Update</a>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+  <div class="col-12 col-md-5 col-lg-5 mx-auto">
+      @!include('layout.user.profile.order-history')
+
     <hr class="mb-3">
-    <div class="comSection comSection--light">
-      <h5>Order Preferences</h5>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-6 p-0">
-            <div class="radio">
-              <input id="pickupRadio" name="fulfillmentMethod" type="radio" value="pickup" data-toggle="modal"
-                data-target="#modal-pickup" 
-                @if(customer.metadata.fulfillment_method=='pickup' ) 
-                  checked 
-                @endif
-                >
-              <label for="pickupRadio" class="radio-label">Pickup</label>
-            </div>
-          </div>
-          <div class="col-6 p-0">
-            <div class="radio">
-              <input id="monday-switch" name="fulfillmentDay" type="radio" value="monday"
-                @if(customer.metadata.fulfillment_day=='monday')
-                  checked 
-                @endif
-                >
-              <label for="monday-switch" class="radio-label">Monday</label>
-            </div>
-          </div>
-          <div class="col-6 p-0">
-            <div class="radio">
-              <input id="deliveryRadio" name="fulfillmentMethod" type="radio" value="delivery"
-                @if(customer.metadata.fulfillment_method=='delivery')
-                  checked
-                @endif
-                >
-              <label for="deliveryRadio" class="radio-label">Delivery</label>
-            </div>
-          </div>
-          <div class="col-6 p-0">
-            <div class="radio">
-              <input id="thursday-switch" name="fulfillmentDay" type="radio" value="thursday"
-                @if(customer.metadata.fulfillment_day === 'thursday') 
-                  checked 
-                @endif
-                >
-              <label for="thursday-switch" class="radio-label">Thursday</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+  </div>
+  <div class="col-md-3 col-lg-3 col-12 mx-auto">
+    <hr class="mb-2">
+
+      @!include('account.cards.order-preferences')
+
   </div>
 
+
     </div>
-  </div>
-</div>
+
 
 @endsection

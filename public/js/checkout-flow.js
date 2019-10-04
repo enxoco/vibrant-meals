@@ -271,7 +271,10 @@ function processOrder(card, token, checkout_type) {
     dataType: "json",
     success: function (data) {
       localStorage.cart = []
-
+      console.log(data)
+      if (!data) toastr['error']('We were unable to process your order.  Please refresh the page and try again')
+      if (data['type'] == 'StripeInvalidRequestError') toastr['error']('There was an issue processing your payment.  Please refresh the page and try again')
+      // if (data.includes('<h1>500</h1>')) toastr['error']('We were unable to process your order.  Please refresh the page and try again')
       if (data.status == 'success') {
         window.location.href = '/checkout/confirmation'
       } else {
