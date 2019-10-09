@@ -81,7 +81,11 @@ function nextAvalFulfill() { // Simple function to find the next available fulfi
     var date = moment(days[i].toDate()).format('ll')
 
     // var date = moment(days[i].format('ll'))
-    pickupDaysModal.append('<li class="list-group-item clickable" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+    if (i === 0) {
+      pickupDaysModal.append('<li class="list-group-item clickable active" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+    } else {
+      pickupDaysModal.append('<li class="list-group-item clickable" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+    }
 
   } 
 
