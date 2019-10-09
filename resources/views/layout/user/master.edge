@@ -1971,8 +1971,8 @@ $('#toggleSections').on('click', function(){
 
     } else if ($('#collapseFive').hasClass('show')) {
 
-      $(this).html('Processing order... <div id="loading"></div>')
-  $(this).attr('disabled', 'disabled')
+    $(this).html('Processing order... <div id="loading"></div>')
+    $(this).attr('disabled', 'disabled')
     let order = buildOrder()
       if (order.error){
         var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + order.error + '</div>'
@@ -1994,9 +1994,12 @@ $('#toggleSections').on('click', function(){
     
   })
 
+  $('#headingFive').on('click', function(){
+    $('#toggleSections').removeAttr('disabled')
+  })
+
   $('document').on('ready', function(){
     if ($('#orderIDtext').text().includes('undefined')) {
-      console.log('reloaded')
     window.location.reload()
   }
 
@@ -2037,7 +2040,6 @@ $('.card-header').on('click', function(){
   let id = $(this).attr('id')
   id = id.match(/[A-Z]*[^A-Z]+/g)
   let me = 'collapse' + id[1]
-  console.log(me)
   $('.collapse.show').removeClass('show')
 })
 

@@ -16,7 +16,6 @@ $('.shipping-form :input').on('change', function () {
   $('#shippingDetails').append('<li>' + $('input[name=state-ship]').val() ? $('input[name=state-ship]').val() : +'</li>')
 })
 
-$('#collapseFour').addClass('show')
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
   // let thursday
   // let monday
