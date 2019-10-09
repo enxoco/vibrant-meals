@@ -42,8 +42,41 @@ $(document).ready(function() {
    var ordersTable = $('#pickups').DataTable( {
       select: true,
       dom: 'Bfrtip',
+      processing: true,
+      order: [[0, 'desc']],
+
+      ajax: '/api/orders/filtered/date/2019-09-30/2019-10-23/all',
+      columns: [
+         {
+            "render": function(data, type, row) {
+               return '<a href="/orders/'+row.orderId+'">'+row.orderId+'</a>'
+            }
+         },
+         {"data": "name"},
+         {"data": "email"},
+         {"data": "location"},
+         {
+            "render": function(data, type, row) {
+               var amount = '$' + row.order_amount / 100
+               return amount
+            }
+         },
+         {"data": "fulfillment_day"},
+         {"data": "fulfillment_date"},
+         {"data": "fulfillment_method"},
+         {"data": "order_status"},
+         {"data": "delivery_info"},
+         {
+            "render": function( data, type, row) {
+               return "<a class='btn btn-success' href='/admin/orders/fulfill/"+row.orderId+"'>Fulfill</a><input type='hidden' id='orderId' value='"+row.orderId+"'/>"
+         }
+      }
+
+
+         
+
+      ],
       colReorder: true,
-      order : [[1, 'desc']],
       filename: 'Scheduled Orders',
       buttons: [
          $.extend( true, {}, buttonCommon, {
@@ -81,7 +114,9 @@ $(document).ready(function() {
           }
         }
       ]
+
   } );
+
   
 })
 
@@ -89,70 +124,70 @@ $(document).ready(function() {
 
 $("#fulfilled").on('click', function() {
     $.fn.dataTable.ext.search.pop();
-    ordersTable.draw();
+   //  ordersTable.draw();
     $.fn.dataTable.ext.search.push(
        function(settings, data, dataIndex) {
           return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'fulfilled';
        }
     );
-    ordersTable.draw();
+   //  ordersTable.draw();
 });    
 
 $("#paid").on('click', function() {
     $.fn.dataTable.ext.search.pop();
-    ordersTable.draw();
+   //  ordersTable.draw();
     $.fn.dataTable.ext.search.push(
        function(settings, data, dataIndex) {
           return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'paid';
        }
     );
-    ordersTable.draw();
+   //  ordersTable.draw();
 });    
 
 $("#refunded").on('click', function() {
    $.fn.dataTable.ext.search.pop();
-   ordersTable.draw();
+   // ordersTable.draw();
    $.fn.dataTable.ext.search.push(
       function(settings, data, dataIndex) {
          return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'refunded';
       }
    );
-   ordersTable.draw();
+   // ordersTable.draw();
 });   
 
 $("#canceled").on('click', function() {
    $.fn.dataTable.ext.search.pop();
-   ordersTable.draw();
+   // ordersTable.draw();
    $.fn.dataTable.ext.search.push(
       function(settings, data, dataIndex) {
          return $(ordersTable.row(dataIndex).node()).attr('data-status') == 'canceled';
       }
    );
-   ordersTable.draw();
+   // ordersTable.draw();
 });    
 
 $("#pickupOrders").on('click', function() {
    $('#locationHeader').html('Store')
     $.fn.dataTable.ext.search.pop();
-    ordersTable.draw();
+   //  ordersTable.draw();
     $.fn.dataTable.ext.search.push(
        function(settings, data, dataIndex) {
           return $(ordersTable.row(dataIndex).node()).attr('data-method') == 'pickup';
        }
     );
-    ordersTable.draw();
+   //  ordersTable.draw();
 });  
 
 $('#deliveryOrders').on('click', function() {
    $('#locationHeader').html('Delivery Address')
     $.fn.dataTable.ext.search.pop();
-    ordersTable.draw();
+   //  ordersTable.draw();
     $.fn.dataTable.ext.search.push(
        function(settings, data, dataIndex) {
           return $(ordersTable.row(dataIndex).node()).attr('data-method') == 'delivery';
        }
     );
-    ordersTable.draw();
+   //  ordersTable.draw();
 });    
 
 function removeBlanksAndSpaces(data){

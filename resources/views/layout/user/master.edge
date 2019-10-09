@@ -1407,6 +1407,8 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 <script src='https://npmcdn.com/@turf/turf@5.1.6/turf.min.js'></script>
 <script src="/js/moment.min.js"></script>
+<script src="/js/moment-weekdays.js"></script>
+
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="/js/mask-money.js"></script>
@@ -1433,7 +1435,7 @@ $('#alternate-pickup-day').on('click', function() {
 
 })
 $('.shipping-form').closest('.card').hide()
-$('#same-address, #alternate-address-deliver').on('click', function(){
+$('#diff-shipping, #alternate-address-deliver').on('click', function(){
   $('.shipping-form').closest('.card').toggle()
   toggleExpressEdit()
 
@@ -1656,33 +1658,37 @@ function closeMenu() {
   $('.menu-tab').removeClass('active')
 }
 $(".filter-button").click(function(){
-  $('.menu-hide').removeClass('show')
-  $('.menu-tab').removeClass('active')
-    var value = $(this).attr('data-filter');
-    $('h2').removeClass('active')
-    $(this).find('h2').addClass('active')
-    console.log(value)
+
+  $(this).toggleClass('selected')
+
+  $('.filter-button')
+  // $('.menu-hide').removeClass('show')
+  // $('.menu-tab').removeClass('active')
+  //   var value = $(this).attr('data-filter');
+  //   $('h2').removeClass('active')
+  //   $(this).find('h2').addClass('active')
+  //   console.log(value)
     
-    if(value == "all")
-    {
-      $('.filter').show('1000');
-    } else if(value === "Everyday") {
-      $(".filter").not('.'+value).hide('3000');
-      $('.filter').filter('.'+value).show('3000'); 
-      $('.filter').filter('.Low_Carb').show('3000'); 
+  //   if(value == "all")
+  //   {
+  //     $('.filter').show('1000');
+  //   } else if(value === "Everyday") {
+  //     $(".filter").not('.'+value).hide('3000');
+  //     $('.filter').filter('.'+value).show('3000'); 
+  //     $('.filter').filter('.Low_Carb').show('3000'); 
 
-    } else if(value === "EverydayOnly") {
-      $(".filter").not('.Everyday').hide('3000');
-      $('.filter').filter('.Everyday').show('3000'); 
+  //   } else if(value === "EverydayOnly") {
+  //     $(".filter").not('.Everyday').hide('3000');
+  //     $('.filter').filter('.Everyday').show('3000'); 
 
 
 
-    }
-    else
-    {
-        $(".filter").not('.'+value).hide('3000');
-        $('.filter').filter('.'+value).show('3000'); 
-    }
+  //   }
+  //   else
+  //   {
+  //       $(".filter").not('.'+value).hide('3000');
+  //       $('.filter').filter('.'+value).show('3000'); 
+  //   }
 });
 
 
@@ -1797,8 +1803,7 @@ for (var i = 0; i < cart.length; i++) {
 
 
 
-
-    $('input[name="zip-ship"], input[name="zip-bill"]').focusout(function(){
+    $('input[name="shipping[zip]"], input[name="billing[zip]"]').focusout(function(){
       calcShipping()
     })
     function hoverCart(element) {
@@ -1850,7 +1855,6 @@ $(document).ready(function() {
     $('.order-shipping').html('0')
 
     } else {
-      console.log('delivery')
       $('#deliveryRadio').attr('checked', 'checked')
       $('#pickupRadio').removeAttr('checked')
       localStorage.fulfillment_method = 'delivery'
@@ -1937,8 +1941,10 @@ $('#toggleSections').on('click', function(){
       $('#headingThree').addClass('active')
         $('#headingTwo').css('pointer-events', 'visible')
         $('#headingThree').css('pointer-events', 'visible')
+        $('#feedback').html('')
       } else {
-        toastr['warning']('Please make sure all fields are filled out')
+        var feedback = '<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Please make sure all fields are filled out.</div>'
+          $('#feedback').html(feedback)
       }
 
     } else if ($('#collapseThree').hasClass('show')) {
@@ -1948,8 +1954,10 @@ $('#toggleSections').on('click', function(){
         $('#headingThree').removeClass('active')
       $('#headingFour').addClass('active')
         $('#headingFour').css('pointer-events', 'visible')
+        $('#feedback').html('')
       } else {
-        toastr['warning']('Please make sure all fields are filled out')
+        var feedback = '<div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Please make sure all fields are filled out.</div>'
+          $('#feedback').html(feedback)
       }
     } else if ($('#collapseFour').hasClass('show')) {
       $('#collapseFour').removeClass('show')
@@ -1963,11 +1971,25 @@ $('#toggleSections').on('click', function(){
 
     } else if ($('#collapseFive').hasClass('show')) {
 
+      $(this).html('Processing order... <div id="loading"></div>')
+  $(this).attr('disabled', 'disabled')
+    let order = buildOrder()
+      if (order.error){
+        var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + order.error + '</div>'
+        $('#feedback').html(feedback)
+        $('#toggleSections').removeAttr('disabled')
+        return
+      }
+      try {
+        stripe.createToken(card).then(function (result) {
+          order.billing.paymentId = result.token.id
+          processOrder({ type: 'existing' }, result.token.id, 'initial', order)
+        })    
+      } catch(err) {
+        var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>There was an error processing your payment.  Please try again</div>'
+        $('#feedback').html(feedback)
+      }
 
-      $(this).attr('disabled', 'disabled')
-      stripe.createToken(card).then(function (result) {
-      processOrder({ type: 'existing' }, result.token.id, 'initial')
-      })    
     }
     
   })
@@ -2040,22 +2062,21 @@ function calcShipping() {
     $('#address-input').text(localStorage.userAddr.street)
   }
 
-  // If only billing zip is entered then use this for delivery fee calculation.  Else, use the shipping zip.
-  let st = $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val()
-  let city = $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val()
-  let state = $('input[name="state-ship"]').val() ? $('input[name="state-ship"]').val() : $('input[name="state-bill"]').val()
-  let post = $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-
+  if ($('#diff-shipping').is(':checked')) {
+    var st = $('input[name="shipping[line1]"]').val()
+    var city = $('input[name="shipping[city]"]').val()
+    var state = $('select#state-bill').val()
+    var post = $('input[name="shipping[zip]"]').val()
+  } else {
+    var st = $('input[name="billing[line1]"]').val()
+    var city = $('input[name="billing[city]"]').val()
+    var state = $('select#state-ship').val()
+    var post = $('input[name="billing[zip]"]').val()
+  }
 
   let search = encodeURI(st + ' ' + city + ' ' + state + ' ' + post)
 
-  let userAddr = {
-    street: st,
-    city: city,
-    state: state,
-    zip: post
-  }
-  localStorage.userAddr = JSON.stringify(userAddr)
+
   var userSearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + search + ".json?access_token=pk.eyJ1IjoibWF0dGZpY2tlIiwiYSI6ImNqNnM2YmFoNzAwcTMzM214NTB1NHdwbnoifQ.Or19S7KmYPHW8YjRz82v6g&cachebuster=1548866594131&autocomplete=true"
   $.get(userSearch, function (data) {
     var userCords = data.features[0].geometry.coordinates
@@ -2063,7 +2084,7 @@ function calcShipping() {
     $.get(query, function (distance) {
       var miles = distance.routes[0].distance * 0.000621371192
       miles = miles.toFixed(0)
-      var total = $('.order-total').data('total')
+      var total = Number($('.order-total').data('total'))
 
       if (total >= 100 || $('#pickupRadio').is(':checked')) {
         localStorage.shippingCode = 'freeshipping'
@@ -2138,6 +2159,16 @@ for (var i = 0; i < stepOneForm.length; i++){
     stepOneComplete = true;
   }
 }
+
+$('.category-button').on('click', function(){
+  var category = $(this).data('category')
+  toastr['success'](category)
+})
+
+$('.filter-button').on('click', function(){
+  var filter = $(this).data('filter')
+  toastr['success'](filter)
+})
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->

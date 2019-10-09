@@ -80,7 +80,6 @@
     <div class="col-md-4">
 
         <section class="comSection comSection--light" style="position:fixed;width:25%;">
-
               <div class="row">
                 <div class="col-md-12 col-12">
                     <h5 class="card-title">Add New Item</h5>
@@ -154,9 +153,8 @@
   
                     </div>
                   </div>
-                <div class="col-10 mx-auto">
-                  <textarea class="form-control" name="description" placeholder="Product Description" rows="4">{{prod.description ? prod.description.trim() : NULL}}
-                  </textarea>
+                <div class="col-12">
+                  <textarea class="form-control" name="description" placeholder="Product Description" rows="4">{{prod.description ? prod.description.trim() : NULL}}</textarea>
                 </div>
               </div>
 
@@ -171,143 +169,7 @@
 
       <hr class="mb-3">
       <!-- First Sku -->
-      @if(sku)
-      @each(s in sku)      
-      <section class="comSection comSection--light">
-          <h5 class="card-title">Sku Info</h5>
-          <form id="sku{{$loop.index}}">
-            <input class="sku-id muted" id="sku{{$loop.index}}_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
 
-            <div class="row">
-              <div class="col-md-4 col-lg-4 mx-auto">
-                <div class="form-group">
-                  <input type="text" name="label" placeholder="Protein Type/Flavor" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel({{$loop.index}}, this.value)" />
-                </div>
-              </div>
-              <div class="col-md-4 col-lg-4 mx-auto">
-                <div class="form-group">
-                  <input type="text" name="price" placeholder="Price" required class="form-control" value="{{s.price ? currency(s.price, true) : NULL}}">
-                </div>
-              </div>
-        
-        
-            </div>
-            <div class="row">
-        
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Calories</label>
-                  <input type="text" class="form-control" name="calories" placeholder="Calories"
-                    value="{{s.metadata.calories}}">
-                </div>
-        
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Carbs</label>
-                  <input type="text" class="form-control" name="carbs" placeholder="Carbs"
-                    value="{{s.metadata.carbs}}">
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Proteins</label>
-                  <input type="text" class="form-control" name="proteins" placeholder="Proteins"
-                    value="{{s.metadata.proteins}}">
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Fats</label>
-                  <input type="text" class="form-control" name="fats" placeholder="Fats"
-                    value="{{s.metadata.fats}}">
-                </div>
-        
-              </div>
-              <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Sugars</label>
-                    <input type="text" class="form-control" name="sugars" placeholder="Sugars"
-                      value="{{s.metadata.sugars}}">
-                  </div>
-          
-                </div>
-        
-            </div>
-        
-          </form>
-        </section>
-
-        <hr class="mb-3">
-        @endeach
-        @else
-        <section class="comSection comSection--light sku-form" id="skuForm0">
-            <h5 class="card-title">Sku Info</h5>
-            <form id="sku0">
-
-              <input class="sku-id muted" id="sku0_id" name="sku_id" value="{{s.id ? s.id : NULL}}" />
-  
-              <div class="row">
-                <div class="col-md-4 col-lg-4 mx-auto">
-                  <div class="form-group">
-                    <input type="text" name="label" placeholder="Protein Type/Flavor" required class="form-control" value="{{s.metadata.label ? s.metadata.label : NULL}}" onchange="appendSkuLabel('0', this.value)" />
-                  </div>
-                </div>
-                <div class="col-md-4 col-lg-4 mx-auto">
-                  <div class="form-group">
-                    <input type="text" name="price" placeholder="Price" required class="form-control" value="{{s.price ? currency(s.price, true) : NULL}}">
-                  </div>
-                </div>
-          
-          
-              </div>
-              <div class="row">
-          
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Calories</label>
-                    <input type="text" class="form-control" name="calories" placeholder="Calories"
-                      value="{{s.metadata.calories}}">
-                  </div>
-          
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Carbs</label>
-                    <input type="text" class="form-control" name="carbs" placeholder="Carbs"
-                      value="{{s.metadata.carbs}}">
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Proteins</label>
-                    <input type="text" class="form-control" name="proteins" placeholder="Proteins"
-                      value="{{s.metadata.proteins}}">
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Fats</label>
-                    <input type="text" class="form-control" name="fats" placeholder="Fats"
-                      value="{{s.metadata.fats}}">
-                  </div>
-          
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Sugars</label>
-                      <input type="text" class="form-control" name="sugars" placeholder="Sugars"
-                        value="{{s.metadata.sugars}}">
-                    </div>
-            
-                  </div>
-          
-              </div>
-          
-            </form>
-          </section>
-          <hr class="mb-3">
-          @endif
 
     </div>
 

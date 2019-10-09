@@ -179,7 +179,7 @@ select#fulfillmentOptions {
               <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
               <div class="card card-user card-checkout">
                 <div class="col-12 col-md-8 mx-auto px-0">
-                  <form id="payment-form">
+                  <form id="payment-form" method="POST" action="/checkout/stripe">
                       <div class="form-row">
                         <label for="card-element">
                           Enter your Credit or debit card information
@@ -203,6 +203,7 @@ select#fulfillmentOptions {
                           <a class="btn btn-success-light mt-0 ml-0 mr-0 mb-0 pt-10" id="applyCoupon">Apply</a>
                         </div>
                       </div>
+
                     </form>
                     <input name="stripeToken" type="hidden" />
                 </div>
@@ -210,7 +211,10 @@ select#fulfillmentOptions {
               </div>
 
             </div>
+            <div id="feedback">
+              </div>
               <a class="btn btn-success d-flex center-center collapsed" id="toggleSections">Next</a>
+ 
         </div>
 
   @endif

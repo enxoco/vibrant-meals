@@ -25,6 +25,7 @@ class ExceptionHandler extends BaseExceptionHandler {
     if (error.name === 'HttpException') {
       return response.send(view.render('Errors.fourOhFour'))
     } else {
+      return response.send(error)
       return response.send(view.render('Errors.fiveHundred'))
 
     }

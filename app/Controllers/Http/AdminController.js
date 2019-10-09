@@ -56,8 +56,8 @@ class AdminController {
       var orders = await Database
       .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}";`)
     }
-
-    return response.send(orders[0])
+    var object = {data: orders[0]}
+    return response.send(object)
   }
 
 
@@ -209,16 +209,46 @@ class AdminController {
   }
 
 
-  async fulfillOrder ({params, response}) {
-    var orderId = params.orderId
+  async fulfillOrder ({params, response, session}) {
 
-    var update = await stripe.orders.update(
-      orderId,
-      {status: 'fulfilled'},
-    );
+    try {
+      var orderId = params.orderId
+      orderId = orderId.split(',')
+      console.log(orderId.length >= 1)
+      if (orderId.length >= 1) {
+        for (var i = 0; i < orderId.length; i++) {
+        await Database
+          .table('orders')
+          .where('orderId', orderId[i])
+          .update('order_status', 'fulfilled')
+          var mesg = `Order ${orderId} marked as fulfilled.`
+          session.flash({status: mesg})
+        }
+        return response.redirect('back')
+      } else {
+        for (var i = 0; i < orderId.length; i++) {
+          var update = await Database
+          .table('orders')
+          .where('orderId', orderId)
+          .update('order_status', 'fulfilled')
+        var mesg = `Order ${orderId} marked as fulfilled.`
+        session.flash({status: mesg})
+        return response.redirect('back')
+        }
+      }
 
-    return response.redirect('back')
-  }
+
+      return response.redirect('back')
+
+    } catch(e) {
+      var mesg = `Unable to mark ${orderId} as fulfilled.`
+      session.flash({error: mesg})
+      return response.redirect('back')
+
+    }
+
+
+    }
 
   async listLocations({view, response}) {
     var stores = await Database
@@ -477,6 +507,10 @@ class AdminController {
     }
 
     async addItem ({request, response}) {
+      return request.all()
+    }
+
+    async oldAddItem ({request, response}) {
   
         const {parent_product : product, sku0, sku1, sku2, sku3} = request.all()
 
@@ -506,6 +540,8 @@ class AdminController {
      
             console.log(resp)
           } catch(error) {
+             
+
             let prod = await stripe.products.create({
               name: product.name,
               type: 'good',

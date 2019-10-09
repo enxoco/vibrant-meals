@@ -77,12 +77,14 @@ class OrderController {
         await stripe.orders.update(id,{status:'fulfilled'})
     }
 
-    async batchFulfill ({request, response}) {
+    async batchFulfill ({request, response, session}) {
         const { ids } = request.all()
+        
         ids.forEach(id => {      
             this.batchFulfillStripe(id)
         });
-        return response.send({status: 'Success'})
+        session.flash({status: 'Orders successfully fulfilled'})
+        return response.redirect('back')
     }
 
     async updateOrderById ({request, response, params}) {

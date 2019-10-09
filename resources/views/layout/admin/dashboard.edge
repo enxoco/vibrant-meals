@@ -410,6 +410,24 @@ $(document).ready(function(){
       $('tr').show();
     });
 });
+
+
+$("#mondayOrders tr").click(function(){
+   $(this).addClass('selected');    
+   var value=$(this).find('td:first').html();
+   alert(value);    
+});
+
+$('.ok').on('click', function(e){
+   var selectedIDs = [];
+   $("#table tr.selected").each(function(index, row) {
+      selectedIDs.push($(row).find("td:first").html());
+   });
+
+
+   fnMatchID(selectedIDs);
+
+});
   </script>
 </body>
 

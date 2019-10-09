@@ -209,7 +209,7 @@ function showPickupLocations() {
       var miles = prop.distance
       if (localStorage.pickupLocation) {
         var pickupLocation = JSON.parse(localStorage.pickupLocation)
-        if (stores.features[i].properties.storeId != pickupLocation.storeId && miles) {
+        if (stores.features[i].properties.storeId != pickupLocation.storeId) {
           listing.innerHTML = '<ul class="list-group">\
               <li class="list-group-item d-flex justify-content-between align-items-center" data-storeRank="'+ i + '" data-storeId="' + prop.storeId + '" data-store="' + prop.desc + '">\
                 '+ prop.desc + '<br />' + prop.address + '\
@@ -237,8 +237,8 @@ function showPickupLocations() {
   }
 
   // Handle when a user clicks on a store location to set it as their preference.
-  $(".list-group-item").on('click', function () {
-    $('.list-group-item').removeClass('active')
+  $('.list-group-item').on('click', function () {
+    $('#listings').find('.list-group-item.active').removeClass('active')
     $($(this)).addClass("active")
     setTimeout(function () {
       $('#modal-pickup').modal('toggle')

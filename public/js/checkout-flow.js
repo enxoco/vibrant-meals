@@ -16,79 +16,86 @@ $('.shipping-form :input').on('change', function () {
   $('#shippingDetails').append('<li>' + $('input[name=state-ship]').val() ? $('input[name=state-ship]').val() : +'</li>')
 })
 
+$('#collapseFour').addClass('show')
 function nextAvalFulfill() { // Simple function to find the next available fulfillment date based on today's date.
-  let thursday
-  let monday
+  // let thursday
+  // let monday
 
-  monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
-  thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
+  // monday = moment(new Date()).add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+  // thursday = moment(new Date()).add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
 
-  if (moment().format('dddd') === 'Monday' && moment().format('H') < 12) {
-    thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
-  }
-  if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
-    thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
+  // if (moment().format('dddd') === 'Monday' && moment().format('H') < 12) {
+  //   thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
+  // }
+  // if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
+  //   thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('dddd MMMM DD YYYY')
  
-  } 
+  // } 
 
 
-  if (moment().format('dddd') == 'Friday') {
-    let format = 'HH:mm:ss'
-    let t = moment().format(format)
-    let time = moment(t, format)
-    beforeTime = moment('00:00:00', format),
-      afterTime = moment('08:00:00', format);
+  // if (moment().format('dddd') == 'Friday') {
+  //   let format = 'HH:mm:ss'
+  //   let t = moment().format(format)
+  //   let time = moment(t, format)
+  //   beforeTime = moment('00:00:00', format),
+  //   afterTime = moment('08:00:00', format);
 
-    if (time.isBetween(beforeTime, afterTime)) {
-      monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+  //   if (time.isBetween(beforeTime, afterTime)) {
+  //     monday = moment().add(1, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY').toDate()
 
-    } else {
-      monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
+  //   } else {
+  //     monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY').toDate()
 
-    }
-  }
-  if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
-    monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
-
-
-  }
+  //   }
+  // }
+  // if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
+  //   monday = moment().add(2, 'weeks').startOf('isoweek').format('dddd MMMM DD YYYY')
 
 
-  var result = {
-    monday: monday,
-    thursday: thursday
-  }
+  // }
+
 
   var pickupDaysModal = $('#pickupDaysList')
 
 
-  var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
-  var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
-  var thisThurs = moment(thursday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
-  var nextThurs = moment(thursday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
+  // var thisMon = moment(monday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
+  // var nextMon = moment(monday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
+  // var thisThurs = moment(thursday, 'dddd MMMM DD YYYY').format('dddd MMM DD')
+  // var nextThurs = moment(thursday, 'dddd MMMM DD YYYY').add(1, 'week').format('dddd MMM DD')
 
-  let dates = [thisMon, nextMon, thisThurs, nextThurs]
-  let _sortedDates = dates.sort(function (a, b) {
-    return moment(a).format('X') - moment(b).format('X')
-  })
-  let defaultDate = _sortedDates[0].split(' ')
-  let defaultDay = defaultDate[0]
-  defaultDate = defaultDate[1] + ' ' + defaultDate[2]
+  // let dates = [thisMon, nextMon, thisThurs, nextThurs]
+  // let _sortedDates = dates.sort(function (a, b) {
+  //   return moment(a).format('X') - moment(b).format('X')
+  // })
+  // let defaultDate = _sortedDates[0].split(' ')
+  // let defaultDay = defaultDate[0]
+  // defaultDate = defaultDate[1] + ' ' + defaultDate[2]
 
 
   pickupDaysModal.html('<ul class="list-group">')
+  var days = moment().weekdaysInBetween(moment().endOf('year'), [1, 4]);
 
-  for (var i = 0; i < _sortedDates.length; i++) {
-    let dayObj = _sortedDates[i].split(' ')
-    let day = dayObj[0]
-    let date = dayObj[1] + ' ' + dayObj[2]
-    if (localStorage.fulfillment_date === date || i === 0) {
-      var isActive = 'active'
-    } else {
-      var isActive = null
-    }
-    pickupDaysModal.append('<li class="list-group-item clickable '+isActive+'" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
-  }
+  for (var i = 0; i < 4; i++) {
+    // var day = moment(days[i].format('ddd'))
+    var day = moment(days[i].toDate()).format('dddd')
+    var date = moment(days[i].toDate()).format('ll')
+
+    // var date = moment(days[i].format('ll'))
+    pickupDaysModal.append('<li class="list-group-item clickable" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+
+  } 
+
+  // for (var i = 0; i < _sortedDates.length; i++) {
+  //   let dayObj = _sortedDates[i].split(' ')
+  //   let day = dayObj[0]
+  //   let date = dayObj[1] + ' ' + dayObj[2]
+  //   if (localStorage.fulfillment_date === date || i === 0) {
+  //     var isActive = 'active'
+  //   } else {
+  //     var isActive = null
+  //   }
+  //   pickupDaysModal.append('<li class="list-group-item clickable '+isActive+'" data-day="'+day+'" data-date="'+date+'"><div class="row"><div class="col date-list-item">'+day+'</div><div class="col store-hours is-pulled-right">'+date+'</div></div></div></li>')
+  // }
 
   pickupDaysModal.append('<li class="list-group-item button-group"><h4 class="mb-3 d-flex justify-content-center">Pick a time</h4>\
     <div class="btn-group btn-group-toggle deliveryWindow" data-toggle="buttons">\
@@ -143,6 +150,7 @@ $('#pickupDaysList > .list-group-item.clickable').on('click', function () {
     }
   }
   updateCartDiv()
+  return false
 
 })
 
@@ -198,81 +206,66 @@ $('#password_confirmation').on('focusout', function () {
 $('#addCardToCust').on('click', function () {
   $(this).html('Processing order... <div id="loading"></div>')
   $(this).attr('disabled', 'disabled')
-  if ($('#addCard').is(':checked')) {
-    stripe.createToken(card).then(function (result) {
-      processOrder({ type: 'new' }, result.token.id, 'express')
-    })
-  } else {
-    processOrder({ type: 'existing' }, $('input[name="radio"]:checked').val(), 'express')
-
+  let order = buildOrder()
+  if (order.error){
+    var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + JSON.stringify(order.error) + '</div>'
+    $('#feedback').html(feedback)
+    $('#toggleSections').removeAttr('disabled')
+    return
   }
+  try {
+    if ($('#addCard').is(':checked')) {
+      stripe.createToken(card).then(function (result) {
+        processOrder({ type: 'new' }, result.token.id, 'express', order)
+      })
+    } else {
+      processOrder({ type: 'existing' }, $('input[name="radio"]:checked').val(), 'express', order)
+  
+    }
+  } catch (err) {
+    var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+JSON.stringify(err)+'</div>'
+    $('#feedback').html(feedback) 
+  }
+
 })
 
-function processOrder(card, token, checkout_type) {
+function processOrder(card, token, checkout_type, order) {
   let defaultDay = $('.list-group-item.clickable.active').data('day')
   let defaultDate = $('.list-group-item.clickable.active').data('date')
 
-
-  var billing = {
-    street: $('input[name="street-bill"]').val(),
-    street_2: $('input[name="street2-bill"]').val(),
-    city: $('input[name="city-bill"]').val(),
-    state: $('select#state-bill').val(),
-    zip: $('input[name="zip-bill"]').val(),
-    coupon: $('input[name="promoCode"]').val(),
-    shippingCode: localStorage.shippingCode,
-    allergy_info: $('input[name=allergy_info]').val(),
-    delivery_info: $('input[name=delivery_notes]').val(),
-    type: card.type,
-    paymentId: token,
-    deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
-    tax: $('.order-tax').html(),
-    shipping: $('.order-shipping').html(),
-    amount: $('.order-total').html()
-
-
-
-  }
-
-  var shipping = {
-    recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
-    street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
-    city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val(),
-    state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
-    zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-  }
-
-  var user = {
-    firstName: $('input[id="firstName"]').val(),
-    lastName: $('input[id="lastName"]').val(),
-    email: $('input[id="email-bill"]').val(),
-    phone: $('input[id="phone"]').val(),
-    password: $('#password-bill').val(),
-    fulfillment_method: localStorage.fulfillment_method,
-    fulfillment_day: $('li.list-group-item.clickable.active').data('day') ? $('li.list-group-item.clickable.active').data('day') : defaultDay,
-    fulfillment_date: $('li.list-group-item.clickable.active').data('date') ? $('li.list-group-item.clickable.active').data('date') : defaultDate,
-    pickup_location: localStorage.myStore
-  }
-  var cart = localStorage.cart
-  var obj = {
-    billing,
-    shipping,
-    user,
-    cart
-  }
 
   if (checkout_type === 'express') var url = '/checkout/express'
   if (checkout_type === 'initial') var url = '/checkout/stripe'
   $.ajax({
     type: 'POST',
     url: url,
-    data: JSON.stringify({ data: obj }),
+    data: JSON.stringify({ data: order }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
       localStorage.cart = []
-      console.log(data)
-      if (!data) toastr['error']('We were unable to process your order.  Please refresh the page and try again')
+      if (data.sqlMessage) {
+        if (data.code === 'ER_DUP_ENTRY') {// Handle database errors from the controller
+          var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>There is already an account with this email address.  Please login and try again.</div>'
+          $('#feedback').html(feedback)
+        }
+      }
+
+      console.log(data.status === 500)
+
+      if (data.status && data.status === 500) {
+        var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>There was an error processing your order.  Please try again</div>'
+        $('#feedback').html(feedback) 
+      }
+
+      if (data.error) {// Handle generic errors from the controller
+        var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.error+'</div>'
+        $('#feedback').html(feedback)
+      }
+      if (!data) {
+        var feedback = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Sorry, we were unable to process your order.  Please refresh the page and try again.</div>'
+        $('#feedback').html(feedback)
+      }
       if (data['type'] == 'StripeInvalidRequestError') toastr['error']('There was an issue processing your payment.  Please refresh the page and try again')
       // if (data.includes('<h1>500</h1>')) toastr['error']('We were unable to process your order.  Please refresh the page and try again')
       if (data.status == 'success') {
@@ -284,7 +277,13 @@ function processOrder(card, token, checkout_type) {
     },
     failure: function (errMsg) {
       toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-    }
+    },
+    error: function (request, textStatus, errorThrown) {
+      if (request.statusText =='abort') {
+        toastr['error'](JSON.stringify(textStatus))
+          return;
+      }
+  }
   })
 }
 
@@ -372,105 +371,6 @@ $('input[type=radio]').on('change', function () {
 
 
 
-// function anything() {
-
-
-//   $('#toggleSections').html('Processing order... <div id="loading"></div>')
-//   $('#toggleSections').prop('disabled', true)
-
-//   let defaultDay = $('.list-group-item.clickable.active').data('day')
-//   let defaultDate = $('.list-group-item.clickable.active').data('date')
-
-//   stripe.createToken(card).then(function (result) {
-
-//     var billing = {
-//       street: $('input[name="street-bill"]').val(),
-//       street_2: $('input[name="street2-bill"]').val(),
-//       city: $('input[name="city-bill"]').val(),
-//       state: $('select#state-bill').val(),
-//       zip: $('input[name="zip-bill"]').val(),
-//       coupon: $('input[name="promoCode"]').val(),
-//       allergy_info: $('input[name=allergy_info]').val(),
-//       delivery_info: $('input[name=delivery_notes]').val(),
-//       stripeToken: result.token.id,
-//       shippingCode: localStorage.shippingCode,
-//       deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
-//       tax: $('.order-tax').html(),
-//       shipping: $('.order-shipping').html(),
-//       amount: $('.order-total').html()
-
-//     }
-
-//     var shipping = {
-//       recipient: $('input[name="name-ship"]').val() ? $('input[name="name-ship"]').val() : $('input[id="email-bill"]').val(),
-//       street: $('input[name="street-ship"]').val() ? $('input[name="street-ship"]').val() : $('input[name="street-bill"]').val(),
-//       city: $('input[name="city-ship"]').val() ? $('input[name="city-ship"]').val() : $('input[name="city-bill"]').val(),
-//       state: $('select#state-ship').val() ? $('select#state-ship').val() : $('select#state-bill').val(),
-//       zip: $('input[name="zip-ship"]').val() ? $('input[name="zip-ship"]').val() : $('input[name="zip-bill"]').val()
-//     }
-
-//     var user = {
-//       firstName: $('input[id="firstName"]').val(),
-//       lastName: $('input[id="lastName"]').val(),
-//       email: $('input[id="email-bill"]').val(),
-//       phone: $('input[id="phone"]').val(),
-//       password: $('#password-bill').val(),
-//       fulfillment_method: localStorage.fulfillment_method,
-//       fulfillment_day: localStorage.fulfillment_day ? localStorage.fulfillment_day : defaultDay,
-//       fulfillment_date: localStorage.fulfillment_date ? localStorage.fulfillment_date : defaultDate,
-//       pickup_location: localStorage.myStore
-//     }
-
-//     if ($('input[name="subscribe"]').is(':checked')) {
-//       user.subscribe = true
-//     } else {
-//       user.subscribe = false
-//     }
-
-//     var cart = localStorage.cart
-//     var obj = {
-//       billing,
-//       shipping,
-//       user,
-//       cart
-//     }
-//     $.ajax({
-//       type: 'POST',
-//       url: '/checkout/stripe',
-//       data: JSON.stringify({ data: obj }),
-//       contentType: "application/json; charset=utf-8",
-//       dataType: "json",
-//       success: function (data) {
-
-//         if (data['type']){
-//           if (data['type'] === "StripeInvalidRequestError") {
-//             toastr['error'](data['message'])
-//           }
-//           if (data['type'] === "invalid_request_error") {
-//             toastr['error']('Your payment was unable to be processed.  Please reload the page and try again.')
-//           }
-//           if (data['sqlMessage']) {
-//             toastr['error']('Their was an error processing your order')
-//           }
-//           if (data['status'] === 'success') {
-//             $('#toggleSections').html('Checkout')
-//             $('#toggleSections').prop('disabled', false)
-//             $('#toggleSections').removeAttr('disabled')
-    
-//             localStorage.cart = []
-//             window.location.href = '/checkout/confirmation'
-//           }
-//         } 
-
-
-//       },
-//       failure: function (errMsg) {
-//         toastr['warning']('Connection error.  Make sure you are connected to the internet and try again.')
-//       }
-//     })
-//   })
-
-// }
 
 if (localStorage.fulfillment_method === 'delivery') {
   $('#shippingDetails').show()
@@ -492,3 +392,78 @@ $('#pickupRadio').on('click', function(){
   $('#shippingDetails').hide()
 })
 
+
+
+function buildOrder(){
+  try {
+    var billing = {
+      street: $('input[name="billing[line1]"]').val(),
+      street_2: $('input[name="billing[line2]"]').val(),
+      city: $('input[name="billing[city]"]').val(),
+      state: $('select#state-bill').val(),
+      zip: $('input[name="billing[zip]"]').val(),
+      coupon: $('input[name="promoCode"]').val(),
+      shippingCode: localStorage.shippingCode,
+      allergy_info: $('input[name="shipping[allergy_info]"]').val(),
+      delivery_info: $('input[name="shipping[delivery_info]"]').val(),
+      type: card.type,
+      deliveryWindow: $('.deliveryWindow').find('.active').find('input').attr('id'),
+      tax: $('.order-tax').html(),
+      shipping: $('.order-shipping').html(),
+      amount: $('.order-total').html()
+    }
+  } catch(err) {
+    return {'error': 'Please check billing information and try again'}
+    
+  }
+
+  try {
+    if ($('.fulfillment:checked').val() === 'pickup') {
+      var shipping = {
+        recipient: $('input[id="email-bill"]').val(),
+        street: billing.street,
+        city: billing.city,
+        state: billing.state,
+        zip: billing.zip
+      }
+    } else if ($('#diff-shipping').is(':checked')) {
+      var shipping = {
+        recipient: $('input[name="shipping[name]"]').val(),
+        street: $('input[name="shipping[line1]"]').val(),
+        city: $('input[name="shipping[city]"]').val(),
+        state: $('input[name="shipping[state]"]').val(),
+        zip: $('input[name="shipping[zip]"]').val(),
+      }
+
+    }
+  } catch(err) {
+    return {'error': 'Please check shipping information and try again'}
+    
+  }
+
+  try {
+    var user = {
+      firstName: $('input[id="firstName"]').val(),
+      lastName: $('input[id="lastName"]').val(),
+      email: $('input[id="email-bill"]').val(),
+      phone: $('input[id="phone"]').val(),
+      password: $('#password-bill').val(),
+      fulfillment_method: $('.fulfillment:checked').val(),
+      fulfillment_day: $('li.list-group-item.clickable.active').data('day') ? $('li.list-group-item.clickable.active').data('day') : defaultDay,
+      fulfillment_date: $('li.list-group-item.clickable.active').data('date') ? $('li.list-group-item.clickable.active').data('date') : defaultDate,
+      pickup_location: localStorage.myStore
+    }
+    var cart = localStorage.cart
+    var obj = {
+      billing,
+      shipping,
+      user,
+      cart
+    }
+  } catch(err) {
+    return {'error': 'Please check that you have entered your account information correctly'}
+    
+  }
+
+  return obj
+}
