@@ -50,28 +50,53 @@ body {
         <div class="dropright">
             <button class="btn btn-outline" type="button" id="dropdownMenuButtonFilters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_filter" style="white-space:normal;font-size:10px !important;background:none;margin:0;padding:0;border:none;">
                 <h2 class="category-heading" style="margin-bottom:0px;">Meal Type</h2><i data-feather="chevron-down" class="stroke-black"></i>
-            </button>
+
+              </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonFilters">
                 <a class="dropdown-item no-modal" href="#" style="height:40px;"><i data-feather="x"></i></a>
 
-                <a class="dropdown-item no-modal filter-button" data-filter="E" href="#">Everyday</a>
-                <a class="dropdown-item no-modal filter-button" data-filter="LC" href="#">Low Carb</a>
-                <a class="dropdown-item no-modal filter-button" data-filter="P" href="#">Performance</a>
-                <a class="dropdown-item no-modal filter-button" data-filter="ELT" href="#">Elite</a>
-                <a class="dropdown-item no-modal filter-button" data-filter="PB" href="#">Plant Based</a>
-                <a class="dropdown-item no-modal filter-button" data-filter="W30" href="#">Whole 30</a>
-
-              
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'E')
+                active
+                @endif
+                " data-filter="E" href="#">Everyday</a>
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'LC')
+                active
+                @endif
+                " data-filter="LC" href="#">Low Carb</a>
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'P')
+                active
+                @endif
+                " data-filter="P" href="#">Performance</a>
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'ELT')
+                active
+                @endif
+                " data-filter="ELT" href="#">Elite</a>
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'PB')
+                active
+                @endif
+                " data-filter="PB" href="#">Plant Based</a>
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'W30')
+                active
+                @endif
+                " data-filter="W30" href="#">Whole 30</a>  
                 
             </div>
         </div>
         </li>
-        <li class="nav-item">
-            <a href="#" data-filter="all" class="all filter-button"><h2 class="category-heading active">All</h2></a>
-          </li>
-    @each(category in ['drinks','lunchDinner','breakfast','snacks'])
+
+    @each(category in ['all', 'drinks','lunchDinner','breakfast','snacks'])
   <li class="nav-item">
-    <a class="category-button" data-category="{{ category }}"><h2 class="category-heading">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
+    <a class="category-button" data-category="{{ category }}"><h2 class="category-heading 
+      @if(url.split('/')[2] === category)
+      active
+      @endif
+      ">{{ capitalize(category).replace(' ', ' & ') }}</h2></a>
   </li>
     @endeach
 
@@ -104,5 +129,9 @@ body {
         if(!localStorage.cords) {
           getLocation()
         }
+
+        $('filter-button, category-button').on('click', function(){
+          console.log($(this))
+        })
         </script>
 @endsection

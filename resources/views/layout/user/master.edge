@@ -1420,6 +1420,8 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
           $('.col-6').toggleClass('col-12')
           $('.img-container').toggleClass('d-none d-lg-flex d-xl-flex')
       });
+      $('#dropdownMenuButtonFilters').find('.category-heading').html('Meal Type: ' + $('.filter-button.active').text())
+
   });
 </script>
 
@@ -2164,13 +2166,24 @@ for (var i = 0; i < stepOneForm.length; i++){
 
 $('.category-button').on('click', function(){
   var category = $(this).data('category')
+  var filter = $('.filter-button.active').data('filter')
+  if (filter) {
+    window.location.href = '/menu/' + category + '/' + filter
+  } else {
+    window.location.href = '/menu/' + category + '/all'
+  }
   toastr['success'](category)
+  
 })
 
 $('.filter-button').on('click', function(){
   var filter = $(this).data('filter')
-  toastr['success'](filter)
+  var catHeading = $('.category-heading.active')
+  var category = catHeading.closest('.category-button').data('category') ? catHeading.closest('.category-button').data('category') : 'all'
+  
+  window.location.href = '/menu/'+ category +'/' + filter
 })
+
 </script>
 
 <!-- Handle sanitation of inputs and formatting -->
