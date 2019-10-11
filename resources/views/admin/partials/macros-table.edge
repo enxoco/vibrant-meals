@@ -1,0 +1,181 @@
+<div class="col-10">
+<h4 class="">Macros</h4>
+<div id="macrosTable" class="table-editable">
+
+        <table class="table">
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th></th>
+            <th></th>
+          </tr>
+          @if(product.macros)
+            @each(macro in product.macros)
+            <tr>
+                <td contenteditable="true">{{ macro.name }}</td>
+                <td contenteditable="true" class="form-control">{{ macro.value }}</td>
+                <td> 
+                  <span class="table-remove">
+                        <i data-feather="x"></i>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-up">
+                      <i data-feather="arrow-up"></i>
+                  </span>
+                  <span class="table-down">
+                      <i data-feather="arrow-down"></i>
+                  </span>
+                </td>
+              </tr>
+            @endeach
+            @else
+            <tr>
+                <td contenteditable="true">Calories</td>
+                <td contenteditable="true" class="form-control"></td>
+                <td> 
+                  <span class="table-remove">
+                        <i data-feather="x"></i>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-up">
+                      <i data-feather="arrow-up"></i>
+                  </span>
+                  <span class="table-down">
+                      <i data-feather="arrow-down"></i>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                    <td contenteditable="true">Fats</td>
+                    <td contenteditable="true" class="form-control"></td>
+                    <td> 
+                      <span class="table-remove">
+                            <i data-feather="x"></i>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="table-up">
+                          <i data-feather="arrow-up"></i>
+                      </span>
+                      <span class="table-down">
+                          <i data-feather="arrow-down"></i>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                        <td contenteditable="true">Carbs</td>
+                        <td contenteditable="true" class="form-control"></td>
+                        <td> 
+                          <span class="table-remove">
+                                <i data-feather="x"></i>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="table-up">
+                              <i data-feather="arrow-up"></i>
+                          </span>
+                          <span class="table-down">
+                              <i data-feather="arrow-down"></i>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                          <td contenteditable="true">Protein</td>
+                          <td contenteditable="true" class="form-control"></td>
+                          <td> 
+                            <span class="table-remove">
+                                  <i data-feather="x"></i>
+                            </span>
+                          </td>
+                          <td>
+                            <span class="table-up">
+                                <i data-feather="arrow-up"></i>
+                            </span>
+                            <span class="table-down">
+                                <i data-feather="arrow-down"></i>
+                            </span>
+                          </td>
+                        </tr>
+          @endif
+
+          <!-- This is our clonable table line -->
+          <tr class="hide">
+            <td contenteditable="true">Macro Name</td>
+            <td contenteditable="true" class="form-control"></td>
+            <td>
+              <span class="table-remove">
+                  <i data-feather="x"></i>
+              </span>
+            </td>
+            <td>
+              <span class="table-up">
+                  <i data-feather="arrow-up"></i>
+              </span>
+              <span class="table-down">
+                  <i data-feather="arrow-down"></i>
+              </span>
+            </td>
+          </tr>
+        </table>
+        <span class="table-add d-flex">
+                <i data-feather="plus"></i>
+            </span>
+      </div>
+      
+
+
+
+<div id="variationTable" class="table-editable hide">
+
+        <table class="table">
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+                <td contenteditable="true">Variation Type</td>
+                <td contenteditable="true" class="form-control"></td>
+                <td>
+                  <span class="p-table-remove">
+                      <i data-feather="x"></i>
+                  </span>
+                </td>
+                <td>
+                  <span class="p-table-up">
+                      <i data-feather="arrow-up"></i>
+                  </span>
+                  <span class="p-table-down">
+                      <i data-feather="arrow-down"></i>
+                  </span>
+                </td>
+              </tr>
+
+          <!-- This is our clonable table line -->
+          <tr class="hide">
+            <td contenteditable="true">Variation Type</td>
+            <td contenteditable="true" class="bg-white"></td>
+            <td>
+              <span class="p-table-remove">
+                  <i data-feather="x"></i>
+              </span>
+            </td>
+            <td>
+              <span class="p-table-up">
+                  <i data-feather="arrow-up"></i>
+              </span>
+              <span class="p-table-down">
+                  <i data-feather="arrow-down"></i>
+              </span>
+            </td>
+          </tr>
+        </table>
+        <span class="p-table-add">
+                <i data-feather="plus"></i>
+            </span>
+      </div>
+
+</div>

@@ -56,6 +56,11 @@ body {
                 <a class="dropdown-item no-modal" href="#" style="height:40px;"><i data-feather="x"></i></a>
 
                 <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'all')
+                active
+                @endif
+                " data-filter="all" href="#">All</a>
+                <a class="dropdown-item no-modal filter-button
                 @if(url.split('/')[3] === 'E')
                 active
                 @endif
@@ -85,7 +90,11 @@ body {
                 active
                 @endif
                 " data-filter="W30" href="#">Whole 30</a>  
-                
+                <a class="dropdown-item no-modal filter-button
+                @if(url.split('/')[3] === 'G')
+                active
+                @endif
+                " data-filter="G" href="#">Gluten Free</a>
             </div>
         </div>
         </li>
@@ -108,14 +117,25 @@ body {
 
       @each(item in items)
         
-        @unless(item.active === false)
+        @unless(item.active === 0)
         @unless(item.id === 'shipping')
           <!-- Start of individual Product card -->
-          <div class="col-6 col-lg-4 col-md-6 filter {{item.metadata.primary_category}} {{ splitFilterTags(item.id) }}">
+          <div class="col-6 col-lg-4 col-md-6 filter {{item.category}} {{ splitFilterTags(item.skus) }}" id="product_{{ item.skus }}"
+          data-sku="{{ item.skus }}"
+          data-name="{{ item.name }}"
+          data-image="{{ item.images }}"
+          data-price="{{ item.price }}"
+
+          >
 
           {{--@!include('menu.product-card-mobile')--}}
           @!include('menu.product-card-desktop')
           @!include('Modals.product-card')
+          <input type="hidden" name="product[sku]" value="{{ item.skus }}" />
+          <input type="hidden" name="product[name]" value="{{ item.name }}" />
+          <input type="hidden" name="product[image]" value="{{ item.images }}" />
+          <input type="hidden" name="product[price]" value="{{ item.price }}" />
+          <input type="hidden" name="product[variation]" value="{{ item.variations[0].name }}" />
           </div>
         <!--/individual product card-->
         @endunless
@@ -130,8 +150,6 @@ body {
           getLocation()
         }
 
-        $('filter-button, category-button').on('click', function(){
-          console.log($(this))
-        })
+
         </script>
 @endsection

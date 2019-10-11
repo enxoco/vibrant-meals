@@ -1,30 +1,31 @@
 <div class="card card-user card-product"
-data-category="{{item.metadata.primary_category}}"
-data-id="{{item.id}}"
-data-sku="{{item.skus.data[0].id}}"
-data-meta='{{toJSON(item.skus.data[0].metadata)}}'
-data-toggle="modal" data-target="#{{item.id}}"
+id="product_{{ item.skus }}"
+data-category="{{item.category}}"
+data-id="{{item.skus}}"
+data-sku="{{item.skus}}"
+data-meta='{{toJSON(item.metadata)}}'
+data-toggle="modal" data-target="#{{item.skus}}"
 >
-<div class="image {{ splitFilterTags(item.id) }}" style="background-image:url({{secure(item.skus.data[0].image)}})">
+<div class="image {{ splitFilterTags(item.skus) }}" style="background-image:url({{secure(item.images)}})">
   </div>
 <div class="card-body">
   <div class="row px-2">
     <h5 class="mb-0" style="flex:.7;justify-content:flex-start;display:flex;">{{item.name}}</h5>
-    <h5 class="mb-0 price-label"> {{currency(item.skus.data[0].price)}}</h5>
+    <h5 class="mb-0 price-label"> ${{item.price}}</h5>
   </div>
   <div class="row px-2">
-      @if(item.skus.data.length > 1)
+      @if(item.variations.length)
       <div class="dropdown">
-          <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.id}}" style="white-space:normal;font-size:10px !important;">
-              {{item.skus.data[0].metadata.label ? capitalize(item.skus.data[0].metadata.label) : capitalize(item.skus.data[0].metadata.size) }}
+          <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_{{item.skus}}" style="white-space:normal;font-size:10px !important;">
+              {{ item.variations[0].name }}
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              @each(sku in item.skus.data)
+              @each(variation in item.variations)
 
-              @if(sku.price)
-              
-                <a class="dropdown-item price-change no-modal" href="#" data-macros="{{toJSON(sku.metadata)}}" data-sku="{{sku.id}}" data-price="{{sku.price}}" data-img_url="{{sku.image}}" data-name="{{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}">
-                    {{sku.metadata.label ? capitalize(sku.metadata.label) : capitalize(sku.metadata.size) }}
+              @if(variation.price)
+                <a class="dropdown-item price-change no-modal" href="#"  data-sku="{{ item.skus }}" data-macros="{{ item.macros }}" data-price="{{variation.price}}" data-img_url="{{ item.images }}" data-variation="{{ variation.name }}">
+                    {{ variation.name }}
+                    
                   </a>
               @endif
               @endeach
@@ -38,16 +39,30 @@ data-toggle="modal" data-target="#{{item.id}}"
     <div class="row px-2 macros" ">   
       <div class="col-8 col-md-10 col-lg-10">
         <div class="row" id="macros-{{item.id}}">
-      {{nutritionFooterDesktop(item.skus.data[0].metadata)}}  
+          
+
+          @each(macro in item.macros)
+          @unless($loop.index >= 4)
+          <div class="col pr-0">
+              <h5>
+              {{ macro['value'] }}
+              <br>
+                <small>{{ macro['name']}}</small>
+              </h5>
+            </div>
+          @endunless
+
+      @endeach
+      {{--  {{nutritionFooterDesktop(item.skus.data[0].metadata)}}    --}}
         </div>
       </div>
         <div class="col">
           <a class="checkout-prompt-1"
-            data-id="{{item.id}}"
-            data-sku="{{item.skus.data[0].id}}" 
-            data-name="{{item.name}} {{capitalize(item.skus.data[0].metadata.label)}}" 
-            data-price="{{item.skus.data[0].price}}" 
-            data-img_url="{{item.skus.data[0].image}}" 
+            data-id="{{item.skus}}"
+            data-sku="{{item.skus}}" 
+            data-name="{{item.name}} {{capitalize(item.label)}}" 
+            data-price="{{item.price}}" 
+            data-img_url="{{item.images}}" 
             data-quantity="1" 
             href="#" 
           >

@@ -114,8 +114,9 @@ Route.group(() => {
   Route.post('/admin/coupon/delete', 'AdminController.deleteCoupon')
   Route.get('/admin/customers', 'AdminController.listCustomers')
   Route.get('/admin/products', 'AdminController.showItems')
+  Route.get('/admin/products/filter/:category', 'AdminController.showItemsFiltered')
   Route.get('/admin/products/publish', 'AdminController.publishItems')
-  Route.post('admin/items/edit/:sku', 'ItemController.updateItem')
+  Route.post('admin/items/edit/', 'ItemController.updateItem')
   Route.post('/admin/items/add', 'AdminController.addItem')
   Route.get('/admin/orders', 'OrderController.viewOrdersAdmin')
   Route.get('/admin/orders/fulfill/:orderId', 'AdminController.fulfillOrder')
@@ -124,10 +125,10 @@ Route.group(() => {
   //Route to handle cancel,refund of orders
   Route.post('/admin/orders/:orderId', 'OrderController.updateOrderById')
   Route.post('/admin/orders/update/refund', 'OrderController.postRefund')
-  Route.get('/products/edit/:sku', 'ItemController.listItemsAdmin')
+  Route.get('/admin/products/edit/:sku', 'ItemController.listItemsAdmin')
   Route.get('/item/delete/:itemId', 'ItemController.deleteItem')
-  Route.get('/products/hide/:itemId', 'ItemController.hideItem')
-  Route.get('/products/show/:itemId', 'ItemController.showItem')
+  Route.get('/admin/products/hide/:itemId', 'ItemController.hideItem')
+  Route.get('/admin/products/show/:itemId', 'ItemController.showItem')
   Route.get('/admin/import', 'AdminController.importProducts')
   Route.get('/admin/locations', 'AdminController.listLocations')
   Route.get('/email/order/confirm/:id', 'OrderController.confirmationEmail')
@@ -142,6 +143,8 @@ Route.group(() => {
 }).middleware(['admin'])
 Route.post('/hooks/orders/created', 'StripeController.orderCreatedHook')
 Route.get('/hooks/orders/created', 'StripeController.orderCreatedHook')
+Route.get('/api/orders/filtered/date/:start/:end/:day/:filter', 'AdminController.filteredOrdersByDate')
 
 Route.get('/api/orders/filtered/date/:start/:end/:day', 'AdminController.filteredOrdersByDate')
+
 Route.get('/api/orders/cancel/:order/:charge/:user', 'AdminController.cancelOrder')

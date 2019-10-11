@@ -1,10 +1,10 @@
 
-<div class="modal fade" id="{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="{{item.skus.data[0].id}}"
+<div class="modal fade" id="{{item.skus}}" tabindex="-1" role="dialog" aria-labelledby="{{item.skus}}"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="product-modal-image"
-                style="background-image:url('{{secure(item.skus.data[0].image)}}'); height:35vh;background-repeat:no-repeat;background-position:center center; background-size:cover;">
+                style="background-image:url('{{secure(item.images)}}'); height:35vh;background-repeat:no-repeat;background-position:center center; background-size:cover;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
@@ -17,48 +17,28 @@
                                 <h4 class="item-name mt-0" style="text-transform:uppercase; letter-spacing:.2em;">
                                     {{item.name}}
                                 </h4>
-
                             </div>
                             <div class="col-5 col-md-3 d-flex justify-content-between pl-0">
-                                <a data-dismiss="modal" style="order:1;" class="checkout-prompt-1" data-id="{{item.id}}"
-                                    data-sku="{{item.skus.data[0].id}}" data-name="{{item.name}}"
-                                    data-price="{{item.skus.data[0].price}}" data-img_url="{{item.skus.data[0].image}}"
-                                    data-quantity="1" href="#" class="">
+                                <a data-dismiss="modal" style="order:1;" class="checkout-prompt-1" data-quantity="1" data-sku"{{ item.skus }}" href="#" class="">
                                     <img src="/images/shopping-cart-add-button-inactive.png" height="40px" width="40px"
                                         onmouseover="hoverCart(this)" onmouseout="unhoverCart(this)"
                                         onmousedown="hoverCart(this)" />
                                 </a>
                                 <span class="modal-card-price"
-                                style="color:#F48566; font-size:14px; padding-left:10px;">{{currency(item.skus.data[0].price)}}
+                                style="color:#F48566; font-size:14px; padding-left:10px;">${{item.price}}
                             </span>
                             </div>
                         </div>
-                    <div class="row half-width" id="macro-card-{{item.id}}">
+                    <div class="row half-width" id="macro-card-{{item.sku}}">
+                        @each(macro in item.macros)
                                 <div class="col mx-auto" style="text-align:center;">
-                                    <strong>{{item.skus.data[0].metadata.calories ? item.skus.data[0].metadata.calories : 0}}</strong>
+                                    <strong>{{ macro.value }}</strong>
                                     <br />
-                                    Calories
-
+                                    {{ macro.name }}
                                 </div>
-                                <div class="col mx-auto" style="text-align:center;">
-                                    <strong>{{item.skus.data[0].metadata.fats ? item.skus.data[0].metadata.fats : 0}}</strong>
-                                    <br />
-                                    Fats
-                                </div>
-                                <div class="col mx-auto" style="text-align:center;">
-                                    <strong>{{item.skus.data[0].metadata.proteins ? item.skus.data[0].metadata.proteins : 0}}</strong>
-                                    <br />
-                                    Protein
-                                </div>
-                                <div class="col mx-auto" style="text-align:center;">
-                                    <strong>{{item.skus.data[0].metadata.carbs ? item.skus.data[0].metadata.carbs : 0}}</strong>
-                                    <br />
-                                    Carbs
-                                </div>
+                                @endeach
                             </div>
                     </div>
-
-
                     <div class="col-12 col-md-10 col-lg-10 mx-auto" style="text-align:center;">
                         <table class="table">
                             <thead>
@@ -69,7 +49,6 @@
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
                                     <th style="font-weight:400;">Description</th>
                                 </tr>
-
                             </thead>
                             <tbody>
                                 <!-- Desktop table style -->
@@ -82,7 +61,6 @@
                                         @!include('layout.user.nutrition-label')
                                     </td>
                                 </tr>
-
                                 <!-- Mobile table style -->
                                 <tr class="d-flex d-md-none d-lg-none justify-content-center">
                                     <td style="border-bottom:none !important;">
@@ -112,4 +90,5 @@
 
         </div>
     </div>
+    
 </div>

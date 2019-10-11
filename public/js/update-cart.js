@@ -8,42 +8,6 @@ function updateCartDiv(fulfillment_method) {
 
   var orderMethod = localStorage.fulfillment_method
   var orderDay = localStorage.fulfillment_day
-  // if (localStorage.myStore) {
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/account/fulfillmethod/update',
-  //     data: {storeId: JSON.parse(localStorage.myStore).id},
-  //     success: console.log('Options updated')
-  //   })
-  // }
-  // $.ajax({
-  //   type: 'POST',
-  //   url: '/account/fulfillmethod/update',
-  //   data: {pref: orderMethod},
-  //   success: console.log('Options updated')
-  // })
-
-  
-  // if (orderMethod === 'pickup' && localStorage.myStore) {
-  //   $('.store-desc').html('<strong>Pickup Location</strong> <br />' + JSON.parse(localStorage.myStore).name)
-  //   $('.delivery-desc').html('')
-  //   $('#pickupRadio').attr('checked', 'checked')
-
-  //   $('.order-shipping').html('0')
-
-  //   } else {
-  //     $('#deliveryRadio').attr('checked', 'checked')
-  //     $('#pickupRadio').removeAttr('checked')
-  //     localStorage.setItem('fulfillment_method', 'delivery')
-  //     localStorage.removeItem('pickup_location')
-  //     localStorage.removeItem('pickupLocation')
-  //     localStorage.removeItem('myStore')
-  //     $('.store-desc').html('&nbsp')
-
-  //     $('.delivery-desc').html('Select delivery address at checkout')
-
-  // }
-
 
 
   if (localStorage.fulfillment_date) {
@@ -54,16 +18,6 @@ function updateCartDiv(fulfillment_method) {
 
   $('#'+orderMethod+'Radio').closest('.fulfillment-option').addClass('active')
 
-  // if($('#user-info').data()) {
-  //   var user = $('#user-info').data()
-  //   localStorage.fulfillment_method = user.user.fulfillment_method
-  //   localStorage.fulfillment_day = user.user.fulfillment_day
-  //   localStorage.custEngageCompleted = 1
-  //   localStorage.checkoutInitiated = 1
-  //   if (user.user.pickup_location) {
-  //     localStorage.pickupLocation = JSON.stringify(user.user.pickup_location)
-  //   }
-  // }
   if (window.location.href.includes('checkout')) {
     $('.cart-heading').html('Order Info')
     var d = '<div class="col d-flex mt-4 hidden-on-mobile-checkout">\
@@ -153,7 +107,7 @@ function updateCartDiv(fulfillment_method) {
       }
 
       localStorage.setItem('cartCount', cartCount)
-        total += parseFloat((cartItems[i].quantity * cartItems[i].price / 100).toFixed(3))
+        total += parseFloat((cartItems[i].quantity * cartItems[i].price).toFixed(3))
         var card = '<div class="row pl-3 pr-3">\
         <figure class="figure">\
           <img class="avatar figure-img pull-left mr-2 mt-3" src="'+cartItems[i].img_url.replace('http://', 'https://')+'"><span class="item-name">'+cartItems[i].name+'</span><br>\
@@ -181,10 +135,8 @@ function updateCartDiv(fulfillment_method) {
     } 
     $('.order-tax').html(tax.toFixed(2))
     $('.order-tax').attr('data-tax', tax.toFixed(2))
-    $('.order-tax').maskMoney()
     $('.order-total').attr('data-total', total.toFixed(2))
     $('.order-total').html(total.toFixed(2))
-    $('.order-total').maskMoney()
     if (total >= 100) {
       localStorage.shippingCode = 'freeshipping'
       $('.order-shipping').html('0')
@@ -280,32 +232,25 @@ function updateCartDiv(fulfillment_method) {
     </div>'
 
     btn.text(t.name)
+
     //Update price on product card
-    $(this).closest('.card-body').find('.row').find('.price-label').text('$' + t.price / 100)
+    $(this).closest('.card-body').find('.row').find('.price-label').text('$' + t.price)
     var u = $('body').find('.checkout-prompt-1[data-id="'+id+'"]')
     var x = $('body').find('.card[data-id="'+id+'"]')
     var y = $('body').find('.modal[data-id="'+id+'"]')
+    let checkoutButtons = $('#product_' + id).find('.checkout-prompt-1')
 
     $('#macros-' + id).html(div)
     $('#macro-card-' + id).html(footerDiv)
-    u.each(function(){
-      $(this).attr('data-sku', t.sku)
-      $(this).attr('data-img_url', t.img_url)
-      $(this).attr('data-price', t.price)
-      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
-      $(this).find('Calories').html(macro.calories)
-    })
-    x.each(function(){
-      $(this).attr('data-sku', t.sku)
-      $(this).attr('data-img_url', t.img_url)
-      $(this).attr('data-price', t.price)
-      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
-    })
-    y.each(function(){
-      $(this).attr('data-sku', t.sku)
-      $(this).attr('data-img_url', t.img_url)
-      $(this).attr('data-price', t.price)
-      $(this).attr('data-name', _.capitalize(t.sku.replace(/_/g, ' ')))
-      $(this).find('.modal-card-price').text('$' + t.price / 100)
-    })
+    $('#product_' + id).find('.modal-card-price').html(t.price)
+    let d = $('#product_' + id).data()
+    d.variation = $(this).data('variation') 
+    $('#product_' + id).attr('data-variation', $(this).data('variation'))
+    let card = $('#product_' + id)
+    // When a user makes a choice for a protein or flavor, etc, update our inputs with price and variation
+    card.find('input[name="product[price]"]').val(t.price)
+    card.find('input[name="product[variation]"]').val(t.variation)
+
+    $('#product_' + id).find('.dropdown-toggle').text(t.variation)
+
   })

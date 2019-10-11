@@ -1410,16 +1410,11 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 <script src="/js/moment-weekdays.js"></script>
 
 <script src="https://unpkg.com/feather-icons@4.19.0/dist/feather.min.js"></script>
-<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-<script src="/js/mask-money.js"></script>
+
 
 <script type="text/javascript">
   $(document).ready(function () {
-      $('#sidebarCollapse').on('click', function () {
-          $('#sidebar').toggleClass('active');
-          $('.col-6').toggleClass('col-12')
-          $('.img-container').toggleClass('d-none d-lg-flex d-xl-flex')
-      });
+
       $('#dropdownMenuButtonFilters').find('.category-heading').html('Meal Type: ' + $('.filter-button.active').text())
 
   });
@@ -1533,6 +1528,16 @@ $('.checkout-prompt-1').on('click', function(e){
   e.stopPropagation()
 
 
+  let card = $('#product_' + $(this).data('sku'))
+  let sku = card.find('input[name="product[sku]"]').val()
+  let name = card.find('input[name="product[name]"]').val()
+  let image = card.find('input[name="product[image]"]').val()
+  let price = card.find('input[name="product[price]"]').val()
+  let variation = card.find('input[name="product[variation]"]').val()
+
+  if (variation != "undefined") name = name + ' - ' + variation
+  let cartItem = {sku: sku, name: name, img_url: image, price: price, variation: variation, quantity: 1}
+
 
 
   if (localStorage.getItem("custEngageCompleted") != 1) {
@@ -1540,37 +1545,15 @@ $('.checkout-prompt-1').on('click', function(e){
     
     localStorage.setItem("custEngageCompleted", 1);
     var c = JSON.parse(localStorage.cart)
-    var item = $(this).data()    
 
-    c.push(item)
+    c.push(cartItem)
     localStorage.setItem('cart', JSON.stringify(c))
     updateCartDiv()
     return false
   }
 
-  // This bit of logic was added to allow user to switch between
-  // Multiple options for a single item. 
-  /*
-  * I had to switch to this approach as opposed to using var item = $(this).data()
-  * because that approach will always grab the original data attribute.  Instead
-  * I had to switch to using the attr selector.  This code relies on the event listener
-  * attached to the .price-change select box.  That code is found in update-cart.js
-  * starting at line 180
-  * 
-  */
-
-  var i = $(this)
-  var item = {}
-  item.id = i.attr('data-id')
-  item.img_url = i.attr('data-img_url')
-  item.sku = i.attr('data-sku')
-  item.quantity = 1
-  item.name = i.attr('data-name')
-  item.price = parseInt(i.attr('data-price'))
-
-
   var cartItems = JSON.parse(localStorage.cart)
-  cartItems.push(item)
+  cartItems.push(cartItem)
 
 function checkDuplicateInObject(propertyName, inputArray) {
 var seenDuplicate = false,
@@ -1591,7 +1574,7 @@ else {
 
 return cartItems;
 }
-var cart = checkDuplicateInObject('sku', cartItems)
+var cart = checkDuplicateInObject('name', cartItems)
 var updatedCart = []
 for (var i = 0; i < cart.length; i++) {
 if (!cart[i].duplicate){
@@ -1617,9 +1600,7 @@ $(document).on('click', '#deliveryRadio', function(){
   localStorage.removeItem('myStore')
 
   updateCartDiv()
-  console.log()
 
-  calcShipping()
   if (window.location.href.includes('checkout')) {
     $('#collapseTwo').addClass('show').fadeIn()
     $('#collapseOne').removeClass('show').fadeOut()
@@ -1652,54 +1633,6 @@ $(document).ready(function(){
   })
 
   feather.replace({class: 'stroke-black', stroke: 'black'})
-
-
-// This is filtering logic based on category name
-function closeMenu() {
-  $('.menu-hide').removeClass('show')
-  $('.menu-tab').removeClass('active')
-}
-$(".filter-button").click(function(){
-
-  $(this).toggleClass('selected')
-
-  $('.filter-button')
-  // $('.menu-hide').removeClass('show')
-  // $('.menu-tab').removeClass('active')
-  //   var value = $(this).attr('data-filter');
-  //   $('h2').removeClass('active')
-  //   $(this).find('h2').addClass('active')
-  //   console.log(value)
-    
-  //   if(value == "all")
-  //   {
-  //     $('.filter').show('1000');
-  //   } else if(value === "Everyday") {
-  //     $(".filter").not('.'+value).hide('3000');
-  //     $('.filter').filter('.'+value).show('3000'); 
-  //     $('.filter').filter('.Low_Carb').show('3000'); 
-
-  //   } else if(value === "EverydayOnly") {
-  //     $(".filter").not('.Everyday').hide('3000');
-  //     $('.filter').filter('.Everyday').show('3000'); 
-
-
-
-  //   }
-  //   else
-  //   {
-  //       $(".filter").not('.'+value).hide('3000');
-  //       $('.filter').filter('.'+value).show('3000'); 
-  //   }
-});
-
-
-
-
-
-
-
-
 
 });
 
@@ -1737,7 +1670,7 @@ var t = 0
 for (var i = 0; i < cart.length; i++) {
     t += cart[i].quantity
 
-  var total = cart[i].price.toFixed(1)
+  var total = cart[i].price
   total = total * cart[i].quantity
   $('.total-quantity').html(t)
   l.append('<li class="list-group-item d-flex justify-content-between lh-condensed">\
@@ -1824,11 +1757,11 @@ $('#clearCart').on('click', function(){
   localStorage.cart = '[]'
   updateCartDiv()
 })
-$('.menu-tab').on('click',function(){
-    $(this).toggleClass('active')
-    $('.menu-hide').toggleClass('show')
+// $('.menu-tab').on('click',function(){
+//     $(this).toggleClass('active')
+//     $('.menu-hide').toggleClass('show')
     
-  })
+//   })
 
 
 
@@ -2125,10 +2058,7 @@ function calcShipping() {
     $('.order-shipping').html('0')
   }
 }
-$(".filter").not('.Everyday').hide();
 
-$('.filter').filter('.Everyday').show(); 
-$('.filter').filter('.Low_Carb').show(); 
 
 $('.dropdown-item').on('click', function(){$('.dropdown-menu').removeClass('show')})
 

@@ -45,18 +45,91 @@ class AdminController {
 
   }
 
+  async checkDuplicateInObject(propertyName, inputArray) {
+    var seenDuplicate = false,
+      testObject = {};
+    let final = []
+    inputArray.map(function(item) {
+      var itemPropertyName = item[propertyName]; 
+      if (itemPropertyName in testObject) {
+        testObject[itemPropertyName].quantity++;
+        item.duplicate = true;
+        seenDuplicate = true;
+      }
+      else {
+        testObject[itemPropertyName] = item;
+        delete item.duplicate;
+      }
+    });
+    for (var i = 0; i < inputArray.length; i++) {
+      if (!inputArray[i].duplicate) final.push(inputArray[i])
+    }
+      return final;
+    }
+
   // API method to return a filtered list of orders.  If a day of the week is passed in, then only orders
   // set to be fulfilled on that day will be shown.  Otherwise all orders between matching dates will be shown.
   async filteredOrdersByDate({request, response, params}){
 
-    if (params.day != 'all') {
-      var orders = await Database
-      .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}" AND fulfillment_day = "${params.day}";`)
+    if (params.filter === 'pickup' || params.filter === 'delivery') {
+      if (params.day != 'all') {
+        var orders = await Database
+        .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}" AND fulfillment_day = "${params.day}" AND fulfillment_method = "${params.filter}";`)
+      } else {
+        var orders = await Database
+        .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}" AND fulfillment_method = "${params.filter}";`)
+      }
     } else {
-      var orders = await Database
-      .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}";`)
+      if (params.day != 'all') {
+        var orders = await Database
+        .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}" AND fulfillment_day = "${params.day}";`)
+      } else {
+        var orders = await Database
+        .raw(`SELECT * FROM orders WHERE fulfillment_date BETWEEN "${params.start}" AND "${params.end}";`)
+      }
     }
+
     var object = {data: orders[0]}
+
+    if (params.filter) {
+
+      if (params.filter === 'sku') {
+        let skuList = []
+        let dates = []
+        for (let i = 0; i < object.data.length; i++) {
+          dates.push(moment(object.data[i].fulfillment_date).format('YYYY-MM-DD'))
+        }
+        dates = [...new Set(dates)];
+        for (let i = 0; i < dates.length; i++){
+          skuList.push({date: moment(dates[i]).format('YYYY-MM-DD'), skus: []})
+        }
+
+        for (var i = 0; i < object.data.length; i++){
+          let items = JSON.parse(object.data[i].items) 
+          for (var x = 0; x < items.length; x++) {
+            for (let y = 0; y < dates.length; y++) {
+              if (moment(object.data[i].fulfillment_date).format('YYYY-MM-DD') === skuList[y].date) {
+                skuList[y].skus.push({name: items[x].name, quantity: items[x].quantity, sku: items[x].sku, date: skuList[y].date })
+              }
+            }
+          }        
+        }
+        for (var i = 0; i < skuList.length; i++) {
+          skuList[i].skus = await this.checkDuplicateInObject('name', skuList[i].skus)
+        }
+        let testObject = []
+        
+        for (var i = 0; i < skuList.length; i++){
+          testObject.push(skuList[i].skus)
+
+        }
+        var merged = [].concat.apply([], testObject);
+
+        var object = {data: merged}
+        return object
+        return response.send(object)
+      }
+    }
     return response.send(object)
   }
 
@@ -88,19 +161,7 @@ class AdminController {
     const allMondayOrders = await this.getFilteredOrders('fulfillment_day', 'monday')
 
     const thisMondayOrders = await this.getFilteredOrdersMultiple('fulfillment_day', 'monday', 'fulfillment_week', dateCodes.next)
-    // const lastWeekOrders = await Database
-    //   .table('orders')
-    //   .where('creation_week', dateCodes.previous)
-    //   .select()
 
-
-    
-    // const currentOrders = await Database
-    //   .table('orders')
-    //   .where('creation_week', dateCodes.current)
-    //   .select()
-
-    // const 
     return view.render('layout.admin.dashboard', {allOrders, lastWeekOrders, currentOrders, allMondayOrders, thisMondayOrders})
   }
 
@@ -429,26 +490,19 @@ class AdminController {
 
     async showItems ({ view, response }) {
 
-      stripe.setApiVersion('2018-02-28')
-      var products = await stripe.products.list({limit:100000})
-      var prod = products.data
-
-      // for (var i = 0; i < prod.length; i++) {
-      //   var sku = await stripe.skus.list(
-      //     {product: prod[i].id}
-      //   )
-      //   prod[i].skus = sku
-      // }
-      // var prod = await Drive.get(`${path}/products.json`, 'utf-8')
-      // prod = JSON.parse(prod)
-    
-        var categories = []
-        for (var i = 0; i < prod.length; i++) {
-          categories.push(prod[i].metadata.primary_category)
-        }
-        return view.render('admin.items', {items: prod, categories})
+        const products = await Database
+          .table('products')
+          .select('*')
+        return view.render('admin.items', {items: products})
     }
 
+    async showItemsFiltered ({ request, response, session, view, params }) {
+      const { category } = params
+      const products = await Database
+        .table('products')
+        .where('category', category)
+      return view.render('admin.items', {items: products})
+    }
     async createSku (product, id, price, sku_image, calories = 0, carbs = 0, fats = 0, proteins = 0, sugars = 0, label) {
       if (!id) {
         return
@@ -506,8 +560,33 @@ class AdminController {
       return sku
     }
 
-    async addItem ({request, response}) {
-      return request.all()
+    async addItem ({request, response, session}) {
+
+      const { primary_img, product, product_id, description } = request.all()
+      const { name, price, label, category, macros, variations } = product
+        const newProduct = await Database
+        .table('products')
+        .insert({
+          active: 1,
+          description,
+          name,
+          label,
+          macros,
+          category,
+          variations,
+          skus: product_id,
+          images: primary_img,
+          price
+        })
+
+        if (newProduct) {
+          session.flash({'status': 'Product added successfully'})
+          return response.redirect('/admin/products')
+        } else {
+          session.flash({'error': 'There was an error saving your item.  Please try again'})
+          return response.redirect('back')
+        }
+
     }
 
     async oldAddItem ({request, response}) {

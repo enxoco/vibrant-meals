@@ -78,98 +78,122 @@
 <div class="content">
   <div class="row">
     <div class="col-md-4">
-
+      @if(edit)
+      <form id="parent_product" method="POST" action="/admin/items/edit">
+        <input name="id" type="hidden" value="{{ product.id }}" />
+      @else
+      <form id="parent_product" method="POST" action="/admin/items/add">
+      @endif
         <section class="comSection comSection--light" style="position:fixed;width:25%;">
               <div class="row">
-                <div class="col-md-12 col-12">
-                    <h5 class="card-title">Add New Item</h5>
-                  Use the forms to the right to create a new menu item.  The first form is for the Product information.  This is the name, description and image that should show up on the product card on the menu page.  The additional forms are for creating skus for each product.  Each product must have at least one sku.  If you have a variation such as Turkey/Tofu or Caramel/Vanilla you would enter that into The first field.
-                  <br />
+                  <div class="col-10">
+                      <div class="thumbnails"></div>
+                      <div class="progress_bar" id="progress_bar" color="blue" width="100%"
+                        style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
+                      <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+                    </div>
 
-                </div>
-
+                    <div class="col-10 mx-auto">
+                    <button class="btn btn-success submit-form" >Save</button>
+                    </div>
               </div>
 
-          <div class="row">
-            <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-success save-form">Save Item</button>
-            </div>
-          </div>
+
         </section>
     </div>
     <!-- item-card -->
     <div class="col-md-8 sku-column">
+      @!include('admin.partials.errors')
       <section class="comSection comSection--light">
         <h5 class="card-title">Product Info</h5>
-        <form id="parent_product">
 
-        <input type="text" name="product_id" class="product-id muted" disabled  value="{{prod.id ? prod.id : NULL}}"/>
 
           <div class="row">
-            <div class="col-9">
+            <div class="col-12">
               <div class="row">
-                <div class="col-md-4 col-lg-4 mx-auto">
+                <div class="col-md-4 col-lg-4 ">
                   <div class="form-group">
-                    <input type="text" name="name" id="productName" placeholder="Name" required class="form-control"
-                    value="{{(prod.name ? prod.name :  NULL)}}"
+                    <input type="text" name="product[name]" id="productName" placeholder="Name" required class="form-control"
+                    value="{{(product.name ? product.name :  NULL)}}"
                     >
                   </div>
                 </div>
-
-                <div class="col-md-4 col-lg-4 mx-auto">
+                <div class="col-4">
                   <div class="form-group">
-                    <select class="form-control muted" name="category">
-                      @unless(prod)
-                      <option>Choose a product category</option>
-                      @endunless
-                        @each(cat in ['lunchDinner', 'breakfast', 'snacks', 'drinks'])
-                        <option 
-                        @if(prod.metadata.primary_category == cat)
-                          selected
-                        @endif
-                        name="{{cat}}" value="{{cat}}"
-                        >{{capitalize(cat).split(/(?=[A-Z])/).join(" & ")}}</option>
-                        @endeach
-                    </select>
 
+                    <input type="text" name="product[price]" placeholder="Price" class="form-control"  value="{{product.price ? product.price : NULL}}" />
                   </div>
                 </div>
-
-                <div class="col-md-4 col-lg-4 mx-auto">
+                <div class="col-md-4 col-lg-4">
                     <div class="form-group">
-                      <select class="form-control muted" name="label" onchange="updateSkuLabel({{$loop.index}}, this.value)">
-                        @unless(prod)
-                        <option>Choose a label</option>
+                      <select class="form-control muted" name="product[label]" onchange="updateSkuLabel({{$loop.index}}, this.value)">
+                        @unless(product)
+                        <option>Choose Filter</option>
                         @endunless
-                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast', 'plantBased', 'whole_30', 'drinks'])
+                          @each(cat in ['everyday', 'lowCarb', 'performance', 'elite', 'snack', 'breakfast', 'plantBased', 'whole_30', 'drinks', 'glutenFree'])
                           <option 
-                          @if(prod.metadata.label == cat)
+                          @if(product.label == cat)
                             selected
                           @endif
                           name="{{cat}}" value="{{cat}}"
                           >{{capitalize(cat).split(/(?=[A-Z])/).join(" ")}}</option>
                           @endeach
                       </select>
-  
+        
                     </div>
                   </div>
-                <div class="col-12">
-                  <textarea class="form-control" name="description" placeholder="Product Description" rows="4">{{prod.description ? prod.description.trim() : NULL}}</textarea>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group">
+                      <select class="form-control muted" name="product[category]">
+                        @unless(product)
+                        <option>Choose Category</option>
+                        @endunless
+                          @each(cat in ['lunchDinner', 'breakfast', 'snacks', 'drinks'])
+                          <option 
+                          @if(product.category == cat)
+                            selected
+                          @endif
+                          name="{{cat}}" value="{{cat}}"
+                          >{{capitalize(cat).split(/(?=[A-Z])/).join(" & ")}}</option>
+                          @endeach
+                      </select>
+            
+                    </div>
+                  </div>
+                <div class="col-4">
+                  <div class="form-group">
+                      <input type="text" name="product_id" placeholder="SKU" class="form-control"  value="{{product.skus ? product.skus : NULL}}"/>
+
+                  </div>
                 </div>
+
+                <div class="col-4">
+                    <div class="form-group">
+                      <p>Multiple Variations?</p>
+                      <a class="btn btn-success show-variations-table">Yes</a>
+                      <a class="btn btn-danger hide-variations-table active">No</a>
+                    </div>
+                  </div>
+
+
+
+
+                <div class="col-12">
+                  <textarea class="form-control" name="description" placeholder="Product Description" rows="4">{{product.description ? product.description.trim() : NULL}}</textarea>
+                </div>
+              </div>
+              <div class="row">
+
               </div>
 
             </div>
-            <div class="col-3">
-              <div class="thumbnails"></div>
-              <div class="progress_bar" id="progress_bar" color="blue" width="100%"
-                style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
-              <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+            <input name="product[macros]" type="hidden" />
+            <input name="product[variations]" type="hidden" />
         </form>
+        <hr class="mb-3">
+        @!include('admin.partials.macros-table')
+
       </section>
-
-      <hr class="mb-3">
-      <!-- First Sku -->
-
 
     </div>
 
@@ -177,7 +201,7 @@
 
 </div> <!-- /item card-->
 </div>
-<a onclick="addSkuSection()" style="position:fixed;bottom:100px;right:20px;"><i data-feather="plus"></i></a>
+{{--  <a onclick="addSkuSection()" style="position:fixed;bottom:100px;right:20px;"><i data-feather="plus"></i></a>  --}}
 
 </div>
 </div>
@@ -375,7 +399,7 @@
 
 
 
-</script>
 
+</script>
 
 @endsection

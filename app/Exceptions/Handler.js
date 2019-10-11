@@ -20,11 +20,12 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async handle (error, { request, response, view }) {
+  async handle (error, { request, response, view, session }) {
     console.log(error)
     if (error.name === 'HttpException') {
       return response.send(view.render('Errors.fourOhFour'))
     } else {
+      session.flash({'error': 'Something went wrong'})
       return response.send(error)
       return response.send(view.render('Errors.fiveHundred'))
 

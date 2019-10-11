@@ -1,40 +1,126 @@
 @layout('layout.admin.master')
 @section('content')
-      <div class="content">
+<style>
+  .comSection--light {
+    padding: 16px 24px;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    margin: 5px;
+  }
 
+  .comSection__header {
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-weight: 700;
+    font-size: .9em;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .text-smaller {
+    font-size: .9em;
+  }
+
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  .table-wrap {
+    max-width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table.full {
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  th {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-size: .8em;
+    padding-top: 20px;
+    border-bottom: 2px solid #00a0df;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+  .product-id.muted {
+    position: absolute;
+    top:10px;
+    right: 30px;
+  }
+  .sku-id.muted {
+    position: relative;
+    left: 68%;
+    bottom: 45px;
+}
+.avatar {
+  width:75px;
+}
+p.item-card {width: 150px;}
+section.comSection.comSection--light.inactive {opacity:.5}
+</style>
+      <div class="content">
+          @!include('admin.partials.errors')
         <div class="row item-cards row-eq-height">
           @each(item in items)
-          <div class="col-lg-4 col-md-4 col-sm-6 filter {{item.active}} {{item.metadata.primary_category}}">
-            <div class="card card-stats" style="min-height:130px">
-              <div class="card-body ">
+          <section class="comSection comSection--light
+          @if(item.active === 1)
+          active
+          @else
+          inactive
+          @endif
+          "
+          
+          >
                 <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <img src="{{item.skus.data[0].image}}" />
+                    <div class="col-4">
+                          <img class="avatar" src="{{ item.images }}" />
                     </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">{{item.name}}</p>
-                      <p class="card-title">{{currency(item.skus.data[0].price)}}</p>
-                      <div class="controls mt-4">
-                      <a href="/products/edit/{{item.id}}"><i data-feather="edit"></i></a>
-                      @if(item.active === true)
-                        <a href="#" id="hideItem" data-item="{{item.id}}"><i data-feather="eye"></i></a>
-                      @else 
-                        <a href="#" id="showItem" data-item="{{item.id}}"><i data-feather="eye-off"></i></a>
-                      @endif
-                      </div>
+                    <div class="col-8">
+                      <p class="item-card">{{ item.name }} - <strong>${{ item.price }}</strong></p>
                     </div>
-
-                  </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                      <p>{{ item.category }}, {{ item.label }} </p>
+                      </div>
+                    
+                </div>
+              <div class="row">
+                  <a class="btn btn-success" href="/admin/products/edit/{{item.id}}">Edit</a>
+                  @if(item.active === 1)
+                  <a class="btn btn-danger" href="/admin/products/hide/{{item.id}}">Hide</a>
+                @else 
+                  <a class="btn btn-success" href="/admin/products/show/{{item.id}}">Show</a>
+                @endif
               </div>
-              <div class="card-footer">
-              </div>
-            </div>
-          </div>
+
+
+          </section>
           @endeach
+
+          
         </div>
       </div>
       <footer class="footer footer-black  footer-white ">
@@ -93,41 +179,30 @@
     <div class="col-12">\
         <section id="category-container">\
             <div class="img-container">\
-                <a href="#" class="filter-button active" data-filter="all">\
+                <a href="/admin/products" class="filter-button active" data-filter="all">\
                     All\
                 </a>\
             </div>\
             <div class="img-container">\
-                <a href="#" class="filter-button-visibility active" data-filter="true">\
-                    Active\
-                </a>\
-            </div>\
-            <div class="img-container">\
-                <a href="#" class="filter-button-visibility" data-filter="false">\
-                    Inactive\
-                </a>\
-            </div>\
-            <div class="img-container">\
-                <a href="#" data-filter="lunchDinner" class="lunchDinner filter-button">\
+                <a href="/admin/products/filter/lunchDinner" data-filter="lunchDinner" class="lunchDinner filter-button">\
                     <p class="category-heading">Lunch &amp; Dinner</p>\
                 </a>\
             </div>\
             <div class="img-container">\
-                <a href="#" data-filter="Drinks" class="Drinks filter-button">\
+                <a href="/admin/products/filter/drinks" data-filter="Drinks" class="Drinks filter-button">\
                     <p class="category-heading">Drinks</p>\
                 </a>\
             </div>\
             <div class="img-container">\
-                <a href="#" data-filter="Snacks" class="Snacks filter-button">\
+                <a href="/admin/products/filter/snacks" data-filter="Snacks" class="Snacks filter-button">\
                     <p class="category-heading">Snacks</p>\
                 </a>\
             </div>\
             <div class="img-container">\
-                <a href="#" data-filter="Breakfast" class="Breakfast filter-button">\
+                <a href="/admin/products/filter/breakfast" data-filter="Breakfast" class="Breakfast filter-button">\
                     <p class="category-heading">Breakfast</p>\
                 </a>\
             </div>\
-            <a href="#" id="publish"><i data-feather="save"></i></a>\
         </section>\
     </div>\
 </div>'
@@ -139,30 +214,7 @@
   </script>
   <script>
 
-    $(document).on('click', '#hideItem', function(e) {
-      e.preventDefault()
-      var item = $(this).data('item')
-      $(this).closest('.filter').addClass('false')
-      $(this).closest('.filter').removeClass('true')
-      $(this).closest('.filter').hide()
-      $.ajax({
-        type: 'GET',
-        url: '/products/hide/' + item,
-      })
-    })
 
-    $(document).on('click', '#showItem', function(e){
-      e.preventDefault()
-
-      var item = $(this).data('item')
-      $(this).closest('.filter').addClass('true')
-      $(this).closest('.filter').removeClass('false')
-      $(this).closest('.filter').hide()
-      $.ajax({
-        type: 'GET',
-        url: '/products/show/' + item,
-      })
-    })
 
     $(document).on('click', '#publish', function(e) {
       e.preventDefault()

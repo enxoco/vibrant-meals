@@ -55,8 +55,9 @@ class ItemController {
 
     const path = Helpers.appRoot()    
 
-    var prod = await Drive.get(`${path}/products.json`, 'utf-8')
-    prod = JSON.parse(prod)
+    var prod = await Database
+      .table('products')
+      .select('*')
     var categories = []
     var filters = []
 
@@ -66,26 +67,31 @@ class ItemController {
       var finalProd = []
       
       for (var i = 0; i < prod.length; i++) {
+        prod[i].macros = JSON.parse(prod[i].macros)
+        prod[i].variations = JSON.parse(prod[i].variations)
+
         for (var x = 0; x < filter_categories.length; x++) {
 
-          var cat = prod[i].metadata.primary_category
+          var cat = prod[i].category
           if (filter_categories[x] === cat || filter_categories[x] === 'all') {
             for (var y = 0; y < filter_filters.length; y++) {
-              if (filter_filters[y] === prod[i].id.split('_')[0] || filter_filters[y] === 'all') finalProd.push(prod[i])
+              if (filter_filters[y] === prod[i].skus.split('_')[0] || filter_filters[y] === 'all') finalProd.push(prod[i])
             }
           }
 
         }
 
-        if(typeof prod[i].metadata.primary_category == "string" && !categories.includes(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))) {
-          categories.push(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))
+        if(typeof prod[i].category == "string" && !categories.includes(prod[i].category.charAt(0).toLowerCase() + prod[i].category.slice(1))) {
+          categories.push(prod[i].category.charAt(0).toLowerCase() + prod[i].category.slice(1))
         } 
       }
     } else {
       for (var i = 0; i < prod.length; i++) {
+        prod[i].macros = JSON.parse(prod[i].macros)
+        prod[i].variations = JSON.parse(prod[i].variations)
 
-        if(typeof prod[i].metadata.primary_category == "string" && !categories.includes(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))) {
-          categories.push(prod[i].metadata.primary_category.charAt(0).toLowerCase() + prod[i].metadata.primary_category.slice(1))
+        if(typeof prod[i].category == "string" && !categories.includes(prod[i].category.charAt(0).toLowerCase() + prod[i].category.slice(1))) {
+          categories.push(prod[i].category.charAt(0).toLowerCase() + prod[i].category.slice(1))
         } 
       }
     }
@@ -110,8 +116,9 @@ class ItemController {
       user.fulfillment_day = auth.user.fulfillment_day
     }
 
-      prod = _.orderBy(prod, ['metadata.primary_category', 'updated'], ['desc', 'desc']);
+      prod = _.orderBy(prod, ['category', 'updated'], ['desc', 'desc']);
 
+    
       if (finalProd) {
         var items = finalProd
       } else {
@@ -167,15 +174,16 @@ class ItemController {
 
   async listItemsAdmin ({view, response, params}) {
 
-    var products = await stripe.products.retrieve( params.sku );
-    var prod = products
-      var sku = await stripe.skus.list(
-        {product: prod.id}
-      )
-      prod.skus = sku
 
 
-    return view.render('admin.items-new', {prod, sku: sku.data})
+    var product = await Database
+        .table('products')
+        .select('*')
+        .where('id', params.sku)
+
+    product = product[0]
+    product.macros = JSON.parse(product.macros)
+    return view.render('admin.items-new', {product, edit: true})
 
   }
 
@@ -184,13 +192,33 @@ class ItemController {
    * These are admin related functions for managing menus on the item
    * 
    */
-    async hideItem ({ params, response }) {
-      await stripe.products.update(params.itemId, {active: false})
-      return response.send({status: 'success'})
+    async hideItem ({ params, response, session }) {
+      const update = await Database
+        .table('products')
+        .where('id', params.itemId)
+        .update('active', false)
+      const name = await Database
+        .table('products')
+        .where('id', params.itemId)
+        .select('name')
+      
+      session.flash({'status': name[0].name + ' is now inactive'})
+      return response.redirect('back')
     }
-    async showItem ({ params, response }) {
-      await stripe.products.update(params.itemId, {active: true})
-      return response.send({status: 'success'})
+
+    async showItem ({ params, response, session }) {
+      const update = await Database
+        .table('products')
+        .where('id', params.itemId)
+        .update('active', true)
+      const name = await Database
+        .table('products')
+        .where('id', params.itemId)
+        .select('name')
+
+      
+      session.flash({'status': name[0].name + ' is now active'})
+      return response.redirect('back')
     }
 
     async deleteItem ({ params }) {
@@ -218,60 +246,90 @@ class ItemController {
       await Drive.delete('/uploads/' + imgUrl[0].alt_img_url)
     }
 
-    async updateItem ({ view, request, response }) {
-      try {
-        const obj = request.all()
-        delete obj['']
+    async updateItem ({ view, request, response, session }) {
+      const req = request.all()
+      const { name, price, label, category } = req.product
+      var { macros, variations } = req.product
+      const { description } = req
+      const skus = req.product_id
 
-        var prod = obj[Object.keys(obj)[0]]
-
-        prod.parent_id = prod.name.toLowerCase().replace(/ /g, '_')
-        var parent = prod.parent_id.replace(/ /g, '_')
-        parent = parent.replace(/,|&|'|"|\*|\(|\)/g, '')
-        parent = parent.toLowerCase()
-        // This is incorrectly trying to update the main product using the primary sku
-        // Need to correct this so that it attempts to update the parent product.
-        stripe.products.update(parent, {
-          name: prod.name,
-          description: prod.description,
-          active: prod.status,
-          metadata: {
-            primary_category: prod.primary_category,
-            active: prod.status
-
-          }
+  
+        const update = await Database
+        .table('products')
+        .where('id', req.id)
+        .update({
+          name,
+          price,
+          label,
+          category,
+          macros,
+          variations,
+          description,
+          skus
         })
-        for (var i = 0; i < Object.keys(obj).length; i++) {
-          var sku = obj[Object.keys(obj)[i]]     
 
-          //Build our sku id based on parent id and size variation
-          var id = sku.parent + '_' + sku.size.replace(/,|&|'|"|\*|\(|\)/g, '')
+      console.log(typeof update === 'number')
 
-          stripe.skus.update(id, {
-            price: sku.price,
-            image: sku.primary_img,
-            metadata: {
-              primary_category: sku.primary_category,
-              name: sku.name,
-              description: sku.description,
-              primary_category: sku.category,
-              protein_type: sku.protein_type,
-              size: sku.size,
-              fats: sku.fats,
-              carbs: sku.carbs,
-              calories: sku.calories,
-              proteins: sku.proteins,
-              filters: sku.filters
-            }
-          });
-        }
-      
-        await this.updateItems()
-        
-        return response.send({status: 'success'})
-      } catch(e) {
-        return response.send('error')
+      if (typeof update === 'number') {
+        session.flash({'status': 'Product updated successfully'})
+      } else {
+        session.flash({'error': 'There was a problem updating this product.  Please try again'})
       }
+      return response.redirect('back')
+
+      // try {
+      //   const obj = request.all()
+      //   delete obj['']
+
+      //   var prod = obj[Object.keys(obj)[0]]
+
+      //   prod.parent_id = prod.name.toLowerCase().replace(/ /g, '_')
+      //   var parent = prod.parent_id.replace(/ /g, '_')
+      //   parent = parent.replace(/,|&|'|"|\*|\(|\)/g, '')
+      //   parent = parent.toLowerCase()
+      //   // This is incorrectly trying to update the main product using the primary sku
+      //   // Need to correct this so that it attempts to update the parent product.
+      //   stripe.products.update(parent, {
+      //     name: prod.name,
+      //     description: prod.description,
+      //     active: prod.status,
+      //     metadata: {
+      //       primary_category: prod.primary_category,
+      //       active: prod.status
+
+      //     }
+      //   })
+      //   for (var i = 0; i < Object.keys(obj).length; i++) {
+      //     var sku = obj[Object.keys(obj)[i]]     
+
+      //     //Build our sku id based on parent id and size variation
+      //     var id = sku.parent + '_' + sku.size.replace(/,|&|'|"|\*|\(|\)/g, '')
+
+      //     stripe.skus.update(id, {
+      //       price: sku.price,
+      //       image: sku.primary_img,
+      //       metadata: {
+      //         primary_category: sku.primary_category,
+      //         name: sku.name,
+      //         description: sku.description,
+      //         primary_category: sku.category,
+      //         protein_type: sku.protein_type,
+      //         size: sku.size,
+      //         fats: sku.fats,
+      //         carbs: sku.carbs,
+      //         calories: sku.calories,
+      //         proteins: sku.proteins,
+      //         filters: sku.filters
+      //       }
+      //     });
+      //   }
+      
+      //   await this.updateItems()
+        
+      //   return response.send({status: 'success'})
+      // } catch(e) {
+      //   return response.send('error')
+      // }
 
     }
 
