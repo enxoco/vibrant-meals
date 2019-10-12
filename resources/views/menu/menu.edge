@@ -11,6 +11,8 @@
   z-index: 99; /* Make sure it does not overlap */
   width: 220px;
   }
+
+
 }
 #dropdownMenuButtonFilters {
   background: none !important;
@@ -46,61 +48,33 @@ body {
 </style>
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-start mb-0 short-width" style="box-shadow:none;position:absolute;top:-40px;">
 
-      <li class="nav-item">
+      <li class="nav-item menu-filters-mobile">
         <div class="dropright">
-            <button class="btn btn-outline" type="button" id="dropdownMenuButtonFilters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_filter" style="white-space:normal;font-size:10px !important;background:none;margin:0;padding:0;border:none;">
+            <button class="btn btn-outline" type="button" id="dropdownMenuButtonFilters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="button_filter" style="white-space:normal;font-size:10px !important;background:none;margin:0;padding:0;border:none;text-align:left;">
                 <h2 class="category-heading" style="margin-bottom:0px;">Meal Type</h2><i data-feather="chevron-down" class="stroke-black"></i>
 
               </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonFilters">
                 <a class="dropdown-item no-modal" href="#" style="height:40px;"><i data-feather="x"></i></a>
 
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'all')
-                active
-                @endif
-                " data-filter="all" href="#">All</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'E')
-                active
-                @endif
-                " data-filter="E" href="#">Everyday</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'LC')
-                active
-                @endif
-                " data-filter="LC" href="#">Low Carb</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'P')
-                active
-                @endif
-                " data-filter="P" href="#">Performance</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'ELT')
-                active
-                @endif
-                " data-filter="ELT" href="#">Elite</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'PB')
-                active
-                @endif
-                " data-filter="PB" href="#">Plant Based</a>
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'W30')
-                active
-                @endif
-                " data-filter="W30" href="#">Whole 30</a>  
-                <a class="dropdown-item no-modal filter-button
-                @if(url.split('/')[3] === 'G')
-                active
-                @endif
-                " data-filter="G" href="#">Gluten Free</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'all') }}" data-filter="all" href="#">All</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'E') }}" data-filter="E" href="#">Everyday</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'LC') }}" data-filter="LC" href="#">Low Carb</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'P') }}" data-filter="P" href="#">Performance</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'ELT') }}" data-filter="ELT" href="#">Elite</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'PB') }}" data-filter="PB" href="#">Plant Based</a>
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'W30') }}" data-filter="W30" href="#">Whole 30</a>  
+                <a class="dropdown-item no-modal filter-button {{ checkActiveFilters(url, 'G') }}" data-filter="G" href="#">Gluten Free</a>
             </div>
         </div>
         </li>
 
     @each(category in ['all', 'drinks','lunchDinner','breakfast','snacks'])
-  <li class="nav-item">
+  <li class="nav-item 
+  @if(category === 'breakfast')
+  ml-5-mobile 
+  @endif
+  " style="max-height:20px;">
     <a class="category-button" data-category="{{ category }}"><h2 class="category-heading 
       @if(url.split('/')[2] === category)
       active

@@ -104,9 +104,9 @@ class AdminController {
           skuList.push({date: moment(dates[i]).format('YYYY-MM-DD'), skus: []})
         }
 
-        for (var i = 0; i < object.data.length; i++){
+        for (let i = 0; i < object.data.length; i++){
           let items = JSON.parse(object.data[i].items) 
-          for (var x = 0; x < items.length; x++) {
+          for (let x = 0; x < items.length; x++) {
             for (let y = 0; y < dates.length; y++) {
               if (moment(object.data[i].fulfillment_date).format('YYYY-MM-DD') === skuList[y].date) {
                 skuList[y].skus.push({name: items[x].name, quantity: items[x].quantity, sku: items[x].sku, date: skuList[y].date })
@@ -114,18 +114,18 @@ class AdminController {
             }
           }        
         }
-        for (var i = 0; i < skuList.length; i++) {
+        for (let i = 0; i < skuList.length; i++) {
           skuList[i].skus = await this.checkDuplicateInObject('name', skuList[i].skus)
         }
-        let testObject = []
+        let skusSplit = []
         
-        for (var i = 0; i < skuList.length; i++){
-          testObject.push(skuList[i].skus)
+        for (let i = 0; i < skuList.length; i++){
+          skusSplit.push(skuList[i].skus)
 
         }
-        var merged = [].concat.apply([], testObject);
+        let skusMerged = [].concat.apply([], skusSplit);
 
-        var object = {data: merged}
+        var object = {data: skusMerged}
         return object
         return response.send(object)
       }

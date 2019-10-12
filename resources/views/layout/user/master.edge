@@ -664,6 +664,17 @@ p.desc {
 
 @media screen and (max-width: 500px) {
 
+  .ml-5-mobile {
+    margin-left: 8.2rem!important;
+  }
+
+  .menu-filters-mobile {
+    width: 100px !important;
+    padding-right: 100px !important;
+    position: relative;
+    max-height: 20px;
+  }
+
   .short-width {
     width: 90%;
   }
@@ -1211,7 +1222,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
                     <a class="nav-link" href="/locations">Locations</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/menu">Menu</a>
+                    <a class="nav-link" href="/menu/all/LC,E">Menu</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
@@ -1415,7 +1426,14 @@ li.list-group-item.d-flex.justify-content-between.align-items-center {
 <script type="text/javascript">
   $(document).ready(function () {
 
-      $('#dropdownMenuButtonFilters').find('.category-heading').html('Meal Type: ' + $('.filter-button.active').text())
+    let filters = []
+    $('.filter-button.active').each(function(i, obj){
+      filters.push($(this).text())
+    })
+    // for (let i = 0; i < $('.filter-button.active').length; i++) {
+    //   filters.push($('.filter-button.active')[i].text())
+    // }
+      $('#dropdownMenuButtonFilters').find('.category-heading').html('Meal Type: ' + filters)
 
   });
 </script>

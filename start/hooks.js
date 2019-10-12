@@ -217,6 +217,17 @@ hooks.after.providersBooted(() => {
     }
 
   })
+
+  View.global('checkActiveFilters', function(url, code){
+    if (url.split('/')[3]) {
+      let filter = url.split('/')[3]
+      filter = filter.split(',')
+      for (let i = 0; i < filter.length; i++) {
+        if (filter[i] === code) return 'active'
+      }
+    }
+
+  })
   View.global('nutritionFooterMobile', function(obj){
     var newObj = Object.assign({}, obj);
 

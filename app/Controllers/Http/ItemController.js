@@ -125,7 +125,9 @@ class ItemController {
         items = prod
       }
 
-      return view.render('menu.menu', {items: items, categories: categories, user})
+      if (auth.user) return view.render('menu.menu', {items: items, categories: categories, user})
+      return view.render('menu.menu', {items: items, categories: categories})
+      
 
   }
 
