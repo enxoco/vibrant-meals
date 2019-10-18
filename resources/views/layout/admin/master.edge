@@ -509,20 +509,20 @@ li, li > svg {
   //       ]
   //   } );
 
-    $('#productNeededThursday').DataTable( {
-        select: true,
-        dom: 'Bfrtip',
-        colReorder: true,
-        buttons: [
-          $.extend( true, {}, buttonCommon, {
-         extend: 'csv',
-         filename: 'Thursday Production Sheet'
-     } ),
-          'pdfHtml5',
-          'selectAll',
-          'selectNone'
-        ]
-    } );
+    // $('#productNeededThursday').DataTable( {
+    //     select: true,
+    //     dom: 'Bfrtip',
+    //     colReorder: true,
+    //     buttons: [
+    //       $.extend( true, {}, buttonCommon, {
+    //      extend: 'csv',
+    //      filename: 'Thursday Production Sheet'
+    //  } ),
+    //       'pdfHtml5',
+    //       'selectAll',
+    //       'selectNone'
+    //     ]
+    // } );
     $('#customers').DataTable( {
         select: true,
         dom: 'Bfrtip',
@@ -787,5 +787,3 @@ $('.submit-form').on('click', function(){
 
 <script src="/admin/js/macros-table.js"></script>
 
-  {{--  <script src="/admin/js/plugins/jQuery.sortElements.js"></script>
-  <script src="/admin/js/plugins/sortTables.js"></script>  --}}

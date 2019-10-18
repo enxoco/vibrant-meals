@@ -151,14 +151,12 @@ class OrderController {
 
     async viewOrderById ({request, params, response, view}) {
         var id = params.orderId
-        var order = await stripe.orders.retrieve(id)
-        if (order.status_transitions.paid != null) {
-            var charge = await stripe.charges.retrieve(order.charge)
-        } else {
-            var charge = {
-                refunded: false
-            }
-        }
+        let order = await Database
+            .table('orders')
+            .where('orderId', id)
+        order = order[0]
+        let charge = await stripe.charges.retrieve(order.charge_id)
+
         return view.render('admin.order-details', {order, charge})
     }
 

@@ -84,22 +84,39 @@
       @else
       <form id="parent_product" method="POST" action="/admin/items/add">
       @endif
-        <section class="comSection comSection--light" style="position:fixed;width:25%;">
+        <section class="comSection comSection--light" style="position:fixed;width:25%;top:95px;">
               <div class="row">
                   <div class="col-10">
+                    <h5>Product Image</h5>
                       <div class="thumbnails"></div>
                       <div class="progress_bar" id="progress_bar" color="blue" width="100%"
                         style="display:block;background-color:#0000FF;height:35px;width:0%"></div>
-                      <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="image_id">
+                      <input name="file" type="file" multiple class="cloudinary-fileupload" data-cloudinary-field="primary_img">
                     </div>
 
-                    <div class="col-10 mx-auto">
-                    <button class="btn btn-success submit-form" >Save</button>
-                    </div>
               </div>
 
 
         </section>
+        <hr class="mb-3">
+        <section class="comSection comSection--light" style="position:fixed;width:25%; top: 300px;">
+            <div class="row">
+                <div class="col-10">
+                  <h5>Nutrition Label</h5>
+                    <input name="file" type="file" class="cloudinary-fileupload" data-cloudinary-field="nutrition_label" 
+                    data-form-data="[upload-preset-and-other-upload-options-as-html-escaped-JSON-data]"></input>
+                  </div>
+            </div>
+
+
+      </section>
+      <section class="comSection comSection--light" style="position:fixed;width:25%; top: 400px;">
+
+
+      <div class="col-6 mx-auto">
+          <button class="btn btn-success submit-form" >Save</button>
+          </div>
+      </section>
     </div>
     <!-- item-card -->
     <div class="col-md-8 sku-column">
@@ -237,23 +254,7 @@
 
           $.cloudinary.config(configSettings);
 
-          $(document).on('click', '.add-another', function () {
-            var id = $('body').find('form').length
-            id = id - 2 //Get number of forms on the page and subtract 2
-            $(this).closest('li.form-variation').clone().appendTo($('ul.size-variations')) //Clone our size variation form
-            $('form').last().attr('id', 'variation_' + id) //Increment the form id by 1.
 
-          })
-
-          $(document).on('click', '.remove-size', function () {
-            var id = $('body').find('form').length
-            id = id - 1
-            console.log(id)
-            if (id != 2) {
-              $(this).closest('li.form-variation').remove()
-
-            }
-          })
 
 
 
@@ -284,7 +285,6 @@
                   })
                 })
                 .bind("cloudinarydone", function (e, data) {
-                  $('#parent_product').append('<input type="hidden" name="primary_img" value="' + data.result.secure_url + '" />')
                   $(".thumbnails").append(
                     $.cloudinary.image(data.result.secure_url, {
                       format: "jpg",

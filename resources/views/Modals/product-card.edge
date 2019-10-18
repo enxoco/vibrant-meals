@@ -57,8 +57,11 @@
                                         {{item.description}}
                                     </td>
                                     <td>
-
+                                        @if(item.nutrition_label)
+                                        <img src="{{ item.nutrition_label }}" class="nutrition_label" />
+                                        @else
                                         @!include('layout.user.nutrition-label')
+                                        @endif
                                     </td>
                                 </tr>
                                 <!-- Mobile table style -->
@@ -75,8 +78,12 @@
                                             <div class="row pb-4">
 
                                                 <div class="d-flex ml-2">
-                                                @!include('layout.user.nutrition-label')
-                                                </div>
+                                                        @if(item.nutrition_label)
+                                                        <img src="{{ item.nutrition_label }}" class="nutrition_label" />
+                                                        @else
+                                                        @!include('layout.user.nutrition-label')
+                                                        @endif                                                
+                                                    </div>
 
                                     </td>
                                 </tr>

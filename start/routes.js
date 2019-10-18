@@ -143,8 +143,7 @@ Route.group(() => {
 }).middleware(['admin'])
 Route.post('/hooks/orders/created', 'StripeController.orderCreatedHook')
 Route.get('/hooks/orders/created', 'StripeController.orderCreatedHook')
+
 Route.get('/api/orders/filtered/date/:start/:end/:day/:filter', 'AdminController.filteredOrdersByDate')
-
 Route.get('/api/orders/filtered/date/:start/:end/:day', 'AdminController.filteredOrdersByDate')
-
 Route.get('/api/orders/cancel/:order/:charge/:user', 'AdminController.cancelOrder')

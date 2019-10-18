@@ -277,13 +277,7 @@
                         Quantity
                       </th>
                       <th>
-                        Order Quantity
-                      </th>
-                      <th>
                         Delivery/Pickup Date
-                      </th>
-                      <th>
-                        Timeframe
                       </th>
                       <th>
                         Fulfilment Method
@@ -294,62 +288,10 @@
                       <th>
                         Allergy Info
                       </th>
-                      <th>
-                        Delivery Notes
-                      </th>
 
                     </thead>
                     <tbody>
-                      @each(o in ord)
-                      @if($loop.isEven)
-                      <tr class="even" style="background:#f5f5f5;">
-                      @else
-                      <tr class="odd">
-                      @endif
-                      
-                        <td>
-                          {{o.id}}
-                        </td>
-                        <td>
-                          {{o.name}}
-                        </td>
-                            <td>
-                              @each(i in o.items)
-                                @unless(i.quantity == null)
-                                  {{i.parent}}<br />
-                                @endunless
-                              @endeach
-                            </td>
-                            <td>
-                                @each(i in o.items)
-                                  @unless(i.quantity == null)
-                                    {{i.quantity}}<br />
-                                  @endunless
-                                @endeach
-                              </td>
-                              <td>
-                                {{o.orderQuantity}}
-                              </td>
-                              <td>
-                                {{o.date}}
-                              </td>
-                              <td>
-                                 {{o.deliveryWindow}}
-                              </td>
-                              <td>
-                                  {{o.fulfilmentMethod}}
-                              </td>
-                              <td>
-                                {{o.address}}
-                              </td>
-                              <td>
-                                {{o.allergy}}
-                              </td>
-                              <td>
-                                {{o.delivery}}
-                              </td>
-                      </tr>
-                      @endeach
+
                     </tbody>
                   </table>
                 </div>

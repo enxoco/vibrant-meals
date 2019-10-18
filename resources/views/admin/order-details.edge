@@ -98,8 +98,8 @@
                         </thead>
                         <tbody>
                             <tr data-toggle="collapse" data-target="#{{order.metadata.orderId}}" class="clickable">
-                                <td><a href="#">#{{order.metadata.orderId}}</a></td>
-                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.updated, 'MM/DD/YYYY')}}
+                                <td><a href="#">#{{order.orderId}}</a></td>
+                                <td class="d-none d-md-block d-lg-block">{{convertTime(order.created_at, 'MM/DD/YYYY')}}
                                 </td>
                                 <td>
                                     @if(order.status_transitions.paid != null)
@@ -119,11 +119,11 @@
                                     Refunded
                                     @endif
                                 </td>
-                                <td>{{ capitalize(order.metadata.fulfillment_method) }}</td>
+                                <td>{{ capitalize(order.fulfillment_method) }}</td>
                                 <td class="d-none d-md-block d-lg-block">
-                                    {{capitalize(order.metadata.fulfillment_day)}}, {{order.metadata.fulfillment_date}}
+                                    {{capitalize(order.fulfillment_day)}}, {{convertTime(order.fulfillment_date, 'MM/DD/YYYY')}}
                                 </td>
-                                <td>{{currency(order.amount)}}</td>
+                                <td>{{currency(order.order_amount)}}</td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="border:none;">

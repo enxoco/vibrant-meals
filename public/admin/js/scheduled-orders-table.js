@@ -12,37 +12,11 @@ $(document).ready(function () {
       }
    }
 
-   var exportTable = $('#productNeededExport').DataTable({
-      select: true,
-      dom: 'Bfrtip',
-      colReorder: true,
-      order: [[0, 'desc']],
-      buttons: [
-         'pdfHtml5',
-         'selectAll',
-         'selectNone',
-         $.extend(true, {}, buttonCommon, {
-            extend: 'csv',
-            filename: 'Packing and Delivery List'
-         }),
-      ],
 
-      "columnDefs": [
-         {
-            "width": "10%", "targets": 0
-         },
-         {
-            "width": "10%", "targets": 1
-         },
-         {
-            "width": "20%", "targets": 2
-         }
-      ]
-   });
    let today = moment().startOf('isoWeek')
 
 
-   renderOrdersTable(moment().startOf('isoWeek').format('YYYY-MM-DD'), moment().endOf('isoWeek').format('YYYY-MM-DD'))
+   // renderOrdersTable(moment().startOf('isoWeek').format('YYYY-MM-DD'), moment().endOf('isoWeek').format('YYYY-MM-DD'))
 
 
 })
@@ -141,7 +115,7 @@ ordersTable = $('#pickups').DataTable({
    columns: [
       {
          "render": function (data, type, row) {
-            return '<a href="/orders/' + row.orderId + '">' + row.orderId + '</a>'
+            return '<a href="/admin/orders/' + row.orderId + '">' + row.orderId + '</a>'
          }
       },
       { "data": "name" },
@@ -268,6 +242,40 @@ thursdaySkus = $('#productNeededThursday').DataTable({
 
 });
 
+// productExport = $('#productNeededExport').DataTable({})
+productExport = $('#productNeededExport').DataTable({
+   select: true,
+   dom: 'Bfrtip',
+   processing: true,
+   order: [[0, 'desc']],
+   ajax: '/api/orders/filtered/date/' + moment().startOf('isoWeek').format('YYYY-MM-DD') + '/' + moment().endOf('isoWeek').format('YYYY-MM-DD') + '/all/export',
+   columns: [
+      { "data": "orderId" },
+      { "data": "name" },
+      { "data": "sku" },
+      { "data": "quantity" },
+      { "render": function(data, type, row) {
+            return moment(row.fulfillment_date).format('ll')
+         } 
+      },
+      { "data": "fulfillment_method" },
+      { "data": "location" },
+      { "data": "allergy_info" }
+   ],
+   colReorder: true,
+   filename: 'Scheduled Orders',
+   buttons: [
+      $.extend(true, {}, buttonCommon, {
+         extend: 'csv',
+         filename: 'Scheduled Orders'
+      }),
+      'pdfHtml5',
+      'selectAll',
+      'selectNone',
+   ]
+
+});
+
 
 
 
@@ -284,7 +292,7 @@ function updateOrdersView() {
    ordersTable.ajax.url('/api/orders/filtered/date/' + start + '/' + end + '/all').load()
    mondaySkus.ajax.url('/api/orders/filtered/date/' + start + '/' + end + '/monday/sku').load()
    thursdaySkus.ajax.url('/api/orders/filtered/date/' + start + '/' + end + '/thursday/sku').load()
-
+   productExport.ajax.url('/api/orders/filtered/date/' + start + '/' + end + '/all/export').load()
 
 }
 
