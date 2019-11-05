@@ -1546,8 +1546,8 @@ $('.checkout-prompt-1').on('click', function(e){
   e.stopPropagation()
 
 
-  let card = $('#product_' + $(this).data('sku'))
-  let sku = card.find('input[name="product[sku]"]').val()
+  let card = $('#product_' + $(this).data('sku').replace(/|/g, ''))
+  let sku = card.find('input[name="product[sku]"]').val().replace(/|/g, '')
   let name = card.find('input[name="product[name]"]').val()
   let image = card.find('input[name="product[image]"]').val()
   let price = card.find('input[name="product[price]"]').val()
