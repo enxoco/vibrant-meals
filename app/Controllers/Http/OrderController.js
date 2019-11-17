@@ -13,21 +13,21 @@ class OrderController {
 
 
 
-    async confirmationEmail({request, response, params, view, auth}) {
+    async confirmationEmail({ request, response, params, view, auth }) {
         var cust = await stripe.customers.retrieve(auth.user.stripe_id)
         var order = await stripe.orders.list({
             customer: auth.user.stripe_id,
             limit: 1
         })
-        
+
 
         await Mail.send('auth.email.order-confirmation', {
             order: order.data[0]
-          }, (message) => {
+        }, (message) => {
             message.to(auth.user.email, auth.user.name)
             message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
             message.subject('Vibrant Meals Order Confirmation')
-          })
+        })
 
     }
 
@@ -46,21 +46,11 @@ class OrderController {
 
         }
 
-        // await Mail.send('auth.email.order-confirmation', {
-        //     order: order.data[0],
-        //     customer: cust
-        //   }, (message) => {
-        //     message.to(auth.user.email, auth.user.name)
-        //     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
-        //     message.subject('Order Confirmation')
-        //   })
-        // return response.send(recentOrder)
-        // recentOrder = JSON.parse(recentOrder)
         var items = JSON.parse(recentOrder.items)
         var shipping = JSON.parse(recentOrder.shipping_info)
         var billing = JSON.parse(recentOrder.billing_info)
-        
-        return view.render('Checkout.confirmation', {order: recentOrder, items, shipping, billing})
+
+        return view.render('Checkout.confirmation', { order: recentOrder, items, shipping, billing })
     }
 
     async batchFulfillStripe(id) {
@@ -69,33 +59,33 @@ class OrderController {
         await Mail.send('auth.email.order-fulfilled', {
             order,
             customer
-          }, (message) => {
+        }, (message) => {
             message.to(customer.email, customer.metadata.name)
             message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
             message.subject('Order Fulfilled')
-          })
-        await stripe.orders.update(id,{status:'fulfilled'})
+        })
+        await stripe.orders.update(id, { status: 'fulfilled' })
     }
 
-    async batchFulfill ({request, response, session}) {
+    async batchFulfill({ request, response, session }) {
         const { ids } = request.all()
-        
-        ids.forEach(id => {      
+
+        ids.forEach(id => {
             this.batchFulfillStripe(id)
         });
-        session.flash({status: 'Orders successfully fulfilled'})
+        session.flash({ status: 'Orders successfully fulfilled' })
         return response.redirect('back')
     }
 
-    async updateOrderById ({request, response, params}) {
-        const {id, status, amount} = request.all()
+    async updateOrderById({ request, response, params }) {
+        const { id, status, amount } = request.all()
         if (status === 'refund') {
             var update = await stripe.refunds.create({
                 charge: id,
                 amount: amount
             })
         } else {
-            var update = await stripe.orders.update(id,{
+            var update = await stripe.orders.update(id, {
                 status: status
             })
             const order = await stripe.orders.retrieve(id)
@@ -105,28 +95,28 @@ class OrderController {
                 await Mail.send('auth.email.order-cancel', {
                     order,
                     customer
-                  }, (message) => {
+                }, (message) => {
                     message.to(customer.email, customer.metadata.name)
                     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
                     message.subject('Order Cancelation')
-                  })  
+                })
             } else {
                 await Mail.send('auth.email.order-fulfilled', {
                     order,
                     customer
-                  }, (message) => {
+                }, (message) => {
                     message.to(customer.email, customer.metadata.name)
                     message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
                     message.subject('Order Confirmation')
-                  })
+                })
             }
 
         }
         return response.send(update)
     }
 
-    async postRefund ({request, response, view}) {
-        const {charge, amount} = request.all()
+    async postRefund({ request, response, view }) {
+        const { charge, amount } = request.all()
         const chargeDetails = await stripe.charges.retrieve(charge)
         const order = await stripe.orders.retrieve(chargeDetails.order)
         var customer = await stripe.customers.retrieve(order.customer)
@@ -134,11 +124,11 @@ class OrderController {
             amount,
             order,
             customer
-          }, (message) => {
+        }, (message) => {
             message.to(customer.email, customer.metadata.name)
             message.from(Env.get('MAIL_FROM_EMAIL'), Env.get('MAIL_FROM_NAME'))
             message.subject('Vibrant Meals Order Refund')
-          })
+        })
 
 
         var refund = await stripe.refunds.create({
@@ -149,7 +139,7 @@ class OrderController {
         return response.send(refund)
     }
 
-    async viewOrderById ({request, params, response, view}) {
+    async viewOrderById({ request, params, response, view }) {
         var id = params.orderId
         let order = await Database
             .table('orders')
@@ -157,43 +147,43 @@ class OrderController {
         order = order[0]
         let charge = await stripe.charges.retrieve(order.charge_id)
 
-        return view.render('admin.order-details', {order, charge})
+        return view.render('admin.order-details', { order, charge })
     }
 
-    async viewOrdersAdmin ({ request, response, session, view }) {
+    async viewOrdersAdmin({ request, response, session, view }) {
         var today = moment();
         var from_date = moment().startOf('isoweek').unix()
         var to_date = moment().endOf('isoweek').unix()
 
         let thursday
         let monday
-      
+
         monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
         thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
         if (moment().format('dddd') === 'Monday' && moment().format('H') < 12) {
             thursday = moment().add(0, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
-          }
-          if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
+        }
+        if (moment().format('dddd') === 'Friday' || moment().format('dddd') === 'Saturday' || moment().format('dddd') === 'Sunday') {
             thursday = moment().add(1, 'weeks').startOf('isoweek').add(3, 'days').format('MMM DD')
-         
-          } 
+
+        }
         if (moment().format('dddd') == 'Friday') {
             let format = 'HH:mm:ss'
             let t = moment().format(format)
             let time = moment(t, format)
             let beforeTime = moment('00:00:00', format)
             let afterTime = moment('08:00:00', format)
-        
+
             if (time.isBetween(beforeTime, afterTime)) {
-              monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
+                monday = moment().add(1, 'weeks').startOf('isoweek').format('MMM DD')
             } else {
-              monday = moment().add(2, 'weeks').startOf('isoweek').format('MMM DD')
+                monday = moment().add(2, 'weeks').startOf('isoweek').format('MMM DD')
             }
-          }
-          if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
+        }
+        if (moment().format('dddd') == 'Saturday' || moment().format('dddd') == 'Sunday') {
             monday = moment().add(2, 'weeks').startOf('isoweek').format('MMM DD')
-        
-          }
+
+        }
 
         // Grab our open orders from stripe and massage into an array of skus
         var orders = await stripe.orders.list({
@@ -201,26 +191,26 @@ class OrderController {
             created: {
                 gte: moment().startOf('isoweek').unix()
             }
-            
+
         })
         if (orders.has_more) {
             var moreOrders = await stripe.orders.list({
-            limit: 100,
-            starting_after: orders.data[(orders.data.length - 1)].id
-        }) 
+                limit: 100,
+                starting_after: orders.data[(orders.data.length - 1)].id
+            })
         }
 
 
 
-        
+
         orders = orders.data
         moreOrders ? moreorders = moreOrders.data : null
 
-        var allOrdersMonday = _.pickBy(orders, function(obj){
+        var allOrdersMonday = _.pickBy(orders, function (obj) {
             return obj.metadata.fulfillment_day === 'monday' && obj.status === 'paid' && obj.metadata.fulfillment_date === monday
         })
-        
-        var allOrdersThursday = _.pickBy(orders, function(obj){
+
+        var allOrdersThursday = _.pickBy(orders, function (obj) {
             return obj.metadata.fulfillment_day === 'thursday' && obj.status === 'paid' && obj.metadata.fulfillment_date === thursday
         })
 
@@ -255,7 +245,7 @@ class OrderController {
                         orderQuantity: orderQuantity,
                         deliveryWindow: order.metadata.deliveryWindow,
                         allergy: order.metadata.allergy_info ? order.metadata.allergy_info : '',
-                        delivery: order.metadata.delivery_notes? order.metadata.delivery_notes : ''
+                        delivery: order.metadata.delivery_notes ? order.metadata.delivery_notes : ''
                     }
                     ord.push(obj)
 
@@ -271,11 +261,11 @@ class OrderController {
         var thursList = []
         var outstandingOrders = orders.filter(function (el) {
             return el.status != 'canceled'
-          });
-        
+        });
+
         const orderCount = outstandingOrders.length
 
-        
+
         var deliveries = 0
         var thursdayFulfillments = []
         var mondayFulfillments = []
@@ -296,25 +286,25 @@ class OrderController {
                     deliveries++
                 }
                 if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
-                
+
                     thursdayFulfillments.push(orders[i])
                 }
                 if (orders[i].metadata.fulfillment_day && orders[i].metadata.fulfillment_day.toLowerCase() == 'monday' && orders[i].metadata.fulfillment_date === monday) {
                     mondayFulfillments.push(orders[i])
                 }
-    
+
                 for (var x = 0; x < orders[i].items.length; x++) {
                     var item = orders[i].items[x]
-                    if (item.amount != 0) {  
+                    if (item.amount != 0) {
                         for (var z = 0; z < item.quantity; z++) {
                             if (orders[i].metadata.fulfillment_day) {
                                 if (orders[i].metadata.fulfillment_day.toLowerCase() === 'monday' && orders[i].metadata.fulfillment_date === monday) {
-                                    monList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
-                                } else if(orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
-                                    thursList.push({item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date})
+                                    monList.push({ item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date })
+                                } else if (orders[i].metadata.fulfillment_day.toLowerCase() === 'thursday' && orders[i].metadata.fulfillment_date === thursday) {
+                                    thursList.push({ item: item.parent, desc: item.description, day: orders[i].metadata.fulfillment_day, date: orders[i].metadata.fulfillment_date })
                                 }
                             }
-    
+
                         }
                     }
                 }
@@ -322,7 +312,7 @@ class OrderController {
 
         }
         revenue = (revenue / 100).toFixed(2)
-        
+
 
         // Combine all matching skus and add a count for each
         var monResult = [...monList.reduce((r, e) => {
@@ -346,15 +336,15 @@ class OrderController {
         thursResult = thursResult.sort(function (a, b) {
             return b.count - a.count
         })
-        
+
         return view.render('layout.admin.orders', {
-            pagetype: 'Pending orders', 
-            orderCount, 
-            deliveries, 
-            pickups, 
-            thursdayFulfillments, 
-            mondayFulfillments, 
-            revenue, 
+            pagetype: 'Pending orders',
+            orderCount,
+            deliveries,
+            pickups,
+            thursdayFulfillments,
+            mondayFulfillments,
+            revenue,
             fulfillments,
             monResult,
             thursResult,

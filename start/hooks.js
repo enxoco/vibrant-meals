@@ -245,17 +245,9 @@ hooks.after.providersBooted(() => {
     var div = ``
     if (count.length >= 3) {
       div = '<div class="col-10 d-flex justify-content-between">'
-
-      // for (var i = 0; i < Object.keys(newObj).length; i++) {
-      //   if (i == 2) {break}
-      //   var name = Object.keys(newObj)[i]
-      //   var value = newObj[name]
-      //   div += `${_.capitalize(name)}:<strong>${value}g</strong>`
-      // }
       obj.calories ? div += `<strong>Calories:</strong> ${obj.calories}` : NULL
       obj.proteins ? div += `<strong>Protein:</strong> ${obj.proteins}` : NULL
 
-      console.log(obj)
       div += '</div>'
     }
 

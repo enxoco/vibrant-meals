@@ -18,8 +18,7 @@ Route.get('/test/fulfill', 'OrderController.testFulfill')
 
 Route.get('/checkout', 'ItemController.showCheckout')
 Route.get('/checkout/confirmation', 'OrderController.showConfirmation')
-Route.get('/sw.js', 'PwaController.serviceWorker')
-Route.get('/manifest.json', 'PwaController.manifest')
+
 
 
 Route.post('/how-it-works/update', 'AdminController.updateHowItWorks')
@@ -141,8 +140,7 @@ Route.group(() => {
   Route.get('/admin/products/import', 'AdminController.importStripeProducts')
 
 }).middleware(['admin'])
-Route.post('/hooks/orders/created', 'StripeController.orderCreatedHook')
-Route.get('/hooks/orders/created', 'StripeController.orderCreatedHook')
+
 
 Route.get('/api/orders/filtered/date/:start/:end/:day/:filter', 'AdminController.filteredOrdersByDate')
 Route.get('/api/orders/filtered/date/:start/:end/:day', 'AdminController.filteredOrdersByDate')

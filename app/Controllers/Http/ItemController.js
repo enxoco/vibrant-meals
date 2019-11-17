@@ -13,10 +13,6 @@ const stripe_pk = Env.get('STRIPE_PK')
 stripe.setApiVersion('2019-03-14');
 
 
-const fetchMenu = use('App/Controllers/Helpers/FetchMenu')
-
-
-
 var cartCur = []
 
 class ItemController {
@@ -132,44 +128,7 @@ class ItemController {
   }
 
 
-  async listCustomMeals ({view, response, auth, request}) {
 
-    const path = Helpers.appRoot()    
-
-    var prod = await Drive.get(`${path}/products.json`, 'utf-8')
-    prod = JSON.parse(prod)
-
-    if (auth.user) {
-      var user = {}
-      if (auth.user.fulfillment_method == 'pickup' && auth.user.pickup_location != null) {
-        var store = await Database 
-        .table('locations')
-        .select('*')
-        .where('id', auth.user.pickup_location)
-        store[0].desc = store[0].name
-        user.pickupLocation = store[0]
-        user.fulfillment_method = 'pickup'
-
-      } else {
-        user.fulfillment_method = 'delivery'
-
-      }
-
-      prod = _.remove(prod, function(n){
-        return n.metadata.primary_category == 'customMeals'
-      })
-
-
-
-      user.fulfillment_day = auth.user.fulfillment_day
-      return view.render('menu.custom-meals', {items: prod, user: user})
-      
-    } else {
-
-      return view.render('menu.custom-meals', {items: prod})
-    }
-
-  }
 
 
   /* Show form for editing a current item */
@@ -223,30 +182,6 @@ class ItemController {
       return response.redirect('back')
     }
 
-    async deleteItem ({ params }) {
-
-      const imgUrl = await Database
-        .table('items')
-        .select('img_url', 'alt_img_url')
-        .where('id', params.itemId)
-      await Database
-        .table('items_in_categories')
-        .where('item_id', params.itemId)
-        .del()
-
-      await Database
-        .table('items_in_filters')
-        .where('item_id', params.itemId)
-        .del()
-      
-      await Database
-        .table('items')
-        .where('id', params.itemId)
-        .del()
-
-      await Drive.delete('/uploads/' + imgUrl[0].img_url)
-      await Drive.delete('/uploads/' + imgUrl[0].alt_img_url)
-    }
 
     async updateItem ({ view, request, response, session }) {
       const req = request.all()
@@ -270,7 +205,6 @@ class ItemController {
           skus
         })
 
-      console.log(typeof update === 'number')
 
       if (typeof update === 'number') {
         session.flash({'status': 'Product updated successfully'})
@@ -338,7 +272,6 @@ class ItemController {
     async showCheckout ({ view, session, auth, response }) {
 
       // Fetch our menu object containing items, filters, categories, etc...
-      const menu_items = await fetchMenu()
 
       if (auth.user) { // If the user already has an account, load their fulfillment preferences
 
