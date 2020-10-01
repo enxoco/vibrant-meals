@@ -107,6 +107,8 @@ Route.group(() => {
   Route.get('/products/add', async ({ view }) => view.render('admin.items-new'))
 
   
+
+  Route.get('/admin/settings/api', 'AdminController.showApiSettings')
   /* Coupon management routes */
   Route.get('/admin/coupon', 'AdminController.listCoupons')
   Route.post('/admin/coupon/add', 'AdminController.addCoupon')

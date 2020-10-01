@@ -20,6 +20,10 @@ const opencage = require('opencage-api-client');
 
 class AdminController {
 
+  async showApiSettings({request, response, view}) {
+    return view.render('layout.admin.api')
+  }
+
 
   async fullRefund(charge) {
     const refund = await stripe.refunds.create({
